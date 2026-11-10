@@ -1,6 +1,6 @@
 # Řeka a bahnité koryto – Zřícenina v meandru
 
-Podklady a postup pro řeku (Water Body River) a materiál koryta (štěrk / bahno) v mapě `Zricenina_Proto`.
+Podklady a postup pro řeku (Water Body River) a materiál koryta (štěrk / bahno) v mapě `LapikusPrototypeMap`.
 Platí pro landscape z `Zricenina_heightmap_505_50cm.png` (Location 0, 0, 3200, Scale 50 / 50 / 12.5).
 
 ## Obsah složky
@@ -85,13 +85,13 @@ Pokud byl spline výrazně posunut mimo koryto, maska ho kopírovat nebude a je 
 
 ### 2.1 Import masky
 
-1. Přetáhnout `T_RiverMask_505.png` do Content Browseru, do `Skvt/Maps/Zricenina`.
+1. Přetáhnout `T_RiverMask_505.png` do Content Browseru, do `Skvt/Lapikus`.
 2. V textuře nastavit:
    - **Compression Settings:** Masks
    - **sRGB:** vypnuto
    - **X / Y-axis Tiling Method:** Clamp
 
-### 2.2 Úprava materiálu `M_Landscape_Forest_Auto`
+### 2.2 Úprava materiálu `M_Landscape_Forest_Auto` (v projektu `M_Lanscape_Forest_Auto`)
 
 1. **Souřadnice masky:** přidat druhý `LandscapeLayerCoords`, **Mapping Scale = 504**. Maska se tak roztáhne přesně jednou přes landscape.
 2. **Maska:** Texture Sample s `T_RiverMask_505`, do UVs zapojit nové coords (504).

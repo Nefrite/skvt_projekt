@@ -1,6 +1,6 @@
 # 01 Terrain – import terénu a materiál M_Landscape_Forest_Auto (část 1)
 
-Postup pro mapu `Zricenina_Proto`. Terén se vytvoří z heightmapy a dostane automatický materiál, který podle sklonu míchá trávu, štěrk a kámen.
+Postup pro mapu `LapikusPrototypeMap` (v návodu dříve pracovně `Zricenina_Proto`). Terén se vytvoří z heightmapy a dostane automatický materiál, který podle sklonu míchá trávu, štěrk a kámen.
 Řeka a koryto jsou ve složce `02_river`.
 
 ## Obsah složky
@@ -17,7 +17,7 @@ Postup pro mapu `Zricenina_Proto`. Terén se vytvoří z heightmapy a dostane au
 ## 1. Nová mapa
 
 1. **File → New Level → Basic.** Neber Open World (World Partition) ani Empty Level.
-2. **File → Save Current Level As** do `Content/Skvt/Maps/Zricenina/Zricenina_Proto`.
+2. **File → Save Current Level As** do `Content/Skvt/LapikusPrototypeMap` (skutečný stav projektu).
 3. V Outlineru smazat **Floor**.
 4. **Window → World Settings → GameMode Override = `BP_SkvtGameMode`.**
 5. Uložit (Ctrl+S).
@@ -94,7 +94,8 @@ Masky vznikají jako `1 − SmoothStep(cos(konec), cos(začátek), cosSklonu)`.
 
 ### 5.2 Založení
 
-1. Content Browser → `Skvt/Maps/Zricenina` → pravé tlačítko → **Material** → `M_Landscape_Forest_Auto`.
+1. Content Browser → `Skvt/Lapikus` → pravé tlačítko → **Material** → `M_Landscape_Forest_Auto`.
+   - V projektu existuje jako **`M_Lanscape_Forest_Auto`** (překlep *Lanscape*). Přejmenovat lze přes pravé tlačítko → Rename; Unreal odkazy opraví sám, pak **Fix Up Redirectors** na složce.
 2. Otevřít dvojklikem.
 
 ### 5.3 UV souřadnice
