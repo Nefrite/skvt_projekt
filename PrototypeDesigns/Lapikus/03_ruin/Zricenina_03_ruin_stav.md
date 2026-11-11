@@ -41,6 +41,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Brana_S** je zvednutá do výšky oblouků obou bran (`protect` s `to`), přilehlé konce `Brana_V` a `Brana_J` taky. Na ni přijde provizorní hlídková konstrukce (05_constructions).
 - **Palac_J:** střílny s výklenkem zevnitř jako ve věži a v hradbě.
 - **Ostění a střílny** jsou z opracovaných kamenů `SM_RuinDressed_*` (zaoblené hrany). `MI_RuinFrame` je stejný kámen jako líc, jen o kousek světlejší.
+- **Dřevo** (`MI_RuinWood`): zašlé nelakované, šedohnědé, matné.
 - **Koruna zvětralá shora:** odkryté horní kameny mají meshe `SM_RuinStone_W_*` (nahoře zaoblení 8,5–10,5 cm a důlky, dole ostré 3 cm). `M_RuinStone` má zvětrání podle normaly: co míří nahoru, je světlejší a nazelenalé (`Top*` parametry, `MAT_TOP`). Graf materiálu i W meshe skript sám aktualizuje podle verze (`MAT_VERSION`, `STONE_MESH_VERSION`).
 
 ## Věž (hotovo 11/2026)
@@ -48,13 +49,13 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - Podlaha přízemí je v Z 3150 (`VEZ_F`), patra jsou po 4,2 m (`VEZ_ST`) a řady kamenů pevně po 0,35 m. Všechny výšky ve věži se počítají od podlahy.
 - **Přízemí:** kamenná dlažba. Do věže se vchází vybouraným průchodem z uličky (`Vez_S`, 1,6 × 2,45 m, rozbité okraje).
 - **1. a 2. patro:** trámy v kapsách (`Vez_V` a `Vez_Z`) a hrubá prkna, otvor pro žebřík v SV rohu. Ve 3. a 4. patře jsou jen prázdné kapsy.
-- **Původní dveře** jsou v 1. patře (4,2 m), ve `Vez_S` zevnitř mezi západní zdí a sloupem. Zvenku je obnovená dřevěná podesta (trámy v kapsách + 2 sloupky).
+- **Původní dveře** jsou v 1. patře (4,2 m), ve `Vez_S` zevnitř mezi západní zdí a sloupem. Zvenku je obnovený dřevěný ochoz (trámy zapuštěné v kapsách, krátké šikmé vzpěry o zeď, bez sloupků do země).
 - **Střílny:** zvenku úzký průzor, zevnitř kónický výklenek od podlahy do 2,1 m, parapet 1,05 m.
   - `Vez_J`: všechna podlaží včetně přízemí.
   - `Vez_V`: od 1. patra.
   - `Vez_S`: 2. patro.
 - **Okna a podesta:** hradní okna ve `Vez_Z` (1. a 2. patro), zvenku na `Vez_S` kapsy po podestě pod původním vstupem.
-- **Schody:** provizorní, 60°, oboje stoupají k západu a horním koncem se opírají o průvlak uprostřed věže: do 1. patra v poli u severní zdi, do 2. patra v sousedním poli. Trámy jsou po 1,64 m. Zábradlí se nedělá (provizorní oprava).
+- **Schody:** provizorní, 60°, cik-cak. Do 1. patra stoupají k východu (pole u severní zdi), do 2. patra k západu a opírají se o průvlak (sousední pole). Trámy jsou po 1,64 m. Zábradlí se nedělá (provizorní oprava).
 - **Náhled řezu věží:** `tools/constructions/check_tower.py`.
 
 ## Rozdělení 03 / 05 (11/2026)
@@ -70,3 +71,10 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - Most nebo rampa k 1. bráně, zbytky mostního pilíře v příkopu.
 - Náhledy na skutečném terénu: po buildu poslat `terrain_from_level.json`.
 - Nárožní kvádry na zlomech lomené hradby (prosvítá jádro).
+
+## Optimalizace do budoucna (zatím není potřeba)
+
+- **Stav 11/2026:** zřícenina má asi 23 500 kamenů a 34,5 mil. trojúhelníků. Z toho připadá 24,7 mil. na lomové kameny (`SM_RuinStone`), 6,2 mil. na korunu (`_W`) a 3,4 mil. na ostění (`SM_RuinDressed`). Dřevo ve věži má asi 0,5 mil. Unikátních meshí je jen 33, zbytek jsou instance. S Nanite to není problém.
+- **Kdy na to sáhnout:** ray tracing (Lumen Hardware), platforma bez Nanite, Merge Actors, export.
+- **Hint:** v `gen_stones.py` dát běžnému kameni (`SM_RuinStone_R*`) hrubší síť na plochách a jemnější jen v pásu zaoblení hran. Stejně se to už dělá u `_W` (funkce `grid` podle úhlu). Ušetří se 40–50 % trojúhelníků, celkem by vyšlo asi 18–20 mil. Pak zvýšit `STONE_MESH_VERSION` pro `SM_RuinStone_R` a skript meshe přeimportuje sám.
+- Korunu a ostění nechat, jsou vidět zblízka. Skryté jádro je už teď jen kostka.

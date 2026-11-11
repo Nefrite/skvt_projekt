@@ -35,6 +35,9 @@ MAT_CROWN = None                         # koruna zdi: odkryte horni kameny (vic
 CROWN_WEATHER = True                     # odkryte kameny koruny = zvetrale tvary (SM_RuinStone_W_*) + material MI_RuinCrown
 MAT_DIR   = "/Game/Skvt/Lapikus/Ruin/Materials"
 TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
+    "wood":  [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
+              ("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N"),
+              ("/Game/StarterContent/Textures/T_Wood_Walnut_D", "/Game/StarterContent/Textures/T_Wood_Walnut_N")],
     "face":  [("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N"),
               ("/Game/StarterContent/Textures/T_Rock_Basalt_D", "/Game/StarterContent/Textures/T_Rock_Basalt_N")],
     "core":  [("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N"),
@@ -50,6 +53,8 @@ MAT_LOOK = {
     "core":  dict(TintA=(0.60, 0.58, 0.54), TintB=(0.82, 0.79, 0.73), Tiling=1.2, Roughness=0.97),   # kamen s maltou, sedejsi
     "frame": dict(TintA=(0.70, 0.67, 0.60), TintB=(0.86, 0.82, 0.74), Tiling=0.8, Roughness=0.9),    # o kousek svetlejsi nez lic, ne oranzovy
     "crown": dict(TintA=(0.64, 0.62, 0.55), TintB=(0.96, 0.93, 0.84), Tiling=1.0, Roughness=0.95),
+    # zasle nelakovane drevo: sedohneda, matna; kazdy tram / prkno jinak (Per Instance Random)
+    "wood":  dict(TintA=(0.40, 0.37, 0.33), TintB=(0.62, 0.58, 0.52), Tiling=1.0, Roughness=0.97),
 }
 # zvetrani shora (v materialu podle normaly): plochy mirici nahoru svetlejsi, nazelenale (lisejnik, prach), drsnejsi.
 # TopStart = od jakeho sklonu (0 svisla stena .. 1 vodorovny vrsek), TopSharp = ostrost prechodu, TopAmount = sila
@@ -58,6 +63,7 @@ MAT_TOP = {
     "core":  dict(TopTint=(0.86, 0.90, 0.76), TopStart=0.55, TopSharp=3.0, TopAmount=0.45),
     "frame": dict(TopTint=(0.86, 0.90, 0.76), TopStart=0.55, TopSharp=3.0, TopAmount=0.5),
     "crown": dict(TopTint=(0.80, 0.88, 0.66), TopStart=0.35, TopSharp=2.5, TopAmount=1.00),
+    "wood":  dict(TopTint=(0.86, 0.86, 0.82), TopStart=0.60, TopSharp=3.0, TopAmount=0.35),    # vrch vybledly sluncem
 }
 MAT_VERSION = 4                          # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
                                          # (tinty MI_RuinFace/Frame zustanou, jak je mas; MAT_RESET viz nize)
@@ -78,9 +84,12 @@ STONE_PHYSICS = dict(density=2600.0,     # kg/m3 (vapenec, piskovec, zula 2500-2
                      lin_damp=0.3, ang_damp=0.8,          # tlumeni -> kamen se nekouli donekonecna
                      friction=0.9, restitution=0.05,      # drsny kamen, skoro neodskakuje (PM_RuinStone)
                      shrink=0.97)        # o kousek mensi nez blok -> prekryv se sousedy ho pri startu nevystreli
+WOOD_MESHES = True                       # tramy, prkna, sloupy z meshu zasleho dreva (SM_RuinTimber/Plank/Post_*); False = kostky
+WOOD_NOMINAL = {"SM_RuinTimber": (100.0, 25.0, 25.0), "SM_RuinPlank": (100.0, 25.0, 5.0), "SM_RuinPost": (25.0, 25.0, 100.0)}
 DRESSED_FRAMES = True                     # osteni, nadprazi, strilny z opracovanych kamenu SM_RuinDressed_* (False = kvadr SM_RuinAshlar)
-STONE_MESH_VERSION = {"SM_RuinStone_W_": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
-MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # tramy a prkna (prvni existujici)            # osteni a oblouky: lehce srazene hrany
+STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
+MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # zaloha, kdyz chybi textury dreva pro MI_RuinWood
+MAT_WOOD_MI = None                       # vlastni material dreva (cesta); None = MI_RuinWood (zasle drevo, vytvori skript)            # osteni a oblouky: lehce srazene hrany
 BLOCK_BP  = "/Game/Skvt/Lapikus/Ruin/BP_RuinBlocks"   # zalozni Blueprint s InstancedStaticMesh (kdyz nejde pridat komponentu)
 TERRAIN_FROM_LEVEL = True                # True = vysky terenu se pri buildu zmeri primo z landscapu v levelu (line trace)
                                          #   a ulozi do terrain_from_level.json (capture_manual_edits pouzije tento ulozeny stav)
@@ -868,6 +877,12 @@ def in_box(s, box):
 def stone_mesh_name(st):
     """Varianta zaobleneho kamene podle pomeru delka/vyska bloku (deterministicky podle id)."""
     if not USE_STONE_MESHES: return None
+    if st.cat == "wood":
+        if not WOOD_MESHES: return None
+        v = "ABC"[zlib.crc32(st.id.encode()) % 3]
+        if st.sz > 1.5 * max(st.sx, st.sy): return "SM_RuinPost_" + v          # sloup (delka nahoru)
+        if st.sz < 0.45 * st.sy: return "SM_RuinPlank_" + v                     # prkno, fosna schodu
+        return "SM_RuinTimber_" + v
     if st.cat == "floor" or (st.cat == "frame" and not DRESSED_FRAMES): return ASHLAR_MESH
     if st.cat == "frame":
         r = max(st.sx, 1) / max(st.sz, 1)
@@ -991,6 +1006,14 @@ def build_floor_stones(fs, P, walls_out, terr=None):
                 zg = terr.z(x, y) - 10
                 ztop = zt - 6 - bh * 100
                 out.append(Stone("%s|D|P%d" % (fs["name"], j), "wood", x, y, (zg + ztop) / 2, yaw_v, 20, 20, ztop - zg))
+            br = pc.get("braces")
+            if br:     # sikma vzpera: pata oprena o lic zdi, hlava pod tramem (tram je zapusteny v kapse)
+                dv_, dz_, bw_ = br.get("dv", 0.75), br.get("dz", 0.75), br.get("w", 0.14)
+                ztop = zt - 6 - bh * 100
+                ang = math.atan2(dz_, dv_); Lb = math.hypot(dv_, dz_) * 100
+                x, y = W(pc["u"] + du, vw + dv_ / 2 + 0.02)
+                out.append(Stone("%s|D|V%d" % (fs["name"], j), "wood", x, y, ztop - dz_ * 50 - bw_ * 30, yaw_v, Lb + bw_ * 60, bw_ * 100, bw_ * 100,
+                                 pitch=math.degrees(ang)))
         t = 5.0; v = vw + 0.02; r = 0
         while v < vw + dp - 0.05:
             w_ = min(rng.uniform(0.22, 0.32), vw + dp - v)
@@ -1199,7 +1222,34 @@ def ensure_materials(unreal):
         eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION))
         eal.save_loaded_asset(mi)
         mats[cat] = mi
+    mats["wood"] = _wood_mi(unreal, master, pick)
     return mats
+
+def _wood_mi(unreal, master, pick):
+    """MI_RuinWood: zasle nelakovane drevo na M_RuinStone (textura dreva, sedohnedy tint, matne). Bez textur dreva -> MAT_WOOD."""
+    eal = unreal.EditorAssetLibrary; mel = unreal.MaterialEditingLibrary
+    if MAT_WOOD_MI: return unreal.load_asset(MAT_WOOD_MI)
+    ip = _asset_path(MAT_DIR, "MI_RuinWood")
+    if eal.does_asset_exist(ip): return unreal.load_asset(ip)
+    d, n = pick("wood")
+    if not d or master is None:
+        return next((unreal.load_asset(p) for p in MAT_WOOD if eal.does_asset_exist(p.split(".")[0])), None)
+    mi = unreal.AssetToolsHelpers.get_asset_tools().create_asset("MI_RuinWood", MAT_DIR, unreal.MaterialInstanceConstant,
+                                                                unreal.MaterialInstanceConstantFactoryNew())
+    mel.set_material_instance_parent(mi, master)
+    mel.set_material_instance_texture_parameter_value(mi, "BaseColor", d)
+    if n:
+        try: mel.set_material_instance_texture_parameter_value(mi, "Normal", n)
+        except Exception: pass
+    lk = MAT_LOOK["wood"]
+    for pn in ("TintA", "TintB"):
+        c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
+    for pn in ("Tiling", "Roughness"):
+        mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
+    _set_top(unreal, mel, mi, "wood")
+    eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION)); eal.save_loaded_asset(mi)
+    unreal.log("Ruin: vytvoren material dreva %s" % ip)
+    return mi
 
 
 def _ver(eal, asset, tag):
@@ -1297,6 +1347,7 @@ def _build_master(unreal, master, d0, n0):
 def _needed_meshes():
     names = ["SM_RuinStone_%sR%02d_%s" % (w, round(r * 10), v) for w in ("", "W_") for r in STONE_RATIOS for v in STONE_VARIANTS]
     if DRESSED_FRAMES: names += ["SM_RuinDressed_R%02d_%s" % (round(r * 10), v) for r in STONE_RATIOS for v in "AB"]
+    if WOOD_MESHES: names += ["%s_%s" % (k, v) for k in WOOD_NOMINAL for v in "ABC"]
     return names + [ASHLAR_MESH]
 
 def ensure_stone_meshes(unreal):
@@ -1431,6 +1482,7 @@ def _resolve(unreal, s, cube, meshes):
     m = meshes.get(s.mesh) if s.mesh else None
     if m is None: return cube, (100.0, 100.0, 100.0)
     if s.mesh == ASHLAR_MESH: return m, (100.0, 100.0, 100.0)
+    if s.mesh.rsplit("_", 1)[0] in WOOD_NOMINAL: return m, WOOD_NOMINAL[s.mesh.rsplit("_", 1)[0]]
     r = float(s.mesh.rsplit("_R", 1)[1][:2]) / 10
     h, d = STONE_NOMINAL[0], STONE_NOMINAL[1]
     return m, (h * r, d, h)
@@ -1551,7 +1603,8 @@ def build_in_unreal():
     cube = unreal.load_asset(CUBE_MESH)
     mats = ensure_materials(unreal)
     mats["floor"] = mats.get("frame")
-    mats["wood"] = next((unreal.load_asset(p) for p in MAT_WOOD if unreal.EditorAssetLibrary.does_asset_exist(p.split(".")[0])), None)
+    if not mats.get("wood"):
+        mats["wood"] = next((unreal.load_asset(p) for p in MAT_WOOD if unreal.EditorAssetLibrary.does_asset_exist(p.split(".")[0])), None)
     meshes = ensure_stone_meshes(unreal)
     tag = unreal.Name(RUIN_TAG); n_total = 0
     with unreal.ScopedEditorTransaction("Build ruin (blocks)"):
