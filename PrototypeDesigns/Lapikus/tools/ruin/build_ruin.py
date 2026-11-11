@@ -35,6 +35,7 @@ OPENING_TYPES = {
     "dvere":      dict(frame=0.30, lintel="kamen",  value=1.0),
     "portal":     dict(frame=0.35, lintel="oblouk", value=1.2),
     "brana":      dict(frame=0.45, lintel="oblouk", value=1.2),
+    "prulom":     dict(frame=0.00, lintel="oblouk", value=0.0),
 }
 
 # ------------------------------------------------------------------ pomocne
@@ -70,7 +71,7 @@ def opening_state(o, a_loc, rng, P):
     t = OPENING_TYPES[o.get("kind", "okno")]
     x0 = o["s"] - o["w"] / 2; x1 = o["s"] + o["w"] / 2; sill = o["sill"]; top = sill + o["h"]
     f_h = min(1.0, P["REACH"] / (sill + 1.5))
-    score = a_loc * t["value"] * f_h + rng.gauss(0, 0.06)
+    score = a_loc * t["value"] * f_h * P.get("FRAME_ROB", 1.0) + rng.gauss(0, 0.06)
     robbed = "none" if (score < 0.25 or t["frame"] == 0) else ("one" if score < 0.42 else "both")
     robbed = o.get("robbed", robbed)
     side = o.get("side", "l" if rng.random() < 0.5 else "r")
@@ -121,7 +122,7 @@ def wall_profile(L, H0, access, corners, openings, breaches, protect, access_poi
     for x, nz in zip(xs, noise):
         t = min(min(abs(x - c) for c in cs) / sc, 1.0)
         prof = 1.0 - (1.0 - mid) * (0.5 - 0.5 * math.cos(math.pi * t))
-        h.append(H0 * P["WEATHER"] * prof * (1 + cst * (1 - t)) / (1 + cst) + jag * nz * 1.6)
+        h.append(H0 * P["WEATHER"] * prof * (1 + cst * (1 - t)) / (1 + cst) + jag * P.get("JAG", 1.0) * nz * 1.6)
     for st in states:
         if st["lintel_lost"]:
             c = (st["x0"] + st["x1"]) / 2; w = (st["x1"] - st["x0"]) / 2; k = math.tan(math.radians(57))
@@ -139,7 +140,9 @@ def wall_profile(L, H0, access, corners, openings, breaches, protect, access_poi
             t1 = (h0 * h0 - R * R) / (2 * R * max(A, 1e-6))
             hr = math.sqrt(max(h0 * h0 - 2 * R * A, 0)) if t1 >= 1 else R - A * (1 - t1)
         out.append(hr + wk * 0.5 * ai if hr < hi else hi)
-    h = out
+    # zbytek u paty: spodni rady zasypane zeminou a suti se nevyplati rozebirat
+    rem = smooth([rng.uniform(0, 1) for _ in range(n)], 11)
+    h = [max(o, min(hi, P.get("REMAIN", 0.0) * (0.6 + 0.8 * r))) for o, hi, r in zip(out, h, rem)]
     for pr in protect:
         h = [max(hi, pr["min"]) if pr["s0"] <= x <= pr["s1"] else hi for hi, x in zip(h, xs)]
     c = P["COURSE"]
