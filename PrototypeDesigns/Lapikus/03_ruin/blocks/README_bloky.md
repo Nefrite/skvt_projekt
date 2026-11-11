@@ -213,11 +213,37 @@ Doporučení:
 4. Vrať `MODE = "build"`. Při dalším generování zůstanou smazané kameny smazané a posunuté na novém místě. Platí to i po změně stáří nebo dalších úprav.
 5. **Sloučení zpět do zdi:** smaž (nebo přejmenuj tag) box `Ruin_Explode` a přegeneruj. Posunuté kameny se vrátí do Instanced Static Mesh **na svých nových místech** a samostatné actory zmizí. Smazané kameny zůstanou smazané.
 6. **Další ladění:** stačí box `Ruin_Explode` vrátit. Kameny se znovu rozloží, i ty dříve posunuté, a to podle původní i nové polohy.
-7. **Vrácení:** smaž záznam z `manual_edits.json`, nebo soubor přepiš na `{"removed": [], "moved": {}}`.
+7. **Vrácení:** smaž záznam z `manual_edits.json`, nebo soubor přepiš na `{"removed": [], "moved": {}, "detached": []}`.
 
 Pozor: capture spouštěj vždy **před** dalším generováním, i před sloučením (krok 5). Generování ruční změny bez capture přepíše.
 
 Tip: box `Ruin_Explode` nemusíš mazat. Stačí mu dočasně přepsat tag na `x_Ruin_Explode`, skript ho pak ignoruje.
+
+### 5.3 Oddělení části zdi bez přegenerování (`detach_stones.py`)
+
+Když chceš, aby kus zdi odpadl nebo se sesypal, a nechceš kvůli tomu stavět celou zříceninu znovu:
+
+1. Přes část zdi, která má odpadnout, polož Trigger Box s tagem **`Ruin_Detach`**. Když nějaké takové boxy vybereš, použijí se jen vybrané.
+2. **Tools → Execute Python Script → `detach_stones.py`** (`MODE = "detach"`).
+   - Kameny v boxu se vyjmou z Instanced Static Meshe zdi a vzniknou jako samostatné actory na stejném místě, se stejným meshem a materiálem. Najdeš je ve složce `…/Odpadle` s tagem `Ruin_Detached`.
+   - Zbytek zdi se nemění.
+   - Oddělení se hned zapíše do `manual_edits.json` (`detached`).
+3. Kameny mají **trvalou fyziku** (`SIMULATE = True`), takže s nimi hráč může pohnout. Spusť **Simulate** (Alt+S) a nech je spadnout.
+4. Až se usadí, vyber je (Outliner, složka `Odpadle`) a stiskni **K** (Keep Simulation Changes). Simulaci ukonči.
+5. `build_ruin_blocks.py` s `MODE = "capture"` uloží jejich nové polohy.
+
+Box `Ruin_Detach` pak můžeš smazat. Další build zříceniny postaví oddělené kameny jako samostatné actory na uložených místech, zase s fyzikou (`DETACHED_PHYSICS`). Usazené kameny s uloženou polohou ve hře spí, dokud do nich někdo nestrčí. Bez fyziky (staticky): `MODE = "freeze"` (do dalšího buildu) nebo `DETACHED_PHYSICS = False`.
+
+**Fyzika volných kamenů (`STONE_PHYSICS` v `build_ruin_blocks.py`, platí i pro suť ve 05):**
+- **Hmotnost podle objemu kamene:** hustota 2600 kg/m³ × objem bloku × 0,85 (zaoblení). Kámen 30 × 40 × 60 cm váží asi 160 kg, suť většinou 20–280 kg. Hráč takový kámen posune jen málo.
+- **Tlumení** (`lin_damp` 0,3, `ang_damp` 0,8): kámen se nekoulí donekonečna.
+- **Fyzikální materiál `PM_RuinStone`**, který skript vytvoří ve složce materiálů: tření 0,9, odraz 0,05.
+- Kameny jsou o 3 % menší než blok (`shrink`), aby je při startu nevystřelil překryv se sousedy.
+- Jak silně hráč tlačí, se nastavuje u postavy v **Character Movement**: zapnutý `Enable Physics Interaction`, `Push Force Factor` asi 100 000–300 000 a vypnutý `Push Force Scaled To Mass`. Pak se těžký kámen pohne málo a lehký víc. Kameny můžeš i ručně posouvat nebo mazat a uložit přes capture.
+
+**Vrácení do zdi:** box `Ruin_Detach` přes oddělené kameny a `MODE = "undo"`. Kameny se vrátí do zdi při dalším buildu.
+
+Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hned po oddělení hladké jádro (kostky). Při dalším buildu se tam jádro samo rozpadne na lomové kameny jako u ostatních odkrytých míst.
 
 ## 6. Dál: sloučení a vzhled
 
@@ -254,7 +280,8 @@ Tip: box `Ruin_Explode` nemusíš mazat. Stačí mu dočasně přepsat tag na `x
 |---|---|
 | `build_ruin_blocks.py` | generátor z bloků (čistý Python), `MODE = "build"` / `"capture"`; mimo UE vypíše počty bloků |
 | `ruin_layout.json` | zdi, otvory, presety stáří, `edits`, `edits_examples`, `volumes_examples`, výšková mřížka terénu |
-| `manual_edits.json` | ručně smazané (`removed`) a posunuté (`moved`) kameny |
+| `manual_edits.json` | ručně smazané (`removed`), posunuté (`moved`) a oddělené (`detached`) kameny |
+| `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |
 | `stones\*.obj` | zaoblené kameny líce a kvádr ostění (import automaticky) |
 | `gen_stones.py` | generátor zaoblených kamenů (numpy) |
 | `test_openings.py` | kontrola: žádný blok v otvoru (`kolize: 0`) |

@@ -70,6 +70,14 @@ STONE_VARIANTS = "ABC"
 STONE_NOMINAL = (30.0, 45.0, 30.0)        # vyska, hloubka (cm) jmenoviteho kamene; delka = vyska * pomer
 STONE_OVERSIZE = 1.04                    # zaobleny kamen o kousek vetsi nez blok -> spary nejsou az moc hluboke
 ASHLAR_MESH = "SM_RuinAshlar"
+# fyzika volnych kamenu (odpadle pres detach_stones.py, sut ve 05_constructions): trvale, at s nimi hrac muze hnout.
+# Hmotnost podle objemu kamene (hustota kamene ~2600 kg/m3) -> 30x40x60 cm kamen ~160 kg, hrac s nim jen malo pohne.
+DETACHED_PHYSICS = True
+STONE_PHYSICS = dict(density=2600.0,     # kg/m3 (vapenec, piskovec, zula 2500-2700)
+                     fill=0.85,          # podil objemu kvadru (zaoblene hrany, otluceni)
+                     lin_damp=0.3, ang_damp=0.8,          # tlumeni -> kamen se nekouli donekonecna
+                     friction=0.9, restitution=0.05,      # drsny kamen, skoro neodskakuje (PM_RuinStone)
+                     shrink=0.97)        # o kousek mensi nez blok -> prekryv se sousedy ho pri startu nevystreli
 DRESSED_FRAMES = True                     # osteni, nadprazi, strilny z opracovanych kamenu SM_RuinDressed_* (False = kvadr SM_RuinAshlar)
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # tramy a prkna (prvni existujici)            # osteni a oblouky: lehce srazene hrany
@@ -759,7 +767,7 @@ def rough_core(stones, wd, P, face_d, core_w, T, removed=()):
     for st in stones:                          # lic a ostatni hned, jadro postupne podle rad (co spadlo, nedrzi)
         if st.cat != "core" and ci_of(st) is not None: sup.setdefault(ci_of(st), []).append(st.span)
     for st in stones:
-        if not (st.span and st.cat == "core" and st.id.count("|") >= 3):
+        if not (st.span and st.cat == "core" and st.id.count("|") >= 3) or st.id in removed:   # smazane / oddelene jadro: id zustane
             out.append(st); continue
         ci = st.id.split("|")[1]
         s0, s1, z0r, z1r = st.span
@@ -1038,18 +1046,19 @@ def make_rubble(out, P, terr, removed=()):
         res[name] = dict(folder=w["folder"], stones=rub)
     return res
 
-def compute_blocks(layout, removed=(), moved=None, volumes=None, rubble=False):
+def compute_blocks(layout, removed=(), moved=None, volumes=None, rubble=False, detached=()):
+    """detached = id kamenu oddelenych od zdi (detach_stones.py): vzdy samostatne actory, i mimo Ruin_Explode"""
     P = params(layout); terr = Terrain(layout["terrain"])
     vols = list(layout.get("volumes", [])) + list(volumes or [])
     layout, explode = apply_volumes(layout, vols, terr)
-    removed = set(removed); moved = moved or {}
+    removed = set(removed); moved = moved or {}; detached = set(detached or ())
     edits = list(layout.get("edits", []))
     allpts = [p for w in layout["walls"] for p in w["points"]]
     centroid = (sum(p[0] for p in allpts) / len(allpts), sum(p[1] for p in allpts) / len(allpts))
     out = {}
     for wd in layout["walls"]:
         if ONLY_WALLS and wd["name"] not in ONLY_WALLS: continue
-        stones, states, L = build_wall_stones(wd, P, terr, layout, edits, removed, centroid)
+        stones, states, L = build_wall_stones(wd, P, terr, layout, edits, removed | detached, centroid)   # oddeleny lic = odkryte jadro
         out[wd["name"]] = dict(folder=wd["folder"], stones=stones)
     for fs in layout.get("floors", []):
         if ONLY_WALLS and fs["name"] not in ONLY_WALLS and not any(w in ONLY_WALLS for w in fs.get("walls", [])): continue
@@ -1067,7 +1076,7 @@ def compute_blocks(layout, removed=(), moved=None, volumes=None, rubble=False):
         # posunute kameny mimo box se vrati do Instanced Static Mesh na nove misto ("slouceni")
         loose_ids = set()
         for st in w["stones"] + w.get("rubble", []):
-            if any(in_box(st, b) for b in explode): loose_ids.add(st.id)
+            if any(in_box(st, b) for b in explode) or st.id in detached: loose_ids.add(st.id)
             m = moved.get(st.id)
             if m:
                 st.x, st.y, st.z, st.roll, st.pitch, st.yaw = m
@@ -1099,6 +1108,17 @@ def load_manual():
         with open(p, encoding="utf-8") as f: d = json.load(f)
         return d.get("removed", []), d.get("moved", {})
     return [], {}
+
+def load_detached():
+    """id kamenu oddelenych od zdi (detach_stones.py) z manual_edits.json"""
+    p = edits_path()
+    if os.path.exists(p):
+        with open(p, encoding="utf-8") as f: return set(json.load(f).get("detached", []))
+    return set()
+
+def save_manual(removed, moved, detached):
+    with open(edits_path(), "w", encoding="utf-8") as f:
+        json.dump({"removed": sorted(removed), "moved": moved, "detached": sorted(detached)}, f, ensure_ascii=False, indent=1)
 
 def load_removed():
     return load_manual()[0]
@@ -1304,7 +1324,7 @@ def ensure_stone_meshes(unreal):
     if tasks:
         unreal.log("Ruin: importuji %d kamenu z %s" % (len(tasks), src))
         unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks(tasks)
-    out = {}
+    out = {}; n_fix = 0
     sms = None
     try: sms = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     except Exception: pass
@@ -1328,11 +1348,33 @@ def ensure_stone_meshes(unreal):
             except Exception as ex: unreal.log_warning("Ruin: Nanite %s: %s (zapni rucne v meshi)" % (n, ex))
             if want(n): eal.set_metadata_tag(sm, "RuinStoneVersion", str(want(n)))
             eal.save_loaded_asset(sm)
+        if _fix_collision(unreal, sm, sms): n_fix += 1
         out[n] = sm
+    if n_fix: unreal.log("Ruin: kolize opravena u %d meshu kamenu (jednoducha kolize misto Complex as Simple -> jde fyzika)" % n_fix)
     lost = [n for n in _needed_meshes() if n not in out]
     if lost:
         unreal.log_warning("Ruin: chybi %d kamenu (%s...) -> pouziji se kostky. Zkopiruj slozku stones/ vedle skriptu." % (len(lost), lost[0]))
     return out
+
+def _fix_collision(unreal, sm, sms):
+    """volne kameny s fyzikou potrebuji jednoduchou kolizi: Complex as Simple (import OBJ / Interchange) fyziku nepusti.
+    -> kolize "Default" + kvadr, kdyz zadna jednoducha kolize neni. Vrati True, kdyz se neco menilo."""
+    changed = False
+    try:
+        if sms and sms.get_simple_collision_count(sm) == 0:
+            sms.add_simple_collisions(sm, unreal.ScriptCollisionShapeType.BOX); changed = True
+    except Exception as ex:
+        unreal.log_warning("Ruin: kolize %s: %s (pridej rucne Collision -> Add Box)" % (sm.get_name(), ex))
+    try:
+        bs = sm.get_editor_property("body_setup")
+        if bs and bs.get_editor_property("collision_trace_flag") == unreal.CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE:
+            bs.set_editor_property("collision_trace_flag", unreal.CollisionTraceFlag.CTF_USE_DEFAULT); changed = True
+    except Exception as ex:
+        unreal.log_warning("Ruin: Collision Complexity %s: %s (v meshi nastav Collision Complexity = Project Default)" % (sm.get_name(), ex))
+    if changed:
+        try: sm.modify(); unreal.EditorAssetLibrary.save_loaded_asset(sm)
+        except Exception: pass
+    return changed
 
 _FIX = {}
 def _mesh_fix(unreal, mesh, nominal):
@@ -1504,7 +1546,8 @@ def build_in_unreal():
             unreal.log_warning("Ruin: mereni terenu z levelu selhalo (%s) - pouziji vysky z ruin_layout.json" % ex)
     eas = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     vols = gather_volumes(unreal, eas)
-    data, P = compute_blocks(layout, removed, moved, vols)
+    detached = load_detached()
+    data, P = compute_blocks(layout, removed, moved, vols, detached=detached)
     cube = unreal.load_asset(CUBE_MESH)
     mats = ensure_materials(unreal)
     mats["floor"] = mats.get("frame")
@@ -1539,10 +1582,12 @@ def build_in_unreal():
                     act = eas.spawn_actor_from_object(m, unreal.Vector(s.x, s.y, s.z), unreal.Rotator(roll=s.roll, pitch=s.pitch, yaw=s.yaw))
                     if not act: continue
                     act.set_actor_transform(stone_transform(unreal, s, m, nom), False, False)
-                    act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id)]
-                    act.set_folder_path(w["folder"] + ("/Sut" if "|R" in s.id else "/Kameny"))
+                    act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id)] + ([unreal.Name("Ruin_Detached")] if s.id in detached else [])
+                    act.set_folder_path(w["folder"] + ("/Sut" if "|R" in s.id else "/Odpadle" if s.id in detached else "/Kameny"))
                     act.set_actor_label("Kamen_" + s.id.replace("|", "_"))
                     if mats.get(s.cat): act.static_mesh_component.set_material(0, mats[s.cat])
+                    if DETACHED_PHYSICS and s.id in detached:
+                        stone_physics(unreal, act, s, asleep=s.id in moved)
                     n_total += 1
     unreal.log("Zricenina z bloku (%s): %d bloku ve %d zdech, objemu %d, samostatnych kamenu %d, rucne smazanych %d, posunutych %d, zaoblenych meshu %d." % (
         P["_AGE"], n_total, len(data), len(vols), sum(len(w.get("loose", [])) for w in data.values()), len(removed), len(moved), len(meshes)))
@@ -1554,7 +1599,8 @@ def capture_manual_edits():
     import unreal
     layout = cached_level_terrain(load_layout()); removed, moved = load_manual(); removed = set(removed)
     eas = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
-    data, P = compute_blocks(layout, removed, moved, gather_volumes(unreal, eas))
+    detached = load_detached()
+    data, P = compute_blocks(layout, removed, moved, gather_volumes(unreal, eas), detached=detached)
     cube = unreal.load_asset(CUBE_MESH)
     meshes = ensure_stone_meshes(unreal)
     present = set(); loose_now = {}
@@ -1581,7 +1627,7 @@ def capture_manual_edits():
         for s in w.get("loose", []):
             a = loose_now.get(s.id)
             if a is None:
-                removed.add(s.id); moved.pop(s.id, None); n_rem += 1; continue
+                removed.add(s.id); moved.pop(s.id, None); detached.discard(s.id); n_rem += 1; continue
             # poloha "kamene" = transformace actoru bez lokalni korekce meshe (F = otoceni os + posun pivotu, meritko 1)
             m, nom = _resolve(unreal, s, cube, meshes)
             st_t = unreal.MathLibrary.compose_transforms(unreal.MathLibrary.invert_transform(_fix_unit(unreal, s, m, nom)),
@@ -1592,9 +1638,64 @@ def capture_manual_edits():
                    all(abs(((p - q) + 180) % 360 - 180) < 1.0 for p, q in zip(cur[3:], [s.roll, s.pitch, s.yaw]))
             if not same:
                 moved[s.id] = [round(v, 2) for v in cur]; n_mov += 1
-    with open(edits_path(), "w", encoding="utf-8") as f:
-        json.dump({"removed": sorted(removed), "moved": moved}, f, ensure_ascii=False, indent=1)
-    unreal.log("manual_edits.json: smazano %d (nove %d), posunuto %d (nove %d)." % (len(removed), n_rem, len(moved), n_mov))
+    save_manual(removed, moved, detached)
+    unreal.log("manual_edits.json: oddeleno %d, smazano %d (nove %d), posunuto %d (nove %d)." % (len(detached), len(removed), n_rem, len(moved), n_mov))
+
+_PM = {}
+def ensure_phys_material(unreal):
+    """PM_RuinStone (fyzikalni material kamene: trenie, odraz, hustota) - vytvori se jednou, pak ho lze ladit v editoru"""
+    if "pm" in _PM: return _PM["pm"]
+    path = _asset_path(MAT_DIR, "PM_RuinStone"); pm = None
+    try:
+        eal = unreal.EditorAssetLibrary
+        if eal.does_asset_exist(path):
+            pm = unreal.load_asset(path)
+        else:
+            pm = unreal.AssetToolsHelpers.get_asset_tools().create_asset("PM_RuinStone", MAT_DIR, unreal.PhysicalMaterial, unreal.PhysicalMaterialFactoryNew())
+            for k, v in (("friction", STONE_PHYSICS["friction"]), ("static_friction", STONE_PHYSICS["friction"]),
+                         ("restitution", STONE_PHYSICS["restitution"]), ("density", STONE_PHYSICS["density"] / 1000.0)):
+                try: pm.set_editor_property(k, v)
+                except Exception: pass
+            eal.save_loaded_asset(pm)
+    except Exception as ex:
+        unreal.log_warning("Ruin: PM_RuinStone nejde vytvorit (%s) - kameny budou mit vychozi fyzikalni material" % ex)
+    _PM["pm"] = pm
+    return pm
+
+def stone_mass_kg(s):
+    return s.sx * s.sy * s.sz / 1e6 * STONE_PHYSICS["fill"] * STONE_PHYSICS["density"]
+
+def stone_physics(unreal, act, s, on=True, asleep=False):
+    """volny kamen s trvalou fyzikou: hmotnost podle objemu, tlumeni, drsny material.
+    asleep = kamen uz je usazeny (ulozena poloha) -> spi, dokud do nej nekdo nestrci"""
+    smc = act.static_mesh_component
+    if not on:
+        smc.set_simulate_physics(False)
+        try: smc.set_collision_profile_name("BlockAll")
+        except Exception: pass
+        smc.set_mobility(unreal.ComponentMobility.STATIC)
+        return
+    smc.set_mobility(unreal.ComponentMobility.MOVABLE)
+    k = STONE_PHYSICS["shrink"]
+    if k != 1.0:
+        sc = act.get_actor_scale3d(); act.set_actor_scale3d(unreal.Vector(sc.x * k, sc.y * k, sc.z * k))
+    try: smc.set_collision_profile_name("PhysicsActor")
+    except Exception: pass
+    pm = ensure_phys_material(unreal)
+    if pm:
+        try: smc.set_phys_material_override(pm)
+        except Exception: pass
+    try: smc.set_mass_override_in_kg(unreal.Name("None"), max(stone_mass_kg(s), 5.0), True)
+    except Exception as ex: unreal.log_warning("Ruin: hmotnost %s: %s" % (s.id, ex))
+    try:
+        smc.set_linear_damping(STONE_PHYSICS["lin_damp"]); smc.set_angular_damping(STONE_PHYSICS["ang_damp"])
+    except Exception: pass
+    if asleep:
+        try:
+            bi = smc.get_editor_property("body_instance"); bi.set_editor_property("start_awake", False)
+            smc.set_editor_property("body_instance", bi)
+        except Exception: pass
+    smc.set_simulate_physics(True)
 
 def _has_unreal():
     try:
@@ -1610,7 +1711,7 @@ if (__name__ == "__main__" or "unreal" in sys.modules) and not getattr(sys, "_ru
         capture_manual_edits() if MODE == "capture" else build_in_unreal()
     else:
         if len(sys.argv) > 1: LAYOUT_PATH = sys.argv[1]
-        lay = load_layout(); rm, mv = load_manual(); data, P = compute_blocks(lay, rm, mv)
+        lay = load_layout(); rm, mv = load_manual(); data, P = compute_blocks(lay, rm, mv, detached=load_detached())
         tot = 0
         for n, w in data.items():
             c = {"face": 0, "core": 0, "frame": 0, "wood": 0, "floor": 0, "crown": 0}
