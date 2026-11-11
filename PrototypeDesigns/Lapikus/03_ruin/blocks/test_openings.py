@@ -16,8 +16,8 @@ for wd in lay["walls"]:
             for k in range(21):
                 xx=s0+0.02+(s1-s0-0.04)*k/20
                 g=B.opening_gap(st,xx)
-                core = s.cat=="core"
-                if st["kind"]=="kapsa" and int(s.id.split("|")[2])!=st["inside"]: g=None   # kapsa jen ve vnitrnim lici
+                core = (s.cat=="core") or (s.cat=="crown" and s.id.count("|")>=3 and s.id.split("|")[2]=="0")
+                if st["kind"]=="kapsa" and int(s.id.split("|")[2])!=(-st["inside"] if st.get("outer") else st["inside"]): g=None   # kapsa jen ve vnitrnim lici
                 if core and not st["lintel_lost"] and not (st["x0"] <= xx <= st["x1"]): g=None   # jadro za vylomenym ostenim nese oblouk/nadprazi
                 if g and z1-0.03>g[0] and z0+0.03<g[1]:
                     bad+=1; print(wd["name"],s.id,st["kind"],round(xx,2),g,(round(z0,2),round(z1,2))); break

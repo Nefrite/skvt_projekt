@@ -16,16 +16,20 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 | Vrstva | Co to je | Materiál (výchozí) |
 |---|---|---|
 | **Líc** (obě strany zdi) | lomové kameny v řádcích 25–40 cm, délky 35–90 cm, převazba (spáry se střídají). **Zaoblené, lehce zvětralé meshe** `SM_RuinStone_*` | `MI_RuinFace` (Slate, náhodný odstín na kámen) |
-| **Jádro** (mezi líci) | delší bloky z lomu a malty 1,0–1,8 m (kostky, většinou skryté) | `MI_RuinCore` (tmavší) |
-| **Ostění a oblouky** | opracované kvádry kolem intaktních otvorů po řádcích zdi, nadpraží, parapet, klínové kameny oblouků. Mesh `SM_RuinAshlar` (sražené hrany) | `MI_RuinFrame` (Sandstone, světlé) |
-| **Nárožní kvádry** | zakrývají průřez zdi v rozích | jako líc |
+| **Jádro** (mezi líci) | delší bloky z lomu a malty 1,0–1,8 m (kostky, většinou skryté) | `MI_RuinCore` (šedý kámen s maltou) |
+| **Ostění a oblouky** | opracované kvádry kolem intaktních otvorů po řádcích zdi, nadpraží, parapet, klínové kameny oblouků. Meshe `SM_RuinDressed_*` (opracovaný kámen, zaoblené a lehce otlučené hrany, 4 poměry × 2 varianty; `DRESSED_FRAMES = False` = kvádr `SM_RuinAshlar`) | `MI_RuinFrame` (stejný kámen jako líc, o kousek světlejší) |
+| **Nárožní kvádry** | zakrývají průřez zdi v rozích. U vnějšího rohu se střídá dlouhý a krátký kvádr, zbytek tloušťky tvoří lomové kameny | jako líc |
+| **Zlomy lomené zdi** | kámen přes zlom se rozdělí na dva. Na vnější (vypouklé) straně se líc prodlouží do společné hrany, na vnitřní se zkrátí, takže zvenku nevznikají klínové díry. Jádro se prodlouží | – |
+| **Podpora líce** | lícový kámen musí ležet na lícovém kameni (ne jen na jádru). Nad vybraným lícem tak nevisí žádné kameny a díra se nahoru stupňovitě uzavírá. **Klenutí:** kámen nad mezerou do 0,6 m (`BRIDGE`) zůstane, když leží oběma konci (levý konec může držet i soused v řadě, malta) | – |
+| **Odkryté jádro** | kde chybí líc, jádro se rozpadne na lomové kameny 0,35–0,7 m (mesh `SM_RuinStone_*`), každý jinak zapuštěný o 5–20 cm (`CORE_RECESS`). U okraje díry méně, občas vystupuje zbytek líce, takže hrana není ostrá. Kus, který by visel, odpadne. Vypíná se `CORE_ROUGH: false` | `MI_RuinCore` (šedý kámen s maltou) |
+| **Koruna** | odkryté horní kameny, na kterých už nic neleží (i na dně děr po vybraném líci), jsou zvětralé **hlavně shora** (počasí): tvary `SM_RuinStone_W_*` mají horní hrany obroušené do velkého zaoblení, nerovný vrch s důlky, spodek (leží na kameni pod sebou) zůstává ostrý. Materiál `MI_RuinCrown` zesvětlí a zazelená (lišejník, prach) jen plochy mířící nahoru. Vypíná se `CROWN_WEATHER = False` | `MI_RuinCrown` |
 
 **Rozpad** jde v tomto pořadí:
 
 1. **Výška zdi:** model rozpadu z `README_ruin.md` kap. 4 (čas, rozebírání podle dostupnosti a výšky, otvory) určí, jak vysoko zeď v daném místě sahá.
 2. **Bloky nad touto výškou zmizí.** Na koruně zůstanou jednotlivé uvolněné a pootočené kameny.
 3. **Podpora:** blok bez opory pod sebou nezůstane (výjimka: je nad intaktním nadpražím nebo obloukem).
-4. **Rozebraný líc:** u paty na dostupné straně líc mizí a odhalí šedé jádro. Vnější líc nad útesem zůstává.
+4. **Rozebraný líc:** kameny se berou hlavně **shora**, v pásu pod korunou (`TOP_ROB`, `TOP_ROB_D`). Líc pod korunou ustupuje stupňovitě. U paty jen menší hloučky 2–4 kamenů, kam se dosáhne (`FACE_ROB_BASE`, víc u `access_points`). Ve věži se výška u paty měří zevnitř od podlahy. Kameny se vybírají v hloučcích (plynulý šum), ne po jednom. Vnější líc nad útesem zůstává.
 5. **Otvory:** parapet a nadpraží se zarovnají na spáry řádků. Bloky, které do otvoru nebo ostění zasahují, se **rozdělí** (nevynechávají se celé), takže každý otvor je opravdu průhledný a kolem ostění nevznikají díry. Intaktní ostění (po řádcích), nadpraží, parapet a oblouky se postaví z opracovaných kvádrů. Když lidé vylámali opracované kameny ostění, ale oblouk nebo nadpraží stojí, zůstane za nimi zapuštěné jádro zdi a nese je, takže nic nevisí ve vzduchu. Kontrola mimo UE: `python test_openings.py` → `kolize: 0`.
 6. **Suť:** jen málo bloků u paty, protože většinu kamene lidé odvezli.
 
@@ -39,13 +43,15 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
    2. Otevři ho a v panelu Components dej **Add → Instanced Static Mesh**. Komponentu nech, jak je, nic nenastavuj.
    3. **Compile** a **Save**.
 3. **Zaoblené kameny:** složka `stones` (13 souborů `.obj`) musí ležet vedle skriptu. Při prvním spuštění je skript sám naimportuje do `/Game/Skvt/Lapikus/Ruin/Stones` (zapne Nanite a přidá krabicovou kolizi). Podrobnosti a ruční import v kap. 1.1.
-4. **Materiály:** skript při prvním spuštění vytvoří `M_RuinStone` a instance `MI_RuinFace`, `MI_RuinCore`, `MI_RuinFrame` v `/Game/Skvt/Lapikus/Ruin/Materials` (textury ze StarterContent). Další spuštění je už nepřepisují, takže je můžeš ladit v editoru (kap. 1.2).
+4. **Materiály:** skript při prvním spuštění vytvoří `M_RuinStone` a instance `MI_RuinFace`, `MI_RuinCore`, `MI_RuinFrame` v `/Game/Skvt/Lapikus/Ruin/Materials` (textury ze StarterContent). Další spuštění je už nepřepisují (kromě přechodu na novou `MAT_VERSION`, viz kap. 1.2), takže je můžeš ladit v editoru.
 5. **Ulož mapu a commitni.** Před generováním smaž sloupcovou zříceninu, pokud v mapě je. Nová ji sice smaže sama, ale sloučené meshe smazat musíš ručně.
 
 ### 1.1 Zaoblené kameny líce (`stones/*.obj`)
 
 - `SM_RuinStone_R12/R18/R26/R34_A/B/C`: 4 poměry délka/výška (1,2 / 1,8 / 2,6 / 3,4) × 3 varianty tvaru. Zaoblené hrany (3,5–4,7 cm), mírně vypouklé plochy, nerovnosti a otlučené hrany. Každý má 1 000–2 300 trojúhelníků.
-- `SM_RuinAshlar`: opracovaný kvádr pro ostění, jen lehce sražené hrany.
+- `SM_RuinStone_W_R12…R34_A/B/C`: zvětralé kameny koruny. Nahoře zaoblení 8,5–10,5 cm, otlučení a důlky, do stran 4,5–5,5 cm, dole jen 3 cm. Verze meshe je v metadatech (`RuinStoneVersion`, `STONE_MESH_VERSION` ve skriptu). Když jsou v projektu starší, skript je sám naimportuje znovu.
+- `SM_RuinDressed_R12…R34_A/B`: opracované kameny ostění, nadpraží, parapetů a výklenků střílen. Rovné plochy, zaoblení 2,4–3,7 cm, nahoře o něco víc.
+- `SM_RuinAshlar`: kvádr s lehce sraženými hranami, jen dlažba.
 - Skript vybere ke každému bloku variantu podle poměru délka/výška a naškáluje ji **přesně na rozměr bloku** (`STONE_OVERSIZE = 1.04` = o 4 % větší, aby spáry nebyly moc hluboké). Polovina kamenů je otočená o 180°, takže se tvary méně opakují. Varianta je vázaná na ID bloku a po přegenerování se nemění.
 - Osy po importu kontroluje skript sám podle bounding boxu, takže nezáleží na tom, jak je importér otočí.
 - **Ruční import** (když automatický selže, v Output Logu je `Ruin: chybi … kamenu`):
@@ -59,6 +65,8 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 ### 1.2 Materiály
 
 - `M_RuinStone` je master materiál s parametry `BaseColor`, `Normal`, `TintA`, `TintB`, `Tiling` a `Roughness`. Každý kámen dostane náhodný odstín mezi TintA a TintB a náhodný posun textury (Per Instance Random), takže dva sousední kameny nikdy nevypadají stejně. Žádné „cihly v cihle“ jako u `M_Brick_Hewn_Stone`.
+- **Zvětrání shora (všechny kameny):** podle normaly plochy (`VertexNormalWS.z`). Co míří nahoru, je světlejší, nazelenalé a drsnější. Skvrny rozbíjí textura. Parametry: `TopTint` (barva), `TopStart` (od jakého sklonu, 0 = svislá stěna, 1 = vodorovný vrch), `TopSharp` (ostrost přechodu), `TopAmount` (síla: líc 0,55, jádro 0,45, ostění 0,35, koruna 1,0). Výchozí hodnoty jsou v `MAT_TOP` ve skriptu.
+- **Verze materiálu:** `MAT_VERSION` ve skriptu. Když je `M_RuinStone` v projektu starší, skript jeho graf přestaví na místě a do `MI_Ruin*` jen doplní nové parametry `Top*`. Tvoje tinty a textury v `MI_RuinFace/Core/Frame` zůstanou, `MI_RuinCrown` dostane nový tint z `MAT_LOOK`.
 - Vzhled ladíš v `MI_RuinFace`, `MI_RuinCore` a `MI_RuinFrame` (dvojklik → Details). Hodí se tam i textura z Fabu (Megascans, např. „Rock“ nebo „Stone Wall“ surface): stačí přepsat `BaseColor` a `Normal`.
 - Úplně vlastní materiál nastavíš nahoře ve skriptu: `MAT_FACE = "/Game/…/MI_X.MI_X"` (stejně `MAT_CORE`, `MAT_FRAME`). `None` znamená automatický materiál.
 - Když chceš materiál vytvořit znovu od nuly, smaž `M_RuinStone` a `MI_Ruin*` a spusť build.
@@ -134,20 +142,25 @@ Tipy:
 - **Kde je `s`:** v sekci `walls` má každá zeď `points` (UE cm). `s` se měří od prvního bodu v metrech. Délku úseku zjistíš v UE měřením (prostřední tlačítko myši + tah v Top/Side view).
 - **Hledání `box`:** vlož do levelu kostku, umísti ji na místo průchodu a z Details opiš Location ± polovinu Scale × 50.
 - **Typy otvorů a celé zdi** (výška `H0`, dostupnost `access`, otvory `openings`) se mění v `walls` (viz `03_ruin\build\README_build_ruin.md` kap. 3).
+- **Zvýšení úseku (`raise` u zdi):** `{"s0": 15.85, "s1": 26.75, "dh": 0.5}` zvedne zeď nad výsledek rozpadu o `dh` m, na krajích plynule. `ZBudova_V` má +0,7 m (2 řady), `Hradba_Z_S` úseky 03–04 +0,5 m.
+- **Zaoblené zlomy (`fillet` v `gen_layout.py`):** zlomy `Hradba_Z_S` mezi úseky 02–06 jsou oblouky. Výšky a otvory se zadávají podle původní nezaoblené čáry a `remap_wall` je převede. `seg_group` drží číslování actorů podle původních úseků (oblouk patří k sousedním úsekům).
 - **Sesuv (`breaches` u zdi):** `{"s0": 0.6, "s1": 2.6, "floor": 0.5, "slope_l": 2.0, "slope_r": 6.0}` sníží zeď mezi `s0` a `s1` na `floor` m. Boky stoupají se strmostí `slope_l`/`slope_r` (1 = 45°, 6 = skoro svisle, výchozí 1). `power_l`/`power_r` > 1 bok zakřiví: dole pozvolna, ke koruně strměji (výchozí 1 = rovná linie). Ostrým bokem se sesuv udrží v jednom úseku a sousední úsek zůstane vysoký. Příklad: `Hradba_Z_S`, úsek 01 (stezka k vodě): `{"s0": -1.0, "s1": 1.3, "floor": 0.5, "slope_r": 2.4, "power_r": 1.5}` = šikmý sesuv, nízko u paláce.
 - Datové úpravy **neposouvají ostatní bloky**. Každý blok má vlastní náhodu podle svého ID, takže zbytek zříceniny zůstane stejný.
 
 ### Půdorys v3 a terén z levelu (11/2026)
 
 - **Strážní věž se dvěma branami.** `Brana_V` je 1. brána z východu, `Brana_S` severní stěna, `Brana_J` 2. brána na západ do uličky podél věže a `Brana_Jih` nová jižní stěna. `Hradba_V` vede od jižní stěny strážní věže obloukem k JV rohu věže. `Hradba_Z_S` končí na SZ rohu strážní věže. Vstup do hlavní věže je průlom (`prulom`) ve `Vez_S`.
+- **Ochrana do výšky jiného otvoru (`protect` s `to`):** `{"s0": -1, "s1": 8, "to": [{"wall": "Brana_V", "opening": 0, "dz": 0.1}, {"wall": "Brana_J", "opening": 0, "dz": 0.1}]}` drží zeď alespoň do výšky vrchu oblouku (otvor + ostění) jiné zdi. Výška je v absolutních souřadnicích, takže sedí i při jiném terénu, podstavbě nebo `z_offset`. Se dvěma cíli vede výška lineárně od `s0` k `s1`. Použito u `Brana_S` (do výšky oblouků obou bran, sem přijde hlídková konstrukce) a u přilehlých konců `Brana_V` a `Brana_J`.
 - **`plinth` (podstavba, m)** u zdi zvedne výšku, parapety otvorů, ochranu i sesuvy. Patří k zdi na nižším terénu. `Brana_V` má `plinth: 2.0`. **`z_offset` (m)** posune celou zeď svisle, třeba zapuštění do terénu. `Brana_V` má `z_offset: -2.1` podle posunu v levelu. `Hradba_V` je silná 2,5 m (vnější líc v rovině jižní zdi věže) a oblouk k věži má 6 úseků s plynulým napojením.
 - **`TERRAIN_FROM_LEVEL = True`** (nahoře ve skriptu): build změří výšky landscapu v levelu (line trace, ostatní actory ignoruje) a uloží je do `terrain_from_level.json`. Capture (`capture_manual_edits`) používá tento uložený stav. Po úpravě terénu stačí znovu spustit build.
-- **Věž: patra, kapsy, střílny s výklenkem.** Zdi věže mají `ref_z` (podlaha přízemí, Z 3150), `course_grid` (pevné řady 0,35 m) a `inside_pt` (vnitřek věže). Všechny výšky otvorů se zadávají od podlahy.
-  - Typ otvoru `kapsa` prorazí jen vnitřní líc.
-  - Střílna s `splay` (`floor`, `top`, `w_in`) má zevnitř kónický výklenek s šikmými boky a překladem.
+- **Věž: kapsy, střílny s výklenkem, dlažba.** Zdi věže mají `ref_z` (podlaha přízemí, Z 3150), `course_grid` (pevné řady 0,35 m) a `inside_pt` (vnitřek věže). Všechny výšky otvorů se zadávají od podlahy.
+  - Typ otvoru `kapsa` prorazí jen vnitřní líc. S `outer: true` prorazí vnější líc, takhle jsou kapsy pro trámy podesty.
+  - Střílna nebo okno se `splay` (`floor`, `top`, `w_in`) má zevnitř kónický výklenek s šikmými boky a překladem.
+  - Střílny v hradbě `Hradba_Z_S` mají výklenek stejně jako ve věži (`strilna_h` v `gen_layout.py`, šířka zevnitř 1,4 m). Dolní střílny mají výklenek od terénu, horní (parapet 5 m) od úrovně ochozu asi 4 m.
   - `ragged` (m) náhodně vylámá líc kolem průchodu.
-  - Podlahy, trámy a prkna jsou v `ruin_layout.json → floors` (`Vez_Patra`): dlažba přízemí, `levels` 1 a 2 s trámy v kapsách a prkny, `hatch` je otvor pro žebřík. Dřevo má materiál `MAT_WOOD`.
-  - Výška patra (`VEZ_ST` 4,2 m), podlaha (`VEZ_F`) a výška řady (`VEZ_C`) se mění v `gen_layout.py`.
+  - Kamenná dlažba přízemí je v `floors` → `Vez_Dlazba`.
+  - Rozměry věže (podlaha, patro, polohy trámů, průvlaku, dveří) jsou společné se stavbami v `tools\ruin\tower_spec.py`.
+- **Dřevěné vestavby a suť jsou od 11/2026 v `05_constructions`.** Patří sem trámy, prkna, průvlak, schody, podesta a volná suť na zemi (`build_constructions.py`, návod `README_constructions.md`). Build zříceniny je nestaví ani nemaže. `compute_blocks(..., rubble=True)` sem suť vrátí postaru.
 - **Přenos ručních posunů zdí do dat:** `tools\ruin\export_level_layout.py` zapíše posunuté actory a body `RuinPt_<Zed>_<NN>` do `layout_from_level.json`. Podle něj se upraví `gen_layout.py`.
 
 ---
@@ -224,7 +237,12 @@ Tip: box `Ruin_Explode` nemusíš mazat. Stačí mu dočasně přepsat tag na `x
 | `CORE_MIN` / `CORE_MAX` | 1.0 / 1.8 m | délka bloků jádra |
 | `FACE_DEPTH` | 0.40 m | hloubka lícových kvádrů |
 | `JOINT` | 0.015 m | spára mezi bloky |
+| `FRAME_SPLIT` | 1.1 m | opracovaný kámen (ostění, oblouk, boky výklenku) delší, než je tato hodnota, se v hloubce zdi rozdělí na více kusů s posunutými spárami |
 | `FACE_ROB` / `FACE_ROB_H` | 1.0 / 2.2 m | síla a výška rozebírání líce u paty (odkryté jádro) |
+| `FACE_ROB_BASE` | 0.45 | podíl rozebírání u paty (násobí `FACE_ROB` × dostupnost) |
+| `TOP_ROB` / `TOP_ROB_D` | 0.55 / 0.7 m | rozebírání líce shora: síla u koruny a jak rychle slábne směrem dolů |
+| `BRIDGE` | 0.6 m | nejširší mezera, kterou kámen líce překlene |
+| `CORE_ROUGH` / `CORE_RECESS` | true / [0.05, 0.2] m | odkryté jádro z lomových kamenů, rozsah zapuštění |
 | `RUBBLE_BLOCKS` | 0.02 | podíl bloků jako suť u paty |
 | `SEED` | 1 | jiná varianta celé zříceniny |
 

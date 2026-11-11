@@ -31,21 +31,37 @@ CUBE_MESH = "/Engine/BasicShapes/Cube.Cube"
 MAT_FACE  = None                         # lic (lomove kameny)
 MAT_CORE  = None                         # jadro (lom + malta)
 MAT_FRAME = None                         # osteni, oblouky (opracovany kamen)
+MAT_CROWN = None                         # koruna zdi: odkryte horni kameny (vic zvetrale, svetlejsi, s nadechem lisejniku)
+CROWN_WEATHER = True                     # odkryte kameny koruny = zvetrale tvary (SM_RuinStone_W_*) + material MI_RuinCrown
 MAT_DIR   = "/Game/Skvt/Lapikus/Ruin/Materials"
 TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
     "face":  [("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N"),
               ("/Game/StarterContent/Textures/T_Rock_Basalt_D", "/Game/StarterContent/Textures/T_Rock_Basalt_N")],
-    "core":  [("/Game/StarterContent/Textures/T_Rock_Basalt_D", "/Game/StarterContent/Textures/T_Rock_Basalt_N"),
-              ("/Game/StarterContent/Textures/T_Concrete_Grime_D", None)],
-    "frame": [("/Game/StarterContent/Textures/T_Rock_Sandstone_D", "/Game/StarterContent/Textures/T_Rock_Sandstone_N"),
-              ("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N")],
+    "core":  [("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N"),
+              ("/Game/StarterContent/Textures/T_Rock_Basalt_D", "/Game/StarterContent/Textures/T_Rock_Basalt_N")],
+    "crown": [("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N"),
+              ("/Game/StarterContent/Textures/T_Rock_Basalt_D", "/Game/StarterContent/Textures/T_Rock_Basalt_N")],
+    "frame": [("/Game/StarterContent/Textures/T_Rock_Slate_D", "/Game/StarterContent/Textures/T_Rock_Slate_N"),     # stejny kamen jako lic,
+              ("/Game/StarterContent/Textures/T_Rock_Sandstone_D", "/Game/StarterContent/Textures/T_Rock_Sandstone_N")],  # jen opracovany
 }
 # vzhled instanci materialu (lze pak menit primo v MI_* v editoru): tint A..B (nahodne na kamen), meritko textury, drsnost
 MAT_LOOK = {
     "face":  dict(TintA=(0.62, 0.58, 0.52), TintB=(0.95, 0.90, 0.80), Tiling=0.9, Roughness=0.9),
-    "core":  dict(TintA=(0.55, 0.52, 0.47), TintB=(0.75, 0.71, 0.64), Tiling=1.6, Roughness=0.95),
-    "frame": dict(TintA=(0.85, 0.80, 0.70), TintB=(1.00, 0.95, 0.85), Tiling=0.7, Roughness=0.85),
+    "core":  dict(TintA=(0.60, 0.58, 0.54), TintB=(0.82, 0.79, 0.73), Tiling=1.2, Roughness=0.97),   # kamen s maltou, sedejsi
+    "frame": dict(TintA=(0.70, 0.67, 0.60), TintB=(0.86, 0.82, 0.74), Tiling=0.8, Roughness=0.9),    # o kousek svetlejsi nez lic, ne oranzovy
+    "crown": dict(TintA=(0.64, 0.62, 0.55), TintB=(0.96, 0.93, 0.84), Tiling=1.0, Roughness=0.95),
 }
+# zvetrani shora (v materialu podle normaly): plochy mirici nahoru svetlejsi, nazelenale (lisejnik, prach), drsnejsi.
+# TopStart = od jakeho sklonu (0 svisla stena .. 1 vodorovny vrsek), TopSharp = ostrost prechodu, TopAmount = sila
+MAT_TOP = {
+    "face":  dict(TopTint=(0.86, 0.90, 0.76), TopStart=0.55, TopSharp=3.0, TopAmount=0.55),
+    "core":  dict(TopTint=(0.86, 0.90, 0.76), TopStart=0.55, TopSharp=3.0, TopAmount=0.45),
+    "frame": dict(TopTint=(0.86, 0.90, 0.76), TopStart=0.55, TopSharp=3.0, TopAmount=0.5),
+    "crown": dict(TopTint=(0.80, 0.88, 0.66), TopStart=0.35, TopSharp=2.5, TopAmount=1.00),
+}
+MAT_VERSION = 4                          # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
+                                         # (tinty MI_RuinFace/Frame zustanou, jak je mas; MAT_RESET viz nize)
+MAT_RESET = {"crown": 2, "core": 3, "frame": 4}      # MI starsi nez tato verze dostane znovu tint a texturu z MAT_LOOK / TEXTURES
 # --- zaoblene zvetrale kameny lice (gen_stones.py -> stones/*.obj vedle skriptu; skript je sam naimportuje)
 USE_STONE_MESHES = True                  # False = vsude kostky (Cube) jako drive
 STONE_DIR   = "/Game/Skvt/Lapikus/Ruin/Stones"
@@ -54,6 +70,8 @@ STONE_VARIANTS = "ABC"
 STONE_NOMINAL = (30.0, 45.0, 30.0)        # vyska, hloubka (cm) jmenoviteho kamene; delka = vyska * pomer
 STONE_OVERSIZE = 1.04                    # zaobleny kamen o kousek vetsi nez blok -> spary nejsou az moc hluboke
 ASHLAR_MESH = "SM_RuinAshlar"
+DRESSED_FRAMES = True                     # osteni, nadprazi, strilny z opracovanych kamenu SM_RuinDressed_* (False = kvadr SM_RuinAshlar)
+STONE_MESH_VERSION = {"SM_RuinStone_W_": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # tramy a prkna (prvni existujici)            # osteni a oblouky: lehce srazene hrany
 BLOCK_BP  = "/Game/Skvt/Lapikus/Ruin/BP_RuinBlocks"   # zalozni Blueprint s InstancedStaticMesh (kdyz nejde pridat komponentu)
 TERRAIN_FROM_LEVEL = True                # True = vysky terenu se pri buildu zmeri primo z landscapu v levelu (line trace)
@@ -114,7 +132,7 @@ def opening_state(o, a_loc, rng, P):
     wr = fr + rng.uniform(0, 0.15) if robbed == "both" or (robbed == "one" and side == "r") else 0.0
     arch = t["lintel"] == "oblouk"
     st = dict(kind=o.get("kind"), robbed=robbed, arch=arch, sill=sill, top=top, x0=x0, x1=x1, wl=wl, wr=wr, frame=fr,
-              splay=o.get("splay"), ragged=o.get("ragged", 0.0), s=o["s"])
+              splay=o.get("splay"), ragged=o.get("ragged", 0.0), s=o["s"], outer=o.get("outer", False))
     if arch:
         st["jamb_h"] = min(P["FRAME_REACH"], top - (x1 - x0) / 2) if robbed != "none" else 0.0
         st["lintel_lost"] = robbed == "both" and not o.get("protect", False)
@@ -197,10 +215,30 @@ def params(layout):
     return P
 
 # ------------------------------------------------------------------ bloky
+def _hash01(*k):
+    return (zlib.crc32(("%d|" * len(k) % k).encode()) & 0xFFFFFF) / float(0xFFFFFF)
+
+def blob_noise(s, z, seed, cs=0.8, czz=0.6):
+    """plynuly 2D sum 0..1 (mrizka cs x czz m, smoothstep) -> sousedni kameny se rozebiraji ve hloucich"""
+    u = s / cs; v = z / czz; i = math.floor(u); j = math.floor(v); fu = u - i; fv = v - j
+    fu = fu * fu * (3 - 2 * fu); fv = fv * fv * (3 - 2 * fv)
+    a = _hash01(seed, i, j); b = _hash01(seed, i + 1, j); c = _hash01(seed, i, j + 1); d = _hash01(seed, i + 1, j + 1)
+    return (a + (b - a) * fu) * (1 - fv) + (c + (d - c) * fu) * fv
+
+_BQ = [(0.0, 0.0), (0.02, 0.073), (0.05, 0.118), (0.1, 0.176), (0.2, 0.25), (0.3, 0.319), (0.4, 0.4), (0.5, 0.499),
+       (0.6, 0.597), (0.7, 0.679), (0.8, 0.75), (0.9, 0.823), (1.0, 1.0)]
+def blob_q(p):
+    """prah sumu blob_noise, pod kterym lezi podil p plochy (rozlozeni sumu neni rovnomerne)"""
+    p = min(max(p, 0.0), 1.0)
+    for (p0, q0), (p1, q1) in zip(_BQ[:-1], _BQ[1:]):
+        if p <= p1: return q0 + (q1 - q0) * (p - p0) / max(p1 - p0, 1e-9)
+    return 1.0
+
 class Stone:
-    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh")
+    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough")
     def __init__(self, sid, cat, x, y, z, yaw, sx, sy, sz, pitch=0.0, roll=0.0, seg=0):
         self.span = None; self.mesh = None
+        self.rough = False   # odkryte jadro: lomovy kamen (mesh) misto kostky
         self.seg = seg   # usek zdi (index rovneho useku mezi zlomy)
         self.id = sid; self.cat = cat; self.x = x; self.y = y; self.z = z; self.yaw = yaw
         self.sx = sx; self.sy = sy; self.sz = sz; self.pitch = pitch; self.roll = roll
@@ -223,7 +261,7 @@ def apply_plinth(wd):
     if not pl: return wd
     wd = dict(wd, H0=wd["H0"] + pl)
     wd["openings"] = [dict(o, sill=o["sill"] + pl) for o in wd.get("openings", [])]
-    wd["protect"] = [dict(p, min=p["min"] + pl) for p in wd.get("protect", [])]
+    wd["protect"] = [dict(p, min=p["min"] + pl) if "min" in p else p for p in wd.get("protect", [])]   # "to" = absolutne, bez podstavby
     wd["breaches"] = [dict(b, floor=b["floor"] + pl) for b in wd.get("breaches", [])]
     return wd
 
@@ -250,7 +288,34 @@ def apply_ref_z(wd, terr):
         ops.append(o)
     return dict(wd, openings=ops)
 
+def opening_top_abs(wd, idx, terr):
+    """absolutni vyska (cm) vrsku otvoru idx vcetne osteni / oblouku (s podstavbou a z_offset)"""
+    w2 = apply_ref_z(apply_plinth(wd), terr); o = w2["openings"][idx]
+    zb = terr.z(*_pt_on(wd["points"], o["s"]))
+    return zb + (o["sill"] + o["h"] + OPENING_TYPES[o["kind"]]["frame"]) * 100 + wd.get("z_offset", 0.0) * 100
+
+def resolve_protect_to(wd, terr, walls):
+    """ochrana s "to": [{wall, opening, dz}, ...] = zed alespon do vysky vrsku otvoru jine zdi (napr. oblouku brany);
+    dva cile = linearne od s0 k s1. Prevede se na kousky po 0.5 m s min (m) od paty teto zdi."""
+    out = []
+    byname = {w["name"]: w for w in walls}
+    for p in wd.get("protect", []):
+        if "to" not in p: out.append(p); continue
+        zs = [opening_top_abs(byname[t["wall"]], t.get("opening", 0), terr) + t.get("dz", 0.0) * 100 for t in p["to"]]
+        z0, z1 = zs[0], zs[-1]; n = max(1, int(math.ceil((p["s1"] - p["s0"]) / 0.5)))
+        for i in range(n):
+            a = p["s0"] + (p["s1"] - p["s0"]) * i / n; b = p["s0"] + (p["s1"] - p["s0"]) * (i + 1) / n
+            sm = min(max((a + b) / 2, 0.0), _wall_len(wd["points"]))
+            za = z0 + (z1 - z0) * ((a + b) / 2 - p["s0"]) / max(p["s1"] - p["s0"], 1e-6)
+            zb = terr.z(*_pt_on(wd["points"], sm))
+            out.append(dict(s0=a, s1=b, min=(za - zb - wd.get("z_offset", 0.0) * 100) / 100))
+    return dict(wd, protect=out)
+
+def _wall_len(pts):
+    return sum(math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]) for i in range(len(pts) - 1)) / 100
+
 def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
+    wd = resolve_protect_to(wd, terr, layout.get("walls", []))
     wd = apply_ref_z(apply_plinth(wd), terr)
     rng = random.Random(wd.get("seed", 1) * 4093 + P["SEED"])
     pts = [list(p) for p in wd["points"]]
@@ -277,6 +342,12 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
             for i, x in enumerate(xs):
                 if e["s0"] <= x <= e["s1"]:
                     h[i] = e["h"] if e["op"] == "set_height" else max(h[i], e["h"])
+    # zvyseni useku zdi (m) nad vysledek rozpadu, na krajich plynule (1 m)
+    for r in wd.get("raise", []):
+        r0, r1 = r["s0"] + shift, r["s1"] + shift
+        for i, x in enumerate(xs):
+            wgt = max(0.0, min(1.0, (x - r0) + 0.5, (r1 - x) + 0.5))
+            if wgt > 0: h[i] = min(h[i] + r["dh"] * wgt, wd["H0"] + r["dh"])
     access_arr = [wd["access"]] * len(xs)
     for ap in wd.get("access_points", []):
         access_arr = [a + P["ACCESS_BOOST"] * math.exp(-((x - ap) / P["ACCESS_RADIUS"]) ** 2) for a, x in zip(access_arr, xs)]
@@ -312,6 +383,16 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
     rside = wd.get("rubble", "both")
     robbed_sides = {"out": [inner], "in": [inner], "both": [1, -1]}.get(rside, [1, -1])  # vnejsi lic nad utesem se nerozebira
     stones = []
+    # zlomy lomene zdi: znamenkovy uhel (+ = zatacka doleva), prodlouzeni / zkraceni kamenu u zlomu
+    bend = []
+    for i_ in range(1, len(pts) - 1):
+        d1 = (pts[i_][0] - pts[i_ - 1][0], pts[i_][1] - pts[i_ - 1][1]); d2 = (pts[i_ + 1][0] - pts[i_][0], pts[i_ + 1][1] - pts[i_][1])
+        bend.append((cum[i_], math.atan2(d1[0] * d2[1] - d1[1] * d2[0], d1[0] * d2[0] + d1[1] * d2[1])))
+    def corner_ext(th, layer):
+        t_ = math.tan(min(abs(th), math.radians(80)) / 2)
+        if layer == 0: return core_w / 200 * t_
+        convex = (th > 0 and layer == -1) or (th < 0 and layer == 1)
+        return (T / 200 * t_) if convex else -(T / 200 * t_)
     # --- otvory zarovnat na rady kamene (parapet a nadprazi lezi na sparach) + rozmery osteni po radach
     bounds = [c0 for c0, c1 in crs] + [crs[-1][1]]
     def snap(zab): return min(bounds, key=lambda b: abs(b - zab))
@@ -352,8 +433,8 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
         for st in states:
             x0, x1, fr = st["x0"], st["x1"], st["frame"]
             z0r = (cz0 - st["zb"]) / 100; z1r = (cz1 - st["zb"]) / 100
-            if st["kind"] == "kapsa":                  # kapsa: jen vnitrni lic
-                if layer == st["inside"] and z1r > st["sill"] + 0.01 and z0r < st["top"] - 0.01:
+            if st["kind"] == "kapsa":                  # kapsa: jen vnitrni lic (outer=True: jen vnejsi lic, napr. po podeste)
+                if layer == (-st["inside"] if st.get("outer") else st["inside"]) and z1r > st["sill"] + 0.01 and z0r < st["top"] - 0.01:
                     out.append((x0, x1))
                 continue
             if st.get("niche") and layer in (0, st["inside"]):
@@ -416,6 +497,17 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                 if b[0] <= x <= b[3] and b[1] <= y <= b[4] and z1 > b[2] and z0 < b[5]: return True
         return False
     prev = {1: None, 0: None, -1: None}           # obsazene useky predchozi rady (podpora)
+    def bridged(s0, s1, below, row):
+        """klenuti / malta: kamen nad mezerou do BRIDGE m drzi, kdyz lezi obema konci (levy konec muze drzet i soused v rade)"""
+        BR = P.get("BRIDGE", 0.6); e_ = min(0.25, (s1 - s0) / 2)
+        sup = sorted((max(s0, b0), min(s1, b1)) for b0, b1 in below if b1 > s0 and b0 < s1)
+        left = any(b0 < s0 + e_ and b1 > s0 + 0.04 for b0, b1 in sup) or any(abs(r1 - s0) < 0.05 for _, r1 in row)
+        right = any(b1 > s1 - e_ and b0 < s1 - 0.04 for b0, b1 in sup)
+        if not (left and right): return False
+        x_ = s0; gap = 0.0
+        for b0, b1 in sup:
+            gap = max(gap, b0 - x_); x_ = max(x_, b1)
+        return max(gap, s1 - x_) <= BR
     def lintel_over(s0, s1, z0r):
         for st in states:
             if st["lintel_lost"] or st["frame"] <= 0: continue
@@ -436,14 +528,12 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                 ln = rng.uniform(lmin, lmax); s0 = max(s, 0.0); s1 = min(s + ln, L); s = s + ln
                 sid = "%s|%d|%d|%d" % (wd["name"], ci, layer, bi); bi += 1
                 srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])   # nahoda vazana na blok -> upravy neposunou ostatni
-                # bloky nedelit pres roh polygonu
-                for kc in cum[1:-1]:
-                    if s0 < kc < s1:
-                        if kc - s0 > s1 - kc: s1 = kc
-                        else: s0 = kc
-                if s1 - s0 < 0.12: continue
-                zb0 = terr.z(*at((s0 + s1) / 2)[:2])
-                pieces = subtract(s0, s1, forbidden(cz0, cz1, layer))
+                # blok pres zlom zdi se rozdeli na dva kusy (kazdy rovne podel sveho useku)
+                bnds = [s0] + [kc for kc in cum[1:-1] if s0 + 0.01 < kc < s1 - 0.01] + [s1]
+                pieces = []
+                for a_, b_ in zip(bnds[:-1], bnds[1:]):
+                    if b_ - a_ >= 0.12: pieces += subtract(a_, b_, forbidden(cz0, cz1, layer))
+                if not pieces: continue
                 sid0 = sid; os0, os1 = s0, s1
                 for pi, (s0, s1) in enumerate(pieces):
                     # nerozdeleny blok si necha puvodni id (rucni upravy plati dal), kusy dostanou .a/.b
@@ -458,17 +548,30 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                     if part < 1 and srng.random() > part * 1.15: continue      # rozvolnena koruna
                     if cz1 < zb - 140: continue                              # hluboko pod terenem
                     z0r = (cz0 - zb) / 100; z1r = (cz1 - zb) / 100
-                    # rozebrany lic u paty (odkryje jadro)
-                    if layer in robbed_sides and layer != 0 and 0 <= z0r < P["FACE_ROB_H"] and part >= 1:
+                    # rozebrany lic (odkryje jadro): hlavne shora pod korunou (kameny se berou odshora), u paty jen
+                    # mensi hloucky tam, kam se dosahne. Plynuly sum -> hloucky sousednich kamenu, ne jednotlive dirky
+                    if layer in robbed_sides and layer != 0 and part >= 1:
                         a = interp(sc, xs, access_arr)
-                        if srng.random() < min(0.92, a * P["FACE_ROB"] * (1 - z0r / P["FACE_ROB_H"])): continue
+                        wseed = zlib.crc32(wd["name"].encode()) ^ P["SEED"]
+                        zr_side = z0r
+                        if wd.get("ref_z") and layer == inside: zr_side = (cz0 - wd["ref_z"]) / 100   # vnitrek veze: od podlahy
+                        dc = (top_abs - cz1) / 100                                   # hloubka rady pod korunou (m)
+                        p_top = P.get("TOP_ROB", 0.55) * (0.5 + 0.5 * a) * math.exp(-max(dc, 0) / P.get("TOP_ROB_D", 0.7))
+                        if blob_noise(sc, dc, wseed * 3 + layer, 0.9, 0.5) < blob_q(p_top): continue
+                        H_ = P["FACE_ROB_H"]
+                        if 0 <= zr_side < H_:
+                            p_base = min(0.5, a * P["FACE_ROB"] * P.get("FACE_ROB_BASE", 0.45) * (1 - zr_side / H_) ** 1.5)
+                            if blob_noise(sc, zr_side, wseed * 5 + layer, 0.7, 0.45) < blob_q(p_base): continue
                     cx = x + nx * off; cy = y + ny * off
                     if cut_hit(cx, cy, cz0, cz1, s0, s1, z0r, z1r): continue
                     # podpora: blok musi lezet na necem (predchozi rada v teze nebo vedlejsi vrstve, nebo nadprazi)
                     if z0r > 0.2 and prev[layer] is not None:
-                        below = prev[layer] + (prev[0] if layer else prev[1] + prev[-1])
+                        # lic musi lezet na licovem kameni (ne jen na jadru) -> zadne kameny lice visici nad vybranou mezerou;
+                        # jadro se opira o cokoli pod sebou
+                        below = prev[layer] if layer else prev[0] + prev[1] + prev[-1]
                         ov = sum(max(0, min(s1, b1) - max(s0, b0)) for b0, b1 in below)
-                        if ov < 0.3 * (s1 - s0) and not lintel_over(s0, s1, z0r): continue
+                        if ov < 0.3 * (s1 - s0) and not lintel_over(s0, s1, z0r) \
+                           and not (layer and bridged(s0, s1, below, cur[layer])): continue
                     cur[layer].append((s0, s1))
                     # zchatrale: u koruny pootocene a vysunute bloky (u otvoru jen nepatrne, at nezasahuji do svetlosti)
                     loose = part < 1.6 and layer != 0
@@ -479,9 +582,19 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                     gapw = P["JOINT"] * 100
                     cxx = cx + nx * push; cyy = cy + ny * push
                     if layer == 0: gapw = 0.0                # jadro bez spar (je skryte) -> zed neni skrz pruhledna
+                    # na zlomu zdi: vnejsi (vypukla) strana se prodlouzi az do spolecne hrany licu, vnitrni se zkrati
+                    e0 = e1 = 0.0
+                    for kc, th in bend:
+                        if abs(s1 - kc) < 1e-6: e1 = corner_ext(th, layer)
+                        if abs(s0 - kc) < 1e-6: e0 = corner_ext(th, layer)
+                    lenc = (s1 - s0 + e0 + e1) * 100 - gapw
+                    if lenc < 8: continue
+                    if e0 or e1:
+                        ya = math.radians(yaw); dsh = (e1 - e0) * 50
+                        cxx += math.cos(ya) * dsh; cyy += math.sin(ya) * dsh
                     stones.append(Stone(sid, "core" if layer == 0 else "face", cxx, cyy, (cz0 + cz1) / 2, yaw2,
-                                        (s1 - s0) * 100 - gapw, depth - gapw, (cz1 - cz0) - gapw * 0.7, pitch, seg=k))
-                    stones[-1].span = (s0, s1, z0r, z1r)           # pro kontrolu (test_openings.py)
+                                        lenc, depth - gapw, (cz1 - cz0) - gapw * 0.7, pitch, seg=k))
+                    stones[-1].span = (s0 - e0, s1 + e1, z0r, z1r)  # pro kontrolu (test_openings.py)
         # narozni kvadr na zacatku zdi (zakryje prurez zdi v rohu)
         if wd.get("extend_start", True):
             sc = face_d / 200
@@ -491,10 +604,49 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
             sid = "%s|%d|Q" % (wd["name"], ci)
             if cz1 <= top_abs and cz1 > zb - 140 and not cut_hit(x, y, cz0, cz1, 0, sc * 2, z0r, z1r) \
                and (z0r <= 0.2 or prev[1] is None or any(b0 < sc * 2 for b0, b1 in prev[1] + prev[-1])):
-                stones.append(Stone(sid, "face", x, y, (cz0 + cz1) / 2, yaw + 90.0, T - 1.5, face_d - 1.5, (cz1 - cz0) - 1.0, seg=k))
+                # narozi z vice kamenu pres tloustku zdi: u vnejsiho rohu strida dlouhy a kratky kvadr (vazba narozi),
+                # zbytek tloustky lomove kameny bezne delky
+                qr = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
+                first = qr.uniform(1.0, 1.35) if ci % 2 == 0 else qr.uniform(0.45, 0.7)
+                lens = [first]
+                while sum(lens) < T / 100 - 0.01:
+                    rest = T / 100 - sum(lens)
+                    l_ = qr.uniform(P["STONE_MIN"], P["STONE_MAX"])
+                    if rest - l_ < P["STONE_MIN"]: l_ = rest
+                    lens.append(min(l_, rest))
+                out_s = -inner                                   # vnejsi strana zdi (od teziste hradu)
+                t = out_s * T / 2                                 # zacit u vnejsiho rohu
+                for qi, l_ in enumerate(lens):
+                    tc = t - out_s * l_ * 50
+                    qid = sid if qi == 0 else "%s.%d" % (sid, qi)
+                    stones.append(Stone(qid, "face", x + nx * tc, y + ny * tc, (cz0 + cz1) / 2, yaw + 90.0 + qr.uniform(-0.6, 0.6),
+                                        l_ * 100 - P["JOINT"] * 100, face_d - 1.5, (cz1 - cz0) - 1.0, seg=k))
+                    t -= out_s * l_ * 100
                 cur[1].append((0, sc * 2)); cur[-1].append((0, sc * 2))
         prev = cur
     # osteni a oblouky intaktnich otvoru (opracovane kvadry, cela tloustka zdi)
+    SPLIT = P.get("FRAME_SPLIT", 1.1) * 100                # kvadr delsi nez toto (cm) se v hloubce rozdeli na vic kamenu
+    def put_frame(sid, x, y, z, yaw, sx, sy, sz, pitch=0.0, seg=0, along="y"):
+        """opracovany kamen; pres silnou zed (nebo dlouhy bok vyklenku) z vice kusu ruzne delky, spary strida"""
+        L_ = sy if along == "y" else sx
+        if L_ <= SPLIT:
+            stones.append(Stone(sid, "frame", x, y, z, yaw, sx, sy, sz, pitch, seg=seg)); return
+        r_ = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
+        lens = []; tot = L_ / 100
+        first = r_.uniform(0.75, 1.0) if r_.random() < 0.5 else r_.uniform(0.4, 0.6)
+        while sum(lens) < tot - 0.01:
+            rest = tot - sum(lens); l_ = first if not lens else r_.uniform(0.5, 1.0)
+            if rest - l_ < 0.35: l_ = rest
+            lens.append(min(l_, rest))
+        a = math.radians(yaw)
+        ax_, ay_ = ((-math.sin(a), math.cos(a)) if along == "y" else (math.cos(a), math.sin(a)))
+        t = -L_ / 2
+        for i, l_ in enumerate(lens):
+            tc = t + l_ * 50
+            w_ = l_ * 100 - (1.0 if i < len(lens) - 1 else 0.0)
+            stones.append(Stone(sid if i == 0 else "%s.%d" % (sid, i), "frame", x + ax_ * tc, y + ay_ * tc, z,
+                                yaw + r_.uniform(-0.4, 0.4), w_ if along == "x" else sx, w_ if along == "y" else sy, sz, pitch, seg=seg))
+            t += l_ * 100
     for oi, st in enumerate(states):
         if st["frame"] <= 0: continue
         if st["robbed"] == "both" and not (st["arch"] and not st["lintel_lost"]): continue
@@ -508,8 +660,8 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
             dep = (face_d - 1) if sp_out else (T - 2)
             o_ = (T / 2 - face_d / 2) * sp_out
             # o 2 cm presah do sousednich bloku -> zadna pruhledna spara kolem osteni
-            stones.append(Stone(sid, "frame", xx + nnx * o_, yy + nny * o_, zb + (z0r + z1r) / 2 * 100, yw, sxo or (s1 - s0) * 100 + 2,
-                                dep, (z1r - z0r) * 100 - 0.5, rot_extra, seg=kk))
+            put_frame(sid, xx + nnx * o_, yy + nny * o_, zb + (z0r + z1r) / 2 * 100, yw, sxo or (s1 - s0) * 100 + 2,
+                      dep, (z1r - z0r) * 100 - 0.5, rot_extra, seg=kk)
         if st.get("niche"):
             # vyklenek: sikme boky (kónické rozsireni zevnitr k uzkemu pruzoru), preklad nahore
             n0, n1 = st["niche"]; c = sm_; wi = st["w_in"] / 2; wo = (st["x1"] - st["x0"]) / 2 + fr
@@ -529,14 +681,14 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                 for c0, c1 in crs:
                     if c0 < n0 - 1 or c1 > n1 + 1: continue
                     if (c1 - zb) / 100 > min(interp(a_s, xs, h), interp(b_s, xs, h)) + 0.05: break
-                    stones.append(Stone("%s|F%d|N%s%d" % (wd["name"], oi, "L" if side < 0 else "R", j), "frame", mx_, my_, (c0 + c1) / 2,
-                                        yw_, ln + 8, 30, (c1 - c0) - 0.5, seg=kk))
+                    put_frame("%s|F%d|N%s%d" % (wd["name"], oi, "L" if side < 0 else "R", j), mx_, my_, (c0 + c1) / 2,
+                              yw_, ln + 8, 30, (c1 - c0) - 0.5, seg=kk, along="x")
                     j += 1
             lz0 = n1; lz1 = n1 + 35
             if (lz1 - zb) / 100 <= min(interp(c - wi, xs, h), interp(c + wi, xs, h)) + 0.05:
                 xx, yy, yw, nnx, nny, kk = at(c); o_ = (face_d / 2) * st["inside"]
-                stones.append(Stone("%s|F%d|NT" % (wd["name"], oi), "frame", xx + nnx * o_, yy + nny * o_, (lz0 + lz1) / 2, yw,
-                                    (2 * wi + 0.5) * 100, dep_in - 1, (lz1 - lz0) - 0.5, seg=kk))
+                put_frame("%s|F%d|NT" % (wd["name"], oi), xx + nnx * o_, yy + nny * o_, (lz0 + lz1) / 2, yw,
+                          (2 * wi + 0.5) * 100, dep_in - 1, (lz1 - lz0) - 0.5, seg=kk)
         okL = st["arch"] or st["robbed"] != "one" or st.get("wl", 0) == 0
         okR = st["arch"] or st["robbed"] != "one" or st.get("wr", 0) == 0
         jz0, jz1 = st["jamb_z"]
@@ -563,14 +715,87 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                 xx, yy, yw, _, _, kk = at(s_c)
                 sid = "%s|F%d|A%d" % (wd["name"], oi, q)
                 # klinovy kamen: delka po oblouku, natoceny kolem normaly zdi (roll)
-                stones.append(Stone(sid, "frame", xx, yy, zb + z_c * 100, yw, rm * (a1 - a0) * 100 - 1.5, T - 2, fr * 100,
-                                    pitch=90.0 - math.degrees(am), seg=kk))
+                put_frame(sid, xx, yy, zb + z_c * 100, yw, rm * (a1 - a0) * 100 - 1.5, T - 2, fr * 100,
+                          pitch=90.0 - math.degrees(am), seg=kk)
+    # odkryte jadro: kde chybi lic, rozpadne se jadro na lomove kameny ruzne zapustene (ne hladka tmava stena s ostrou hranou)
+    if P.get("CORE_ROUGH", True): stones = rough_core(stones, wd, P, face_d, core_w, T, removed)
+    # koruna: odkryte horni kameny (nic na nich nelezi) -> zvetrale tvary a material koruny
+    if CROWN_WEATHER:
+        byz = {}
+        for st_ in stones:
+            if st_.span and st_.cat in ("face", "core"): byz.setdefault(round((st_.z - st_.sz / 2) / 3), []).append(st_)
+        for st_ in stones:
+            if not st_.span or st_.cat not in ("face", "core"): continue
+            lay_ = int(st_.id.split("|")[2]) if st_.id.count("|") >= 3 else 0
+            top_ = st_.z + st_.sz / 2
+            above = [b for k_ in (round(top_ / 3) - 1, round(top_ / 3), round(top_ / 3) + 1) for b in byz.get(k_, [])
+                     if abs((b.z - b.sz / 2) - top_) < 3 and int(b.id.split("|")[2]) == lay_]
+            cov = sum(max(0.0, min(st_.span[1], b.span[1]) - max(st_.span[0], b.span[0])) for b in above)
+            if cov < 0.5 * (st_.span[1] - st_.span[0]):
+                st_.cat = "crown"
+    # useky lomene cary seskupene do actoru (zaoblene zlomy: oblouk patri k sousednim rovnym usekum)
+    sg = wd.get("seg_group")
+    if sg:
+        for st_ in stones: st_.seg = sg[min(st_.seg, len(sg) - 1)]
     # svisly posun cele zdi (m), napr. zapusteni do terenu; kameny pod terenem nejsou videt
     off = wd.get("z_offset", 0.0) * 100
     if off:
         for st_ in stones: st_.z += off
         for st_ in states: st_["zb"] += off
     return stones, states, L
+
+def rough_core(stones, wd, P, face_d, core_w, T, removed=()):
+    """Jadro, pred kterym chybi lic: blok se rozdeli na kameny 0.35-0.7 m, kazdy zapusteny o 5-20 cm od odkryte
+    strany (nahodne, u okraje diry mene -> zubaty prechod), mirne pootoceny; mesh lomoveho kamene."""
+    byc = {}
+    for st in stones:
+        if st.span and st.cat == "face" and st.id.count("|") >= 3 and st.id not in removed:   # rucne smazany lic = odkryto
+            p_ = st.id.split("|")
+            if p_[2] in ("1", "-1"): byc.setdefault((p_[1], int(p_[2])), []).append(st.span)
+    out = []; J = P["JOINT"] * 100
+    r0, r1 = P.get("CORE_RECESS", (0.05, 0.2))
+    sup = {}                                   # obsazene useky kazde rady (vsechny vrstvy) -> kus jadra nesmi viset
+    def ci_of(st): return int(st.id.split("|")[1]) if st.span and st.id.count("|") >= 3 and st.id.split("|")[1].isdigit() else None
+    for st in stones:                          # lic a ostatni hned, jadro postupne podle rad (co spadlo, nedrzi)
+        if st.cat != "core" and ci_of(st) is not None: sup.setdefault(ci_of(st), []).append(st.span)
+    for st in stones:
+        if not (st.span and st.cat == "core" and st.id.count("|") >= 3):
+            out.append(st); continue
+        ci = st.id.split("|")[1]
+        s0, s1, z0r, z1r = st.span
+        def cov(a, b, lay):
+            return sum(max(0.0, min(b, f1) - max(a, f0)) for f0, f1, _, _ in byc.get((ci, lay), [])) / max(b - a, 1e-6)
+        if z1r < 0.05 or (cov(s0, s1, 1) > 0.8 and cov(s0, s1, -1) > 0.8):
+            out.append(st); sup.setdefault(int(ci), []).append(st.span); continue
+        rng = random.Random(zlib.crc32((st.id + "|rough").encode()) ^ P["SEED"])
+        ya = math.radians(st.yaw); dx, dy = math.cos(ya), math.sin(ya); nx, ny = -dy, dx
+        L_ = s1 - s0; cuts = [s0]
+        while cuts[-1] < s1 - 1e-6:
+            l_ = rng.uniform(0.35, 0.7)
+            if s1 - (cuts[-1] + l_) < 0.3: l_ = s1 - cuts[-1]
+            cuts.append(min(cuts[-1] + l_, s1))
+        if len(cuts) == 2 and cov(s0, s1, 1) > 0.5 and cov(s0, s1, -1) > 0.5:
+            out.append(st); sup.setdefault(int(ci), []).append(st.span); continue
+        cm = (s0 + s1) / 2
+        for i, (a, b) in enumerate(zip(cuts[:-1], cuts[1:])):
+            off_ = 0.0; dep = st.sy
+            for lay in (1, -1):
+                c = cov(a, b, lay)
+                if c > 0.5: continue                                         # lic pred kusem stoji
+                edge = cov(a - 0.4, b + 0.4, lay) > 0.15                         # u okraje diry -> mene zapusteny
+                r = rng.uniform(0.0, 0.08) if edge else rng.uniform(r0, r1)
+                if c == 0 and rng.random() < 0.25: r = -rng.uniform(0.0, 0.4) * face_d / 100   # zbytek zaklady lice vystupuje
+                r *= 100; dep -= r; off_ -= lay * r / 2
+            dep = max(dep, 15.0)
+            if z0r > 0.2 and int(ci) - 1 in sup:
+                ov = sum(max(0.0, min(b, q1) - max(a, q0)) for q0, q1, _, _ in sup[int(ci) - 1])
+                if ov < 0.3 * (b - a): continue
+            m = (a + b) / 2 - cm
+            pc = Stone("%s.r%d" % (st.id, i), "core", st.x + dx * m * 100 + nx * off_, st.y + dy * m * 100 + ny * off_, st.z,
+                       st.yaw + rng.uniform(-3, 3), (b - a) * 100 - J, dep, st.sz - J * 0.7, rng.uniform(-2, 2), seg=st.seg)
+            pc.span = (a, b, z0r, z1r); pc.rough = True
+            out.append(pc); sup.setdefault(int(ci), []).append(pc.span)
+    return out
 
 def _clip_segment_box(p, q, x0, y0, x1, y1):
     """Liang-Barsky: cast usecky p->q uvnitr obdelniku, vrati (t0, t1) nebo None."""
@@ -635,20 +860,24 @@ def in_box(s, box):
 def stone_mesh_name(st):
     """Varianta zaobleneho kamene podle pomeru delka/vyska bloku (deterministicky podle id)."""
     if not USE_STONE_MESHES: return None
-    if st.cat in ("frame", "floor"): return ASHLAR_MESH
-    if st.cat != "face": return None
+    if st.cat == "floor" or (st.cat == "frame" and not DRESSED_FRAMES): return ASHLAR_MESH
+    if st.cat == "frame":
+        r = max(st.sx, 1) / max(st.sz, 1)
+        best = min(STONE_RATIOS, key=lambda q: abs(math.log(r / q)))
+        return "SM_RuinDressed_R%02d_%s" % (round(best * 10), "AB"[zlib.crc32(st.id.encode()) % 2])
+    if st.cat not in ("face", "crown") and not (st.cat == "core" and st.rough): return None
     r = max(st.sx, 1) / max(st.sz, 1)
     best = min(STONE_RATIOS, key=lambda q: abs(math.log(r / q)))
     v = STONE_VARIANTS[zlib.crc32(st.id.encode()) % len(STONE_VARIANTS)]
-    return "SM_RuinStone_R%02d_%s" % (round(best * 10), v)
+    return "SM_RuinStone_%sR%02d_%s" % ("W_" if st.cat == "crown" else "", round(best * 10), v)
 
 def assign_meshes(stones):
     for st in stones:
         st.mesh = stone_mesh_name(st)
-        if st.mesh and st.cat == "face" and (zlib.crc32(st.id.encode()) >> 8) & 1:
+        if st.mesh and st.cat in ("face", "crown", "core") and (zlib.crc32(st.id.encode()) >> 8) & 1:
             st.yaw += 180.0          # otoceni kamene o 180 st. = dalsi varianta vzhledu (rozmer sedi)
 
-def build_floor_stones(fs, P, walls_out):
+def build_floor_stones(fs, P, walls_out, terr=None):
     """Podlahy ve vezi (layout["floors"]): kamenna dlazba prizemi + tramy v kapsach a hrube prkna v patrech.
     Souradnice v ramu veze: u (m) podel fs["u"], v (m) podel fs["v"] od fs["origin"]."""
     rng = random.Random(zlib.crc32(fs["name"].encode()) ^ P["SEED"])
@@ -676,7 +905,7 @@ def build_floor_stones(fs, P, walls_out):
                                  roll=srng.uniform(-3, 3) if tilt else 0.0))
             v += dv; r += 1
     # --- patra: tramy v kapsach, prkna na tramech (horni plocha prken = ref_z + n * storey)
-    bm = fs["beams"]; pk = fs.get("planks", {}); hatch = fs.get("hatch")
+    bm = fs.get("beams", {}); pk = fs.get("planks", {})
     def wall_stands(x, y, zmin):
         for wn in fs.get("walls", []):
             for s_ in walls_out.get(wn, {}).get("stones", []):
@@ -684,6 +913,7 @@ def build_floor_stones(fs, P, walls_out):
         return False
     for lvl in fs.get("levels", []):
         zt = ref + lvl * fs["storey"] * 100
+        hatch = fs.get("hatches", {}).get(str(lvl), fs.get("hatch"))     # otvor pro schody / zebrik v tomto patre
         bh = bm.get("h", 0.28) * 100; bw = bm.get("w", 0.26) * 100; brg = bm.get("bearing", 0.33)
         ok_v = []
         for i, vb in enumerate(bm["v"]):
@@ -721,9 +951,94 @@ def build_floor_stones(fs, P, walls_out):
                     x, y = W(uc + srng.uniform(-0.01, 0.01), (pa + pb) / 2)
                     out.append(Stone(sid, "wood", x, y, zt - 1 - t / 2 + srng.uniform(-0.4, 0.4), yaw_v + srng.uniform(-1.0, 1.0),
                                      (pb - pa) * 100 - 1, w_ * 100 - 0.5, t, roll=srng.uniform(-0.6, 0.6)))
+    # --- pruvlak (sever-jih pod tramy, konce v kapsach) a sloup s hlavici pod nim
+    gd = fs.get("girder")
+    if gd:
+        gw = gd.get("w", 0.30) * 100; ch = fs.get("course", 0.35) * 100
+        for lvl in gd.get("levels", []):
+            zt = ref + lvl * fs["storey"] * 100; zg1 = zt - ch; zg0 = zg1 - ch      # pod tramy, jedna rada (kapsy v J a S zdi)
+            ea = W(gd["u"], v0 - 0.2); eb = W(gd["u"], v1 + 0.2)
+            if not (wall_stands(ea[0], ea[1], zg1 + 30) and wall_stands(eb[0], eb[1], zg1 + 30)): continue
+            sid = "%s|G%d" % (fs["name"], lvl)
+            x, y = W(gd["u"], (v0 + v1) / 2)
+            out.append(Stone(sid, "wood", x, y, (zg0 + zg1) / 2 - 0.5, yaw_v, (v1 - v0 + 0.66) * 100 - 4, gw, ch - 1))
+            zf = ref + (lvl - 1) * fs["storey"] * 100 - (0 if lvl == 1 else 1)     # podlaha pod sloupem (dlazba / prkna)
+            ps = gd.get("post", 0.25) * 100
+            for j, pv in enumerate(gd.get("post_v", [])):
+                x, y = W(gd["u"], pv)
+                head = 15
+                out.append(Stone("%s|G%d|P%d" % (fs["name"], lvl, j), "wood", x, y, (zf + zg0 - head) / 2, yaw_v, ps, ps, zg0 - head - zf))
+                out.append(Stone("%s|G%d|H%d" % (fs["name"], lvl, j), "wood", x, y, zg0 - head / 2, yaw_v, 70, gw, head - 0.5))   # hlavice (sedlo)
+    # --- podesta pred dvermi (vne veze): tramy z kapes ven, prkna podel zdi, sloupky na terenu
+    pc = fs.get("porch")
+    if pc:
+        zt = ref + pc.get("level", 1) * fs["storey"] * 100
+        vw = pc["v_wall"]; dp = pc.get("depth", 1.3); wd_ = pc.get("width", 2.6) / 2
+        bw, bh = pc.get("beam", (0.24, 0.28))
+        for j, du in enumerate((-pc.get("beam_du", 1.1), pc.get("beam_du", 1.1))):
+            x, y = W(pc["u"] + du, vw + (dp - 0.35) / 2)
+            out.append(Stone("%s|D|B%d" % (fs["name"], j), "wood", x, y, zt - 6 - bh * 50, yaw_v, (dp + 0.35) * 100, bw * 100, bh * 100))
+            if pc.get("posts") and terr is not None:
+                x, y = W(pc["u"] + du, vw + dp - 0.12)
+                zg = terr.z(x, y) - 10
+                ztop = zt - 6 - bh * 100
+                out.append(Stone("%s|D|P%d" % (fs["name"], j), "wood", x, y, (zg + ztop) / 2, yaw_v, 20, 20, ztop - zg))
+        t = 5.0; v = vw + 0.02; r = 0
+        while v < vw + dp - 0.05:
+            w_ = min(rng.uniform(0.22, 0.32), vw + dp - v)
+            sid = "%s|D|K%d" % (fs["name"], r); srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
+            x, y = W(pc["u"] + srng.uniform(-0.03, 0.03), v + w_ / 2)
+            out.append(Stone(sid, "wood", x, y, zt - 1 - t / 2, yaw_u + srng.uniform(-1.2, 1.2), 2 * wd_ * 100, w_ * 100 - 1, t))
+            v += w_ + 0.01; r += 1
+    # --- provizorni schody: dve schodnice (tramy) a do nich zasazene hrube fosny, vedou otvorem do patra
+    for k, sd in enumerate(fs.get("stairs", [])):
+        za = ref + sd["from"] * fs["storey"] * 100; zb_ = ref + sd["to"] * fs["storey"] * 100
+        A = math.radians(sd.get("angle", 60)); rise = (zb_ - za) / 100
+        run = rise / math.tan(A); hw = sd.get("width", 0.8) / 2
+        # axis "u": schody podel tramu (mezi dvema tramy, otvor muze byt dlouhy); "v": napric tramy
+        along_u = sd.get("axis", "v") == "u"
+        t1 = sd["u_top"] if along_u else sd["v_top"]; dirn = sd.get("dir", 1)
+        t0 = t1 - dirn * run; cc = sd["v"] if along_u else sd["u"]
+        P2 = (lambda a, c: W(a, c)) if along_u else (lambda a, c: W(c, a))
+        yaw_run = (yaw_u if along_u else yaw_v) + (0 if dirn > 0 else 180); yaw_tr = yaw_v if along_u else yaw_u
+        sw, sh = sd.get("stringer", (0.12, 0.22))
+        L = math.hypot(run, rise)
+        for side in (-1, 1):
+            sid = "%s|S%d|T%d" % (fs["name"], k, 0 if side < 0 else 1)
+            x, y = P2((t0 + t1) / 2, cc + side * (hw + sw / 2))
+            out.append(Stone(sid, "wood", x, y, (za + zb_) / 2 + 4, yaw_run, L * 100 + 15, sw * 100, sh * 100, pitch=math.degrees(A)))
+        n = max(2, int(round(rise / sd.get("step", 0.25))))
+        for i in range(1, n):
+            sid = "%s|S%d|F%d" % (fs["name"], k, i)
+            srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
+            zr = rise * i / n; a_ = t0 + dirn * zr / math.tan(A)
+            x, y = P2(a_, cc + srng.uniform(-0.01, 0.01))
+            out.append(Stone(sid, "wood", x, y, za + zr * 100 + srng.uniform(-0.8, 0.8), yaw_tr + srng.uniform(-2, 2),
+                             (2 * hw + 0.06) * 100, srng.uniform(22, 27), 5.5, roll=srng.uniform(-1.2, 1.2)))
     return out
 
-def compute_blocks(layout, removed=(), moved=None, volumes=None):
+def make_rubble(out, P, terr, removed=()):
+    """trocha suti z lomovych kamenu u paty zdi (vetsinu lide odvezli) -> {zed: [Stone]}.
+    Pouziva 05_constructions (sut se stavi zvlast, ne se zriceninou)."""
+    res = {}
+    for name, w in out.items():
+        rng = random.Random(zlib.crc32(name.encode()) ^ (P["SEED"] * 977))
+        faces = [s for s in w["stones"] if s.cat == "face"]
+        if not faces: continue
+        rub = []
+        for i in range(int(len(faces) * P["RUBBLE_BLOCKS"])):
+            s = rng.choice(faces); d = rng.choice((-1, 1)) * rng.uniform(80, 300)
+            yaw = math.radians(s.yaw); nx, ny = -math.sin(yaw), math.cos(yaw)
+            x = s.x + nx * d + rng.uniform(-60, 60); y = s.y + ny * d + rng.uniform(-60, 60)
+            z = terr.z(x, y) + 8
+            sid = "%s|R%d" % (name, i)
+            if sid in removed: continue
+            rub.append(Stone(sid, "face", x, y, z, rng.uniform(0, 360), s.sx, s.sy, s.sz, rng.uniform(-25, 25), rng.uniform(-25, 25)))
+        assign_meshes(rub)
+        res[name] = dict(folder=w["folder"], stones=rub)
+    return res
+
+def compute_blocks(layout, removed=(), moved=None, volumes=None, rubble=False):
     P = params(layout); terr = Terrain(layout["terrain"])
     vols = list(layout.get("volumes", [])) + list(volumes or [])
     layout, explode = apply_volumes(layout, vols, terr)
@@ -738,26 +1053,15 @@ def compute_blocks(layout, removed=(), moved=None, volumes=None):
         out[wd["name"]] = dict(folder=wd["folder"], stones=stones)
     for fs in layout.get("floors", []):
         if ONLY_WALLS and fs["name"] not in ONLY_WALLS and not any(w in ONLY_WALLS for w in fs.get("walls", [])): continue
-        out[fs["name"]] = dict(folder=fs.get("folder", "Ruin"), stones=build_floor_stones(fs, P, out))
-    # trocha suti z bloku (vetsinu lide odvezli)
-    rub = []
-    for name, w in out.items():
-        rng = random.Random(zlib.crc32(name.encode()) ^ (P["SEED"] * 977))
-        faces = [s for s in w["stones"] if s.cat == "face"]
-        if not faces: continue
-        n = int(len(faces) * P["RUBBLE_BLOCKS"])
-        for i in range(n):
-            s = rng.choice(faces); d = rng.choice((-1, 1)) * rng.uniform(80, 300)
-            yaw = math.radians(s.yaw); nx, ny = -math.sin(yaw), math.cos(yaw)
-            x = s.x + nx * d + rng.uniform(-60, 60); y = s.y + ny * d + rng.uniform(-60, 60)
-            z = terr.z(x, y) + 8
-            rub.append(Stone("%s|R%d" % (name, i), "face", x, y, z, rng.uniform(0, 360), s.sx, s.sy, s.sz,
-                             rng.uniform(-25, 25), rng.uniform(-25, 25)))
-        w["rubble"] = [r for r in rub if r.id.startswith(name + "|") and r.id not in removed]
+        out[fs["name"]] = dict(folder=fs.get("folder", "Ruin"), stones=build_floor_stones(fs, P, out, terr))
+    # sut na zemi: od 11/2026 ve 05_constructions (build_constructions.py); rubble=True ji prida i sem (stary zpusob)
+    if rubble:
+        for name, r in make_rubble(out, P, terr, removed).items():
+            out[name]["rubble"] = r["stones"]
     for w in out.values():
         assign_meshes(w["stones"] + w.get("rubble", []))
     for name, w in out.items():
-        w["stones"] = [st for st in w["stones"] if st.id not in removed]
+        w["stones"] = [st for st in w["stones"] if st.id not in removed and st.id.split(".r")[0] not in removed]
         # rucne posunute bloky a rozlozeni na samostatne kameny
         # samostatne kameny = jen ty v boxu Ruin_Explode (podle puvodni i posunute polohy);
         # posunute kameny mimo box se vrati do Instanced Static Mesh na nove misto ("slouceni")
@@ -817,7 +1121,7 @@ def ensure_materials(unreal):
     pak je muzes upravovat v editoru - skript je neprepise)."""
     eal = unreal.EditorAssetLibrary
     mats = {}
-    user = {"face": MAT_FACE, "core": MAT_CORE, "frame": MAT_FRAME}
+    user = {"face": MAT_FACE, "core": MAT_CORE, "frame": MAT_FRAME, "crown": MAT_CROWN}
     if all(user.values()):
         return {c: unreal.load_asset(p) for c, p in user.items()}
     def pick(cat):
@@ -834,52 +1138,31 @@ def ensure_materials(unreal):
             unreal.log_warning("Ruin: nenalezeny textury pro material (StarterContent?) - nastav MAT_FACE/MAT_CORE/MAT_FRAME.")
             return {c: (unreal.load_asset(p) if p else None) for c, p in user.items()}
         master = at.create_asset("M_RuinStone", MAT_DIR, unreal.Material, unreal.MaterialFactoryNew())
-        for prop in ("used_with_instanced_static_meshes", "used_with_nanite"):
-            try: master.set_editor_property(prop, True)
-            except Exception: pass
-        E = lambda cls, x, y: mel.create_material_expression(master, cls, x, y)
-        tc = E(unreal.MaterialExpressionTextureCoordinate, -1400, 0)
-        pir = E(unreal.MaterialExpressionPerInstanceRandom, -1400, 200)
-        k = E(unreal.MaterialExpressionConstant, -1400, 300); k.set_editor_property("r", 7.31)
-        mul = E(unreal.MaterialExpressionMultiply, -1200, 250)
-        mel.connect_material_expressions(pir, "", mul, "A"); mel.connect_material_expressions(k, "", mul, "B")
-        add = E(unreal.MaterialExpressionAdd, -1000, 100)          # nahodny posun UV na kamen -> kazdy kamen jinak
-        mel.connect_material_expressions(tc, "", add, "A"); mel.connect_material_expressions(mul, "", add, "B")
-        til = E(unreal.MaterialExpressionScalarParameter, -1000, 300)
-        til.set_editor_property("parameter_name", "Tiling"); til.set_editor_property("default_value", 1.0)
-        uv = E(unreal.MaterialExpressionMultiply, -800, 150)
-        mel.connect_material_expressions(add, "", uv, "A"); mel.connect_material_expressions(til, "", uv, "B")
-        tx = E(unreal.MaterialExpressionTextureSampleParameter2D, -550, -100)
-        tx.set_editor_property("parameter_name", "BaseColor"); tx.set_editor_property("texture", d0)
-        mel.connect_material_expressions(uv, "", tx, "UVs")
-        ta = E(unreal.MaterialExpressionVectorParameter, -550, 200); ta.set_editor_property("parameter_name", "TintA")
-        ta.set_editor_property("default_value", unreal.LinearColor(0.62, 0.58, 0.52, 1))
-        tb = E(unreal.MaterialExpressionVectorParameter, -550, 400); tb.set_editor_property("parameter_name", "TintB")
-        tb.set_editor_property("default_value", unreal.LinearColor(0.95, 0.90, 0.80, 1))
-        lp = E(unreal.MaterialExpressionLinearInterpolate, -300, 300)
-        mel.connect_material_expressions(ta, "", lp, "A"); mel.connect_material_expressions(tb, "", lp, "B")
-        mel.connect_material_expressions(pir, "", lp, "Alpha")
-        bc = E(unreal.MaterialExpressionMultiply, -100, 0)
-        mel.connect_material_expressions(tx, "RGB", bc, "A"); mel.connect_material_expressions(lp, "", bc, "B")
-        mel.connect_material_property(bc, "", unreal.MaterialProperty.MP_BASE_COLOR)
-        ro = E(unreal.MaterialExpressionScalarParameter, -300, 600)
-        ro.set_editor_property("parameter_name", "Roughness"); ro.set_editor_property("default_value", 0.9)
-        mel.connect_material_property(ro, "", unreal.MaterialProperty.MP_ROUGHNESS)
-        if n0:
-            nx = E(unreal.MaterialExpressionTextureSampleParameter2D, -550, 800)
-            nx.set_editor_property("parameter_name", "Normal"); nx.set_editor_property("texture", n0)
-            nx.set_editor_property("sampler_type", unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
-            mel.connect_material_expressions(uv, "", nx, "UVs")
-            mel.connect_material_property(nx, "RGB", unreal.MaterialProperty.MP_NORMAL)
-        mel.recompile_material(master)
-        eal.save_loaded_asset(master)
+        _build_master(unreal, master, d0, n0)
         unreal.log("Ruin: vytvoren material %s" % mpath)
-    for cat, mi_name in (("face", "MI_RuinFace"), ("core", "MI_RuinCore"), ("frame", "MI_RuinFrame")):
+    if _ver(eal, master, "RuinMatVersion") < MAT_VERSION:
+        # starsi graf (bez zvetrani shora) -> prestavet na miste; instance (MI_*) zustanou a jen se doplni parametry
+        d0, n0 = pick("face")
+        mel.delete_all_material_expressions(master)
+        _build_master(unreal, master, d0, n0)
+        unreal.log("Ruin: material %s prestaven na verzi %d (zvetrani shora)" % (mpath, MAT_VERSION))
+    for cat, mi_name in (("face", "MI_RuinFace"), ("core", "MI_RuinCore"), ("frame", "MI_RuinFrame"), ("crown", "MI_RuinCrown")):
         if user[cat]:
             mats[cat] = unreal.load_asset(user[cat]); continue
         ip = _asset_path(MAT_DIR, mi_name)
         if eal.does_asset_exist(ip):
-            mats[cat] = unreal.load_asset(ip); continue
+            mi = unreal.load_asset(ip)
+            if _ver(eal, mi, "RuinMatVersion") < MAT_VERSION:       # doplnit nove parametry, rucni upravy jinak nechat
+                reset = _ver(eal, mi, "RuinMatVersion") < MAT_RESET.get(cat, 0)
+                if reset:
+                    d, n = pick(cat)
+                    if d: mel.set_material_instance_texture_parameter_value(mi, "BaseColor", d)
+                    if n:
+                        try: mel.set_material_instance_texture_parameter_value(mi, "Normal", n)
+                        except Exception: pass
+                _set_top(unreal, mel, mi, cat, look=reset)
+                eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION)); eal.save_loaded_asset(mi)
+            mats[cat] = mi; continue
         mi = at.create_asset(mi_name, MAT_DIR, unreal.MaterialInstanceConstant, unreal.MaterialInstanceConstantFactoryNew())
         mel.set_material_instance_parent(mi, master)
         d, n = pick(cat)
@@ -892,13 +1175,108 @@ def ensure_materials(unreal):
             c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
         for pn in ("Tiling", "Roughness"):
             mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
-        mel.update_material_instance(mi)
+        _set_top(unreal, mel, mi, cat)
+        eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION))
         eal.save_loaded_asset(mi)
         mats[cat] = mi
     return mats
 
+
+def _ver(eal, asset, tag):
+    try: return int(eal.get_metadata_tag(asset, tag) or 0)
+    except Exception: return 0
+
+
+def _set_top(unreal, mel, mi, cat, look=False):
+    """parametry zvetrani shora (MAT_TOP); look=True prepise i tint / drsnost z MAT_LOOK"""
+    lk = MAT_TOP[cat]
+    c = lk["TopTint"]; mel.set_material_instance_vector_parameter_value(mi, "TopTint", unreal.LinearColor(c[0], c[1], c[2], 1))
+    for pn in ("TopStart", "TopSharp", "TopAmount"):
+        mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
+    if look:
+        lk = MAT_LOOK[cat]
+        for pn in ("TintA", "TintB"):
+            c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
+        for pn in ("Tiling", "Roughness"):
+            mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
+    mel.update_material_instance(mi)
+
+
+def _build_master(unreal, master, d0, n0):
+    """graf M_RuinStone: textura s nahodnym posunem UV a tintem na kamen + zvetrani shora podle normaly
+    (VertexNormalWS.z: plochy nahoru svetlejsi / nazelenale a drsnejsi, rozbite texturou)"""
+    mel = unreal.MaterialEditingLibrary; eal = unreal.EditorAssetLibrary
+    for prop in ("used_with_instanced_static_meshes", "used_with_nanite"):
+        try: master.set_editor_property(prop, True)
+        except Exception: pass
+    E = lambda cls, x, y: mel.create_material_expression(master, cls, x, y)
+    C = mel.connect_material_expressions
+    def scal(name, val, x, y):
+        e_ = E(unreal.MaterialExpressionScalarParameter, x, y)
+        e_.set_editor_property("parameter_name", name); e_.set_editor_property("default_value", val); return e_
+    def vec(name, c, x, y):
+        e_ = E(unreal.MaterialExpressionVectorParameter, x, y)
+        e_.set_editor_property("parameter_name", name); e_.set_editor_property("default_value", unreal.LinearColor(c[0], c[1], c[2], 1)); return e_
+    tc = E(unreal.MaterialExpressionTextureCoordinate, -1400, 0)
+    pir = E(unreal.MaterialExpressionPerInstanceRandom, -1400, 200)
+    k = E(unreal.MaterialExpressionConstant, -1400, 300); k.set_editor_property("r", 7.31)
+    mul = E(unreal.MaterialExpressionMultiply, -1200, 250)
+    C(pir, "", mul, "A"); C(k, "", mul, "B")
+    add = E(unreal.MaterialExpressionAdd, -1000, 100)          # nahodny posun UV na kamen -> kazdy kamen jinak
+    C(tc, "", add, "A"); C(mul, "", add, "B")
+    til = scal("Tiling", 1.0, -1000, 300)
+    uv = E(unreal.MaterialExpressionMultiply, -800, 150)
+    C(add, "", uv, "A"); C(til, "", uv, "B")
+    tx = E(unreal.MaterialExpressionTextureSampleParameter2D, -550, -100)
+    tx.set_editor_property("parameter_name", "BaseColor")
+    if d0: tx.set_editor_property("texture", d0)
+    C(uv, "", tx, "UVs")
+    ta = vec("TintA", (0.62, 0.58, 0.52), -550, 200)
+    tb = vec("TintB", (0.95, 0.90, 0.80), -550, 400)
+    lp = E(unreal.MaterialExpressionLinearInterpolate, -300, 300)
+    C(ta, "", lp, "A"); C(tb, "", lp, "B"); C(pir, "", lp, "Alpha")
+    bc = E(unreal.MaterialExpressionMultiply, -100, 0)
+    C(tx, "RGB", bc, "A"); C(lp, "", bc, "B")
+    # --- zvetrani shora: maska = saturate((N.z - TopStart) * TopSharp) * TopAmount, rozbita jasem textury
+    vn = E(unreal.MaterialExpressionVertexNormalWS, -1400, 900)
+    cm = E(unreal.MaterialExpressionComponentMask, -1200, 900)
+    for ch, on in (("r", False), ("g", False), ("b", True), ("a", False)): cm.set_editor_property(ch, on)
+    C(vn, "", cm, "")
+    t_st = scal("TopStart", 0.55, -1200, 1050)
+    sb = E(unreal.MaterialExpressionSubtract, -1000, 950); C(cm, "", sb, "A"); C(t_st, "", sb, "B")
+    t_sh = scal("TopSharp", 3.0, -1000, 1100)
+    m1 = E(unreal.MaterialExpressionMultiply, -800, 950); C(sb, "", m1, "A"); C(t_sh, "", m1, "B")
+    sat = E(unreal.MaterialExpressionSaturate, -650, 950); C(m1, "", sat, "")
+    brk = E(unreal.MaterialExpressionAdd, -650, 1100)          # 0.5 + jas textury -> skvrny, ne rovnomerny nater
+    half = E(unreal.MaterialExpressionConstant, -800, 1150); half.set_editor_property("r", 0.5)
+    C(tx, "G", brk, "A"); C(half, "", brk, "B")
+    m2 = E(unreal.MaterialExpressionMultiply, -500, 1000); C(sat, "", m2, "A"); C(brk, "", m2, "B")
+    t_am = scal("TopAmount", 0.5, -500, 1150)
+    m3 = E(unreal.MaterialExpressionMultiply, -350, 1000); C(m2, "", m3, "A"); C(t_am, "", m3, "B")
+    mask = E(unreal.MaterialExpressionSaturate, -200, 1000); C(m3, "", mask, "")
+    t_ti = vec("TopTint", (0.86, 0.90, 0.76), -350, 700)
+    tcol = E(unreal.MaterialExpressionMultiply, -100, 500); C(bc, "", tcol, "A"); C(t_ti, "", tcol, "B")
+    fin = E(unreal.MaterialExpressionLinearInterpolate, 100, 200)
+    C(bc, "", fin, "A"); C(tcol, "", fin, "B"); C(mask, "", fin, "Alpha")
+    mel.connect_material_property(fin, "", unreal.MaterialProperty.MP_BASE_COLOR)
+    ro = scal("Roughness", 0.9, -300, 600)
+    one = E(unreal.MaterialExpressionConstant, -100, 750); one.set_editor_property("r", 1.0)
+    rl = E(unreal.MaterialExpressionLinearInterpolate, 100, 650)
+    C(ro, "", rl, "A"); C(one, "", rl, "B"); C(mask, "", rl, "Alpha")
+    mel.connect_material_property(rl, "", unreal.MaterialProperty.MP_ROUGHNESS)
+    if n0:
+        nx = E(unreal.MaterialExpressionTextureSampleParameter2D, -550, 1400)
+        nx.set_editor_property("parameter_name", "Normal"); nx.set_editor_property("texture", n0)
+        nx.set_editor_property("sampler_type", unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
+        C(uv, "", nx, "UVs")
+        mel.connect_material_property(nx, "RGB", unreal.MaterialProperty.MP_NORMAL)
+    mel.recompile_material(master)
+    eal.set_metadata_tag(master, "RuinMatVersion", str(MAT_VERSION))
+    eal.save_loaded_asset(master)
+
 def _needed_meshes():
-    names = ["SM_RuinStone_R%02d_%s" % (round(r * 10), v) for r in STONE_RATIOS for v in STONE_VARIANTS]
+    names = ["SM_RuinStone_%sR%02d_%s" % (w, round(r * 10), v) for w in ("", "W_") for r in STONE_RATIOS for v in STONE_VARIANTS]
+    if DRESSED_FRAMES: names += ["SM_RuinDressed_R%02d_%s" % (round(r * 10), v) for r in STONE_RATIOS for v in "AB"]
     return names + [ASHLAR_MESH]
 
 def ensure_stone_meshes(unreal):
@@ -906,7 +1284,12 @@ def ensure_stone_meshes(unreal):
     (box kolize + Nanite). Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou."""
     if not USE_STONE_MESHES: return {}
     eal = unreal.EditorAssetLibrary
-    missing = [n for n in _needed_meshes() if not eal.does_asset_exist(_asset_path(STONE_DIR, n))]
+    def want(n): return max([v for pf, v in STONE_MESH_VERSION.items() if n.startswith(pf)] or [0])
+    missing = []
+    for n in _needed_meshes():
+        pth = _asset_path(STONE_DIR, n)
+        if not eal.does_asset_exist(pth): missing.append(n); continue
+        if want(n) and _ver(eal, unreal.load_asset(pth), "RuinStoneVersion") < want(n): missing.append(n)   # novejsi OBJ -> znovu
     src = os.path.join(_script_dir(), "stones")
     tasks = []
     for n in missing:
@@ -943,6 +1326,7 @@ def ensure_stone_meshes(unreal):
                 ns = sm.get_editor_property("nanite_settings"); ns.set_editor_property("enabled", True)
                 sms.set_nanite_settings(sm, ns, True)
             except Exception as ex: unreal.log_warning("Ruin: Nanite %s: %s (zapni rucne v meshi)" % (n, ex))
+            if want(n): eal.set_metadata_tag(sm, "RuinStoneVersion", str(want(n)))
             eal.save_loaded_asset(sm)
         out[n] = sm
     lost = [n for n in _needed_meshes() if n not in out]
@@ -1144,7 +1528,7 @@ def build_in_unreal():
                     for s in sts:
                         m, nom = _resolve(unreal, s, cube, meshes)
                         bym.setdefault(m.get_path_name(), [m, []])[1].append(stone_transform(unreal, s, m, nom))
-                    cname = {"face": "Lic", "core": "Jadro", "frame": "Osteni", "wood": "Drevo", "floor": "Podlaha"}[cat]
+                    cname = {"face": "Lic", "core": "Jadro", "frame": "Osteni", "wood": "Drevo", "floor": "Podlaha", "crown": "Koruna"}[cat]
                     label = ("%s_%02d_%s" % (name, seg + 1, cname)) if nseg > 1 else ("%s_%s" % (name, cname))
                     _ism_actor(unreal, eas, label, w["folder"] + ("/%s" % name if nseg > 1 else ""),
                                [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag)
@@ -1221,7 +1605,7 @@ def _has_unreal():
 
 MODE = "build"        # "build" = postavit, "capture" = ulozit rucne smazane bloky
 
-if __name__ == "__main__" or "unreal" in sys.modules:
+if (__name__ == "__main__" or "unreal" in sys.modules) and not getattr(sys, "_ruin_import_only", False):
     if _has_unreal():
         capture_manual_edits() if MODE == "capture" else build_in_unreal()
     else:
@@ -1229,9 +1613,9 @@ if __name__ == "__main__" or "unreal" in sys.modules:
         lay = load_layout(); rm, mv = load_manual(); data, P = compute_blocks(lay, rm, mv)
         tot = 0
         for n, w in data.items():
-            c = {"face": 0, "core": 0, "frame": 0, "wood": 0, "floor": 0}
+            c = {"face": 0, "core": 0, "frame": 0, "wood": 0, "floor": 0, "crown": 0}
             for s in w["stones"] + w.get("loose", []): c[s.cat] = c.get(s.cat, 0) + 1
             tot += sum(c.values()) + len(w.get("rubble", []))
             print("  %-18s lic %5d  jadro %4d  osteni %3d  sut %3d" % (n, c["face"], c["core"], c["frame"], len(w.get("rubble", [])))
-                  + ("  drevo %4d  dlazba %3d" % (c["wood"], c["floor"]) if c["wood"] or c["floor"] else ""))
+                  + ("  koruna %4d" % c["crown"]) + ("  drevo %4d  dlazba %3d" % (c["wood"], c["floor"]) if c["wood"] or c["floor"] else ""))
         print("stari:", P["_AGE"], " bloku celkem:", tot)
