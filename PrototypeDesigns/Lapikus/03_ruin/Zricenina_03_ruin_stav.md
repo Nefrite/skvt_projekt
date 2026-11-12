@@ -77,6 +77,14 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - Náhledy na skutečném terénu: po buildu poslat `terrain_from_level.json`.
 - Nárožní kvádry na zlomech lomené hradby (prosvítá jádro).
 
+## Západní část u ostrohu (11/2026, příprava)
+
+- `Hradba_Z_S` je v západní části (s 12,4–31,9) cíleně snížená a zarovnaná. Zůstávají jen celé řady pod 3,3 m (`cap`).
+- V koruně je 7 žlábků pro trámy (`notches`).
+- 05 `Ostroh_Krov`: 2 sloupy těsně u vnitřního líce `ZBudova_V` po stranách průchodu, příčka a 7 paprskovitých trámů ve žlábcích. Trámy se mírně svažují ke zdi a přesahují ji (okap). Všechno je dehtované.
+- Krytina je z dehtovaných prken po spádu na latích, s lištami přes spáry a krycím prknem přes každý trám. Lemování u příčky se vyřeší jinak. Koruna hradby pod střechou je směrem ven snížená ve sklonu střechy (`roof_clear`).
+- Rozměry jsou v `tools/ruin/ostroh_spec.py`. Žlab, okapnice a sud přijdou později.
+
 ## Optimalizace do budoucna (zatím není potřeba)
 
 - **Stav 11/2026:** zřícenina má asi 23 500 kamenů a 34,5 mil. trojúhelníků. Z toho připadá 24,7 mil. na lomové kameny (`SM_RuinStone`), 6,2 mil. na korunu (`_W`) a 3,4 mil. na ostění (`SM_RuinDressed`). Dřevo ve věži má asi 0,5 mil. Unikátních meshí je jen 33, zbytek jsou instance. S Nanite to není problém.

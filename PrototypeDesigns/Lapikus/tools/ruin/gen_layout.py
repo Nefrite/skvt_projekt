@@ -200,6 +200,13 @@ ramps = [dict(name="Rampa_SZ", folder="Ruin/Rampa", start=[-2950, -1250], end=[-
 x0, y0, x1, y1, st = -5200, -3800, 3600, 400, 100      # mrizka pokryva i strazni vez
 xs = np.arange(x0, x1 + 1, st); ys = np.arange(y0, y1 + 1, st)
 Z = [[round(float(H[int(np.clip(y / 50 + 252, 0, 504)), int(np.clip(x / 50 + 252, 0, 504))]) * 100) for x in xs] for y in ys]
+# --- zapadni cast u ostrohu: hradba cilene snizena a zarovnana, ve korune zlabky pro paprskovite tramy
+#     zastreseni (drevo ve 05_constructions, rozmery sdili tools/ruin/ostroh_spec.py)
+from ostroh_spec import spec as ostroh_spec
+OS = ostroh_spec(walls)
+for w in walls:
+    if w["name"] == OS["wall"]:
+        w["cap"] = [OS["cap"]]; w["notches"] = OS["notches"]; w["roof_clear"] = dict(OS["roof_clear"], s0=OS["cap"]["s0"], s1=OS["cap"]["s1"])
 out = dict(version=1, units="UE cm (pozice), m (s, vysky)", plateau_z_cm=D["plateau_z_cm"],
            params=dict(WEATHER=0.9, ROBBING=4.75, REACH=8.0, ACCESS_BOOST=0.3, ACCESS_RADIUS=6.0,
                        FRAME_REACH=2.5, CORNER_STRENGTH=0.2, COLUMN=0.5, COURSE=0.3, RUBBLE_FACTOR=0.25, SEED=1,

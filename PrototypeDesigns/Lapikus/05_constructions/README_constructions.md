@@ -56,7 +56,7 @@ Usazené kameny ve hře spí, dokud do nich někdo nestrčí. Staticky bez fyzik
 | Změna | Co spustit |
 |---|---|
 | schody, prkna, ochoz, sloupy, suť (v `constructions.json` nebo `gen_constructions.py`) | jen `build_constructions.py` |
-| **polohy trámů, průvlaku, otvorů nebo dveří** (`tower_spec.py`) | `gen_layout.py` **i** `gen_constructions.py` (kapsy jsou ve zdech), pak oba buildy |
+| **polohy trámů, průvlaku, otvorů nebo dveří** (`tower_spec.py`), **krov u ostrohu** (`ostroh_spec.py`) | `gen_layout.py` **i** `gen_constructions.py` (kapsy jsou ve zdech), pak oba buildy |
 | zdi, rozpad, otvory zříceniny | `build_ruin_blocks.py`, pak `build_constructions.py` (trámy se kontrolují proti zdem) |
 
 Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
@@ -77,6 +77,24 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 | `finish` | úprava dřeva podle části: `tar` dehtované, `raw` bez úpravy, `oil` mořené olejem, `blood` mořené krví, `old` staré neošetřené. Části: `beams`, `girder`, `posts`, `heads`, `planks` (a `planks_1`, `planks_2` pro jedno patro), `stairs`, `porch_beams`, `porch_braces`, `porch_posts`, `porch_planks` |
 | `rubble` | suť: `enabled`, složka v Outlineru |
 
+**`frames` → `Ostroh_Krov`** (typ `fan_roof`): krov v západní části u ostrohu.
+
+- **Sloupy a příčka:** 2 sloupy stojí těsně u vnitřního líce `ZBudova_V`, po stranách průchodu, 10 cm od jeho hran (`POST_SPREAD`). Průchod 1,6 m (`PASS_W`) zůstává volný. Na sloupech leží příčka (vaznice), 3,8 m dlouhá, s přesahem 85 cm na každou stranu. Šikmé vzpěry vedou od sloupů ven a hlavou podpírají přesahy příčky.
+- **Paprskovité trámy:** 7 trámů 22 × 24 cm vede z příčky na hradbu `Hradba_Z_S`.
+- **Hradba:** je v tomto úseku cíleně snížená a zarovnaná, asi 3 m nad terénem.
+- **Uložení:** trámy leží ve žlábcích koruny, u vnitřního líce zhruba do poloviny výšky trámu. Mírně se svažují ke zdi (6–10°, příčka 0,8 m nad dnem žlábků, `RISE`) a 0,6 m přesahují vnější líc (okap).
+- **Dřevo:** všechno je dehtované (`finish`).
+- **Rozměry:** jsou v `tools/ruin/ostroh_spec.py` a sdílí ho 03 (snížení a žlábky) i 05 (dřevo). Po změně přegeneruj `gen_layout.py` i `gen_constructions.py` a postav 03 i 05.
+
+- **Krytina** (`roof`, všechno dehtované):
+  - **Latě:** 5 řad napříč trámy.
+  - **Prkna:** po spádu, 22–30 cm široká, se spárami 1,5 cm. V každém poli mezi trámy leží rovnoběžně. Krajní jsou kratší a vyplňují klín, jak se pole ke zdi rozšiřuje. Začínají už tam, kde se do pole dostane jejich vnitřní hrana, takže u trámů nezůstávají díry. Sousední pole se u trámu překrývají (každé druhé o tloušťku prkna výš).
+  - **Lišty:** přes každou spáru. Přes každý trám leží krycí prkno 36 cm, které zakryje spoj dvou polí.
+  - **Lemování u příčky:** zatím není, vyřeší se jinak.
+- **Koruna pod střechou:** kameny hradby mezi trámy jsou směrem ven snížené ve sklonu střechy (`roof_clear` v 03), aby nezasahovaly do latí a prken.
+
+Žlab, okapnice a sud přijdou později.
+
 Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižní zdi (`Vez_J`), **v** od jihozápadního rohu k severu. Obojí v metrech, osy zdí jsou na 0 a 11 m.
 
 **Dřevo:** tvary jsou meshe zašlého dřeva `SM_RuinTimber/Plank/Post_*` (praskliny, ohlazené hrany, prohyb; vlákna dělá normálová mapa materiálu, asi 2–3 tisíce trojúhelníků na kus). Generuje je `gen_stones.py`, importují se automaticky a vypínají se přes `WOOD_MESHES = False` v `build_ruin_blocks.py`. Úpravy dřeva (materiály vytvoří skript 03):
@@ -95,4 +113,4 @@ Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury,
 
 ## 5. Do budoucna
 
-Sem patří další dostavby druhého zabydlení: hlídková konstrukce na `Brana_S`, žebříky, lávky, dřevěné přístřešky, ohrady, provizorní střechy, zábrany v průlomech. Každá nová stavba je další položka v `constructions.json` a případně nový typ v `build_constructions.py`.
+Sem patří další dostavby druhého zabydlení: střecha na krovu u ostrohu (latě, krytina), hlídková konstrukce na `Brana_S`, žebříky, lávky, dřevěné přístřešky, ohrady, provizorní střechy, zábrany v průlomech. Každá nová stavba je další položka v `constructions.json` a případně nový typ v `build_constructions.py`.

@@ -544,6 +544,12 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                 if b[0] <= x <= b[3] and b[1] <= y <= b[4] and z1 > b[2] and z0 < b[5]: return True
         return False
     prev = {1: None, 0: None, -1: None}           # obsazene useky predchozi rady (podpora)
+    caps = [(c["s0"] + shift, c["s1"] + shift, c["z"] - wd.get("z_offset", 0.0) * 100) for c in wd.get("cap", [])]
+    def cap_at(s_):
+        """cap = cilene snizeny a zarovnany usek zdi (abs. vyska vrchu, cm), jinak None"""
+        for a_, b_, z_ in caps:
+            if a_ <= s_ <= b_: return z_
+        return None
     def bridged(s0, s1, below, row):
         """klenuti / malta: kamen nad mezerou do BRIDGE m drzi, kdyz lezi obema konci (levy konec muze drzet i soused v rade)"""
         BR = P.get("BRIDGE", 0.6); e_ = min(0.25, (s1 - s0) / 2)
@@ -590,14 +596,18 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                     x, y, yaw, nx, ny, k = at(sc)
                     zb = terr.z(x, y)
                     top_abs = zb + interp(sc, xs, h) * 100
+                    cp = cap_at(sc)
+                    if cp is not None:                    # cilene snizena a zarovnana zed: jen cele rady pod vyskou cap
+                        if cz1 > cp + 1: continue
+                        part = 99.0
                     if cz0 >= top_abs: continue
-                    part = (top_abs - cz0) / (cz1 - cz0)
+                    part = (top_abs - cz0) / (cz1 - cz0) if cp is None else part
                     if part < 1 and srng.random() > part * 1.15: continue      # rozvolnena koruna
                     if cz1 < zb - 140: continue                              # hluboko pod terenem
                     z0r = (cz0 - zb) / 100; z1r = (cz1 - zb) / 100
                     # rozebrany lic (odkryje jadro): hlavne shora pod korunou (kameny se berou odshora), u paty jen
                     # mensi hloucky tam, kam se dosahne. Plynuly sum -> hloucky sousednich kamenu, ne jednotlive dirky
-                    if layer in robbed_sides and layer != 0 and part >= 1:
+                    if layer in robbed_sides and layer != 0 and part >= 1 and cp is None:
                         a = interp(sc, xs, access_arr)
                         wseed = zlib.crc32(wd["name"].encode()) ^ P["SEED"]
                         zr_side = z0r
@@ -766,6 +776,11 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                           pitch=90.0 - math.degrees(am), seg=kk)
     # odkryte jadro: kde chybi lic, rozpadne se jadro na lomove kameny ruzne zapustene (ne hladka tmava stena s ostrou hranou)
     if P.get("CORE_ROUGH", True): stones = rough_core(stones, wd, P, face_d, core_w, T, removed)
+    # zlabky v korune pro tramy (dodatecne vysekane): kameny horni rady v miste zlabku o d nizsi
+    if wd.get("notches"): stones = cut_notches(stones, [dict(n_, s=n_["s"] + shift) for n_ in wd["notches"]], P)
+    if wd.get("roof_clear") and wd.get("notches"):
+        stones = roof_clear(stones, dict(wd["roof_clear"], s0=wd["roof_clear"]["s0"] + shift, s1=wd["roof_clear"]["s1"] + shift),
+                            [dict(n_, s=n_["s"] + shift) for n_ in wd["notches"]], T, face_d)
     # koruna: odkryte horni kameny (nic na nich nelezi) -> zvetrale tvary a material koruny
     if CROWN_WEATHER:
         byz = {}
@@ -790,6 +805,87 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
         for st_ in stones: st_.z += off
         for st_ in states: st_["zb"] += off
     return stones, states, L
+
+def roof_clear(stones, rc, notches, T, face_d):
+    """koruna pod strechou (05 krytina): kameny se ven od vnitrniho lice snizi ve sklonu strechy, aby nezasahovaly
+    do lati a prken mezi tramy. Sklon kolmo na zed se interpoluje mezi zlabky (notches[].slope)."""
+    ns = sorted(notches, key=lambda n_: n_["s"])
+    def slope_at(s_):
+        if s_ <= ns[0]["s"]: return ns[0]["slope"]
+        for a, b in zip(ns[:-1], ns[1:]):
+            if s_ <= b["s"]: f = (s_ - a["s"]) / max(b["s"] - a["s"], 1e-6); return a["slope"] + (b["slope"] - a["slope"]) * f
+        return ns[-1]["slope"]
+    inzone = [st for st in stones if st.span and st.cat in ("face", "core", "crown") and rc["s0"] <= (st.span[0] + st.span[1]) / 2 <= rc["s1"]]
+    if not inzone: return stones
+    tops_ = [round(st.z + st.sz / 2) for st in inzone if ".n1" not in st.id]
+    wt = max(t for t in set(tops_) if tops_.count(t) >= 5)             # zarovnana koruna = nejvyssi vyska, kterou ma aspon 5 kamenu
+    clear, margin = rc["clear"] * 100, rc.get("margin", 0.02) * 100
+    out = []; zone = set(id(st) for st in inzone)
+    for st in stones:
+        if id(st) not in zone:
+            out.append(st); continue
+        sm = (st.span[0] + st.span[1]) / 2
+        nn = min(ns, key=lambda n_: abs(n_["s"] - sm))                 # strana dovnitr podle nejblizsiho zlabku
+        ya = math.radians(st.yaw); nxs, nys = -math.sin(ya), math.cos(ya)
+        sgn = 1 if nxs * nn["nin"][0] + nys * nn["nin"][1] > 0 else -1
+        lay = int(st.id.split("|")[2].split(".")[0]) if st.id.count("|") >= 3 and st.id.split("|")[2].lstrip("-").split(".")[0].isdigit() else 0
+        off = lay * sgn * (T / 2 - face_d / 2)                          # od osy zdi dovnitr (cm)
+        dist = max(0.0, T / 2 - off + st.sy / 2)                      # od vnitrniho lice k vnejsi hrane kamene
+        allowed = wt + clear - slope_at(sm) * dist - margin
+        top = st.z + st.sz / 2
+        if top <= allowed:
+            out.append(st); continue
+        cut = top - allowed
+        if st.sz - cut < 5: continue                                    # kamen pod strechou cely odebran
+        st.sz -= cut; st.z -= cut / 2
+        if st.span: st.span = (st.span[0], st.span[1], st.span[2], st.span[3] - cut / 100)
+        out.append(st)
+    return out
+
+def cut_notches(stones, notches, P):
+    """zlabek pres celou tloustku zdi: kus kamene v sirce w (m) kolem s se snizi az na dno zlabku (vrch zdi - d, ven hloubeji
+    podle sklonu tramu; muze projit i pres vic rad).
+    Plati pro lic, jadro i korunu; kameny se podle zlabku rozdeli (ID .n0 / .n1 / .n2)."""
+    out = list(stones)
+    for nt in notches:
+        d = nt["d"] * 100
+        def window(st):
+            """zlabek v miste kamene: tram jde sikmo pres tloustku zdi -> u kazde vrstvy jinde (k) a jinak hluboko (slope)"""
+            off = 0.0
+            if nt.get("pt") and nt.get("nin"):
+                off = (st.x - nt["pt"][0]) * nt["nin"][0] + (st.y - nt["pt"][1]) * nt["nin"][1]
+            c = nt["s"] + off * nt.get("k", 0.0) / 100
+            # sikmy tram jde i pres hloubku kamene (vrstvy) -> zlabek o tolik sirsi; hloubka podle vnejsi hrany kamene
+            hw = nt["w"] / 2 + abs(nt.get("k", 0.0)) * st.sy / 200
+            dd = d + nt.get("slope", 0.0) * max(0.0, nt.get("t", 0) * 50 - off + st.sy / 2)
+            return c - hw, c + hw, dd
+        hit = []
+        for st in out:
+            if st.span and st.cat in ("face", "core", "crown"):
+                a, b, _ = window(st)
+                if st.span[0] < b and st.span[1] > a: hit.append(st)
+        if not hit: continue
+        top = max(st.z + st.sz / 2 for st in hit)
+        new = []
+        for st in out:
+            a, b, dd = window(st) if st in hit else (0, 0, 0)
+            zn = top - dd                                     # dno zlabku v miste kamene (abs. cm)
+            if st not in hit or st.z + st.sz / 2 <= zn + 0.5:  # kamen pod dnem zlabku zustava (zlabek muze jit pres vic rad)
+                new.append(st); continue
+            s0, s1, z0r, z1r = st.span; ya = math.radians(st.yaw); dx, dy = math.cos(ya), math.sin(ya)
+            mid = (s0 + s1) / 2; J = P["JOINT"] * 100 if st.cat != "core" else 0.0
+            cut = st.z + st.sz / 2 - zn                       # o kolik se kamen ve zlabku snizi
+            for k, (p, q, low) in enumerate(((s0, a, False), (max(a, s0), min(b, s1), True), (b, s1, False))):
+                if q - p < 0.04: continue
+                sz = st.sz - (cut if low else 0.0)
+                if sz < 5: continue
+                m = (p + q) / 2 - mid
+                pc = Stone("%s.n%d" % (st.id, k), st.cat, st.x + dx * m * 100, st.y + dy * m * 100, st.z - (cut / 2 if low else 0.0),
+                           st.yaw, max((q - p) * 100 - J, 3.0), st.sy, sz, st.pitch, st.roll, seg=st.seg)
+                pc.span = (p, q, z0r, z1r - (cut / 100 if low else 0.0)); pc.rough = st.rough
+                new.append(pc)
+        out = new
+    return out
 
 def rough_core(stones, wd, P, face_d, core_w, T, removed=()):
     """Jadro, pred kterym chybi lic: blok se rozdeli na kameny 0.35-0.7 m, kazdy zapusteny o 5-20 cm od odkryte
