@@ -100,8 +100,9 @@ def compute(R, data, removed=(), moved=None, volumes=None):
 def _materials(unreal, R):
     mats = R.ensure_materials(unreal)
     mats["floor"] = mats.get("frame")
-    if not mats.get("wood"):       # MI_RuinWood (zasle drevo) vytvori ensure_materials; zaloha StarterContent
+    if not mats.get("wood"):       # MI_RuinWood (+ _Tar, _Oil) vytvori ensure_materials; zaloha StarterContent
         mats["wood"] = next((unreal.load_asset(p) for p in MAT_WOOD if unreal.EditorAssetLibrary.does_asset_exist(p.split(".")[0])), None)
+    for wc in R.WOOD_MI: mats[wc] = mats.get(wc) or mats["wood"]
     return mats
 
 
@@ -124,7 +125,9 @@ def build_in_unreal():
                 for s in sts:
                     m, nom = R._resolve(unreal, s, cube, meshes)
                     bym.setdefault(m.get_path_name(), [m, []])[1].append(R.stone_transform(unreal, s, m, nom))
-                cname = {"wood": "Drevo", "floor": "Podlaha", "face": "Kamen", "frame": "Kvadr"}.get(cat, cat)
+                cname = {"wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej", "wood_blood": "Drevo_Krev",
+                         "wood_old": "Drevo_Stare", "floor": "Podlaha", "face": "Kamen",
+                         "frame": "Kvadr"}.get(cat, cat)
                 R._ism_actor(unreal, eas, "%s_%s" % (name, cname), g["folder"], [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag)
                 n += len(sts)
             for s in g["loose"]:

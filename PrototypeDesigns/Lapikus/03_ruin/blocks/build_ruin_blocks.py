@@ -35,6 +35,14 @@ MAT_CROWN = None                         # koruna zdi: odkryte horni kameny (vic
 CROWN_WEATHER = True                     # odkryte kameny koruny = zvetrale tvary (SM_RuinStone_W_*) + material MI_RuinCrown
 MAT_DIR   = "/Game/Skvt/Lapikus/Ruin/Materials"
 TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
+    "wood_tar": [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
+                 ("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N")],
+    "wood_oil": [("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N"),
+                 ("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N")],
+    "wood_blood": [("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N"),
+                   ("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N")],
+    "wood_old": [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
+                 ("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N")],
     "wood":  [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
               ("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N"),
               ("/Game/StarterContent/Textures/T_Wood_Walnut_D", "/Game/StarterContent/Textures/T_Wood_Walnut_N")],
@@ -55,6 +63,16 @@ MAT_LOOK = {
     "crown": dict(TintA=(0.64, 0.62, 0.55), TintB=(0.96, 0.93, 0.84), Tiling=1.0, Roughness=0.95),
     # zasle nelakovane drevo: sedohneda, matna; kazdy tram / prkno jinak (Per Instance Random)
     "wood":  dict(TintA=(0.40, 0.37, 0.33), TintB=(0.62, 0.58, 0.52), Tiling=1.0, Roughness=0.97),
+    # dehtovane (venkovni a masivni drevo): tmave hnedocerne, matne (zvetraly dehet, ne cerstvy lesk)
+    # (hodnoty jsou linearni: 0.05 ~ sRGB 0.25 -> po vynasobeni texturou skoro hnedocerne jako stare dehtovane tramy)
+    "wood_tar": dict(TintA=(0.045, 0.032, 0.022), TintB=(0.085, 0.060, 0.040), Tiling=1.0, Roughness=0.88),
+    # morene olejem (jemna prace, vnitrni stavebni drevo): teple tmavsi hnede, polomatne
+    "wood_oil": dict(TintA=(0.34, 0.23, 0.14), TintB=(0.50, 0.35, 0.21), Tiling=1.0, Roughness=0.8),
+    # morene krvi (volska / kravska krev s vapnem): stary nater, tmave cervenohnede, matne, textura castecne odbarvena
+    "wood_blood": dict(TintA=(0.075, 0.028, 0.018), TintB=(0.14, 0.055, 0.032), Tiling=1.0, Roughness=0.9, Desaturate=0.5),
+    # stare neosetrene drevo (slunce, dest): sede az stribrite, odbarvene, uplne matne, zaprasene a ochozene
+    "wood_old": dict(TintA=(0.34, 0.33, 0.31), TintB=(0.55, 0.53, 0.50), Tiling=1.0, Roughness=1.0, Desaturate=0.8,
+                     DustTint=(0.40, 0.37, 0.32), DustAmount=0.3),
 }
 # zvetrani shora (v materialu podle normaly): plochy mirici nahoru svetlejsi, nazelenale (lisejnik, prach), drsnejsi.
 # TopStart = od jakeho sklonu (0 svisla stena .. 1 vodorovny vrsek), TopSharp = ostrost prechodu, TopAmount = sila
@@ -64,10 +82,14 @@ MAT_TOP = {
     "frame": dict(TopTint=(0.86, 0.90, 0.76), TopStart=0.55, TopSharp=3.0, TopAmount=0.5),
     "crown": dict(TopTint=(0.80, 0.88, 0.66), TopStart=0.35, TopSharp=2.5, TopAmount=1.00),
     "wood":  dict(TopTint=(0.86, 0.86, 0.82), TopStart=0.60, TopSharp=3.0, TopAmount=0.35),    # vrch vybledly sluncem
+    "wood_tar": dict(TopTint=(1.3, 1.27, 1.2), TopStart=0.6, TopSharp=3.0, TopAmount=0.3),    # dehet na vrsku jen lehce vybledne (porad tmavy)
+    "wood_oil": dict(TopTint=(1.15, 1.12, 1.05), TopStart=0.60, TopSharp=3.0, TopAmount=0.25),
+    "wood_blood": dict(TopTint=(1.25, 1.15, 1.10), TopStart=0.6, TopSharp=3.0, TopAmount=0.3),   # nater na vrsku lehce vybledly
+    "wood_old": dict(TopTint=(1.12, 1.12, 1.10), TopStart=0.6, TopSharp=3.0, TopAmount=0.4),     # slapane / slunecne plochy svetlejsi
 }
-MAT_VERSION = 4                          # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
+MAT_VERSION = 7                          # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
                                          # (tinty MI_RuinFace/Frame zustanou, jak je mas; MAT_RESET viz nize)
-MAT_RESET = {"crown": 2, "core": 3, "frame": 4}      # MI starsi nez tato verze dostane znovu tint a texturu z MAT_LOOK / TEXTURES
+MAT_RESET = {"crown": 2, "core": 3, "frame": 4, "wood_tar": 6}      # MI starsi nez tato verze dostane znovu tint a texturu z MAT_LOOK / TEXTURES
 # --- zaoblene zvetrale kameny lice (gen_stones.py -> stones/*.obj vedle skriptu; skript je sam naimportuje)
 USE_STONE_MESHES = True                  # False = vsude kostky (Cube) jako drive
 STONE_DIR   = "/Game/Skvt/Lapikus/Ruin/Stones"
@@ -89,7 +111,15 @@ WOOD_NOMINAL = {"SM_RuinTimber": (100.0, 25.0, 25.0), "SM_RuinPlank": (100.0, 25
 DRESSED_FRAMES = True                     # osteni, nadprazi, strilny z opracovanych kamenu SM_RuinDressed_* (False = kvadr SM_RuinAshlar)
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # zaloha, kdyz chybi textury dreva pro MI_RuinWood
-MAT_WOOD_MI = None                       # vlastni material dreva (cesta); None = MI_RuinWood (zasle drevo, vytvori skript)            # osteni a oblouky: lehce srazene hrany
+MAT_WOOD_MI = None                       # vlastni material neosetreneho dreva (cesta); None = MI_RuinWood (vytvori skript)
+# druhy dreva (Stone.cat): "wood" bez upravy (MI_RuinWood), "wood_tar" dehtovane, "wood_oil" morene olejem,
+# "wood_blood" morene krvi, "wood_old" stare neosetrene (zasedle, zaprasene)
+WOOD_FINISH = {"raw": "wood", "tar": "wood_tar", "oil": "wood_oil", "blood": "wood_blood", "old": "wood_old"}
+WOOD_MI = {"wood": "MI_RuinWood", "wood_tar": "MI_RuinWood_Tar", "wood_oil": "MI_RuinWood_Oil",
+           "wood_blood": "MI_RuinWood_Blood", "wood_old": "MI_RuinWood_Old"}
+# vychozi uprava podle casti stavby (lze prepsat v datech: floors[...]["finish"]); prkna jednoho patra: "planks_<patro>"
+WOOD_FINISH_DEFAULT = dict(beams="tar", girder="tar", posts="tar", heads="tar", planks="raw", stairs="raw",
+                           porch_beams="blood", porch_braces="blood", porch_posts="blood", porch_planks="blood", planks_2="old")            # osteni a oblouky: lehce srazene hrany
 BLOCK_BP  = "/Game/Skvt/Lapikus/Ruin/BP_RuinBlocks"   # zalozni Blueprint s InstancedStaticMesh (kdyz nejde pridat komponentu)
 TERRAIN_FROM_LEVEL = True                # True = vysky terenu se pri buildu zmeri primo z landscapu v levelu (line trace)
                                          #   a ulozi do terrain_from_level.json (capture_manual_edits pouzije tento ulozeny stav)
@@ -877,7 +907,7 @@ def in_box(s, box):
 def stone_mesh_name(st):
     """Varianta zaobleneho kamene podle pomeru delka/vyska bloku (deterministicky podle id)."""
     if not USE_STONE_MESHES: return None
-    if st.cat == "wood":
+    if st.cat in WOOD_MI:
         if not WOOD_MESHES: return None
         v = "ABC"[zlib.crc32(st.id.encode()) % 3]
         if st.sz > 1.5 * max(st.sx, st.sy): return "SM_RuinPost_" + v          # sloup (delka nahoru)
@@ -928,6 +958,8 @@ def build_floor_stones(fs, P, walls_out, terr=None):
                                  roll=srng.uniform(-3, 3) if tilt else 0.0))
             v += dv; r += 1
     # --- patra: tramy v kapsach, prkna na tramech (horni plocha prken = ref_z + n * storey)
+    fin = dict(WOOD_FINISH_DEFAULT, **fs.get("finish", {}))
+    WC = lambda part: WOOD_FINISH.get(fin.get(part, "raw"), "wood")       # kategorie (material) dreva podle casti
     bm = fs.get("beams", {}); pk = fs.get("planks", {})
     def wall_stands(x, y, zmin):
         for wn in fs.get("walls", []):
@@ -944,7 +976,7 @@ def build_floor_stones(fs, P, walls_out, terr=None):
             if not (wall_stands(ea[0], ea[1], zt + 30) and wall_stands(eb[0], eb[1], zt + 30)): continue   # zed u kapsy spadla -> tram chybi
             sid = "%s|B%d|%d" % (fs["name"], lvl, i); srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
             x, y = W((u0 + u1) / 2, vb + srng.uniform(-0.02, 0.02))
-            out.append(Stone(sid, "wood", x, y, zt - 6 - bh / 2, yaw_u + srng.uniform(-0.4, 0.4), (u1 - u0 + 2 * brg) * 100 - 4, bw, bh,
+            out.append(Stone(sid, WC("beams"), x, y, zt - 6 - bh / 2, yaw_u + srng.uniform(-0.4, 0.4), (u1 - u0 + 2 * brg) * 100 - 4, bw, bh,
                              pitch=srng.uniform(-0.3, 0.3)))
             ok_v.append(vb)
         if len(ok_v) < 2: continue
@@ -972,7 +1004,7 @@ def build_floor_stones(fs, P, walls_out, terr=None):
                     srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
                     if srng.random() < pk.get("missing", 0.04): continue
                     x, y = W(uc + srng.uniform(-0.01, 0.01), (pa + pb) / 2)
-                    out.append(Stone(sid, "wood", x, y, zt - 1 - t / 2 + srng.uniform(-0.4, 0.4), yaw_v + srng.uniform(-1.0, 1.0),
+                    out.append(Stone(sid, WC("planks_%d" % lvl) if "planks_%d" % lvl in fin else WC("planks"), x, y, zt - 1 - t / 2 + srng.uniform(-0.4, 0.4), yaw_v + srng.uniform(-1.0, 1.0),
                                      (pb - pa) * 100 - 1, w_ * 100 - 0.5, t, roll=srng.uniform(-0.6, 0.6)))
     # --- pruvlak (sever-jih pod tramy, konce v kapsach) a sloup s hlavici pod nim
     gd = fs.get("girder")
@@ -984,14 +1016,14 @@ def build_floor_stones(fs, P, walls_out, terr=None):
             if not (wall_stands(ea[0], ea[1], zg1 + 30) and wall_stands(eb[0], eb[1], zg1 + 30)): continue
             sid = "%s|G%d" % (fs["name"], lvl)
             x, y = W(gd["u"], (v0 + v1) / 2)
-            out.append(Stone(sid, "wood", x, y, (zg0 + zg1) / 2 - 0.5, yaw_v, (v1 - v0 + 0.66) * 100 - 4, gw, ch - 1))
+            out.append(Stone(sid, WC("girder"), x, y, (zg0 + zg1) / 2 - 0.5, yaw_v, (v1 - v0 + 0.66) * 100 - 4, gw, ch - 1))
             zf = ref + (lvl - 1) * fs["storey"] * 100 - (0 if lvl == 1 else 1)     # podlaha pod sloupem (dlazba / prkna)
             ps = gd.get("post", 0.25) * 100
             for j, pv in enumerate(gd.get("post_v", [])):
                 x, y = W(gd["u"], pv)
                 head = 15
-                out.append(Stone("%s|G%d|P%d" % (fs["name"], lvl, j), "wood", x, y, (zf + zg0 - head) / 2, yaw_v, ps, ps, zg0 - head - zf))
-                out.append(Stone("%s|G%d|H%d" % (fs["name"], lvl, j), "wood", x, y, zg0 - head / 2, yaw_v, 70, gw, head - 0.5))   # hlavice (sedlo)
+                out.append(Stone("%s|G%d|P%d" % (fs["name"], lvl, j), WC("posts"), x, y, (zf + zg0 - head) / 2, yaw_v, ps, ps, zg0 - head - zf))
+                out.append(Stone("%s|G%d|H%d" % (fs["name"], lvl, j), WC("heads"), x, y, zg0 - head / 2, yaw_v, 70, gw, head - 0.5))   # hlavice (sedlo)
     # --- podesta pred dvermi (vne veze): tramy z kapes ven, prkna podel zdi, sloupky na terenu
     pc = fs.get("porch")
     if pc:
@@ -1000,26 +1032,26 @@ def build_floor_stones(fs, P, walls_out, terr=None):
         bw, bh = pc.get("beam", (0.24, 0.28))
         for j, du in enumerate((-pc.get("beam_du", 1.1), pc.get("beam_du", 1.1))):
             x, y = W(pc["u"] + du, vw + (dp - 0.35) / 2)
-            out.append(Stone("%s|D|B%d" % (fs["name"], j), "wood", x, y, zt - 6 - bh * 50, yaw_v, (dp + 0.35) * 100, bw * 100, bh * 100))
+            out.append(Stone("%s|D|B%d" % (fs["name"], j), WC("porch_beams"), x, y, zt - 6 - bh * 50, yaw_v, (dp + 0.35) * 100, bw * 100, bh * 100))
             if pc.get("posts") and terr is not None:
                 x, y = W(pc["u"] + du, vw + dp - 0.12)
                 zg = terr.z(x, y) - 10
                 ztop = zt - 6 - bh * 100
-                out.append(Stone("%s|D|P%d" % (fs["name"], j), "wood", x, y, (zg + ztop) / 2, yaw_v, 20, 20, ztop - zg))
+                out.append(Stone("%s|D|P%d" % (fs["name"], j), WC("porch_posts"), x, y, (zg + ztop) / 2, yaw_v, 20, 20, ztop - zg))
             br = pc.get("braces")
             if br:     # sikma vzpera: pata oprena o lic zdi, hlava pod tramem (tram je zapusteny v kapse)
                 dv_, dz_, bw_ = br.get("dv", 0.75), br.get("dz", 0.75), br.get("w", 0.14)
                 ztop = zt - 6 - bh * 100
                 ang = math.atan2(dz_, dv_); Lb = math.hypot(dv_, dz_) * 100
                 x, y = W(pc["u"] + du, vw + dv_ / 2 + 0.02)
-                out.append(Stone("%s|D|V%d" % (fs["name"], j), "wood", x, y, ztop - dz_ * 50 - bw_ * 30, yaw_v, Lb + bw_ * 60, bw_ * 100, bw_ * 100,
+                out.append(Stone("%s|D|V%d" % (fs["name"], j), WC("porch_braces"), x, y, ztop - dz_ * 50 - bw_ * 30, yaw_v, Lb + bw_ * 60, bw_ * 100, bw_ * 100,
                                  pitch=math.degrees(ang)))
         t = 5.0; v = vw + 0.02; r = 0
         while v < vw + dp - 0.05:
             w_ = min(rng.uniform(0.22, 0.32), vw + dp - v)
             sid = "%s|D|K%d" % (fs["name"], r); srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
             x, y = W(pc["u"] + srng.uniform(-0.03, 0.03), v + w_ / 2)
-            out.append(Stone(sid, "wood", x, y, zt - 1 - t / 2, yaw_u + srng.uniform(-1.2, 1.2), 2 * wd_ * 100, w_ * 100 - 1, t))
+            out.append(Stone(sid, WC("porch_planks"), x, y, zt - 1 - t / 2, yaw_u + srng.uniform(-1.2, 1.2), 2 * wd_ * 100, w_ * 100 - 1, t))
             v += w_ + 0.01; r += 1
     # --- provizorni schody: dve schodnice (tramy) a do nich zasazene hrube fosny, vedou otvorem do patra
     for k, sd in enumerate(fs.get("stairs", [])):
@@ -1037,14 +1069,14 @@ def build_floor_stones(fs, P, walls_out, terr=None):
         for side in (-1, 1):
             sid = "%s|S%d|T%d" % (fs["name"], k, 0 if side < 0 else 1)
             x, y = P2((t0 + t1) / 2, cc + side * (hw + sw / 2))
-            out.append(Stone(sid, "wood", x, y, (za + zb_) / 2 + 4, yaw_run, L * 100 + 15, sw * 100, sh * 100, pitch=math.degrees(A)))
+            out.append(Stone(sid, WC("stairs"), x, y, (za + zb_) / 2 + 4, yaw_run, L * 100 + 15, sw * 100, sh * 100, pitch=math.degrees(A)))
         n = max(2, int(round(rise / sd.get("step", 0.25))))
         for i in range(1, n):
             sid = "%s|S%d|F%d" % (fs["name"], k, i)
             srng = random.Random(zlib.crc32(sid.encode()) ^ P["SEED"])
             zr = rise * i / n; a_ = t0 + dirn * zr / math.tan(A)
             x, y = P2(a_, cc + srng.uniform(-0.01, 0.01))
-            out.append(Stone(sid, "wood", x, y, za + zr * 100 + srng.uniform(-0.8, 0.8), yaw_tr + srng.uniform(-2, 2),
+            out.append(Stone(sid, WC("stairs"), x, y, za + zr * 100 + srng.uniform(-0.8, 0.8), yaw_tr + srng.uniform(-2, 2),
                              (2 * hw + 0.06) * 100, srng.uniform(22, 27), 5.5, roll=srng.uniform(-1.2, 1.2)))
     return out
 
@@ -1222,31 +1254,34 @@ def ensure_materials(unreal):
         eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION))
         eal.save_loaded_asset(mi)
         mats[cat] = mi
-    mats["wood"] = _wood_mi(unreal, master, pick)
+    for wc, wn in WOOD_MI.items():
+        mats[wc] = _wood_mi(unreal, master, pick, wc, wn)
+    for wc in WOOD_MI:                                   # chybi-li textury, aspon stejne drevo vsude
+        mats[wc] = mats[wc] or mats.get("wood")
     return mats
 
-def _wood_mi(unreal, master, pick):
-    """MI_RuinWood: zasle nelakovane drevo na M_RuinStone (textura dreva, sedohnedy tint, matne). Bez textur dreva -> MAT_WOOD."""
+def _wood_mi(unreal, master, pick, cat="wood", name="MI_RuinWood"):
+    """MI_RuinWood(_Tar/_Oil): drevo na M_RuinStone (textura dreva, tint podle upravy, matne). Bez textur dreva -> MAT_WOOD."""
     eal = unreal.EditorAssetLibrary; mel = unreal.MaterialEditingLibrary
-    if MAT_WOOD_MI: return unreal.load_asset(MAT_WOOD_MI)
-    ip = _asset_path(MAT_DIR, "MI_RuinWood")
-    if eal.does_asset_exist(ip): return unreal.load_asset(ip)
-    d, n = pick("wood")
+    if MAT_WOOD_MI and cat == "wood": return unreal.load_asset(MAT_WOOD_MI)
+    ip = _asset_path(MAT_DIR, name)
+    if eal.does_asset_exist(ip):
+        mi = unreal.load_asset(ip)
+        if _ver(eal, mi, "RuinMatVersion") < MAT_RESET.get(cat, 0):        # novejsi vychozi vzhled -> prepsat tint a vybledani
+            _set_top(unreal, mel, mi, cat, look=True)
+            eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION)); eal.save_loaded_asset(mi)
+        return mi
+    d, n = pick(cat)
     if not d or master is None:
         return next((unreal.load_asset(p) for p in MAT_WOOD if eal.does_asset_exist(p.split(".")[0])), None)
-    mi = unreal.AssetToolsHelpers.get_asset_tools().create_asset("MI_RuinWood", MAT_DIR, unreal.MaterialInstanceConstant,
+    mi = unreal.AssetToolsHelpers.get_asset_tools().create_asset(name, MAT_DIR, unreal.MaterialInstanceConstant,
                                                                 unreal.MaterialInstanceConstantFactoryNew())
     mel.set_material_instance_parent(mi, master)
     mel.set_material_instance_texture_parameter_value(mi, "BaseColor", d)
     if n:
         try: mel.set_material_instance_texture_parameter_value(mi, "Normal", n)
         except Exception: pass
-    lk = MAT_LOOK["wood"]
-    for pn in ("TintA", "TintB"):
-        c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
-    for pn in ("Tiling", "Roughness"):
-        mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
-    _set_top(unreal, mel, mi, "wood")
+    _set_top(unreal, mel, mi, cat, look=True)
     eal.set_metadata_tag(mi, "RuinMatVersion", str(MAT_VERSION)); eal.save_loaded_asset(mi)
     unreal.log("Ruin: vytvoren material dreva %s" % ip)
     return mi
@@ -1267,8 +1302,10 @@ def _set_top(unreal, mel, mi, cat, look=False):
         lk = MAT_LOOK[cat]
         for pn in ("TintA", "TintB"):
             c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
-        for pn in ("Tiling", "Roughness"):
-            mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
+        for pn in ("Tiling", "Roughness", "Desaturate", "DustAmount"):
+            if pn in lk: mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
+        if "DustTint" in lk:
+            c = lk["DustTint"]; mel.set_material_instance_vector_parameter_value(mi, "DustTint", unreal.LinearColor(c[0], c[1], c[2], 1))
     mel.update_material_instance(mi)
 
 
@@ -1305,8 +1342,14 @@ def _build_master(unreal, master, d0, n0):
     tb = vec("TintB", (0.95, 0.90, 0.80), -550, 400)
     lp = E(unreal.MaterialExpressionLinearInterpolate, -300, 300)
     C(ta, "", lp, "A"); C(tb, "", lp, "B"); C(pir, "", lp, "Alpha")
-    bc = E(unreal.MaterialExpressionMultiply, -100, 0)
-    C(tx, "RGB", bc, "A"); C(lp, "", bc, "B")
+    # odbarveni textury (Desaturate 0..1: stare / morene drevo) a zaprasení (DustTint, DustAmount) - vychozi 0 = beze zmeny
+    ds = E(unreal.MaterialExpressionDesaturation, -350, -250)
+    C(tx, "RGB", ds, ""); C(scal("Desaturate", 0.0, -550, -300), "", ds, "Fraction")
+    bc0 = E(unreal.MaterialExpressionMultiply, -150, -100)
+    C(ds, "", bc0, "A"); C(lp, "", bc0, "B")
+    bc = E(unreal.MaterialExpressionLinearInterpolate, 0, 0)
+    C(bc0, "", bc, "A"); C(vec("DustTint", (0.40, 0.37, 0.32), -300, -450), "", bc, "B")
+    C(scal("DustAmount", 0.0, -300, -550), "", bc, "Alpha")
     # --- zvetrani shora: maska = saturate((N.z - TopStart) * TopSharp) * TopAmount, rozbita jasem textury
     vn = E(unreal.MaterialExpressionVertexNormalWS, -1400, 900)
     cm = E(unreal.MaterialExpressionComponentMask, -1200, 900)
@@ -1605,6 +1648,7 @@ def build_in_unreal():
     mats["floor"] = mats.get("frame")
     if not mats.get("wood"):
         mats["wood"] = next((unreal.load_asset(p) for p in MAT_WOOD if unreal.EditorAssetLibrary.does_asset_exist(p.split(".")[0])), None)
+    for wc in WOOD_MI: mats[wc] = mats.get(wc) or mats["wood"]
     meshes = ensure_stone_meshes(unreal)
     tag = unreal.Name(RUIN_TAG); n_total = 0
     with unreal.ScopedEditorTransaction("Build ruin (blocks)"):
@@ -1624,7 +1668,9 @@ def build_in_unreal():
                     for s in sts:
                         m, nom = _resolve(unreal, s, cube, meshes)
                         bym.setdefault(m.get_path_name(), [m, []])[1].append(stone_transform(unreal, s, m, nom))
-                    cname = {"face": "Lic", "core": "Jadro", "frame": "Osteni", "wood": "Drevo", "floor": "Podlaha", "crown": "Koruna"}[cat]
+                    cname = {"face": "Lic", "core": "Jadro", "frame": "Osteni", "wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej",
+                             "wood_blood": "Drevo_Krev", "wood_old": "Drevo_Stare",
+                             "floor": "Podlaha", "crown": "Koruna"}[cat]
                     label = ("%s_%02d_%s" % (name, seg + 1, cname)) if nseg > 1 else ("%s_%s" % (name, cname))
                     _ism_actor(unreal, eas, label, w["folder"] + ("/%s" % name if nseg > 1 else ""),
                                [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag)
@@ -1768,7 +1814,7 @@ if (__name__ == "__main__" or "unreal" in sys.modules) and not getattr(sys, "_ru
         tot = 0
         for n, w in data.items():
             c = {"face": 0, "core": 0, "frame": 0, "wood": 0, "floor": 0, "crown": 0}
-            for s in w["stones"] + w.get("loose", []): c[s.cat] = c.get(s.cat, 0) + 1
+            for s in w["stones"] + w.get("loose", []): c["wood" if s.cat in WOOD_MI else s.cat] = c.get("wood" if s.cat in WOOD_MI else s.cat, 0) + 1
             tot += sum(c.values()) + len(w.get("rubble", []))
             print("  %-18s lic %5d  jadro %4d  osteni %3d  sut %3d" % (n, c["face"], c["core"], c["frame"], len(w.get("rubble", [])))
                   + ("  koruna %4d" % c["crown"]) + ("  drevo %4d  dlazba %3d" % (c["wood"], c["floor"]) if c["wood"] or c["floor"] else ""))

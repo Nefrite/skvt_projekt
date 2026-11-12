@@ -124,6 +124,19 @@
      "dz": 0.75,
      "w": 0.14
     }
+   },
+   "finish": {
+    "beams": "tar",
+    "girder": "tar",
+    "posts": "tar",
+    "heads": "tar",
+    "planks": "raw",
+    "planks_2": "old",
+    "stairs": "raw",
+    "porch_beams": "blood",
+    "porch_braces": "blood",
+    "porch_posts": "blood",
+    "porch_planks": "blood"
    }
   }
  ]

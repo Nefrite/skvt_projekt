@@ -28,7 +28,11 @@ floors = [dict(
     # obnoveny ochoz pred puvodnim vstupem (zvenku Vez_S): 2 tramy zapustene v kapsach, prkna,
     # bez sloupku do zeme - jen kratke sikme vzpery pod tramy oprene o zed
     porch=dict(u=TS["DOOR_U"], level=1, v_wall=LT + 1.25, depth=1.3, width=2.6, beam_du=TS["PORCH_BEAM_DS"],
-               beam=(0.24, 0.28), posts=False, braces=dict(dv=0.75, dz=0.75, w=0.14)))]
+               beam=(0.24, 0.28), posts=False, braces=dict(dv=0.75, dz=0.75, w=0.14)),
+    # uprava dreva: tar = dehtovane (masivni), raw = bez upravy (vnitrni velke plochy, schody), oil = morene olejem (jemna prace),
+    # blood = morene krvi (venkovni ochoz), old = stare neosetrene, zasedle a zaprasene (prkna horniho patra - vic slunce a pocasi)
+    finish=dict(beams="tar", girder="tar", posts="tar", heads="tar", planks="raw", planks_2="old", stairs="raw",
+                porch_beams="blood", porch_braces="blood", porch_posts="blood", porch_planks="blood"))]
 
 out = dict(version=1, units="UE cm (pozice), m (rozmery v ramu veze)",
            note="Drevene vestavby a sut. Zricenina (zdi, kapsy, dlazba) je v 03_ruin/blocks/ruin_layout.json.",

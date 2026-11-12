@@ -13,7 +13,7 @@ fsw=[f for f in cdat["floors"] if f["name"]=="Vez_Patra"]
 data["Vez_Patra"]={"stones":(B.build_floor_stones(fsw[0],P,data,terr) if fsw else [])+data.get("Vez_Dlazba",{}).get("stones",[])}
 fs=(fsw[0] if fsw else lay["floors"][0]); ox,oy=fs["origin"]; U=np.array(fs["u"]); V=np.array(fs["v"])
 def uv(x,y): d=np.array([x-ox,y-oy]); return d@U/100, d@V/100
-COL={"face":(0.72,0.66,0.56),"core":(0.5,0.47,0.43),"frame":(0.9,0.8,0.6),"wood":(0.55,0.36,0.18),"floor":(0.8,0.76,0.68),"crown":(0.78,0.76,0.68)}
+COL={"face":(0.72,0.66,0.56),"core":(0.5,0.47,0.43),"frame":(0.9,0.8,0.6),"wood":(0.62,0.57,0.5),"wood_tar":(0.24,0.19,0.14),"wood_oil":(0.52,0.35,0.2),"wood_blood":(0.42,0.17,0.11),"wood_old":(0.66,0.65,0.62),"floor":(0.8,0.76,0.68),"crown":(0.78,0.76,0.68)}
 Ld=np.array([-0.4,-0.5,0.75]);Ld/=np.linalg.norm(Ld)
 F=fs["ref_z"]
 def boxes(stones,keep):
@@ -52,5 +52,5 @@ for k,(tt,keep,azv,el) in enumerate(views):
     ax.set_box_aspect((18,18,16),zoom=1.2)
     ax.view_init(elev=el,azim=azv); ax.set_axis_off(); ax.set_title(tt,fontsize=15)
 plt.subplots_adjust(left=0,right=1,top=0.92,bottom=0,wspace=0)
-fig.suptitle("Věž: schody cik-cak, dveře mezi zdí a sloupem, ochoz bez sloupků (postava 1,8 m)",fontsize=17,fontweight="bold")
+fig.suptitle("Věž: schody cik-cak, dveře mezi zdí a sloupem, ochoz bez sloupků; dřevo: dehet (tmavé), krev (červenohnědá), staré (šedé), bez úpravy (světlé)",fontsize=17,fontweight="bold")
 plt.savefig(sys.argv[2],dpi=70)

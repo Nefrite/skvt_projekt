@@ -41,7 +41,12 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Brana_S** je zvednutá do výšky oblouků obou bran (`protect` s `to`), přilehlé konce `Brana_V` a `Brana_J` taky. Na ni přijde provizorní hlídková konstrukce (05_constructions).
 - **Palac_J:** střílny s výklenkem zevnitř jako ve věži a v hradbě.
 - **Ostění a střílny** jsou z opracovaných kamenů `SM_RuinDressed_*` (zaoblené hrany). `MI_RuinFrame` je stejný kámen jako líc, jen o kousek světlejší.
-- **Dřevo** (`MI_RuinWood`): zašlé nelakované, šedohnědé, matné.
+- **Dřevo**, pět úprav (`constructions.json` → `finish`):
+  - dehet `MI_RuinWood_Tar` (skoro hnědočerný, matný): trámy, průvlak, sloupy,
+  - krev `MI_RuinWood_Blood` (tmavě červenohnědá): venkovní ochoz,
+  - staré neošetřené `MI_RuinWood_Old` (zašedlé, zaprášené): prkna ve 2. patře,
+  - bez úpravy `MI_RuinWood`: prkna v 1. patře a schody,
+  - olej `MI_RuinWood_Oil`: připravený, zatím nepoužitý. Rozdělení je v `constructions.json` → `finish`.
 - **Koruna zvětralá shora:** odkryté horní kameny mají meshe `SM_RuinStone_W_*` (nahoře zaoblení 8,5–10,5 cm a důlky, dole ostré 3 cm). `M_RuinStone` má zvětrání podle normaly: co míří nahoru, je světlejší a nazelenalé (`Top*` parametry, `MAT_TOP`). Graf materiálu i W meshe skript sám aktualizuje podle verze (`MAT_VERSION`, `STONE_MESH_VERSION`).
 
 ## Věž (hotovo 11/2026)
