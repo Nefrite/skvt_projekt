@@ -72,3 +72,6 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+/PrototypeDesigns/Characters/01_sitting/__pycache__
+/PrototypeDesigns/Lapikus/03_ruin/blocks/__pycache__
+/PrototypeDesigns/Lapikus/05_constructions/__pycache__

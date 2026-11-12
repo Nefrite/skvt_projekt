@@ -15,7 +15,8 @@ Kapsy ve zdech patří ke zřícenině. Dřevo, které v nich leží, patří se
 
 | Soubor | Obsah |
 |---|---|
-| `build_constructions.py` | stavba v UE (`MODE = "build"`) a uložení ručních úprav (`MODE = "capture"`). Mimo UE vypíše počty kusů. |
+| `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). |
+| `build_constructions.py` | společná logika všech staveb. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
 | `constructions.json` | data staveb (`floors` → `Vez_Patra`) a nastavení suti (`rubble`) |
 | `constructions_edits.json` | ručně smazané (`removed`) a posunuté (`moved`) kusy. Vzniká přes capture, nepřepisovat. |
 | `Stavby_vez_nahled.png` | řez věží: patra, schody, ochoz |
@@ -30,16 +31,17 @@ Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks`
 ## 2. Postup v UE
 
 1. **Nejdřív zřícenina:** `03_ruin\blocks\build_ruin_blocks.py`. Ta změří terén (`terrain_from_level.json`) a postaví zdi a kapsy.
-2. **Pak stavby:** **Tools → Execute Python Script → `05_constructions\build_constructions.py`.**
-   - Smaže jen svoje actory (tag `Zricenina_Stavby`) a postaví je znovu.
-   - Zříceniny se nedotkne. Build zříceniny zase nesmaže stavby.
+2. **Pak stavby:** **Tools → Execute Python Script →**
+   - **jedna stavba:** `05_constructions\stavby\Ostroh_Krov.py` (nebo `Vez_Patra.py`, `Sut.py`). Smaže a postaví jen tuto stavbu, ostatní zůstanou, jak jsou.
+   - **všechno:** `05_constructions\build_constructions.py`.
+   - Každý actor má tag `Zricenina_Stavby` a `stavba:<jméno>`. Zříceniny se build staveb nedotkne a build zříceniny nesmaže stavby.
 3. V Outlineru přibude:
    - `Stavby/Vez/Vez_Patra_Drevo`: trámy, prkna, průvlak, sloupy, schody a ochoz (Instanced Static Mesh),
    - `Stavby/Sut/<část hradu>/Kamen_…`: kameny suti jako samostatné actory.
 
-**Rychlé ladění jen jedné části:** `ONLY = ["Vez_Patra"]` (jen dřevo) nebo `ONLY = ["Sut"]` (jen suť).
+**Ruční úpravy:** smaž instanci nebo kámen, posuň kámen suti. Pak ve skriptu dané stavby (`stavby\<Stavba>.py`) nastav `MODE = "capture"` a spusť ho. Změny se zapíšou do `constructions_edits.json`, úpravy ostatních staveb v něm zůstanou, a platí i po dalším buildu.
 
-**Ruční úpravy:** smaž instanci nebo kámen, posuň kámen suti, pak nastav `MODE = "capture"` a spusť skript. Změny se zapíšou do `constructions_edits.json` a platí i po dalším buildu.
+**Nová stavba:** přidej položku do `constructions.json` (přes `gen_constructions.py`), případně nový typ do `build_constructions.py`, a zkopíruj jeden ze skriptů ve `stavby\` s novým jménem v `STAVBA`.
 
 **Fyzika suti:** kameny suti mají trvalou fyziku (`RUBBLE_PHYSICS = True`, tag `Ruin_Physics`), takže s nimi hráč může pohnout. Hmotnost odpovídá objemu kamene, většinou 20–280 kg. Nastavení je v `STONE_PHYSICS` v `03_ruin\blocks\build_ruin_blocks.py` a je společné s odpadlými kusy zdi.
 

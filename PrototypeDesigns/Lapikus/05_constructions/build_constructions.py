@@ -6,7 +6,9 @@ Stavi zvlast od zriceniny (03_ruin/blocks/build_ruin_blocks.py), takze se da lad
   - volna sut na zemi u zdi (samostatne actory, lze posouvat a mazat)
 Zricenina zustava ve 03: zdi, otvory, kapsy pro tramy, kamenna dlazba.
 
-Pouziti v UE: Tools -> Execute Python Script -> build_constructions.py
+Pouziti v UE: Tools -> Execute Python Script ->
+  - stavby/<Stavba>.py      jen jedna stavba (Vez_Patra.py, Ostroh_Krov.py, Sut.py) - ostatni se nesmazou ani neprestavi
+  - build_constructions.py  vsechny stavby najednou
   - MODE = "build"   postavit (smaze jen sve actory s tagem Zricenina_Stavby)
   - MODE = "capture" ulozit rucne smazane / posunute kusy do constructions_edits.json
   - MODE = "freeze"  (volitelne) sut bez fyziky, staticka
@@ -93,7 +95,7 @@ def compute(R, data, removed=(), moved=None, volumes=None):
         for name, r in R.make_rubble(walls, P, terr, removed).items():
             if not r["stones"]: continue
             out[name + "_Sut"] = dict(folder="%s/%s" % (rb.get("folder", "Stavby/Sut"), r["folder"].split("/")[-1]),
-                                      stones=[], loose=r["stones"])
+                                      stones=[], loose=r["stones"], stavba="Sut")
     for g in out.values():
         for s in g["stones"] + g["loose"]:
             m = moved.get(s.id)
@@ -302,8 +304,16 @@ def build_in_unreal():
     cube = unreal.load_asset(R.CUBE_MESH); mats = _materials(unreal, R); meshes = R.ensure_stone_meshes(unreal)
     tag = unreal.Name(CONSTR_TAG); n = 0; n_phys = 0
     with unreal.ScopedEditorTransaction("Build constructions"):
-        old = [a for a in eas.get_all_level_actors() if tag in a.tags
-               and (not ONLY or any(a.get_actor_label().startswith(o) or ("Sut" in ONLY and "_Sut" in a.get_actor_label()) for o in ONLY))]
+        def mine(a):
+            """patri actor ke stavbe z ONLY? podle tagu stavba:<jmeno>, u starsich buildu podle jmena / id"""
+            if not ONLY: return True
+            tg = [str(t) for t in a.tags]
+            st_ = [t[7:] for t in tg if t.startswith("stavba:")]
+            if st_: return st_[0] in ONLY
+            lab = a.get_actor_label()
+            if any(lab.startswith(o) for o in ONLY): return True
+            return "Sut" in ONLY and ("_Sut" in lab or any(t.startswith("id:") and "|R" in t for t in tg))
+        old = [a for a in eas.get_all_level_actors() if tag in a.tags and mine(a)]
         if old: eas.destroy_actors(old)
         for name, g in groups.items():
             bycat = {}
@@ -316,14 +326,15 @@ def build_in_unreal():
                 cname = {"wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej", "wood_blood": "Drevo_Krev",
                          "wood_old": "Drevo_Stare", "floor": "Podlaha", "face": "Kamen",
                          "frame": "Kvadr"}.get(cat, cat)
-                R._ism_actor(unreal, eas, "%s_%s" % (name, cname), g["folder"], [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag)
+                for a_ in R._ism_actor(unreal, eas, "%s_%s" % (name, cname), g["folder"], [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag):
+                    a_.tags = list(a_.tags) + [unreal.Name("stavba:" + g.get("stavba", name))]
                 n += len(sts)
             for s in g["loose"]:
                 m, nom = R._resolve(unreal, s, cube, meshes)
                 act = eas.spawn_actor_from_object(m, unreal.Vector(s.x, s.y, s.z), unreal.Rotator(roll=s.roll, pitch=s.pitch, yaw=s.yaw))
                 if not act: continue
                 act.set_actor_transform(R.stone_transform(unreal, s, m, nom), False, False)
-                act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id)]
+                act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id), unreal.Name("stavba:" + g.get("stavba", name))]
                 act.set_folder_path(g["folder"])
                 act.set_actor_label("Kamen_" + s.id.replace("|", "_"))
                 if mats.get(s.cat): act.static_mesh_component.set_material(0, mats[s.cat])
@@ -396,9 +407,18 @@ def _has_unreal():
         return False
 
 
-if __name__ == "__main__" or "unreal" in sys.modules:
+def run(only=None, mode=None):
+    """spusteni z UE pro vybrane stavby (stavby/<Stavba>.py): only = seznam jmen ze constructions.json (+ "Sut"),
+    mode = "build" / "capture" / "freeze"; ruzne stavby se navzajem nesmazou ani neprestavi"""
+    global ONLY, MODE
+    ONLY = list(only) if only else None
+    MODE = mode or MODE
+    {"capture": capture_edits, "freeze": freeze}.get(MODE, build_in_unreal)()
+
+
+if (__name__ == "__main__" or "unreal" in sys.modules) and not getattr(sys, "_constr_import_only", False):
     if _has_unreal():
-        {"capture": capture_edits, "freeze": freeze}.get(MODE, build_in_unreal)()
+        run(ONLY, MODE)
     else:
         if len(sys.argv) > 1: DATA_PATH = sys.argv[1]
         if len(sys.argv) > 2: RUIN_DIR = sys.argv[2]
