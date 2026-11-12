@@ -854,16 +854,30 @@ def cut_notches(stones, notches, P):
             off = 0.0
             if nt.get("pt") and nt.get("nin"):
                 off = (st.x - nt["pt"][0]) * nt["nin"][0] + (st.y - nt["pt"][1]) * nt["nin"][1]
+            dd = d + nt.get("slope", 0.0) * max(0.0, nt.get("t", 0) * 50 - off + st.sy / 2)
+            if nt.get("dir"):
+                # presne podle pudorysu: cast kamene (podel jeho delky), ktera lezi pod tramem (+ 4 cm vule na kazde strane);
+                # plati i v zakrivene / lomene zdi, kde se s podel osy zdi s polohou kamene nekryje
+                bx, by = nt["dir"]; lx, ly = -by, bx
+                rx, ry = st.x - nt["pt"][0], st.y - nt["pt"][1]
+                if abs(rx * bx + ry * by) > nt.get("t", 2.0) * 100 + 150: return 0.0, 0.0, dd   # daleko podel tramu
+                ya = math.radians(st.yaw); A = math.cos(ya) * lx + math.sin(ya) * ly; Bq = -math.sin(ya) * lx + math.cos(ya) * ly
+                c_lat = rx * lx + ry * ly; H = nt.get("bw", 0.22) * 50 + 4.0 + st.sy / 2 * abs(Bq)
+                mid = (st.span[0] + st.span[1]) / 2; half = (st.span[1] - st.span[0]) * 50
+                if abs(A) < 1e-6:
+                    return (st.span[0] - 1, st.span[1] + 1, dd) if abs(c_lat) < H else (0.0, 0.0, dd)
+                u0, u1 = sorted(((-H - c_lat) / A, (H - c_lat) / A))
+                if u1 < -half or u0 > half: return 0.0, 0.0, dd
+                return mid + u0 / 100, mid + u1 / 100, dd
             c = nt["s"] + off * nt.get("k", 0.0) / 100
             # sikmy tram jde i pres hloubku kamene (vrstvy) -> zlabek o tolik sirsi; hloubka podle vnejsi hrany kamene
             hw = nt["w"] / 2 + abs(nt.get("k", 0.0)) * st.sy / 200
-            dd = d + nt.get("slope", 0.0) * max(0.0, nt.get("t", 0) * 50 - off + st.sy / 2)
             return c - hw, c + hw, dd
         hit = []
         for st in out:
             if st.span and st.cat in ("face", "core", "crown"):
                 a, b, _ = window(st)
-                if st.span[0] < b and st.span[1] > a: hit.append(st)
+                if b > a and st.span[0] < b and st.span[1] > a: hit.append(st)
         if not hit: continue
         top = max(st.z + st.sz / 2 for st in hit)
         new = []

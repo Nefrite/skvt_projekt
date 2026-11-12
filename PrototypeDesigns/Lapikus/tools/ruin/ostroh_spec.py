@@ -94,13 +94,14 @@ def spec(walls):
         k = (bux * wx / wl + buy * wy / wl) / (bux * mx + buy * my)
         beams.append(dict(start=[round(st[0], 1), round(st[1], 1)], wall_s=round(se, 3), wall_pt=[round(p[0], 1), round(p[1], 1)], k=round(k, 4),
                           notch_w=round(BEAM[0] / max(sin_a, 0.35) + 0.08, 3), length=round(bl / 100, 2),
-                          slope=round(RISE / d_in, 4), d_in=round(d_in, 3), wall_in=[round(mx, 5), round(my, 5)], sin=round(sin_a, 4)))
+                          slope=round(RISE / d_in, 4), d_in=round(d_in, 3), wall_in=[round(mx, 5), round(my, 5)], sin=round(sin_a, 4),
+                          dir=[round(bux, 5), round(buy, 5)]))
     return dict(post=POST, crossbeam_over=CROSS_OVER, pass_w=PASS_W, posts=[[round(x, 1), round(y, 1)] for x, y in posts], door=[round(D[0], 1), round(D[1], 1)],
                 u=[round(ux, 5), round(uy, 5)], n=[round(nx, 5), round(ny, 5)], beams=beams,
                 cap=dict(s0=round(s0 - 1.6, 2), s1=round(s1 + 1.6, 2), z=PLATEAU + CAP_H * 100),
                 # zlabek: u vnitrniho lice hloubka d, ven hloubsi podle sklonu tramu (tram lezi v celem zlabku)
                 notches=[dict(s=b_["wall_s"], w=b_["notch_w"], d=round(BEAM[1] * NOTCH_D, 3), slope=round(b_["slope"] / max(b_["sin"], 0.35), 4),
-                              pt=b_["wall_pt"], nin=b_["wall_in"], t=T, k=b_["k"]) for b_ in beams],
+                              pt=b_["wall_pt"], nin=b_["wall_in"], t=T, k=b_["k"], dir=b_["dir"], bw=BEAM[0]) for b_ in beams],
                 # koruna pod strechou: kameny nesmi prekazet latim a prknum mezi tramy -> vrch zdi ven ve sklonu strechy
                 roof_clear=dict(clear=round(BEAM[1] * (1 - NOTCH_D), 3), margin=0.02),      # pod vrch tramu (late lezi na tramech)
                 beam=list(BEAM), rise=RISE, overhang=OVERHANG, wall=WALL, wall_t=T)

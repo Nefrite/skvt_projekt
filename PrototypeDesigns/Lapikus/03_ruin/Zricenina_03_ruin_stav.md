@@ -69,7 +69,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **05_constructions** (`build_constructions.py`, `constructions.json`, `constructions_edits.json`): druhé zabydlení, tedy dřevěné vestavby (`Vez_Patra`: trámy, prkna, průvlak, schody, podesta) a volná suť. Tag `Zricenina_Stavby`, složky `Stavby/...`. Staví se zvlášť, zříceninu nepřestavuje. Generátor zříceniny používá jako knihovnu.
 - **Společné rozměry věže** jsou v `tools/ruin/tower_spec.py`. Když se změní, přegeneruje se `gen_layout.py` i `tools/constructions/gen_constructions.py`.
 - **Náhled věže:** `tools/constructions/check_tower.py`.
-- **Spouštění po stavbách:** `05_constructions/stavby/<Stavba>.py` (`Vez_Patra`, `Ostroh_Krov`, `Sut`) postaví jen jednu stavbu. `build_constructions.py` postaví všechny.
+- **Spouštění po stavbách:** `05_constructions/stavby/<Stavba>.py` (`Vez_Patra`, `Ostroh_Krov`, `Ostroh_Dostavba`, `Ostroh_Podlaha`, `Sut`) postaví jen jednu stavbu. `build_constructions.py` postaví všechny.
 
 ## Otevřené / další kroky
 
@@ -78,13 +78,15 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - Náhledy na skutečném terénu: po buildu poslat `terrain_from_level.json`.
 - Nárožní kvádry na zlomech lomené hradby (prosvítá jádro).
 
-## Západní část u ostrohu (11/2026, příprava)
+## Západní část u ostrohu (11/2026)
 
 - `Hradba_Z_S` je v západní části (s 12,4–31,9) cíleně snížená a zarovnaná. Zůstávají jen celé řady pod 3,3 m (`cap`).
 - V koruně je 7 žlábků pro trámy (`notches`).
 - 05 `Ostroh_Krov`: 2 sloupy těsně u vnitřního líce `ZBudova_V` po stranách průchodu, příčka a 7 paprskovitých trámů ve žlábcích. Trámy se mírně svažují ke zdi a přesahují ji (okap). Všechno je dehtované.
 - Krytina je z dehtovaných prken po spádu na latích, s lištami přes spáry a krycím prknem přes každý trám. Lemování u příčky se vyřeší jinak. Koruna hradby pod střechou je směrem ven snížená ve sklonu střechy (`roof_clear`).
-- Rozměry jsou v `tools/ruin/ostroh_spec.py`. Žlab, okapnice a sud přijdou později.
+- Žlábky se od 11/2026 počítají přesně podle půdorysu trámu (`dir`, `bw`), takže sedí i v oblouku hradby (dřív tam trám B3 zasahoval asi 11 cm do kamene).
+- **Uzavřená obytná část (05 `Ostroh_Dostavba`):** jednořadé kamenné dostavby z kamene rozvalin (0,45 m) na koruně `ZBudova_V` (s dveřmi v průchodu a jedním oknem 1,4 × 0,9 m severně od nich, k `ZBudova_S`), `ZBudova_S` a mezi trámy na hradbě, všude až pod střechu. Střecha je prodloužená nad boční klíny (5 bočních trámů na jihu, 3 na severu). Kámen dostavby je stejně velký jako ve zdech hradu. Suť uvnitř je uklizená. Prkenná podlaha na dehtovaných podvalech (05 `Ostroh_Podlaha`). **Zřícenina se kvůli dostavbě nemění**, všechno je v 05.
+- Rozměry jsou v `tools/ruin/ostroh_spec.py`, dostavba a boční trámy v `tools/constructions/gen_constructions.py`. Žlab, okapnice, sud a lemování horního okraje krytiny přijdou později.
 
 ## Optimalizace do budoucna (zatím není potřeba)
 
