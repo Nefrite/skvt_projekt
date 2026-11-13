@@ -5,6 +5,32 @@ from zrlib.geom import crc
 from zrlib.stones import Stone
 
 
+def floor_top(fl, terr):
+    """vrch prken podlahy (abs. cm), nebo None (pro prah dveri v dostavbe)"""
+    z = _sleeper_top(fl, terr)
+    return None if z is None else z + fl.get("planks", {}).get("t", 0.045) * 100
+
+
+def _sleeper_top(fl, terr):
+    """vrch podvalu = spodek prken: nad nejvyssim terenem v obrysu (podvaly dorovnaji nizsi mista)"""
+    ux, uy = fl["u"]; nx, ny = fl["n"]; poly = [tuple(p) for p in fl["outline"]]
+    sh = fl.get("sleepers", {}).get("h", 0.10) * 100; ins = fl.get("inset", 0.02) * 100
+    O = poly[0]
+    pu = [((q[0] - O[0]) * ux + (q[1] - O[1]) * uy, (q[0] - O[0]) * nx + (q[1] - O[1]) * ny) for q in poly]
+    XY = lambda u, v: (O[0] + ux * u + nx * v, O[1] + uy * u + ny * v)
+    vs = [q[1] for q in pu]; us = [q[0] for q in pu]; v_lo, v_hi, u_lo, u_hi = min(vs), max(vs), min(us), max(us)
+    zg = []
+    for j in range(int((v_hi - v_lo) / 25) + 1):
+        v = v_lo + j * 25; xs = []
+        for (u0, v0), (u1, v1) in zip(pu, pu[1:] + pu[:1]):
+            if (v0 > v) != (v1 > v): xs.append(u0 + (u1 - u0) * (v - v0) / (v1 - v0))
+        xs.sort(); sp_ = [(a + ins, b - ins) for a, b in zip(xs[::2], xs[1::2]) if b - a > 2 * ins]
+        for i in range(int((u_hi - u_lo) / 25) + 1):
+            u = u_lo + i * 25
+            if any(a <= u <= b for a, b in sp_): zg.append(terr.z(*XY(u, v)))
+    return max(zg) + sh if zg else None
+
+
 def build_plank_floor(fl, P, walls, terr):
     """prkenna podlaha uvnitr obrysu (vnitrni lice zdi): podvaly (napric, na zemi, kopiruji teren), prkna podel u
     s presazenymi spoji na podvalech. Prkna se vyriznou kolem sloupu a kamenu zriceniny, ktere zasahuji do podlahy."""
@@ -33,13 +59,8 @@ def build_plank_floor(fl, P, walls, terr):
     vs = [q[1] for q in pu]; v_lo, v_hi = min(vs), max(vs)
     us = [q[0] for q in pu]; u_lo, u_hi = min(us), max(us)
     # vyska podlahy: nad nejvyssim terenem v obrysu (podvaly dorovnaji nizsi mista)
-    zg = []
-    for i in range(int((u_hi - u_lo) / 25) + 1):
-        for j in range(int((v_hi - v_lo) / 25) + 1):
-            u, v = u_lo + i * 25, v_lo + j * 25
-            if any(a <= u <= b for a, b in span(v)): zg.append(terr.z(*XY(u, v)))
-    if not zg: return out
-    z_sl = max(zg) + sh                                     # vrch podvalu = spodek prken
+    z_sl = _sleeper_top(fl, terr)                           # vrch podvalu = spodek prken
+    if z_sl is None: return out
     # kameny zriceniny, ktere zasahuji do vysky podlahy (vylomene lice, rozpadle jadro u paty)
     near = []
     for w in walls.values():

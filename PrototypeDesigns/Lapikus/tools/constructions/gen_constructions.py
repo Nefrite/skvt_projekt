@@ -19,14 +19,21 @@ from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, proje
 
 # --- uzavreni obytne casti u ostrohu (05, zricenina se nemeni): jednoradove kamenne dostavby na korunach zdi az pod strechu
 #     (ZBudova_V s dvermi v pruchodu a jednim oknem severne od nich (k ZBudova_S), ZBudova_S, vyrovnani koruny hradby mezi tramy),
-#     strecha prodlouzena nad bocni kliny (bocni tramy rovnobezne s krajnimi tramy vejire, konci na hradbe / na ZBudova_S)
+#     strecha od pricky (hrebenu) na vsechny strany: vejir na hradbu, paprsky na koncich pricky, tramy zpet na ZBudova_V
 ADD_T = 0.45                      # tloustka dostavby (m): jedna rada kamenu, vnitrni lic v rovine vnitrniho lice zdi pod ni
-TOP_OFF = 0.03                    # horni okraj krytiny: m od osy ZBudova_V dovnitr (12 cm pres vnejsi lic dostavby)
-SIDE_STEP = 1.3                   # rozestup bocnich tramu (m)
-DOOR_TOP, LINTEL_BEAR = 2.7, 0.25 # dvere v pruchodu: vrch (m nad terenem; nadprazi se zarovna s oknem), ulozeni nadprazi na kazde strane
+# krov: pricka je hreben strechy. Od ni vejir na hradbu (ostroh_spec), paprskove tramy na koncich pricky
+# a tramy zpet na dostavbu ZBudova_V; strecha tak klesa od pricky na vsechny strany
+E_AT = (1.5, 4.5)                 # tramy z pricky zpet na dostavbu ZBudova_V: poloha na pricce v roztecich tramu vejire
+                                  # od konce B (mezi zacatky tramu vejire); jen 2 krajni, nad dvermi dalsi netreba
+N_RAD = 3                         # paprskove tramy na kazdem konci pricky (mezi krajnim tramem vejire a smerem ke ZBudova_V)
+SLOPE_DOST = 0.25                 # sklon tramu na dostavbu (14 st.); dostavba pod nimi se snizi az pod strechu
+DROP_MAX, SLOPE_MIN = 0.8, 0.18   # dlouhe tramy na dostavbu: pokles nejvys DROP_MAX m (ne mene nez SLOPE_MIN = 10 st.), jinak by krytina u rohu klesla pod korunu hradby
+SLOPE_RUIN0 = 0.6                 # horni mez sklonu tramu na korunu zriceniny (05 ho polozi na nejvyssi kamen pod nim)
+OH_RING = 0.4                     # presah tramu na dostavbu a na korunu za vnejsi lic zdi (m)
+DOOR_TOP, LINTEL_BEAR = 2.2, 0.25 # dvere v pruchodu: vrch (m nad terenem; nadprazi se zarovna s oknem), ulozeni nadprazi na kazde strane
 # okno severne od dveri (k ZBudova_S): posun od dveri (m podel zdi), sirka = vyklenek strilen hradby v teto casti (w_in 1.4 m,
 # nadprazi pak stejne dlouhe jako vnitrni preklad strilny), parapet, vyska
-WINDOW = dict(ds=3.4, w=1.4, sill=1.8, h=0.9)
+# okno: rozmery sdili ostroh_spec.py (WINDOW; v 03 se v miste okna vybourá puvodni zed)
 
 
 def _unit(a, b):
@@ -142,61 +149,85 @@ def tower_floors(D):
     return floors
 
 
-def _side_beams(starts, ref, wall, T):
-    """bocni tramy: z bodu na dostavbe ZBudova_V rovnobezne s krajnim tramem ref, konec na ose zdi wall"""
-    (sx, sy), (ex, ey) = ref["start"], ref["wall_pt"]; dx, dy = unit((sx, sy), (ex, ey))
-    out = []
-    for p in starts:
-        _, hs = polyline_hits([p, (p[0] + dx * 100, p[1] + dy * 100)], wall, ext_other=False)
+def _ring_beam(p, d, axes):
+    """tram z bodu p na pricce ve smeru d: konci na nejblizsi zdi (osa zdi zriceniny); na dostavbe (ZBudova_V, ZBudova_S)
+    ma sklon SLOPE_DOST a dostavba se pod nim snizi, na korune zriceniny ho 05 polozi na nejvyssi kamen (SLOPE_RUIN0 = horni mez)"""
+    best = None
+    for name, (pts, T, rest) in axes.items():
+        _, hs = polyline_hits([p, (p[0] + d[0] * 2000, p[1] + d[1] * 2000)], pts, ext_other=False)
         hs = [h for h in hs if h[0] > 400 + 20]                   # pred startem (prodlouzeni o 4 m dozadu) ne
-        if not hs: continue
-        t, q = hs[0]; t -= 400
-        # uhel ke zdi v miste prusecíku
-        best = min(zip(wall[:-1], wall[1:]), key=lambda ab: abs((q[0] - ab[0][0]) * (ab[1][1] - ab[0][1]) - (q[1] - ab[0][1]) * (ab[1][0] - ab[0][0])) /
-                   max(math.hypot(ab[1][0] - ab[0][0], ab[1][1] - ab[0][1]), 1e-6))
-        wx, wy = unit(*best); sin_a = abs(wx * dy - wy * dx)
-        out.append(dict(start=[round(p[0], 1), round(p[1], 1)], wall_pt=[round(q[0], 1), round(q[1], 1)], slope=ref["slope"],
-                        d_in=round(t / 100 - (T / 2) / max(sin_a, 0.35), 3), sin=round(sin_a, 4), wall_t=T))
-    return out
+        if hs and (best is None or hs[0][0] < best[0]): best = (hs[0][0], hs[0][1], name, pts, T, rest)
+    if best is None: return None
+    t, q, name, pts, T, rest = best; t -= 400
+    seg = min(zip(pts[:-1], pts[1:]), key=lambda ab: abs((q[0] - ab[0][0]) * (ab[1][1] - ab[0][1]) - (q[1] - ab[0][1]) * (ab[1][0] - ab[0][0])) /
+              max(math.hypot(ab[1][0] - ab[0][0], ab[1][1] - ab[0][1]), 1e-6))
+    wx, wy = unit(*seg); sin_a = abs(wx * d[1] - wy * d[0])
+    return dict(start=[round(p[0], 1), round(p[1], 1)], wall_pt=[round(q[0], 1), round(q[1], 1)],
+                slope=max(min(SLOPE_DOST, DROP_MAX / max(t / 100, 0.1)), SLOPE_MIN) if rest == "addon" else SLOPE_RUIN0, sin=round(sin_a, 4), wall_t=T, rest=rest, wall=name, oh=OH_RING)
+
+
+def _rot(n, deg):
+    a = math.radians(deg); return (n[0] * math.cos(a) - n[1] * math.sin(a), n[0] * math.sin(a) + n[1] * math.cos(a))
+
+
+def _ang(n, d):
+    return math.degrees(math.atan2(n[0] * d[1] - n[1] * d[0], n[0] * d[0] + n[1] * d[1]))
 
 
 def ostroh(LAY):
     """zapadni cast u ostrohu: 2 sloupy u dveri ZBudova_V, pricka (vaznice), z ni 7 paprskovitych tramu na snizenou hradbu
-    (tramy lezi ve zlabcich koruny, presahuji vnejsi lic), bocni tramy, krytina; kamenna dostavba; prkenna podlaha
+    (tramy lezi ve zlabcich koruny, presahuji vnejsi lic), tramy dokola pricky, krytina; kamenna dostavba; prkenna podlaha
     -> (frames, addons)"""
     OS = ostroh_spec(LAY["walls"])
     WALLS = {w["name"]: w for w in LAY["walls"]}
     EV, ES, HZ = WALLS["ZBudova_V"], WALLS["ZBudova_S"], WALLS[OS["wall"]]
     ROOM = (OS["door"][0] + OS["n"][0] * 300, OS["door"][1] + OS["n"][1] * 300)        # bod uvnitr obytne casti
     def off(w, d): return offset_polyline(w["points"], d * 100, ROOM)
-    o_v = w_v = EV["thickness"] / 2; o_s = ES["thickness"] / 2; o_h = HZ["thickness"] / 2
+    o_v = EV["thickness"] / 2; o_s = ES["thickness"] / 2; o_h = HZ["thickness"] / 2
     # osy dostaveb (vnitrni lic = vnitrni lic zdi pod nimi) a jejich konce
     line_v = cut_polyline(off(EV, o_v - ADD_T / 2), start_line=off(HZ, o_h), end_line=off(ES, o_s))
     line_s = cut_polyline(off(ES, o_s - ADD_T / 2), start_line=off(EV, o_v - ADD_T), end_line=off(HZ, o_h))
     line_h = cut_polyline(off(HZ, o_h - ADD_T / 2), start_line=off(EV, o_v - ADD_T), end_line=off(ES, o_s - ADD_T))
-    # bocni tramy: rozestup SIDE_STEP od krajniho tramu vejire az k rohu (posledni 0.12 m od konce dostavby)
-    sb = sorted(OS["beams"], key=lambda b: project_s(line_v, b["start"]))
-    Lv = project_s(line_v, line_v[-1])
-    def spread(s_from, s_to):
-        k = max(1, int(math.ceil(abs(s_to - s_from) / SIDE_STEP)))
-        return [s_from + (s_to - s_from) * (j + 1) / k for j in range(k)]
-    s_j = spread(project_s(line_v, sb[0]["start"]), 0.12); s_s = spread(project_s(line_v, sb[-1]["start"]), Lv - 0.12)
-    # s = 0 dostavby ZBudova_V je jizni konec (u hradby), konec u ZBudova_S severni
-    sides = [dict(id="BJ", ref=0, beams=_side_beams([point_at(line_v, s) for s in s_j], sb[0], HZ["points"], HZ["thickness"])),
-             dict(id="BS", ref=-1, beams=_side_beams([point_at(line_v, s) for s in s_s], sb[-1], ES["points"], ES["thickness"]))]
-    s_door = project_s(line_v, OS["door"])
+    # tramy kolem pricky (krome vejire): za poslednim tramem vejire (konec B) paprsky k ZBudova_V, tramy zpet na ZBudova_V
+    # od konce B ke konci A, paprsky na konci A az k prvnimu tramu vejire -> poradi dokola (pole krytiny mezi sousedy)
+    axes = {"ZBudova_V": (EV["points"], EV["thickness"], "addon"), "ZBudova_S": (ES["points"], ES["thickness"], "addon"),
+            OS["wall"]: (HZ["points"], HZ["thickness"], "ruin")}
+    n = OS["n"]; back = (-n[0], -n[1]); A, B = OS["fan_ends"]
+    dirs = [unit(b["start"], b["wall_pt"]) for b in OS["beams"]]
+    def radials(p, d_fan):
+        th = _ang(n, d_fan); sg = 1 if th > 0 else -1
+        return [_ring_beam(p, _rot(n, th + sg * (180 - abs(th)) * k / (N_RAD + 1)), axes) for k in range(1, N_RAD + 1)]
+    nf = len(OS["beams"]) - 1                                     # zacatky tramu vejire jsou po 1/nf pricky
+    east = [_ring_beam((B[0] + (A[0] - B[0]) * e / nf, B[1] + (A[1] - B[1]) * e / nf), back, axes) for e in E_AT]
+    ring = [dict(id="PB", beams=[b for b in radials(B, dirs[-1]) if b]), dict(id="E", beams=[b for b in east if b]),
+            dict(id="PA", beams=[b for b in radials(A, dirs[0]) if b][::-1])]
+    s_door = project_s(line_v, OS["door"]); WINDOW = OS["window"]
+    # bocni odsazeni osy zdi zriceniny ZBudova_V od osy dostavby V (m, kladne = vlevo po smeru line_v): malta pod dostavbou
+    # tam, kde v jeji rovine chybi licovy kamen, jde do prostredni vrstvy (jadra) zdi
+    pa, pb = point_at(line_v, s_door), point_at(line_v, s_door + 0.1); du = unit(pa, pb)
+    q = point_at(EV["points"], project_s(EV["points"], pa))
+    mid_off = ((q[0] - pa[0]) * -du[1] + (q[1] - pa[1]) * du[0]) / 100
     addon = dict(name="Ostroh_Dostavba", type="stone_addon", roof="Ostroh_Krov", folder="Stavby/Ostroh",
                  # kamen z rozvalin hradu: stejne velky jako ve zdech (STONE_MIN/MAX, COURSE_MIN/MAX), jedna rada pres celou tloustku
                  stone=dict(t=ADD_T, len=(LAY["params"]["STONE_MIN"], LAY["params"]["STONE_MAX"]),
                             course=(LAY["params"]["COURSE_MIN"], LAY["params"]["COURSE_MAX"]), joint=LAY["params"]["JOINT"]),
                  mortar=0.10,                                       # maltove jadro 10 cm uprostred zdi: zastavi svetlo ve sparach
+                 mortar_down=["V"],                                 # ... a v dostavbe V pokracuje az do zeme ve zdi zriceniny pod ni
                  clear_rubble=True,                                 # sut uvnitr obytne casti uklizena
-                 walls=[dict(name="V", pts=line_v, openings=[
+                 walls=[dict(name="V", pts=line_v, mid_off=round(mid_off, 3), openings=[
                             dict(kind="door", s=round(s_door, 3), w=OS["pass_w"], top=DOOR_TOP, align=1),   # nadprazi dveri ve vysce nadprazi okna
-                            dict(kind="window", s=round(s_door + WINDOW["ds"], 3), w=WINDOW["w"], sill=WINDOW["sill"], top=WINDOW["sill"] + WINDOW["h"])]),
+                            dict(kind="window", s=round(s_door + WINDOW["ds"], 3), w=WINDOW["w"], sill=WINDOW["sill"], top=WINDOW["sill"] + WINDOW["h"],
+                                 sill_crown=True)]),                  # okno az na korunu zriceniny (v 03 vybourana nad parapetem)
                         dict(name="S", pts=line_s, openings=[]),
                         dict(name="H", pts=line_h, openings=[])],
-                 lintel=dict(bear=LINTEL_BEAR), finish=dict(lintels="old"))
+                 lintel=dict(bear=LINTEL_BEAR, half=True),   # nadprazi o pul rady vys, podlozene a dorovnane pulenymi kameny
+                 finish=dict(lintels="old", threshold="old"))
+    # prah dveri: samostatny actor (soucast dostavby, rucne posunuty se ulozi pres capture), v linii dostavby pres jeji tloustku, 1.5 cm nad podlahou
+    pd = point_at(line_v, s_door); pd2 = point_at(line_v, s_door + 0.1)
+    addon["threshold"] = dict(pos=[round(pd[0], 1), round(pd[1], 1)], yaw=round(math.degrees(math.atan2(pd2[1] - pd[1], pd2[0] - pd[0])), 2),
+                     len=round(OS["pass_w"] - 0.01, 3), depth=round(ADD_T - 0.01, 3),
+                     floor="Ostroh_Podlaha", over=0.015, sink=0.05)
+
     # --- prkenna podlaha v obytne casti u ostrohu: podvaly na zemi, prkna podel ZBudova_V; obrys = vnitrni lice zdi zriceniny
     f_v = cut_polyline(off(EV, o_v), start_line=off(HZ, o_h), end_line=off(ES, o_s))
     f_s = cut_polyline(off(ES, o_s), start_line=off(EV, o_v), end_line=off(HZ, o_h))
@@ -210,13 +241,12 @@ def ostroh(LAY):
                  finish=dict(sleepers="tar", planks="raw"))          # podvaly dehtovane (zeme), prkna bez upravy (jako ve vezi)
 
     frames = [dict(name="Ostroh_Krov", type="fan_roof", folder="Stavby/Ostroh", **OS,
-                   crossbeam=(0.30, 0.32), start_over=0.3,
+                   crossbeam=(0.30, 0.32), start_over=0.15,         # tramy 15 cm za pricku (hreben)
                    knee=dict(l=0.6, w=0.14, out=True),               # kratke sikme vzpery sloup - pricka, ven (pruchod mezi sloupy volny)
-                   # horni okraj krytiny rovnobezne se ZBudova_V (nad dostavbou), tramy sahaji az k nemu
-                   top_line=dict(p=EV["points"][0], n=OS["n"], off=TOP_OFF),
-                   sides=sides,
+                   ring=ring, ring_closed=True,                      # tramy dokola pricky (poradi navazuje na vejir B0..B6)
+                   ridge=dict(w=0.26, t=0.035),                      # hrebenova prkna pres pricku (obe strany)
                    # krytina: dehtovana prkna po spadu na latich, listy pres spary, kryci prkno pres kazdy tram
-                   roof=dict(lath=(0.05, 0.06), board_t=0.035, board_w=(0.22, 0.30), gap=0.015, batten=(0.06, 0.035), top_over=0.2,
+                   roof=dict(lath=(0.05, 0.06), board_t=0.035, board_w=(0.22, 0.30), gap=0.015, batten=(0.10, 0.035), top_over=0.2,   # listy 10 cm pres spary 1.5 cm
                              lath_rows=(0.04, 0.35, 0.65, 0.9, 1.0), cover_w=0.36, flashing=None),   # lemovani u pricky: vyresi se jinak
                    finish=dict(posts="tar", crossbeam="tar", beams="tar", knee="tar",
                                roof_boards="tar", roof_battens="tar", roof_laths="tar", roof_flashing="tar"))]

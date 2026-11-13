@@ -3,9 +3,10 @@ build_constructions.py - dodatecne stavby zriceniny ("druhe zabydleni"), Unreal 
 
 Stavi zvlast od zriceniny (03_ruin/blocks/build_ruin_blocks.py), takze se da ladit bez pregenerovani hradu:
   - drevene vestavby: tramy v kapsach, prkna, pruvlak se sloupy, provizorni schody, podesta (constructions.json -> floors)
-  - krov u ostrohu: sloupy, pricka, paprskovite a bocni tramy, krytina (constructions.json -> frames)
+  - krov u ostrohu: sloupy, pricka (hreben), vejir tramu a tramy dokola pricky, krytina (constructions.json -> frames)
   - kamenne dostavby z kamene rozvalin (constructions.json -> addons): jednoradove zdi na korunach zriceniny az pod strechu
   - prkenne podlahy na podvalech (constructions.json -> addons, typ plank_floor)
+  - prah dveri v dostavbe: samostatny actor (soucast Ostroh_Dostavba), vyska se doladi rucne a ulozi pres capture
   - volna sut na zemi u zdi (samostatne actory, lze posouvat a mazat); v obyvane casti u ostrohu uklizena
 Zricenina zustava ve 03: zdi, otvory, kapsy pro tramy, kamenna dlazba. Dostavby ji nemeni, jen na ni stoji.
 
@@ -58,6 +59,7 @@ MODE = "build"
 DATA_PATH = None                         # None = constructions.json vedle skriptu
 RUIN_DIR = None                          # None = ../03_ruin/blocks (vedle slozky 05_constructions)
 ONLY = None                              # napr. ["Vez_Patra"], ["Ostroh_Dostavba"] nebo ["Sut"] = postavit jen tuto cast
+ROOF_COVER = True                        # krov u ostrohu s krytinou (late, prkna, listy, hreben); False = jen sloupy, pricka a tramy
 RUBBLE_PHYSICS = True                    # kameny suti maji trvalou fyziku (hmotnost podle objemu); False = staticke
 
 # ------------------------------------------------------------------ typy staveb
@@ -65,8 +67,9 @@ RUBBLE_PHYSICS = True                    # kameny suti maji trvalou fyziku (hmot
 # data (cely constructions.json), geom (cache spolecne geometrie, napr. krov pro dostavbu)
 TYPES = {
     "tower_floor": lambda s, c: vez.build_tower_floor(s, c["P"], c["walls"], c["terr"]),
-    "fan_roof":    lambda s, c: krov.build_fan_roof(s, c["P"], c["walls"], c["terr"], c["geom"]),
-    "stone_addon": lambda s, c: dostavba.build_stone_addon(s, c["P"], c["walls"], c["terr"], c["data"].get("frames", []), c["geom"]),
+    "fan_roof":    lambda s, c: krov.build_fan_roof(s, c["P"], c["walls"], c["terr"], c["geom"], cover=ROOF_COVER),
+    "stone_addon": lambda s, c: dostavba.build_stone_addon(s, c["P"], c["walls"], c["terr"], c["data"].get("frames", []), c["geom"],
+                                                   addons=c["data"].get("addons", [])),
     "plank_floor": lambda s, c: podlaha.build_plank_floor(s, c["P"], c["walls"], c["terr"]),
 }
 # povinne klice dat (kontrola se srozumitelnou chybou misto KeyError uprostred vypoctu)
@@ -138,7 +141,9 @@ def compute(R, data, removed=(), moved=None, volumes=None):
             if typ not in TYPES: continue
             validate.require(spec, REQUIRED.get(typ, []), "constructions.json -> %s -> %s (%s)" % (sec, spec.get("name"), typ))
             st = TYPES[typ](spec, ctx); R.assign_meshes(st)
-            out[spec["name"]] = dict(folder=spec.get("folder", "Stavby"), stones=[s for s in st if s.id not in removed], loose=[])
+            st = [s for s in st if s.id not in removed]
+            # loose = samostatne actory (rucne posunute se ulozi pres capture), jinak Instanced Static Mesh
+            out[spec["name"]] = dict(folder=spec.get("folder", "Stavby"), stones=[s for s in st if not s.loose], loose=[s for s in st if s.loose])
     rb = data.get("rubble", {})
     if rb.get("enabled", True) and (not ONLY or "Sut" in ONLY):
         out.update(_rubble(R, data, rb, walls, P, terr, removed))
@@ -158,7 +163,7 @@ def _rubble(R, data, rb, walls, P, terr, removed):
         sts = [s for s in r["stones"] if not any(inside_poly(p, s.x, s.y) for p in clear)]
         if not sts: continue
         out[name + "_Sut"] = dict(folder="%s/%s" % (rb.get("folder", "Stavby/Sut"), r["folder"].split("/")[-1]),
-                                  stones=[], loose=sts, stavba="Sut")
+                                  stones=[], loose=sts, stavba="Sut", physics=True)
     return out
 
 
@@ -186,7 +191,7 @@ def build_in_unreal():
             for s in g["loose"]:
                 act = ue_actors.spawn_loose(unreal, eas, s, cube, meshes, [tag, "RuinStone", "id:" + s.id, st_tag], g["folder"], mats.get(s.cat))
                 if act is None: continue
-                if RUBBLE_PHYSICS:
+                if RUBBLE_PHYSICS and g.get("physics"):                     # fyzika jen u suti
                     ue_assets.stone_physics(unreal, act, s, asleep=s.id in moved)
                     act.tags = list(act.tags) + [unreal.Name("Ruin_Physics")]; n_phys += 1
                 n += 1

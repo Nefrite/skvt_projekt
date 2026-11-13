@@ -4,10 +4,11 @@ from .config import ASHLAR_MESH, DRESSED_FRAMES, STONE_PHYSICS, STONE_RATIOS, ST
 
 
 class Stone:
-    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough")
+    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough", "loose")
     def __init__(self, sid, cat, x, y, z, yaw, sx, sy, sz, pitch=0.0, roll=0.0, seg=0):
         self.span = None; self.mesh = None
         self.rough = False   # odkryte jadro: lomovy kamen (mesh) misto kostky
+        self.loose = False   # 05: samostatny actor misto instance (napr. prah, da se rucne posunout a ulozit pres capture)
         self.seg = seg   # usek zdi (index rovneho useku mezi zlomy)
         self.id = sid; self.cat = cat; self.x = x; self.y = y; self.z = z; self.yaw = yaw
         self.sx = sx; self.sy = sy; self.sz = sz; self.pitch = pitch; self.roll = roll

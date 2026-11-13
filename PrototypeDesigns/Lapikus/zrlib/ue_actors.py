@@ -76,9 +76,9 @@ def place_ism(unreal, eas, label, folder, stones, cube, meshes, material, tag, e
 
 def spawn_loose(unreal, eas, s, cube, meshes, tags, folder, material):
     """samostatny kamen (sut, oddeleny kamen): vlastni actor se jmenem Kamen_<id> a tagem id:<id>"""
-    from .ue_assets import _resolve, stone_transform
+    from .ue_assets import _resolve, stone_transform, ue_rotator
     m, nom = _resolve(unreal, s, cube, meshes)
-    act = eas.spawn_actor_from_object(m, unreal.Vector(s.x, s.y, s.z), unreal.Rotator(roll=s.roll, pitch=s.pitch, yaw=s.yaw))
+    act = eas.spawn_actor_from_object(m, unreal.Vector(s.x, s.y, s.z), ue_rotator(unreal, s))
     if not act: return None
     act.set_actor_transform(stone_transform(unreal, s, m, nom), False, False)
     act.tags = [unreal.Name(t) if isinstance(t, str) else t for t in tags]
@@ -122,7 +122,7 @@ def loose_pose(unreal, s, cube, meshes, actor):
     st_t = unreal.MathLibrary.compose_transforms(unreal.MathLibrary.invert_transform(_fix_unit(unreal, s, m, nom)),
                                                  _unit(unreal, actor.get_actor_transform()))
     loc, rot, _ = unreal.MathLibrary.break_transform(st_t)
-    cur = [loc.x, loc.y, loc.z, rot.roll, rot.pitch, rot.yaw]
+    cur = [loc.x, loc.y, loc.z, -rot.roll, rot.pitch, rot.yaw]          # roll zpet do konvence modelu (viz ue_assets.ue_rotator)
     same = all(abs(p - q) < 1.0 for p, q in zip(cur[:3], [s.x, s.y, s.z])) and \
            all(abs(((p - q) + 180) % 360 - 180) < 1.0 for p, q in zip(cur[3:], [s.roll, s.pitch, s.yaw]))
     return cur, same

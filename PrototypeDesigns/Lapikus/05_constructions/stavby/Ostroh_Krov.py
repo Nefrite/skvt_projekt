@@ -3,6 +3,7 @@ Unreal: Tools -> Execute Python Script -> 05_constructions/stavby/Ostroh_Krov.py
 Ostatni stavby se nesmazou ani neprestavi. Logika je ve spolecnem ../build_constructions.py, data v ../constructions.json."""
 MODE = "build"                # "build" = postavit, "capture" = ulozit rucni upravy jen teto stavby
 STAVBA = ["Ostroh_Krov"]
+KRYTINA = False               # False = jen sloupy, pricka a tramy (ladeni tramovi a dostavby); True = i late, prkna, listy a hreben
 
 import importlib.util, os, sys
 _here = os.path.dirname(os.path.abspath(__file__))
@@ -12,4 +13,5 @@ try:
     _B = importlib.util.module_from_spec(_sp); _sp.loader.exec_module(_B)
 finally:
     sys._constr_import_only = False
+_B.ROOF_COVER = KRYTINA
 _B.run(STAVBA, MODE)

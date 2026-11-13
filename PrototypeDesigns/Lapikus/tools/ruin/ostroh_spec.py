@@ -11,9 +11,11 @@ WALL = "Hradba_Z_S"              # hradba, na kterou tramy dosedaji
 ENTRY = ("ZBudova_V", 6.0)       # zed a s (m) dveri, u kterych stoji sloupy
 INSIDE_REF = "ZBudova_S"         # zed, ktera vede do zastresene casti (urcuje stranu "dovnitr")
 PLATEAU = 3129                   # teren uvnitr (abs. cm) - pro vysku snizene hradby
+CAP_EXT = 4.0                    # snizeni hradby jeste o tolik m za krajni tramy vejire (pod krytinu paprskovych tramu na koncich pricky)
 CAP_H = 3.3                      # snizena a zarovnana hradba: vrch nejvys CAP_H m nad terenem (posledni cela rada pod touto vyskou)
 POST = 0.28                      # sloup (m, ctverec)
-POST_GAP = 0.02                  # sloup tesne u vnitrniho lice ZBudova_V
+POST_GAP = 0.02                  # mezera sloupu od vnitrniho lice ZBudova_V ...
+POST_SHIFT = 1.0                 # ... a sloupy jeste o tolik m dal do prostoru (pricka = hreben strechy; od ni tramy i zpet na ZBudova_V)
 PASS_W = 1.6                     # skutecna sirka pruchodu ve zdi (dvere 1 m + vylamane osteni, zmereno v 03): sloupy stoji
                                  # po stranach pruchodu, souběžne s jeho hranami (pruchod zustava volny)
 POST_SPREAD = 0.10               # sloupy jeste o tolik m dal od hrany pruchodu (kazdy)
@@ -22,8 +24,12 @@ N_BEAMS = 7                      # paprskovite tramy
 FAN = 66.0                       # vejir tramu +-FAN stupnu od smeru dovnitr (kolmo na ZBudova_V)
 BEAM = (0.22, 0.24)              # prurez tramu (sirka, vyska) m
 NOTCH_D = 0.5                    # zlabek do poloviny vysky tramu
-RISE = 0.8                       # pricka (spodek tramu) o tolik m vys nez dno zlabku u vnitrniho lice -> strecha se mirne zvazuje ke zdi
+RISE = 1.2                       # pricka (spodek tramu) o tolik m vys nez dno zlabku u vnitrniho lice -> sklon vejire 11-17 st.
 OVERHANG = 0.6                   # tram presahuje vnejsi lic hradby (okap)
+# okno v dostavbe ZBudova_V (05): ds = m od dveri k ZBudova_S, sirka, parapet a vyska (m nad terenem). V 03 se v miste okna
+# vybourá puvodni zed nad WINDOW_CUT (edits -> cut), aby okno nebylo zastavene zriceninou ("odladene" pri dostavbe)
+WINDOW = dict(ds=3.4, w=1.25, sill=1.4, h=0.8)
+WINDOW_CUT = dict(z0=1.4, inset=0.1)      # od z0 m nad patou zdi nahoru, o inset m uzsi nez okno (kameny presahujici do otvoru zmizi cele)
 LATH = 0.05                      # late krytiny na tramech (05) - kvuli zarovnani koruny pod strechou
 
 
@@ -37,7 +43,7 @@ def spec(walls):
     # dovnitr = do zapadni casti (tam, kam vede ZBudova_S od rohu u ZBudova_V)
     L = _len(hz); far = W[INSIDE_REF]["points"][-1]
     if (far[0] - D[0]) * nx + (far[1] - D[1]) * ny < 0: nx, ny = -nx, -ny
-    post_in = W[ENTRY[0]]["thickness"] / 2 + POST / 2 + POST_GAP          # od osy zdi ke stredu sloupu
+    post_in = W[ENTRY[0]]["thickness"] / 2 + POST / 2 + POST_GAP + POST_SHIFT   # od osy zdi ke stredu sloupu
     post_half = PASS_W / 2 + POST / 2 + POST_SPREAD
     M = (D[0] + nx * post_in * 100, D[1] + ny * post_in * 100)
     posts = [(M[0] + ux * post_half * 100, M[1] + uy * post_half * 100), (M[0] - ux * post_half * 100, M[1] - uy * post_half * 100)]
@@ -86,12 +92,19 @@ def spec(walls):
                           notch_w=round(BEAM[0] / max(sin_a, 0.35) + 0.08, 3), length=round(bl / 100, 2),
                           slope=round(RISE / d_in, 4), d_in=round(d_in, 3), wall_in=[round(mx, 5), round(my, 5)], sin=round(sin_a, 4),
                           dir=[round(bux, 5), round(buy, 5)]))
-    return dict(post=POST, crossbeam_over=CROSS_OVER, pass_w=PASS_W, posts=[[round(x, 1), round(y, 1)] for x, y in posts], door=[round(D[0], 1), round(D[1], 1)],
+    # konce pricky: A u prvniho tramu vejire (B0), B u posledniho; tramy vejire zacinaji sh_ od stredu
+    ends = [(M[0] - ux * sh_ * sgn, M[1] - uy * sh_ * sgn) for sgn in (1, -1)]
+    if math.hypot(ends[0][0] - beams[0]["start"][0], ends[0][1] - beams[0]["start"][1]) > math.hypot(ends[1][0] - beams[0]["start"][0], ends[1][1] - beams[0]["start"][1]):
+        ends = ends[::-1]
+    return dict(post=POST, crossbeam_over=CROSS_OVER, fan_ends=[[round(x, 1), round(y, 1)] for x, y in ends], center=[round(M[0], 1), round(M[1], 1)], pass_w=PASS_W, posts=[[round(x, 1), round(y, 1)] for x, y in posts], door=[round(D[0], 1), round(D[1], 1)],
                 u=[round(ux, 5), round(uy, 5)], n=[round(nx, 5), round(ny, 5)], beams=beams,
-                cap=dict(s0=round(s0 - 1.6, 2), s1=round(s1 + 1.6, 2), z=PLATEAU + CAP_H * 100),
+                cap=dict(s0=round(s0 - CAP_EXT, 2), s1=round(s1 + CAP_EXT, 2), z=PLATEAU + CAP_H * 100),
                 # zlabek: u vnitrniho lice hloubka d, ven hloubsi podle sklonu tramu (tram lezi v celem zlabku)
                 notches=[dict(s=b_["wall_s"], w=b_["notch_w"], d=round(BEAM[1] * NOTCH_D, 3), slope=round(b_["slope"] / max(b_["sin"], 0.35), 4),
                               pt=b_["wall_pt"], nin=b_["wall_in"], t=T, k=b_["k"], dir=b_["dir"], bw=BEAM[0]) for b_ in beams],
                 # koruna pod strechou: kameny nesmi prekazet latim a prknum mezi tramy -> vrch zdi ven ve sklonu strechy
                 roof_clear=dict(clear=round(BEAM[1] * (1 - NOTCH_D), 3), margin=0.02),      # pod vrch tramu (late lezi na tramech)
-                beam=list(BEAM), rise=RISE, overhang=OVERHANG, wall=WALL, wall_t=T)
+                beam=list(BEAM), rise=RISE, overhang=OVERHANG, wall=WALL, wall_t=T, window=dict(WINDOW),
+                window_cut=dict(op="cut", wall=ENTRY[0], s0=round(ENTRY[1] + WINDOW["ds"] - WINDOW["w"] / 2 + WINDOW_CUT["inset"], 3),
+                                s1=round(ENTRY[1] + WINDOW["ds"] + WINDOW["w"] / 2 - WINDOW_CUT["inset"], 3), z0=WINDOW_CUT["z0"], z1=20.0,
+                                _="okno dostavby u ostrohu (ostroh_spec.py)"))

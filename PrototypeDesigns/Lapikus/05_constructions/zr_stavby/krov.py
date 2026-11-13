@@ -1,4 +1,4 @@
-"""krov u ostrohu (typ fan_roof): sloupy, pricka, vejir tramu na snizenou hradbu, bocni tramy, krytina.
+"""krov u ostrohu (typ fan_roof): sloupy, pricka (hreben), vejir tramu na snizenou hradbu, tramy dokola pricky, krytina.
 ostroh_geom = spolecna geometrie (vyska koruny, tramy, pole krytiny) i pro kamennou dostavbu (dostavba.py)."""
 import math, random
 from zrlib.config import WOOD_FINISH
@@ -13,8 +13,9 @@ def ostroh_geom(fr, walls, cache=None):
     """spolecna geometrie krovu u ostrohu pro krov (Ostroh_Krov) i kamennou dostavbu (Ostroh_Dostavba):
     vyska koruny hradby WT, vrch pricky ct, tramy (vejir + bocni) a pole krytiny s rovinami.
     Tram lezi spodkem na pricce a ve zlabku: u vnitrniho lice hradby je dno zlabku (vrch zdi - d), ven klesa ve sklonu tramu
-    a za vnejsim licem tram presahuje (okap). Bocni tramy (sides) jsou rovnobezne s krajnim tramem vejire, zacinaji
-    v dostavbe ZBudova_V (spodek ve vysce ct) a konci na hradbe / na ZBudova_S."""
+    a za vnejsim licem tram presahuje (okap). Tramy dokola pricky (ring: paprsky na koncich, tramy zpet na ZBudova_V)
+    zacinaji na pricce (spodek ve vysce ct) a konci na dostavbe nebo na koruně zriceniny (fit); pole krytiny je i mezi
+    poslednim a prvnim tramem (ring_closed)."""
     if cache is not None and fr["name"] in cache: return cache[fr["name"]]
     bw, bh = fr["beam"][0] * 100, fr["beam"][1] * 100; T = fr["wall_t"] * 100
     wall_st = walls.get(fr["wall"], {}).get("stones", [])
@@ -33,16 +34,9 @@ def ostroh_geom(fr, walls, cache=None):
     nb_in = WT - d                                    # dno zlabku u vnitrniho lice
     ct = nb_in + fr["rise"] * 100                      # vrch pricky = spodek tramu u pricky
     so = fr.get("start_over", 0.3) * 100; oh = fr.get("overhang", 0.6) * 100
-    tl = fr.get("top_line")
-    def a_top(S, D):
-        """kde tram (a krytina) zacina: na hornim okraji krytiny rovnobeznem se ZBudova_V, jinak so pred prickou"""
-        if not tl: return -so
-        (px, py), (nx, ny) = tl["p"], tl["n"]
-        o_s = (S[0] - px) * nx + (S[1] - py) * ny; dn = D[0] * nx + D[1] * ny
-        return (tl["off"] * 100 - o_s) / dn if abs(dn) > 0.2 else -so
     ruin = [st for w in walls.values() for st in w["stones"] + w.get("loose", []) if st.cat in ("face", "core", "crown", "frame")]
     def fit(sx_, sy_, dx, dy, sl, a1):
-        """bocni tram lezi na koruně zriceniny (ta se pro nej nesnizuje): sklon nejvys sl, ale spodek tramu nad vsemi kameny
+        """tram dokola pricky lezi na koruně zriceniny (ta se pro nej nesnizuje): sklon nejvys sl, ale spodek tramu nad vsemi kameny
         pod nim; kdyz by musel byt skoro vodorovny (kamen vys nez pricka), tram skonci pred tim kamenem"""
         lx, ly = -dy, dx; hw = bw / 2 + 2.0; need = []
         for st in ruin:
@@ -62,30 +56,33 @@ def ostroh_geom(fr, walls, cache=None):
             if s_need >= MIN_SLOPE: sl = min(sl, s_need)
             else: a1 = min(a1, max(a0_ - 3.0, 0.0))                  # vyssi kamen: tram konci pred nim
         return sl, a1
-    def beam(gid, b, Tw, side=False):
+    def beam(gid, b, Tw, ring=False):
         sx_, sy_ = b["start"]; ex, ey = b["wall_pt"]
         dx, dy = ex - sx_, ey - sy_; dl = math.hypot(dx, dy); dx, dy = dx / dl, dy / dl
-        sl = b["slope"]
-        a1 = dl + (Tw / 2) / max(b.get("sin", 1.0), 0.35) + oh                 # od pricky (cm) pres zed az za vnejsi lic
-        if side: sl, a1 = fit(sx_, sy_, dx, dy, sl, a1)
+        sl = b["slope"]; oh_ = b.get("oh", oh / 100) * 100
+        a1 = dl + (Tw / 2) / max(b.get("sin", 1.0), 0.35) + oh_                # od pricky (cm) pres zed az za vnejsi lic
+        if ring: sl, a1 = fit(sx_, sy_, dx, dy, sl, a1)                       # na koruně / nad zriceninou: nad vsemi kameny
         ang = math.atan(sl)
-        return dict(id=gid, S=(sx_, sy_), D=(dx, dy), sl=sl, at=a_top((sx_, sy_), (dx, dy)), a1=a1,
+        return dict(id=gid, S=(sx_, sy_), D=(dx, dy), sl=sl, at=(0.0 if ring else -so), a1=a1,
                     bottom=lambda a, sl=sl: ct - sl * a, top=lambda a, sl=sl, ang=ang: ct - sl * a + bh / math.cos(ang))
     main = [beam("B%d" % i, b, T) for i, (b, wt) in enumerate(zip(fr["beams"], tops)) if wt is not None]   # hradba u konce chybi -> bez tramu
     geo = list(main)
-    for sd in fr.get("sides", []):
-        sg = [beam("%s%d" % (sd["id"], j), b, b.get("wall_t", fr["wall_t"]) * 100, side=True) for j, b in enumerate(sd["beams"])]
-        geo = (sg[::-1] + geo) if sd.get("ref", 0) == 0 else (geo + sg)   # poradi v prostoru: sever ... vejir ... jih
+    for rg in fr.get("ring", []):                     # tramy dokola pricky, poradi navazuje na vejir (B6 -> PB -> E -> PA -> B0)
+        geo += [beam("%s%d" % (rg["id"], j), b, b.get("wall_t", fr["wall_t"]) * 100, ring=True) for j, b in enumerate(rg["beams"])]
     # pole krytiny mezi sousednimi tramy: rovina spodku prken z = c0 + cx*x + cy*y
     rf = fr.get("roof") or {}
     lh = rf.get("lath", (0.05, 0.06))[0] * 100
     sectors = []
-    for k in range(len(geo) - 1):
-        g1, g2 = geo[k], geo[k + 1]
+    pairs = list(zip(geo[:-1], geo[1:])) + ([(geo[-1], geo[0])] if fr.get("ring_closed") and len(geo) > 2 else [])
+    for g1, g2 in pairs:
         e1, e2 = g1["a1"] - 5, g2["a1"] - 5
         pts = [(_pt(g1, g1["at"]), g1["top"](g1["at"]) + lh), (_pt(g2, g2["at"]), g2["top"](g2["at"]) + lh),
                (_pt(g1, e1), g1["top"](e1) + lh), (_pt(g2, e2), g2["top"](e2) + lh)]
-        sectors.append(dict(g1=g1, g2=g2, e1=e1, e2=e2, plane=plane_fit(pts)))
+        mid = [sum(q[0][i] for q in pts) / 4 for i in (0, 1)]
+        sig = {g["id"]: (1 if _crs(g, *mid) > 0 else -1) for g in (g1, g2)}
+        dx, dy = g1["D"][0] + g2["D"][0], g1["D"][1] + g2["D"][1]; dl = math.hypot(dx, dy) or 1.0
+        O = ((g1["S"][0] + g2["S"][0]) / 2, (g1["S"][1] + g2["S"][1]) / 2)
+        sectors.append(dict(g1=g1, g2=g2, e1=e1, e2=e2, plane=plane_fit(pts), sig=sig, O=O, d=(dx / dl, dy / dl)))
     G = dict(WT=WT, ct=ct, d=d, bw=bw, bh=bh, lh=lh, geo=geo, main=main, sectors=sectors)
     if cache is not None: cache[fr["name"]] = G
     return G
@@ -96,20 +93,47 @@ def _pt(g, a):
     return (g["S"][0] + g["D"][0] * a, g["S"][1] + g["D"][1] * a)
 
 
+def _crs(g, x, y):
+    return g["D"][0] * (y - g["S"][1]) - g["D"][1] * (x - g["S"][0])
+
+
+def _ruled_top(sc, x, y):
+    """vrch tramu (= spodek lati) v poli jako primkova plocha: usecka mezi bodem tramu g1 ve zlomku f jeho delky
+    a bodem tramu g2 ve stejnem zlomku (tak lezi late) prochazejici bodem x, y. Mimo pole (f mimo -0.3..1.3) None."""
+    g1, g2 = sc["g1"], sc["g2"]
+    def q(f):
+        a1_ = g1["at"] + (sc["e1"] - g1["at"]) * f; a2_ = g2["at"] + (sc["e2"] - g2["at"]) * f
+        return _pt(g1, a1_), _pt(g2, a2_), g1["top"](a1_), g2["top"](a2_)
+    def side(f):
+        p1, p2, _, _ = q(f); return (p2[0] - p1[0]) * (y - p1[1]) - (p2[1] - p1[1]) * (x - p1[0])
+    lo, hi = -0.3, 1.3; slo, shi = side(lo), side(hi)
+    if slo * shi > 0: return None
+    for _ in range(30):
+        m = (lo + hi) / 2; sm = side(m)
+        if sm * slo > 0: lo, slo = m, sm
+        else: hi = m
+    p1, p2, z1, z2 = q((lo + hi) / 2); L2 = (p2[0] - p1[0]) ** 2 + (p2[1] - p1[1]) ** 2
+    t = ((x - p1[0]) * (p2[0] - p1[0]) + (y - p1[1]) * (p2[1] - p1[1])) / L2 if L2 > 1 else 0.5
+    return z1 + (z2 - z1) * min(max(t, 0.0), 1.0)
+
+
 def roof_under(G, x, y, margin=ROOF_MARGIN):
     """vyska (cm), pod kterou musi zustat zdivo pod strechou v bode x, y: pod vrchem tramu v poli krytiny (late lezi
-    na tramech), v miste tramu pod jeho spodkem. Mimo krov None."""
-    cr = lambda g: g["D"][0] * (y - g["S"][1]) - g["D"][1] * (x - g["S"][0])
+    na tramech), v miste tramu pod jeho spodkem. Pole = klin mezi dvema sousednimi tramy (na vnitrni strane obou,
+    pred prickou); bod mimo vsechny kliny -> nejblizsi pole. Mimo krov None."""
+    cr = lambda g: _crs(g, x, y)
     best = None
     for sc in G["sectors"]:
-        c1, c2 = cr(sc["g1"]), cr(sc["g2"])
-        if c1 * c2 <= 0: best = sc; break
-        dd = min(abs(c1), abs(c2))
-        if best is None or dd < best[0]: best = (dd, sc)
+        fwd = (x - sc["O"][0]) * sc["d"][0] + (y - sc["O"][1]) * sc["d"][1]
+        v = min(cr(sc["g1"]) * sc["sig"][sc["g1"]["id"]], cr(sc["g2"]) * sc["sig"][sc["g2"]["id"]], fwd + 30)
+        if best is None or v > best[0]: best = (v, sc)
+        if v >= 0: break
     if best is None: return None
-    sc = best if isinstance(best, dict) else best[1]
-    c0, cx, cy = sc["plane"]
-    z = c0 + cx * x + cy * y - G["lh"] - margin
+    sc = best[1]
+    z = _ruled_top(sc, x, y)
+    if z is None:
+        c0, cx, cy = sc["plane"]; z = c0 + cx * x + cy * y - G["lh"]
+    z -= margin
     for g in G["geo"]:
         a = (x - g["S"][0]) * g["D"][0] + (y - g["S"][1]) * g["D"][1]
         if g["at"] - 2 <= a <= g["a1"] + 2 and abs(cr(g)) < G["bw"] / 2 + 1.5:
@@ -117,9 +141,9 @@ def roof_under(G, x, y, margin=ROOF_MARGIN):
     return z
 
 
-def build_fan_roof(fr, P, walls, terr, cache=None):
+def build_fan_roof(fr, P, walls, terr, cache=None, cover=True):
     """zastreseni u ostrohu: 2 sloupy, pricka (vaznice), paprskovite tramy na snizenou hradbu (ve zlabcich koruny),
-    bocni tramy nad kliny u ZBudova_V a krytina. Data z ostroh_spec.py a gen_constructions.py (constructions.json -> frames)."""
+    tramy dokola pricky (paprsky na koncich, zpet na ZBudova_V), hrebenova prkna a krytina. Data z ostroh_spec.py a gen_constructions.py (constructions.json -> frames)."""
     out = []
     fin = fr.get("finish", {}); WC = lambda part: WOOD_FINISH.get(fin.get(part, "tar"), "wood_tar")
     G = ostroh_geom(fr, walls, cache)
@@ -149,7 +173,7 @@ def build_fan_roof(fr, P, walls, terr, cache=None):
         zc = (z0 + z1) / 2 + bh / 2 / math.cos(ang)
         yaw_b = math.degrees(math.atan2(-g["D"][1], -g["D"][0]))     # osa X kamene: od zdi (nize) k pricce (vys) -> pitch kladny
         out.append(Stone("%s|%s" % (fr["name"], g["id"]), WC("beams"), mx, my, zc, yaw_b, L, bw, bh, pitch=math.degrees(ang)))
-    if fr.get("roof") and len(G["geo"]) >= 2:
+    if cover and fr.get("roof") and len(G["geo"]) >= 2:           # cover=False: jen trámovi (krytina se ladi zvlast)
         out += _fan_roof_cover(fr, G, WC)
     return out
 
@@ -177,6 +201,7 @@ def _fan_roof_cover(fr, G, WC):
         yaw = math.degrees(math.atan2(d[1], d[0]))
         t1p, t2p = _pt(g1, g1["at"]), _pt(g2, g2["at"])
         topP, topE = t1p, (t2p[0] - t1p[0], t2p[1] - t1p[1])
+        if math.hypot(*topE) < 30: topE = l                # tramy z jednoho bodu (konec pricky): horni okraj kolmo na pole
         eavP, eavE = _pt(g1, e1), (_pt(g2, e2)[0] - _pt(g1, e1)[0], _pt(g2, e2)[1] - _pt(g1, e1)[1])
         mid = [sum(q[i] for q in (t1p, t2p, _pt(g1, e1), _pt(g2, e2))) / 4 for i in (0, 1)]
         crs = lambda g, q: g["D"][0] * (q[1] - g["S"][1]) - g["D"][1] * (q[0] - g["S"][0])
@@ -229,8 +254,10 @@ def _fan_roof_cover(fr, G, WC):
             q1, q2 = _pt(g1, a1_), _pt(g2, a2_)
             x, y = (q1[0] + q2[0]) / 2, (q1[1] + q2[1]) / 2; ln = math.hypot(q2[0] - q1[0], q2[1] - q1[1]) + 25
             ylat = math.degrees(math.atan2(q2[1] - q1[1], q2[0] - q1[0]))
-            out.append(Stone("%s|R%s|T%d" % (fr["name"], _sid(sc), r_), WC("roof_laths"), x, y, (zb(g1, a1_) + zb(g2, a2_)) / 2 - lh / 2,
-                             ylat, ln, lw, lh))
+            z1_, z2_ = zb(g1, a1_), zb(g2, a2_); hl = math.hypot(q2[0] - q1[0], q2[1] - q1[1])
+            pl = math.degrees(math.atan2(z2_ - z1_, hl))                 # lat sikmo, kdyz tramy v teto vzdalenosti nejsou stejne vysoko
+            out.append(Stone("%s|R%s|T%d" % (fr["name"], _sid(sc), r_), WC("roof_laths"), x, y, (z1_ + z2_) / 2 - lh / 2,
+                             ylat, ln / math.cos(math.radians(pl)), lw, lh, pl))
     # kryci prkno pres kazdy tram (spoj dvou poli a prekryv krajnich prken)
     cw = rf.get("cover_w", 0.36) * 100
     for g in G["geo"]:
@@ -238,6 +265,21 @@ def _fan_roof_cover(fr, G, WC):
         q = _pt(g, (a0 + a1_) / 2); ang = math.atan(g["sl"])
         out.append(Stone("%s|R|S%s" % (fr["name"], g["id"]), WC("roof_battens"), q[0], q[1], g["top"]((a0 + a1_) / 2) + lh + 2 * bt + bt / 2,
                          math.degrees(math.atan2(-g["D"][1], -g["D"][0])), L / math.cos(ang), cw, bt, math.degrees(ang)))
+    # hrebenova prkna pres pricku: jedno na kazdou stranu (vejir +n, tramy zpet na ZBudova_V -n), prekryvaji zacatky poli
+    rd = fr.get("ridge")
+    if rd and fr.get("ring"):
+        (p1x, p1y), (p2x, p2y) = fr["posts"]; ux, uy = p1x - p2x, p1y - p2y; ul = math.hypot(ux, uy); ux, uy = ux / ul, uy / ul
+        nx, ny = fr["n"]; L = ul + 2 * fr.get("crossbeam_over", 0.45) * 100
+        cx, cy = (p1x + p2x) / 2, (p1y + p2y) / 2; w_ = rd.get("w", 0.26) * 100; t_ = rd.get("t", 0.035) * 100
+        ysg = 1 if (-uy * nx + ux * ny) > 0 else -1            # lokalni osa Y prkna vuci n
+        back = [g for g in G["geo"] if g["D"][0] * nx + g["D"][1] * ny < -0.9]
+        for sg, grp in ((1, G["main"]), (-1, back)):
+            if not grp: continue
+            sl = sum(g["sl"] for g in grp) / len(grp); ang = math.atan(sl); a = w_ / 2 * math.cos(ang) - 4
+            x, y = cx + nx * sg * a, cy + ny * sg * a
+            z = G["ct"] - sl * a + G["bh"] / math.cos(ang) + lh + 3 * bt + t_ / 2 / math.cos(ang)
+            out.append(Stone("%s|R|H%d" % (fr["name"], 0 if sg > 0 else 1), WC("roof_boards"), x, y, z,
+                             math.degrees(math.atan2(uy, ux)), L, w_, t_, 0.0, math.degrees(ang) * (-sg) * ysg))
     return out
 
 

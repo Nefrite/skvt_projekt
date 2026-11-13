@@ -86,13 +86,15 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Západní část u ostrohu (11/2026)
 
-- `Hradba_Z_S` je v západní části (s 12,4–31,9) cíleně snížená a zarovnaná. Zůstávají jen celé řady pod 3,3 m (`cap`).
+- `Hradba_Z_S` je v západní části (s 10,3–34,0) cíleně snížená a zarovnaná. Zůstávají jen celé řady pod 3,3 m (`cap`).
 - V koruně je 7 žlábků pro trámy (`notches`).
-- 05 `Ostroh_Krov`: 2 sloupy těsně u vnitřního líce `ZBudova_V` po stranách průchodu, příčka a 7 paprskovitých trámů ve žlábcích. Trámy se mírně svažují ke zdi a přesahují ji (okap). Všechno je dehtované.
+- 05 `Ostroh_Krov`: 2 sloupy asi 1 m od vnitřního líce `ZBudova_V` po stranách průchodu, příčka (hřeben) a 7 paprskovitých trámů ve žlábcích hradby (11–17°, přesahují ji jako okap). Od příčky vedou i paprskové trámy na jejích koncích a 2 trámy zpět na dostavbu `ZBudova_V` (11–14°), takže střecha klesá na všechny strany. Všechno je dehtované.
 - Krytina je z dehtovaných prken po spádu na latích, s lištami přes spáry a krycím prknem přes každý trám. Lemování u příčky se vyřeší jinak. Koruna hradby pod střechou je směrem ven snížená ve sklonu střechy (`roof_clear`).
 - Žlábky se od 11/2026 počítají přesně podle půdorysu trámu (`dir`, `bw`), takže sedí i v oblouku hradby (dřív tam trám B3 zasahoval asi 11 cm do kamene).
-- **Uzavřená obytná část (05 `Ostroh_Dostavba`):** jednořadé kamenné dostavby z kamene rozvalin (0,45 m) na koruně `ZBudova_V` (s dveřmi v průchodu a jedním oknem 1,4 × 0,9 m severně od nich, k `ZBudova_S`), `ZBudova_S` a mezi trámy na hradbě, všude až pod střechu. Střecha je prodloužená nad boční klíny (5 bočních trámů na jihu, 3 na severu). Kámen dostavby je stejně velký jako ve zdech hradu. Suť uvnitř je uklizená. Prkenná podlaha na dehtovaných podvalech (05 `Ostroh_Podlaha`). **Zřícenina se kvůli dostavbě nemění**, všechno je v 05.
-- Rozměry jsou v `tools/ruin/ostroh_spec.py`, dostavba a boční trámy v `tools/constructions/gen_constructions.py`. Žlab, okapnice, sud a lemování horního okraje krytiny přijdou později.
+- **Uzavřená obytná část (05 `Ostroh_Dostavba`):** jednořadé kamenné dostavby z kamene rozvalin (0,45 m) na koruně `ZBudova_V` (s dveřmi v průchodu a jedním oknem 1,4 × 0,7 m severně od nich, k `ZBudova_S`), `ZBudova_S` a mezi trámy na hradbě, všude až pod střechu. Dostavba je pod trámy dokola příčky snížená, na bocích víc než uprostřed. Nadpraží dveří i okna je o půl řady výš než řada nad 2,2 m nad terénem (spodek asi 2,4 m), podložené a dorovnané polovičními kameny. Okno 1,25 m široké; v místě okna je původní zeď `ZBudova_V` vybouraná nad 1,4 m (03 `edits` → `cut` z `ostroh_spec.py`), okno sahá až na korunu zříceniny. Ve dveřích je dřevěný práh 1,5 cm nad podlahou, v dostavbě jako samostatný actor (výška se dá doladit ručně a uložit přes capture). Maltové jádro dostavby `V` pokračuje až do země ve zdi `ZBudova_V`: za lícovými kameny v rovině dostavby, kde líc chybí, v jádru zdi (zdí neprosvítá). Kámen dostavby je stejně velký jako ve zdech hradu. Suť uvnitř je uklizená. Prkenná podlaha na dehtovaných podvalech (05 `Ostroh_Podlaha`). **Zřícenina se kvůli dostavbě nemění**, všechno je v 05.
+- Rozměry jsou v `tools/ruin/ostroh_spec.py`, dostavba a trámy dokola příčky v `tools/constructions/gen_constructions.py`. Žlab, okapnice, sud a lemování horního okraje krytiny přijdou později.
+
+- **Oprava natočení v UE (11/2026):** UE má `roll` opačně než výpočty, kontroly a náhledy. Do UE se proto posílá `-roll` (`zrlib/ue_assets.ue_rotator`), capture ho vrací zpět. Dřív byly v UE kusy s `roll` nakloněné na opačnou stranu. Nejvíc to bylo vidět na prknech v bočních polích krovu, kde vznikaly průsvitné spáry. Týká se to i mírně nakloněných kamenů zříceniny a dřeva ve věži, proto je potřeba přestavět 03 i 05.
 
 ## Optimalizace do budoucna (zatím není potřeba)
 

@@ -60,8 +60,8 @@ def ostroh(out, layout=None, roof=True):
     S = common.state(layout)
     X0, X1, Y0, Y1 = -4700, -3200, -2100, -300
     ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if X0 < s.x < X1 and Y0 < s.y < Y1]
-    st = [s for n in ("Ostroh_Krov", "Ostroh_Dostavba", "Ostroh_Podlaha") for s in S["groups"].get(n, {}).get("stones", [])
-          if roof or "|R" not in s.id]
+    st = [s for n in ("Ostroh_Krov", "Ostroh_Dostavba", "Ostroh_Podlaha") for g in (S["groups"].get(n, {}),)
+          for s in g.get("stones", []) + g.get("loose", []) if roof or "|R" not in s.id]
     z0 = S["layout"]["plateau_z_cm"]
     bx = stone_boxes(ruin + st, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0)
     V = [dict(title="zvenku od vychodu", eye=(-22, -9.5, 4.0), target=(-35.5, -11.5, 2.0), fov=45),

@@ -309,6 +309,12 @@ def _mesh_fix(unreal, mesh, nominal):
     _FIX[key] = (rot, ext, best, c)
     return _FIX[key]
 
+def ue_rotator(unreal, s):
+    """natoceni kamene / dilce v UE. Model (vypocty, kontroly, nahledy) bere roll jako pravotocivou rotaci kolem osy X
+    (osa Y kamene se pri kladnem roll zveda), UE FRotator ma roll opacne (osa Y klesa) -> do UE jde -roll.
+    Pitch a yaw se shoduji."""
+    return unreal.Rotator(roll=-s.roll, pitch=s.pitch, yaw=s.yaw)
+
 def stone_transform(unreal, s, mesh, nominal):
     """Transformace instance: mesh naskalovany presne na rozmer bloku (s.sx, s.sy, s.sz)."""
     rot, ext, role, c = _mesh_fix(unreal, mesh, nominal)
@@ -318,7 +324,7 @@ def stone_transform(unreal, s, mesh, nominal):
     local = unreal.Transform(location=unreal.Vector(-c[0] * sc[0], -c[1] * sc[1], -c[2] * sc[2]),
                              rotation=unreal.Rotator(0, 0, 0), scale=unreal.Vector(sc[0], sc[1], sc[2]))
     fix = unreal.Transform(location=unreal.Vector(0, 0, 0), rotation=rot, scale=unreal.Vector(1, 1, 1))
-    st = unreal.Transform(location=unreal.Vector(s.x, s.y, s.z), rotation=unreal.Rotator(roll=s.roll, pitch=s.pitch, yaw=s.yaw),
+    st = unreal.Transform(location=unreal.Vector(s.x, s.y, s.z), rotation=ue_rotator(unreal, s),
                           scale=unreal.Vector(1, 1, 1))
     cm = unreal.MathLibrary.compose_transforms
     return cm(cm(local, fix), st)
@@ -331,7 +337,7 @@ def _fix_unit(unreal, s, mesh, nominal):
     """Korekce meshe bez meritka: actor = F * kamen (presne invertovatelne)."""
     rot, ext, role, c = _mesh_fix(unreal, mesh, nominal)
     full = stone_transform(unreal, s, mesh, nominal)
-    st = unreal.Transform(location=unreal.Vector(s.x, s.y, s.z), rotation=unreal.Rotator(roll=s.roll, pitch=s.pitch, yaw=s.yaw),
+    st = unreal.Transform(location=unreal.Vector(s.x, s.y, s.z), rotation=ue_rotator(unreal, s),
                           scale=unreal.Vector(1, 1, 1))
     return unreal.MathLibrary.compose_transforms(_unit(unreal, full), unreal.MathLibrary.invert_transform(st))
 
