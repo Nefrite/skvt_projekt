@@ -16,7 +16,9 @@ Kapsy ve zdech patří ke zřícenině. Dřevo, které v nich leží, patří se
 | Soubor | Obsah |
 |---|---|
 | `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Ostroh_Dostavba.py` (kamenná dostavba u ostrohu), `Ostroh_Podlaha.py` (prkenná podlaha u ostrohu), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). |
-| `build_constructions.py` | společná logika všech staveb. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
+| `build_constructions.py` | nastavení, registr typů staveb (`TYPES`, povinné klíče `REQUIRED`), build / capture / freeze v UE. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
+| `zr_stavby\*.py` | typy staveb: `vez.py` (dřevo ve věži, `tower_floor`), `krov.py` (krov u ostrohu `fan_roof` + společná geometrie), `dostavba.py` (`stone_addon`), `podlaha.py` (`plank_floor`) |
+| `..\zrlib\*.py` | sdílená knihovna s 03 (`config.py` = materiály, dřevo, fyzika; geometrie, Unreal) |
 | `constructions.json` | data staveb (`floors` → `Vez_Patra`, `frames` → `Ostroh_Krov`, `addons` → `Ostroh_Dostavba`, `Ostroh_Podlaha`) a nastavení suti (`rubble`) |
 | `Stavby_ostroh_dostavba_nahled.png` | náhled uzavřené obytné části u ostrohu zvenku a zevnitř |
 | `Stavby_ostroh_podlaha_nahled.png` | náhled podlahy u ostrohu |
@@ -26,7 +28,7 @@ Kapsy ve zdech patří ke zřícenině. Dřevo, které v nich leží, patří se
 | `..\tools\constructions\check_tower.py` | náhled řezu věží bez Unrealu (zřícenina + stavby) |
 | `..\tools\ruin\tower_spec.py` | **společné rozměry věže** pro 03 i 05 (podlaha, výška patra, polohy trámů, průvlaku, otvorů, dveří) |
 
-Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks` proto musí ležet vedle `05_constructions`, jinak v `build_constructions.py` nastav `RUIN_DIR`.
+Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks` proto musí ležet vedle `05_constructions` (jinak v `build_constructions.py` nastav `RUIN_DIR`) a v kořeni musí být `zrlib`.
 
 ---
 
@@ -46,7 +48,13 @@ Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks`
 
 **Ruční úpravy:** smaž instanci nebo kámen, posuň kámen suti. Pak ve skriptu dané stavby (`stavby\<Stavba>.py`) nastav `MODE = "capture"` a spusť ho. Změny se zapíšou do `constructions_edits.json`, úpravy ostatních staveb v něm zůstanou, a platí i po dalším buildu.
 
-**Nová stavba:** přidej položku do `constructions.json` (přes `gen_constructions.py`), případně nový typ do `build_constructions.py`, a zkopíruj jeden ze skriptů ve `stavby\` s novým jménem v `STAVBA`.
+**Nová stavba:**
+1. **Typ:** když žádný existující nesedí, nový modul v `zr_stavby\` s funkcí, která z dat vrátí seznam dílců (`Stone` ze `zrlib.stones`). Geometrie je v `zrlib.geom`, dřevo podle `finish` přes `zrlib.config.WOOD_FINISH`.
+2. **Registr:** záznam v `TYPES` a povinné klíče v `REQUIRED` v `build_constructions.py`.
+3. **Data:** položka v `constructions.json` (přes `gen_constructions.py`) s `name`, `type` a `folder`.
+4. **Launcher:** kopie jednoho ze skriptů ve `stavby\` s novým jménem v `STAVBA`.
+
+Mazání v UE jde podle tagu `stavba:<jméno>`. Actor bez něj (ze starších buildů) smaže jen build všech staveb najednou (`build_constructions.py` spuštěný přímo).
 
 **Fyzika suti:** kameny suti mají trvalou fyziku (`RUBBLE_PHYSICS = True`, tag `Ruin_Physics`), takže s nimi hráč může pohnout. Hmotnost odpovídá objemu kamene, většinou 20–280 kg. Nastavení je v `STONE_PHYSICS` v `03_ruin\blocks\build_ruin_blocks.py` a je společné s odpadlými kusy zdi.
 
@@ -136,7 +144,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
 Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižní zdi (`Vez_J`), **v** od jihozápadního rohu k severu. Obojí v metrech, osy zdí jsou na 0 a 11 m.
 
-**Dřevo:** tvary jsou meshe zašlého dřeva `SM_RuinTimber/Plank/Post_*` (praskliny, ohlazené hrany, prohyb; vlákna dělá normálová mapa materiálu, asi 2–3 tisíce trojúhelníků na kus). Generuje je `gen_stones.py`, importují se automaticky a vypínají se přes `WOOD_MESHES = False` v `build_ruin_blocks.py`. Úpravy dřeva (materiály vytvoří skript 03):
+**Dřevo:** tvary jsou meshe zašlého dřeva `SM_RuinTimber/Plank/Post_*` (praskliny, ohlazené hrany, prohyb; vlákna dělá normálová mapa materiálu, asi 2–3 tisíce trojúhelníků na kus). Generuje je `gen_stones.py`, importují se automaticky a vypínají se přes `WOOD_MESHES = False` v `zrlib\config.py`. Úpravy dřeva (materiály vytvoří skript 03):
 
 | Úprava | Materiál | Vzhled | Kde |
 |---|---|---|---|
@@ -146,7 +154,7 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | bez úpravy (`raw`) | `MI_RuinWood` | šedohnědé, matné | vnitřní velké plochy: prkna v 1. patře a schody (ladí s podlahou) |
 | olej (`oil`) | `MI_RuinWood_Oil` | teplá tmavší hnědá, polomatné | jemná práce a vnitřní stavební dřevo (zatím nepoužito) |
 
-Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury, 0–1) a `DustAmount` / `DustTint` (zaprášení). U ostatních materiálů jsou na 0, takže se nic nemění. Rozdělení se mění v `constructions.json` → `finish` (výchozí hodnoty jsou v `WOOD_FINISH_DEFAULT` ve skriptu 03). Neošetřené dřevo je `MI_RuinWood`, který vytvoří skript 03. Je to zašlé nelakované dřevo, šedohnědé a matné. Každý trám a prkno má trochu jiný odstín a vršky jsou vybledlé od slunce. Ladí se v `MI_RuinWood` (`TintA`/`TintB`, `Roughness`) nebo v `MAT_LOOK["wood"]` ve skriptu 03. Vlastní materiál nastavíš v `MAT_WOOD_MI`.
+Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury, 0–1) a `DustAmount` / `DustTint` (zaprášení). U ostatních materiálů jsou na 0, takže se nic nemění. Rozdělení se mění v `constructions.json` → `finish` (výchozí hodnoty jsou v `WOOD_FINISH_DEFAULT` v `zrlib\config.py`). Neošetřené dřevo je `MI_RuinWood`, který vytvoří skript 03. Je to zašlé nelakované dřevo, šedohnědé a matné. Každý trám a prkno má trochu jiný odstín a vršky jsou vybledlé od slunce. Ladí se v `MI_RuinWood` (`TintA`/`TintB`, `Roughness`) nebo v `MAT_LOOK["wood"]` v `zrlib\config.py`. Vlastní materiál nastavíš v `MAT_WOOD_MI` (tamtéž).
 
 ---
 

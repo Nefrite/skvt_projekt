@@ -75,3 +75,6 @@ DerivedDataCache/*
 /PrototypeDesigns/Characters/01_sitting/__pycache__
 /PrototypeDesigns/Lapikus/03_ruin/blocks/__pycache__
 /PrototypeDesigns/Lapikus/05_constructions/__pycache__
+/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/__pycache__
+/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/__pycache__
+/PrototypeDesigns/Lapikus/zrlib/__pycache__

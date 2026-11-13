@@ -2,7 +2,10 @@
 03 (gen_layout.py): hradba se v teto casti cilene snizi a zarovna (cap) a do koruny se vysekaji zlabky pro tramy (notches).
 05 (gen_constructions.py): dva sloupy u dveri ZBudova_V, pricka (vaznice) mezi nimi, z ni paprskovite tramy na hradbu.
 Kdyz se tu neco zmeni, pregeneruj gen_layout.py i gen_constructions.py a postav 03 i 05."""
-import math
+import math, os, sys
+_ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+if _ROOT not in sys.path: sys.path.insert(0, _ROOT)
+from zrlib.geom import polyline_len as _len, point_at as _pt     # noqa: E402  (sdilena geometrie)
 
 WALL = "Hradba_Z_S"              # hradba, na kterou tramy dosedaji
 ENTRY = ("ZBudova_V", 6.0)       # zed a s (m) dveri, u kterych stoji sloupy
@@ -22,19 +25,6 @@ NOTCH_D = 0.5                    # zlabek do poloviny vysky tramu
 RISE = 0.8                       # pricka (spodek tramu) o tolik m vys nez dno zlabku u vnitrniho lice -> strecha se mirne zvazuje ke zdi
 OVERHANG = 0.6                   # tram presahuje vnejsi lic hradby (okap)
 LATH = 0.05                      # late krytiny na tramech (05) - kvuli zarovnani koruny pod strechou
-
-
-def _len(p):
-    return sum(math.hypot(p[i + 1][0] - p[i][0], p[i + 1][1] - p[i][1]) for i in range(len(p) - 1)) / 100
-
-
-def _pt(p, s):
-    c = 0.0
-    for i in range(len(p) - 1):
-        a, b = p[i], p[i + 1]; ln = math.hypot(b[0] - a[0], b[1] - a[1]) / 100
-        if s <= c + ln or i == len(p) - 2:
-            f = (s - c) / max(ln, 1e-6); return (a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f)
-        c += ln
 
 
 def spec(walls):

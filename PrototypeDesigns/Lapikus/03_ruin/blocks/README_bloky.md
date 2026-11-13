@@ -7,6 +7,8 @@ Nová metoda generování: zřícenina se skládá **z jednotlivých kamenných 
 
 ![Náhled (spočítáno mimo UE)](Zricenina_bloky_nahled.png)
 
+**Nastavení vzhledu** (materiály `MAT_*`, `MAT_LOOK`, `MAT_TOP`, zaoblené kameny `USE_STONE_MESHES`, `STONE_*`, dřevo `WOOD_*`, fyzika `STONE_PHYSICS`, tagy) je od 11/2026 v **`zrlib\config.py`** v kořeni repozitáře a platí pro 03 i 05. Nahoře v `build_ruin_blocks.py` zůstává jen nastavení běhu (`LAYOUT_PATH`, `AGE`, `OVERRIDE`, `TERRAIN_FROM_LEVEL`, `ONLY_WALLS`, `CAST`, `CASTI`, `MODE`). Struktura kódu je v kap. 7.
+
 Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě metody používají tag `Zricenina_Ruin`, takže generují do stejných složek a navzájem se přepisují.
 
 ---
@@ -67,9 +69,9 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 
 - `M_RuinStone` je master materiál s parametry `BaseColor`, `Normal`, `TintA`, `TintB`, `Tiling` a `Roughness`. Každý kámen dostane náhodný odstín mezi TintA a TintB a náhodný posun textury (Per Instance Random), takže dva sousední kameny nikdy nevypadají stejně. Žádné „cihly v cihle“ jako u `M_Brick_Hewn_Stone`.
 - **Zvětrání shora (všechny kameny):** podle normaly plochy (`VertexNormalWS.z`). Co míří nahoru, je světlejší, nazelenalé a drsnější. Skvrny rozbíjí textura. Parametry: `TopTint` (barva), `TopStart` (od jakého sklonu, 0 = svislá stěna, 1 = vodorovný vrch), `TopSharp` (ostrost přechodu), `TopAmount` (síla: líc 0,55, jádro 0,45, ostění 0,35, koruna 1,0). Výchozí hodnoty jsou v `MAT_TOP` ve skriptu.
-- **Verze materiálu:** `MAT_VERSION` ve skriptu. Když je `M_RuinStone` v projektu starší, skript jeho graf přestaví na místě a do `MI_Ruin*` jen doplní nové parametry `Top*`. Tvoje tinty a textury v `MI_RuinFace/Core/Frame` zůstanou, `MI_RuinCrown` dostane nový tint z `MAT_LOOK`.
+- **Verze materiálu:** `MAT_VERSION` v `zrlib\config.py`. Když je `M_RuinStone` v projektu starší, skript jeho graf přestaví na místě a do `MI_Ruin*` jen doplní nové parametry `Top*`. Tvoje tinty a textury v `MI_RuinFace/Core/Frame` zůstanou, `MI_RuinCrown` dostane nový tint z `MAT_LOOK`.
 - Vzhled ladíš v `MI_RuinFace`, `MI_RuinCore` a `MI_RuinFrame` (dvojklik → Details). Hodí se tam i textura z Fabu (Megascans, např. „Rock“ nebo „Stone Wall“ surface): stačí přepsat `BaseColor` a `Normal`.
-- Úplně vlastní materiál nastavíš nahoře ve skriptu: `MAT_FACE = "/Game/…/MI_X.MI_X"` (stejně `MAT_CORE`, `MAT_FRAME`). `None` znamená automatický materiál.
+- Úplně vlastní materiál nastavíš v `zrlib\config.py`: `MAT_FACE = "/Game/…/MI_X.MI_X"` (stejně `MAT_CORE`, `MAT_FRAME`). `None` znamená automatický materiál.
 - Když chceš materiál vytvořit znovu od nuly, smaž `M_RuinStone` a `MI_Ruin*` a spusť build.
 - **Chybí textury StarterContent:** Output Log hlásí `nenalezeny textury`. Přidej Starter Content (Content Browser → **Add → Add Feature or Content Pack → Starter Content**), nebo v `TEXTURES` nahoře ve skriptu nastav vlastní cesty.
 
@@ -256,7 +258,7 @@ Když chceš, aby kus zdi odpadl nebo se sesypal, a nechceš kvůli tomu stavět
 
 Box `Ruin_Detach` pak můžeš smazat. Další build zříceniny postaví oddělené kameny jako samostatné actory na uložených místech, zase s fyzikou (`DETACHED_PHYSICS`). Usazené kameny s uloženou polohou ve hře spí, dokud do nich někdo nestrčí. Bez fyziky (staticky): `MODE = "freeze"` (do dalšího buildu) nebo `DETACHED_PHYSICS = False`.
 
-**Fyzika volných kamenů (`STONE_PHYSICS` v `build_ruin_blocks.py`, platí i pro suť ve 05):**
+**Fyzika volných kamenů (`STONE_PHYSICS` v `zrlib\config.py`, platí i pro suť ve 05):**
 - **Hmotnost podle objemu kamene:** hustota 2600 kg/m³ × objem bloku × 0,85 (zaoblení). Kámen 30 × 40 × 60 cm váží asi 160 kg, suť většinou 20–280 kg. Hráč takový kámen posune jen málo.
 - **Tlumení** (`lin_damp` 0,3, `ang_damp` 0,8): kámen se nekoulí donekonečna.
 - **Fyzikální materiál `PM_RuinStone`**, který skript vytvoří ve složce materiálů: tření 0,9, odraz 0,05.
@@ -307,8 +309,45 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 | `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |
 | `stones\*.obj` | zaoblené kameny líce a kvádr ostění (import automaticky) |
 | `gen_stones.py` | generátor zaoblených kamenů (numpy) |
-| `test_openings.py` | kontrola: žádný blok v otvoru (`kolize: 0`) |
 | `Zricenina_kameny_detail.png` | detail zdi paláce se střílnou (zaoblené kameny, ostění) |
 | `Zricenina_bloky_nahled.png` | náhled (věž z nádvoří, brána detail, celek, brána a věž, palác) |
+| `zr_ruin\*.py` | vnitřní moduly generátoru (kap. 7) |
+| `..\..\zrlib\*.py` | sdílená knihovna 03 + 05 + tools, **`config.py` = nastavení vzhledu** (kap. 7) |
+| `..\..\tools\checks\run_checks.py` | kontroly bez Unrealu: otvory, kameny bez podpory, ostroh (kap. 7) |
 | `..\..\tools\ruin\check_blocks.py` | vykreslí náhled bez Unrealu |
 | `..\..\tools\ruin\gen_layout.py` | vytvoří `ruin_layout.json` z `ruin_layout_draft.json` a heightmapy |
+
+---
+
+## 7. Struktura kódu (od 11/2026)
+
+```
+zrlib\                    sdílená knihovna 03 + 05 + tools (čistý Python, bez numpy - kvůli Pythonu v Unrealu)
+  config.py               NASTAVENÍ VZHLEDU: tagy, materiály, textury, zaoblené kameny, dřevo, fyzika volných kamenů
+  geom.py                 geometrie: interpolace, terén, polylinie (offset, ořez, průsečíky), polygon, rovina
+  stones.py               kámen / dílec (Stone), přiřazení meshí, hmotnost
+  ue_assets.py            Unreal: materiály M_RuinStone a MI_*, import meshí, transformace instancí, fyzika
+  ue_actors.py            Unreal: ISM actory, samostatné kameny, mazání podle tagů, capture (03 i 05 stejně)
+  level.py                Unreal: bourací objemy, terén z landscapu
+  validate.py             kontrola dat (chybějící klíč = srozumitelná chyba se jménem zdi / stavby)
+03_ruin\blocks\
+  build_ruin_blocks.py    vstup: nastavení běhu, soubory (layout, manual_edits), build a capture v UE
+  casti\*.py              build jedné části hradu
+  zr_ruin\decay.py        rozpad: typy otvorů, stav otvoru, profil výšky zdi, parametry stáří, šum rozebírání
+  zr_ruin\prep.py         příprava dat zdi: podstavba, ref_z, ochrana do výšky otvoru jiné zdi, bourací objemy
+  zr_ruin\wall.py         zeď po krocích: prepare_wall, snap_openings, forbidden, lay_courses, build_frames, finish_wall
+  zr_ruin\post.py         úpravy kamenů zdi: koruna pod střechou, žlábky pro trámy, rozpadlé jádro, zvětralá koruna
+  zr_ruin\floor.py        kamenná dlažba (layout → floors)
+  zr_ruin\rubble.py       suť u paty zdí (staví 05)
+  zr_ruin\compute.py      celý hrad: všechny zdi a podlahy → kameny
+tools\checks\
+  run_checks.py           kontroly bez UE (otvory, kameny bez podpory, ostroh: průniky, pokrytí krytinou) - SOUHRN na konci
+  preview3d.py            3D náhled se stíny (three.js v headless Chromiu; potřebuje node, playwright a three)
+  fingerprint.py          otisk výstupu všech skriptů (kameny, generované JSON, volání Unreal API) - pro refaktoring
+  common.py               společné načtení stavu jako v UE (terén z levelu, ruční úpravy), průniky kvádrů
+```
+
+- **V Unrealu se nic nemění:** spouští se pořád `build_ruin_blocks.py`, `casti\*.py`, `detach_stones.py`. Složka `zrlib` musí ležet v kořeni vedle `03_ruin` a `05_constructions`. Moduly se při každém spuštění načtou znovu, takže úprava souboru se projeví hned (bez restartu editoru).
+- **Mimo UE:** `python tools\checks\run_checks.py` (volitelně `--layout <ruin_layout.json>`, `--only openings,floating,ostroh`). Nahradil `test_openings.py`.
+- **Refaktoring:** `python tools\checks\fingerprint.py . pred.json` před změnou, po změně `python tools\checks\fingerprint.py . po.json --compare pred.json`. Volitelně `--state <složka s manual_edits.json a terrain_from_level.json>`, `--heightmap <png>` (přidá generátory dat). Rozdělení skriptů v 11/2026 dává bit po bitu stejný výstup jako předtím.
+

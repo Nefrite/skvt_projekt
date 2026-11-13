@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 sys.argv=[sys.argv[0]]+sys.argv[1:]
 import importlib.util
-spec=importlib.util.spec_from_file_location("brb","build_ruin_blocks.py"); B=importlib.util.module_from_spec(spec); spec.loader.exec_module(B)
+import os; _B3=os.path.join(os.path.dirname(os.path.abspath(__file__)),"..","..","03_ruin","blocks","build_ruin_blocks.py")   # generator zriceniny (jedina kopie)
+sys._ruin_import_only=True; spec=importlib.util.spec_from_file_location("brb",_B3); B=importlib.util.module_from_spec(spec); spec.loader.exec_module(B); sys._ruin_import_only=False
 B.LAYOUT_PATH=sys.argv[1]
 lay=B.load_layout(); data,P=B.compute_blocks(lay,[],None,lay.get('volumes_examples') if len(sys.argv)>3 else None); Z0=lay["plateau_z_cm"]
-COL={"face":(0.72,0.66,0.56),"core":(0.55,0.52,0.48),"frame":(0.86,0.78,0.6)}
+COL={"face":(0.72,0.66,0.56),"core":(0.55,0.52,0.48),"frame":(0.86,0.78,0.6),"crown":(0.78,0.76,0.68),"floor":(0.8,0.76,0.68)}
 Ld=np.array([-0.5,-0.4,0.75]);Ld/=np.linalg.norm(Ld)
 def boxes(stones,xr,yr):
     polys=[];fc=[]
@@ -20,7 +21,7 @@ def boxes(stones,xr,yr):
         Pp=[(c+a*u*s.sx/2+b*v*s.sy/2+d*w*s.sz/2)/100 for a in(-1,1) for b in(-1,1) for d in(-1,1)]
         for f in [(0,1,3,2),(4,5,7,6),(0,1,5,4),(2,3,7,6),(0,2,6,4),(1,3,7,5)]:
             q=[Pp[i] for i in f]; n=np.cross(q[1]-q[0],q[2]-q[0]); n/=np.linalg.norm(n)+1e-9
-            polys.append(q); fc.append(np.clip(np.array(COL[s.cat])*(0.5+0.5*abs(n@Ld)),0,1))
+            polys.append(q); fc.append(np.clip(np.array(COL.get(s.cat,(0.7,0.7,0.7)))*(0.5+0.5*abs(n@Ld)),0,1))
     return polys,fc
 allst=[s for w in data.values() for s in w["stones"]+w.get("rubble",[])+w.get("loose",[])]
 views=[("věž z nádvoří – průlom a vstup",(100,12),(200,2200),(-3000,-1500),(2,20),(-28,-8),(-2,14),1.5),("brána – detail oblouku od V",(5,12),(300,2300),(-3300,-1600),(4,22),(-30,-14),(-2,9),1.4),("celek od JZ",(-125,24),(-5200,3000),(-3300,400),(-48,22),(-30,3),(-6,16),1.1),

@@ -10,7 +10,8 @@ lay=json.load(open(sys.argv[1])); data,P=B.compute_blocks(lay)
 cdat=json.load(open(sys.argv[3])) if len(sys.argv)>3 else {"floors":[]}
 terr=B.Terrain(lay["terrain"])
 fsw=[f for f in cdat["floors"] if f["name"]=="Vez_Patra"]
-data["Vez_Patra"]={"stones":(B.build_floor_stones(fsw[0],P,data,terr) if fsw else [])+data.get("Vez_Dlazba",{}).get("stones",[])}
+sys.path.insert(0,os.path.join(os.path.dirname(os.path.abspath(__file__)),"..","..","05_constructions")); from zr_stavby.vez import build_tower_floor   # drevo veze (05)
+data["Vez_Patra"]={"stones":(build_tower_floor(fsw[0],P,data,terr) if fsw else [])+data.get("Vez_Dlazba",{}).get("stones",[])}
 fs=(fsw[0] if fsw else lay["floors"][0]); ox,oy=fs["origin"]; U=np.array(fs["u"]); V=np.array(fs["v"])
 def uv(x,y): d=np.array([x-ox,y-oy]); return d@U/100, d@V/100
 COL={"face":(0.72,0.66,0.56),"core":(0.5,0.47,0.43),"frame":(0.9,0.8,0.6),"wood":(0.62,0.57,0.5),"wood_tar":(0.24,0.19,0.14),"wood_oil":(0.52,0.35,0.2),"wood_blood":(0.42,0.17,0.11),"wood_old":(0.66,0.65,0.62),"floor":(0.8,0.76,0.68),"crown":(0.78,0.76,0.68)}

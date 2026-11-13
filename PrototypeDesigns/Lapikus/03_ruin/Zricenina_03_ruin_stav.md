@@ -10,7 +10,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 ## Jak se teď generuje
 
 - **Generátor z bloků:** `03_ruin/blocks/build_ruin_blocks.py`, stav ~1650. Lomové kameny líce jsou zaoblené zvětralé meshe `SM_RuinStone_*` (OBJ ve `stones/`, automatický import, Nanite, box kolize). Jádro jsou kostky. Ostění tvoří `SM_RuinAshlar`. Materiál `M_RuinStone` + `MI_RuinFace/Core/Frame` vytvoří skript sám. Návod je v `README_bloky.md`.
-- **Data:** `tools/ruin/gen_layout.py` + `03_ruin/ruin_layout_draft.json` → `ruin_layout.json`. Mimo UE: `test_openings.py` (žádný kámen ve světlosti otvorů) a `check_blocks.py` (náhled).
+- **Data:** `tools/ruin/gen_layout.py` + `03_ruin/ruin_layout_draft.json` → `ruin_layout.json`. Mimo UE: `tools/checks/run_checks.py` (otvory, kameny bez podpory, ostroh), `tools/checks/preview3d.py` a `check_blocks.py` (náhledy).
 - **Terén:** `TERRAIN_FROM_LEVEL = True`. Build změří landscape v levelu a uloží `terrain_from_level.json`. Capture používá stejný uložený stav.
 - **Ruční úpravy v levelu:**
   - bourací objemy (Trigger Box s tagy `Ruin_*`),
@@ -66,6 +66,8 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Překlad výklenku střílen (11/2026):** je vysoký přesně jednu řadu kamene (dřív pevně 35 cm). Nad překladem tak nezůstává vynechaná řada („kapsa“).
 
 - **Stavění po částech (11/2026):** `03_ruin/blocks/casti/Obvod.py` (věž, obvodové hradby, brány, dlažba věže), `Palac.py` a `Ostroh.py` (vnitřní zdi) postaví jen jednu část. Rozdělení je v `CASTI` v `build_ruin_blocks.py`, actory mají tag `cast:<Část>`. Úsek hradby u ostrohu (krov) patří do Obvodu.
+
+- **Refaktoring (11/2026):** sdílená knihovna `zrlib/` v kořeni (nastavení vzhledu `config.py`, geometrie, Unreal), 03 rozdělené na `zr_ruin/` (rozpad, příprava, zeď po krocích, úpravy, dlažba, suť), 05 na typy staveb `zr_stavby/` s registrem `TYPES` (dřevo věže přesunuté z 03 do 05). Kontroly a otisk v `tools/checks/`. Výstup bit po bitu stejný jako před refaktoringem.
 
 ## Rozdělení 03 / 05 (11/2026)
 
