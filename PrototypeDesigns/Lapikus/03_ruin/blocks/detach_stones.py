@@ -103,7 +103,9 @@ def detach():
                     act = eas.spawn_actor_from_object(mesh, tr.translation, tr.rotation.rotator())
                     if not act: continue
                     act.set_actor_transform(tr, False, False)
-                    act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id), unreal.Name("Ruin_Detached")]
+                    wn = s.id.split("|")[0]
+                    act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id), unreal.Name("Ruin_Detached"),
+                                unreal.Name("cast:" + R.cast_of(wn)), unreal.Name("zed:" + wn)]
                     act.set_folder_path(folder + "/Odpadle")
                     act.set_actor_label("Kamen_" + s.id.replace("|", "_"))
                     smc = act.static_mesh_component

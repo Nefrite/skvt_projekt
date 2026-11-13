@@ -89,6 +89,24 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
    - Rozpad je přitom spočítaný **přes celou zeď najednou**, takže na zlomech nevznikají skoky ve výšce.
    - **Kameny na zemi (suť)** jsou vždy **samostatné actory** ve složce `…/Sut`. Můžeš je rovnou posouvat a mazat a uložit přes capture (kap. 5.2), bez boxu `Ruin_Explode`.
 
+### 2.1 Stavění po částech (`casti\<Cast>.py`)
+
+Hrad je rozdělený na tři části, které se dají stavět zvlášť. Při ladění vnitřních zdí se tak nepřestavuje celý hrad.
+
+| Skript | Část | Zdi |
+|---|---|---|
+| `casti\Obvod.py` | věž a obvod | `Vez_*`, `Hradba_Z_S`, `Hradba_V`, brány `Brana_*`, dlažba věže `Vez_Dlazba` |
+| `casti\Palac.py` | palác (vnitřní) | `Palac_J`, `Palac_S`, `Palac_Z`, `Palac_pricka_1`, `Palac_pricka_2` |
+| `casti\Ostroh.py` | západní budova u ostrohu (vnitřní) | `ZBudova_V`, `ZBudova_S` |
+
+- **Tools → Execute Python Script → `03_ruin\blocks\casti\Palac.py`** (nebo `Ostroh.py`, `Obvod.py`). Smaže a postaví jen actory této části, ostatní zůstanou, jak jsou.
+- `build_ruin_blocks.py` spuštěný přímo dál staví **celý hrad**.
+- Každý actor zříceniny má tag `cast:<Část>` a `zed:<jméno zdi>`, podle nich build části maže jen svoje actory. Actor zříceniny bez těchto tagů smaže jen build celého hradu.
+- Počítá se vždy celý hrad (návaznosti mezi zdmi, např. výška `Brana_S` podle oblouku brány, terén z levelu). Staví se jen vybraná část, takže je to výrazně rychlejší.
+- **Nová zeď:** do části se zařadí podle jména (`CASTI` nahoře v `build_ruin_blocks.py`, platí první shoda). Co nespadá pod `Palac_*` ani `ZBudova_*`, patří do `Obvod`.
+- **Pozor:** úsek hradby u ostrohu (snížení a žlábky pro trámy krovu) je součástí `Hradba_Z_S`, tedy části **Obvod**. Když se změní krov (`ostroh_spec.py`), spusť `Obvod.py`. Po přestavbě části `Ostroh` postav znovu i dostavbu a podlahu v 05 (`Ostroh_Dostavba.py`, `Ostroh_Podlaha.py`), protože stojí na koruně `ZBudova_V` a `ZBudova_S`.
+- `MODE = "capture"` ve skriptu části ukládá ruční úpravy (smazané, posunuté kameny) vždy za celý hrad.
+
 **Rychlé ladění jedné zdi:** nahoře ve skriptu nastav `ONLY_WALLS = ["Brana_V", "Brana_J"]`. Přegeneruje se jen tato zeď, ostatní zůstanou.
 
 **Když to selže:**
@@ -159,7 +177,7 @@ Tipy:
 - **`TERRAIN_FROM_LEVEL = True`** (nahoře ve skriptu): build změří výšky landscapu v levelu (line trace, ostatní actory ignoruje) a uloží je do `terrain_from_level.json`. Capture (`capture_manual_edits`) používá tento uložený stav. Po úpravě terénu stačí znovu spustit build.
 - **Věž: kapsy, střílny s výklenkem, dlažba.** Zdi věže mají `ref_z` (podlaha přízemí, Z 3150), `course_grid` (pevné řady 0,35 m) a `inside_pt` (vnitřek věže). Všechny výšky otvorů se zadávají od podlahy.
   - Typ otvoru `kapsa` prorazí jen vnitřní líc. S `outer: true` prorazí vnější líc, takhle jsou kapsy pro trámy podesty.
-  - Střílna nebo okno se `splay` (`floor`, `top`, `w_in`) má zevnitř kónický výklenek s šikmými boky a překladem.
+  - Střílna nebo okno se `splay` (`floor`, `top`, `w_in`) má zevnitř kónický výklenek s šikmými boky a překladem. Překlad je vysoký přesně jednu řadu kamene (vrch na spáře), takže nad ním nezůstává mezera.
   - Střílny v hradbě `Hradba_Z_S` mají výklenek stejně jako ve věži (`strilna_h` v `gen_layout.py`, šířka zevnitř 1,4 m). Dolní střílny mají výklenek od terénu, horní (parapet 5 m) od úrovně ochozu asi 4 m.
   - `ragged` (m) náhodně vylámá líc kolem průchodu.
   - Kamenná dlažba přízemí je v `floors` → `Vez_Dlazba`.
@@ -282,7 +300,8 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 
 | Soubor | Obsah |
 |---|---|
-| `build_ruin_blocks.py` | generátor z bloků (čistý Python), `MODE = "build"` / `"capture"`; mimo UE vypíše počty bloků |
+| `build_ruin_blocks.py` | generátor z bloků (čistý Python), `MODE = "build"` / `"capture"`; spuštěný přímo staví celý hrad; mimo UE vypíše počty bloků po částech |
+| `casti\Obvod.py`, `casti\Palac.py`, `casti\Ostroh.py` | postaví jen jednu část hradu (kap. 2.1) |
 | `ruin_layout.json` | zdi, otvory, presety stáří, `edits`, `edits_examples`, `volumes_examples`, výšková mřížka terénu |
 | `manual_edits.json` | ručně smazané (`removed`), posunuté (`moved`) a oddělené (`detached`) kameny |
 | `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |

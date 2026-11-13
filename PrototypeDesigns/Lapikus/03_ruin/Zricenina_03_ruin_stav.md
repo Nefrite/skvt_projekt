@@ -63,6 +63,10 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Schody:** provizorní, 60°, cik-cak. Do 1. patra stoupají k východu (pole u severní zdi), do 2. patra k západu a opírají se o průvlak (sousední pole). Trámy jsou po 1,64 m. Zábradlí se nedělá (provizorní oprava).
 - **Náhled řezu věží:** `tools/constructions/check_tower.py`.
 
+- **Překlad výklenku střílen (11/2026):** je vysoký přesně jednu řadu kamene (dřív pevně 35 cm). Nad překladem tak nezůstává vynechaná řada („kapsa“).
+
+- **Stavění po částech (11/2026):** `03_ruin/blocks/casti/Obvod.py` (věž, obvodové hradby, brány, dlažba věže), `Palac.py` a `Ostroh.py` (vnitřní zdi) postaví jen jednu část. Rozdělení je v `CASTI` v `build_ruin_blocks.py`, actory mají tag `cast:<Část>`. Úsek hradby u ostrohu (krov) patří do Obvodu.
+
 ## Rozdělení 03 / 05 (11/2026)
 
 - **03_ruin** (`build_ruin_blocks.py`, `ruin_layout.json`): zřícenina, tedy zdi, otvory, ostění, kapsy a kamenná dlažba (`Vez_Dlazba`). Tag `Zricenina_Ruin`.

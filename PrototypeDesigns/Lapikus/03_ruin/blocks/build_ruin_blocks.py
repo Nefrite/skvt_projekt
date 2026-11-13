@@ -14,8 +14,11 @@ Uprava zriceniny:
   - rucne: v levelu smazat jednotlive bloky (instance), pak spustit capture_manual_edits()
            -> smazane bloky se zapisi do manual_edits.json a pri pregenerovani zustanou smazane
 
-Pouziti v UE: Tools -> Execute Python Script -> build_ruin_blocks.py
+Pouziti v UE: Tools -> Execute Python Script -> build_ruin_blocks.py      (cely hrad)
+                                            -> casti/<Cast>.py           (jen jedna cast: Obvod, Palac, Ostroh)
   (ruin_layout.json a manual_edits.json vedle skriptu, nebo nastav LAYOUT_PATH)
+  Cast smaze a postavi jen sve actory (tag cast:<Cast>), ostatni casti zustanou. Pocita se vzdy cely hrad
+  (navaznosti mezi zdmi, teren), stavi se jen vybrana cast.
 Mimo UE: python build_ruin_blocks.py [ruin_layout.json]  -> statistika (pocet bloku)
 """
 import json, math, os, random, sys, zlib
@@ -125,6 +128,19 @@ TERRAIN_FROM_LEVEL = True                # True = vysky terenu se pri buildu zme
                                          #   a ulozi do terrain_from_level.json (capture_manual_edits pouzije tento ulozeny stav)
                                          # False = vysky z ruin_layout.json (puvodni heightmapa)
 ONLY_WALLS = None                        # napr. ["Brana_V", "Brana_J"] = postavit jen tyto zdi (rychle ladeni)
+CAST = None                              # None = cely hrad; nebo ["Palac"], ["Ostroh"], ["Obvod"] (spousti casti/<Cast>.py)
+# casti hradu, ktere se stavi zvlast (zdi a podlahy podle jmena; plati prvni shoda, Obvod = vsechno ostatni)
+CASTI = {"Palac": ["Palac_*"],                          # vnitrni: palac
+         "Ostroh": ["ZBudova_*"],                       # vnitrni: zapadni budova u ostrohu
+         "Obvod": ["*"]}                                # vez, obvodove hradby, brany, dlazba veze
+
+
+def cast_of(name):
+    """do ktere casti hradu patri zed / podlaha"""
+    import fnmatch
+    for c, pats in CASTI.items():
+        if any(fnmatch.fnmatch(name, p) for p in pats): return c
+    return "Obvod"
 
 OPENING_TYPES = {
     "strilna":    dict(frame=0.20, lintel="kamen",  value=0.6),
@@ -454,6 +470,9 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
         if st.get("splay"):
             sp = st["splay"]
             st["niche"] = (snap(zb_o + sp["floor"] * 100), snap(zb_o + sp["top"] * 100)); st["w_in"] = sp.get("w_in", 1.6)
+            # preklad vyklenku = presne jedna rada nad vyklenkem (vrch na spare) -> nad nim zadna mezera ("kapsa")
+            up = [b_ for b_ in bounds if b_ > st["niche"][1] + 1]
+            st["niche_lt"] = up[0] if up else st["niche"][1] + 35
         fr = st["frame"]
         st["framed"] = fr > 0 and not (st["robbed"] == "both" and not (st["arch"] and not st["lintel_lost"]))
         if st["arch"]:
@@ -488,7 +507,7 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                 # vyklenek strilny zevnitr: siroky prostor (do nej se postavi sikme boky) + preklad nad nim
                 n0, n1 = st["niche"]; c = (x0 + x1) / 2; wi = st["w_in"] / 2
                 if cz1 > n0 + e and cz0 < n1 - e: out.append((c - wi - 0.05, c + wi + 0.05))
-                elif cz1 > n1 + e and cz0 < n1 + 36: out.append((c - wi - 0.25, c + wi + 0.25))
+                elif cz1 > n1 + e and cz0 < st["niche_lt"] - e: out.append((c - wi - 0.25, c + wi + 0.25))
             if st.get("ragged") and layer != 0 and z1r > st["sill"] + 0.01 and z0r < st["top"] + 0.2:
                 # rozbitejsi okraje pruchodu: lic kolem otvoru nahodne vylamany (jadro zustava)
                 rr_ = random.Random(zlib.crc32(("%s|%d|%d" % (wd["name"], round(cz0), layer)).encode()))
@@ -741,7 +760,7 @@ def build_wall_stones(wd, P, terr, layout, edits, removed, centroid):
                     put_frame("%s|F%d|N%s%d" % (wd["name"], oi, "L" if side < 0 else "R", j), mx_, my_, (c0 + c1) / 2,
                               yw_, ln + 8, 30, (c1 - c0) - 0.5, seg=kk, along="x")
                     j += 1
-            lz0 = n1; lz1 = n1 + 35
+            lz0 = n1; lz1 = st["niche_lt"]
             if (lz1 - zb) / 100 <= min(interp(c - wi, xs, h), interp(c + wi, xs, h)) + 0.05:
                 xx, yy, yw, nnx, nny, kk = at(c); o_ = (face_d / 2) * st["inside"]
                 put_frame("%s|F%d|NT" % (wd["name"], oi), xx + nnx * o_, yy + nny * o_, (lz0 + lz1) / 2, yw,
@@ -1762,9 +1781,17 @@ def build_in_unreal():
     meshes = ensure_stone_meshes(unreal)
     tag = unreal.Name(RUIN_TAG); n_total = 0
     with unreal.ScopedEditorTransaction("Build ruin (blocks)"):
-        old = [a for a in eas.get_all_level_actors() if tag in a.tags
-               and (not ONLY_WALLS or any(a.get_actor_label().startswith(w + "_") for w in ONLY_WALLS))]
+        def mine(a):
+            """patri actor k vybrane casti / zdi? podle tagu cast:<Cast> a zed:<jmeno> (actor bez nich maze jen build celeho hradu)"""
+            if not CAST and not ONLY_WALLS: return True
+            tg = [str(t) for t in a.tags]
+            c_ = next((t[5:] for t in tg if t.startswith("cast:")), None)
+            z_ = next((t[4:] for t in tg if t.startswith("zed:")), None)
+            if c_ is None or z_ is None: return False
+            return (not CAST or c_ in CAST) and (not ONLY_WALLS or z_ in ONLY_WALLS)
+        old = [a for a in eas.get_all_level_actors() if tag in a.tags and mine(a)]
         if old: eas.destroy_actors(old)
+        data = {n: w for n, w in data.items() if not CAST or cast_of(n) in CAST}
         with unreal.ScopedSlowTask(len(data), "Stavim zriceninu z bloku...") as task:
             task.make_dialog(True)
             for name, w in data.items():
@@ -1782,8 +1809,9 @@ def build_in_unreal():
                              "wood_blood": "Drevo_Krev", "wood_old": "Drevo_Stare",
                              "floor": "Podlaha", "crown": "Koruna"}[cat]
                     label = ("%s_%02d_%s" % (name, seg + 1, cname)) if nseg > 1 else ("%s_%s" % (name, cname))
-                    _ism_actor(unreal, eas, label, w["folder"] + ("/%s" % name if nseg > 1 else ""),
-                               [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag)
+                    for a_ in _ism_actor(unreal, eas, label, w["folder"] + ("/%s" % name if nseg > 1 else ""),
+                                         [tuple(v) for _, v in sorted(bym.items())], mats.get(cat), tag) or []:
+                        a_.tags = list(a_.tags) + [unreal.Name("cast:" + cast_of(name)), unreal.Name("zed:" + name)]
                     n_total += len(sts)
                 # samostatne kameny (sut, Ruin_Explode / rucne posunute): kazdy vlastni actor, ID v tagu
                 for s in w.get("loose", []):
@@ -1791,14 +1819,15 @@ def build_in_unreal():
                     act = eas.spawn_actor_from_object(m, unreal.Vector(s.x, s.y, s.z), unreal.Rotator(roll=s.roll, pitch=s.pitch, yaw=s.yaw))
                     if not act: continue
                     act.set_actor_transform(stone_transform(unreal, s, m, nom), False, False)
-                    act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id)] + ([unreal.Name("Ruin_Detached")] if s.id in detached else [])
+                    act.tags = [tag, unreal.Name("RuinStone"), unreal.Name("id:" + s.id), unreal.Name("cast:" + cast_of(name)), unreal.Name("zed:" + name)] \
+                               + ([unreal.Name("Ruin_Detached")] if s.id in detached else [])
                     act.set_folder_path(w["folder"] + ("/Sut" if "|R" in s.id else "/Odpadle" if s.id in detached else "/Kameny"))
                     act.set_actor_label("Kamen_" + s.id.replace("|", "_"))
                     if mats.get(s.cat): act.static_mesh_component.set_material(0, mats[s.cat])
                     if DETACHED_PHYSICS and s.id in detached:
                         stone_physics(unreal, act, s, asleep=s.id in moved)
                     n_total += 1
-    unreal.log("Zricenina z bloku (%s): %d bloku ve %d zdech, objemu %d, samostatnych kamenu %d, rucne smazanych %d, posunutych %d, zaoblenych meshu %d." % (
+    unreal.log(("Cast %s: " % ", ".join(CAST) if CAST else "") + "Zricenina z bloku (%s): %d bloku ve %d zdech, objemu %d, samostatnych kamenu %d, rucne smazanych %d, posunutych %d, zaoblenych meshu %d." % (
         P["_AGE"], n_total, len(data), len(vols), sum(len(w.get("loose", [])) for w in data.values()), len(removed), len(moved), len(meshes)))
 
 def capture_manual_edits():
@@ -1915,17 +1944,28 @@ def _has_unreal():
 
 MODE = "build"        # "build" = postavit, "capture" = ulozit rucne smazane bloky
 
+
+def run(cast=None, mode=None):
+    """spusteni z UE pro vybrane casti hradu (casti/<Cast>.py): cast = seznam jmen z CASTI, mode = "build" / "capture"
+    (capture vzdy porovna cely hrad, ulozi rucni upravy vsech casti)"""
+    global CAST, MODE
+    CAST = list(cast) if cast else None
+    MODE = mode or MODE
+    capture_manual_edits() if MODE == "capture" else build_in_unreal()
+
+
 if (__name__ == "__main__" or "unreal" in sys.modules) and not getattr(sys, "_ruin_import_only", False):
     if _has_unreal():
-        capture_manual_edits() if MODE == "capture" else build_in_unreal()
+        run(CAST, MODE)
     else:
         if len(sys.argv) > 1: LAYOUT_PATH = sys.argv[1]
         lay = load_layout(); rm, mv = load_manual(); data, P = compute_blocks(lay, rm, mv, detached=load_detached())
         tot = 0
         for n, w in data.items():
+            if CAST and cast_of(n) not in CAST: continue
             c = {"face": 0, "core": 0, "frame": 0, "wood": 0, "floor": 0, "crown": 0}
             for s in w["stones"] + w.get("loose", []): c["wood" if s.cat in WOOD_MI else s.cat] = c.get("wood" if s.cat in WOOD_MI else s.cat, 0) + 1
             tot += sum(c.values()) + len(w.get("rubble", []))
-            print("  %-18s lic %5d  jadro %4d  osteni %3d  sut %3d" % (n, c["face"], c["core"], c["frame"], len(w.get("rubble", [])))
+            print("  %-7s %-18s lic %5d  jadro %4d  osteni %3d  sut %3d" % (cast_of(n), n, c["face"], c["core"], c["frame"], len(w.get("rubble", [])))
                   + ("  koruna %4d" % c["crown"]) + ("  drevo %4d  dlazba %3d" % (c["wood"], c["floor"]) if c["wood"] or c["floor"] else ""))
         print("stari:", P["_AGE"], " bloku celkem:", tot)
