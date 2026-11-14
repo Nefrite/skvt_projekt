@@ -87,7 +87,7 @@ Pluginy zatím nejsou zapsané v `skvt_projekt.uproject`. Po zapnutí zkontroluj
 ## 5. Struktura složky
 
 ```
-Claude outputs\Zriceni_orez_505\
+Claude outputs\Lapikus\
 ├─ README_PROJEKT.md        ← tento dokument
 ├─ README.txt               ← rychlý rozcestník
 ├─ 01_terrain\              heightmapa 505, náhled sklonu, návod importu a materiálu

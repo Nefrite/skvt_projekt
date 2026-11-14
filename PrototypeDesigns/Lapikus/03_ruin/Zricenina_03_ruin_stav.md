@@ -4,7 +4,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Pracovní postup
 
-- Úpravy, které Jirka zadá, Claude rovnou ukládá do skriptů a dat v obou složkách (`GameDesign\Claude outputs\Zriceni_orez_505` a `skvt_projekt\PrototypeDesigns\Lapikus`) a pošle náhled. Napřed se ptá, jen když se teprve řeší, jak něco udělat.
+- Úpravy, které Jirka zadá, Claude rovnou ukládá do skriptů a dat v obou složkách (`GameDesign\Claude outputs\Lapikus` a `skvt_projekt\PrototypeDesigns\Lapikus`) a pošle náhled. Napřed se ptá, jen když se teprve řeší, jak něco udělat.
 - `manual_edits.json` Claude nikdy nepřepisuje. Poslední terén z levelu je v `skvt_projekt\...\03_ruin\blocks\terrain_from_level.json`.
 
 ## Jak se teď generuje
@@ -16,7 +16,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - bourací objemy (Trigger Box s tagy `Ruin_*`),
   - `capture_manual_edits()` → `manual_edits.json`,
   - `tools/ruin/export_level_layout.py` → `layout_from_level.json` (posunuté zdi + body `RuinPt_<Zed>_<NN>`).
-- **Kde leží soubory:** `GameDesign/Claude outputs/Zriceni_orez_505` a kopie v `skvt_projekt/PrototypeDesigns/Lapikus` (`03_ruin`, `tools/ruin`). Odtud se spouští v UE.
+- **Kde leží soubory:** `GameDesign/Claude outputs/Lapikus` a kopie v `skvt_projekt/PrototypeDesigns/Lapikus` (`03_ruin`, `tools/ruin`). Odtud se spouští v UE.
 
 ## Půdorys v3 (11/2026)
 

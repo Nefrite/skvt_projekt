@@ -42,14 +42,14 @@ Skript nic nemaže mimo actory, které sám vytvořil (tag `Zricenina_Ruin`).
 
 - **Chyba „Nastav LAYOUT_PATH…“ nebo „No such file“:** otevři `build_ruin.py` v textovém editoru a nahoře nastav plnou cestu:
   ```python
-  LAYOUT_PATH = r"C:\Users\JDr\GitHub\GameDesign\Claude outputs\Zriceni_orez_505\03_ruin\build\ruin_layout.json"
+  LAYOUT_PATH = r"C:\Users\JDr\GitHub\GameDesign\Claude outputs\Lapikus\03_ruin\build\ruin_layout.json"
   ```
 - **Jiná chyba:** zkopíruj ji z Output Logu do chatu. Skript v Unrealu ještě neběžel, takže první spuštění je zároveň test. Názvy v Python API se mezi verzemi občas liší a skript se pak rychle upraví.
 
 **Alternativa přes příkazový řádek:** v Output Logu přepni **Cmd → Python** a zadej:
 
 ```
-exec(open(r"C:\Users\JDr\GitHub\GameDesign\Claude outputs\Zriceni_orez_505\03_ruin\build\build_ruin.py", encoding="utf-8").read())
+exec(open(r"C:\Users\JDr\GitHub\GameDesign\Claude outputs\Lapikus\03_ruin\build\build_ruin.py", encoding="utf-8").read())
 ```
 
 V tom případě musí být `LAYOUT_PATH` vyplněná, protože `__file__` není k dispozici.
