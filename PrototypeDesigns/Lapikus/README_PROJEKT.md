@@ -34,6 +34,7 @@ Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká pa
 | Co | Kde / hodnota |
 |---|---|
 | Repo | `C:\Users\JDr\GitHub\skvt_projekt`, větev **`lapikus-prototype`** |
+| Hlavní složka prototypu | `skvt_projekt\PrototypeDesigns\Lapikus` (skripty, data, dokumentace). `GameDesign\Claude outputs\Lapikus` drží designové dokumenty (návrhy, instrukce agentů), skripty tam jsou jen starší kopie. |
 | Engine | Unreal Engine **5.8** |
 | Mapa | `Content/Skvt/LapikusPrototypeMap` (výchozí mapa projektu zůstává `SkvtProjectMap`) |
 | Materiál terénu | `Content/Skvt/Lapikus/M_Lanscape_Forest_Auto` (pozor: v názvu překlep *Lanscape*) |
@@ -93,7 +94,8 @@ Claude outputs\Lapikus\
 ├─ 01_terrain\              heightmapa 505, náhled sklonu, návod importu a materiálu
 ├─ 02_river\                body a skript řeky, maska koryta, návod
 ├─ 03_forest\               plán lesa, zóny, spliny, maska zón, náčrt
-└─ tools\                   skripty pro přegenerování všech podkladů
+├─ meshes\                 OBJ knihovních meshí podle kategorie (stone, wood); nejsou v gitu, generuje tools\meshes\gen_meshes.py
+└─ tools\                   skripty pro přegenerování všech podkladů (meshe: tools\meshes\gen_meshes.py)
 ```
 
 Starší mezivýstupy (pro historii, není třeba je používat):

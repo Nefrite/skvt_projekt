@@ -44,11 +44,11 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
    1. Content Browser → `Skvt/Lapikus/Ruin` → pravé tlačítko → **Blueprint Class → Actor** → `BP_RuinBlocks`.
    2. Otevři ho a v panelu Components dej **Add → Instanced Static Mesh**. Komponentu nech, jak je, nic nenastavuj.
    3. **Compile** a **Save**.
-3. **Zaoblené kameny:** složka `stones` (13 souborů `.obj`) musí ležet vedle skriptu. Při prvním spuštění je skript sám naimportuje do `/Game/Skvt/Lapikus/Ruin/Stones` (zapne Nanite a přidá krabicovou kolizi). Podrobnosti a ruční import v kap. 1.1.
+3. **Meshe kamenů a dřeva:** složka `meshes` (OBJ v podsložkách `stone` a `wood`) musí ležet v kořeni `Lapikus` vedle `zrlib`. OBJ nejsou v gitu (`*.obj` v `.gitignore`), po naklonování je vygeneruj: `python tools/meshes/gen_meshes.py`. Při prvním spuštění je skript sám naimportuje (kameny do `/Game/Skvt/Lapikus/Ruin/Stones`, dřevo do `/Ruin/Wood`), zapne Nanite a přidá krabicovou kolizi. Podrobnosti a ruční import v kap. 1.1.
 4. **Materiály:** skript při prvním spuštění vytvoří `M_RuinStone` a instance `MI_RuinFace`, `MI_RuinCore`, `MI_RuinFrame` v `/Game/Skvt/Lapikus/Ruin/Materials` (textury ze StarterContent). Další spuštění je už nepřepisují (kromě přechodu na novou `MAT_VERSION`, viz kap. 1.2), takže je můžeš ladit v editoru.
 5. **Ulož mapu a commitni.** Před generováním smaž sloupcovou zříceninu, pokud v mapě je. Nová ji sice smaže sama, ale sloučené meshe smazat musíš ručně.
 
-### 1.1 Zaoblené kameny líce (`stones/*.obj`)
+### 1.1 Meshe kamenů a dřeva (`meshes/<kategorie>/*.obj`)
 
 - `SM_RuinStone_R12/R18/R26/R34_A/B/C`: 4 poměry délka/výška (1,2 / 1,8 / 2,6 / 3,4) × 3 varianty tvaru. Zaoblené hrany (3,5–4,7 cm), mírně vypouklé plochy, nerovnosti a otlučené hrany. Každý má 1 000–2 300 trojúhelníků.
 - `SM_RuinStone_W_R12…R34_A/B/C`: zvětralé kameny koruny. Nahoře zaoblení 8,5–10,5 cm, otlučení a důlky, do stran 4,5–5,5 cm, dole jen 3 cm. Verze meshe je v metadatech (`RuinStoneVersion`, `STONE_MESH_VERSION` ve skriptu). Když jsou v projektu starší, skript je sám naimportuje znovu.
@@ -58,11 +58,12 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 - Skript vybere ke každému bloku variantu podle poměru délka/výška a naškáluje ji **přesně na rozměr bloku** (`STONE_OVERSIZE = 1.04` = o 4 % větší, aby spáry nebyly moc hluboké). Polovina kamenů je otočená o 180°, takže se tvary méně opakují. Varianta je vázaná na ID bloku a po přegenerování se nemění.
 - Osy po importu kontroluje skript sám podle bounding boxu, takže nezáleží na tom, jak je importér otočí.
 - **Ruční import** (když automatický selže, v Output Logu je `Ruin: chybi … kamenu`):
-  1. Přetáhni všechny `.obj` ze složky `stones` do Content Browseru, do `Skvt/Lapikus/Ruin/Stones`.
+  1. Přetáhni `.obj` ze složky `meshes\stone` do Content Browseru do `Skvt/Lapikus/Ruin/Stones` a z `meshes\wood` do `Skvt/Lapikus/Ruin/Wood`.
   2. V importu zapni **Nanite**. Materiál neřeš.
   3. Každý mesh otevři a dej **Collision → Add Box Simplified Collision** → Save. Bez toho postava projde zdí.
   4. Názvy assetů musí zůstat `SM_RuinStone_R12_A` atd.
-- **Vlastní tvary:** `python gen_stones.py stones` (potřebuje numpy) přegeneruje OBJ. Tvar se ladí parametry `make_stone` (`radius`, `amp`, `edge`, `bulge`). Pak smaž staré meshe v `Ruin/Stones` a spusť build znovu.
+- **Vlastní tvary:** `python tools/meshes/gen_meshes.py` (z kořene, potřebuje numpy) přegeneruje OBJ do `meshes/<kategorie>/`. Jen část: `python tools/meshes/gen_meshes.py stone` (kategorie `stone`, `wood`). Tvar kamenů se ladí parametry `make_stone` v `tools/meshes/mesh_stone.py` (`radius`, `amp`, `edge`, `bulge`). Pak zvyš verzi v `STONE_MESH_VERSION` (`zrlib/config.py`), nebo smaž staré meshe v `Ruin/Stones` (`Ruin/Wood`), a spusť build znovu. Starý `gen_stones.py` dál funguje, volá nový generátor.
+- **Složky podle kategorie:** kategorie = modul `tools/meshes/mesh_<kategorie>.py` = podsložka `meshes/<kategorie>` = složka v UE podle `MESH_DIRS` (`zrlib/config.py`). Nová kategorie: postup v hlavičce `gen_meshes.py`.
 - `USE_STONE_MESHES = False` vrátí všude kostky.
 
 ### 1.2 Materiály
@@ -113,7 +114,7 @@ Hrad je rozdělený na tři části, které se dají stavět zvlášť. Při lad
 
 **Když to selže:**
 
-- **`Ruin: chybi … kamenu … pouziji se kostky`:** složka `stones` neleží vedle skriptu, nebo import selhal. Řeš podle kap. 1.1 (ruční import).
+- **`Ruin: chybi … meshu … pouziji se kostky`:** chybí složka `meshes` v kořeni (vygeneruj `python tools/meshes/gen_meshes.py`), nebo import selhal. Řeš podle kap. 1.1 (ruční import).
 - **Postava prochází zdí:** meshe nemají kolizi. Postup v kap. 1.1, krok 3.
 
 - **„Nejde pridat InstancedStaticMeshComponent… chybi Blueprint“:** vytvoř `BP_RuinBlocks` (krok 1.2).
@@ -308,8 +309,8 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 | `ruin_layout.json` | zdi, otvory, presety stáří, `edits`, `edits_examples`, `volumes_examples`, výšková mřížka terénu |
 | `manual_edits.json` | ručně smazané (`removed`), posunuté (`moved`) a oddělené (`detached`) kameny |
 | `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |
-| `stones\*.obj` | zaoblené kameny líce a kvádr ostění (import automaticky) |
-| `gen_stones.py` | generátor zaoblených kamenů (numpy) |
+| `..\..\meshes\<kategorie>\*.obj` | knihovní meshe (import automaticky): `stone` kameny líce, koruny, ostění a kvádr; `wood` trámy, sloupy, prkna. Nejsou v gitu, generuje `tools\meshes\gen_meshes.py` |
+| `gen_stones.py` | jen odkaz na `..\..\tools\meshes\gen_meshes.py` (generátor kamenů a dřeva, numpy) |
 | `Zricenina_kameny_detail.png` | detail zdi paláce se střílnou (zaoblené kameny, ostění) |
 | `Zricenina_bloky_nahled.png` | náhled (věž z nádvoří, brána detail, celek, brána a věž, palác) |
 | `zr_ruin\*.py` | vnitřní moduly generátoru (kap. 7) |

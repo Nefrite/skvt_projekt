@@ -1,0 +1,311 @@
+# Checklist: assety a podklady pro nové návrhy (11/2026)
+
+Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `Designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 2, zapracované odpovědi Jirky (14. 11. 2026). Nic zatím není hotové, čeká na prioritizaci.**
+
+## 0. Zdroje a rozhodnutí
+
+| Návrh | Stav | Etapa |
+|---|---|---|
+| `navrh_vez_pristresek.md` | vybraná varianta B, průlomy `Vez_J` + `Vez_V` | 1 i 2 |
+| `navrh_palac_obydli_stred.md` (+ `_etapa1.png`) | dům v prostřední místnosti | 1 = rozestavěno, 2 = hotovo |
+| `navrh_palac_kovarna.md` | návrh | 1 i 2 |
+| `navrh_brana_straz.md` | návrh | otevřené |
+| `navrh_nadvori_stan.md` | **možná bude**, v seznamu se drží | jen 1 |
+
+**Rozhodnuto (Jirka, 14. 11. 2026):**
+- **Kulatina s kůrou i bez kůry**, podle stavby (kap. 2.1).
+- **Props vlastní**, ve stylu hradu (kap. 5).
+- **Stan** se drží v seznamu, položky jsou označené ⛺.
+- **Generátor meshí** se rozdělí podle typu materiálu, případně jeden společný s novým názvem (kap. 3).
+
+Značky: 🆕 nový asset · ♻ existuje, jen použít / rozšířit · ⛺ jen pro stan · ❓ čeká na rozhodnutí · 🧩 skládá se z dílců · ✋ modeluje se jako samostatný tvar.
+
+---
+
+## 1. Co už existuje (nemodelovat)
+
+- ♻ Kameny zříceniny: `SM_RuinStone_R*`, `SM_RuinStone_W_*`, `SM_RuinDressed_*`, `SM_RuinAshlar`. Použití: podkladní a patní kameny, podezdívky, výheň, základ ohniště, vyrovnávací řady brány, hromada kamene.
+- ♻ Hraněné dřevo: `SM_RuinTimber_A–C`, `SM_RuinPost_A–C`, `SM_RuinPlank_A–C`. Použití: sloupy 18–20 cm, pozednice, vaznice, krokve 18 × 22, trámky stropu, latě, prkna krytiny a podlah, lišty, lemování, prkenné štíty.
+- ♻ Materiály dřeva: `MI_RuinWood` (`raw`), `_Tar`, `_Oil`, `_Blood`, `_Old`.
+- ♻ Materiály kamene: `MI_RuinFace`, `_Core` (i jako malta), `_Frame`, `_Crown`.
+
+**Chybí kulatina.** Všechny stávající dřevěné meshe mají obdélníkový průřez.
+
+---
+
+## 2. Kulatina a tyče
+
+### 2.1 S kůrou, nebo bez kůry (návrh přiřazení, ❓ potvrdit)
+
+Pravidlo: **provizorní a rychlé stavby a materiál, který ještě nikdo nezpracoval = s kůrou.** **Nosné a trvalé dřevo = loupané**, protože pod kůrou dřevo hnije a lezou do něj brouci.
+
+| Stavba / použití                    | S kůrou                                                         | Bez kůry                                          |
+| ----------------------------------- | --------------------------------------------------------------- | ------------------------------------------------- |
+| `Vez_Pristresek`                    | kůly s vidlicí, hřeben, okapová tyč, krokvové tyče, vzpěry      | –                                                 |
+| `Brana_Straz_Kryty`                 | kůly palisády (zašpičatělá špička je holá), ráhna               | –                                                 |
+| `Brana_Straz_Podesta`               | –                                                               | trámy Ø 22 (nosné, na 5,4 m)                      |
+| `Brana_Straz` zábradlí              | sloupky a tyče                                                  |                                                   |
+| `Brana_Straz_Pristresek`            | sloupky, vaznice, krokvičky, přítlačné tyče                     | –                                                 |
+| `Brana_Zataras`                     | kmen                                                            | ramena (oloupané a zašpičatělé)                   |
+| `Palac_Obydli_Srub`                 | –                                                               | srub Ø 22 (loupaný, spáry vymazané)               |
+| `Palac_Obydli` staveniště (etapa 1) | kulatina na hromadě (ještě neloupaná), dočasné vzpěry, nohy koz | rozpracovaná kulatina na kozách (napůl loupaná ❓) |
+| `Palac_Kovarna_Pristresek`          | –                                                               | krokve Ø 16                                       |
+| žlaby a svody (dům, kovárna)        | vnější strana                                                   | vydlabaný vnitřek                                 |
+| vidlice žlabů                       | ano                                                             | –                                                 |
+| páka měchů                          | –                                                               | ano (ohmataná)                                    |
+| ⛺ `Nadvori_Stan`                    | stojky, hřeben, klády lůžek, tyče lůžek                         | kolíky (osekané)                                  |
+| ⛺ stříška stanu                     | vidlice, tyče, krokvičky                                        | –                                                 |
+
+### 2.2 Meshe
+
+Stejný princip jako `SM_RuinTimber`: nominální délka 100 cm, délka a průměr přes scale, varianty A–C, verze v `STONE_MESH_VERSION`, nominál ve `WOOD_NOMINAL`.
+
+- **Dva materiálové sloty u každé kulatiny:** plášť (kůra, nebo loupané dřevo) a čela (letokruhy, světlejší). Zašpičatělé a osekané konce jsou vždy holé dřevo.
+- **Kulatina s kůrou má vlastní tvar:** hrubší obrys (šupiny), místy odloupnutá kůra, kde je vidět dřevo (třetí oblast materiálu, nebo maska ve vertex color ❓).
+
+| ☐ | Asset | Popis | Rozsah | Použití |
+|---|---|---|---|---|
+| ☐ | 🆕 `SM_RuinLog_A–C` | loupaná kulatina: nepravidelný kruh, sbíhavost, suky, stopy po loupání | nominál Ø 20 cm (Ø 12–24) | srub, trámy podesty, krokve kovárny, ramena jezdce |
+| ☐ | 🆕 `SM_RuinLogBark_A–C` | kulatina s kůrou, místa odloupnutá | nominál Ø 20 cm (Ø 12–24) | kmen jezdce, hřeben a okapová tyč věže, hromada kulatiny |
+| ☐ | 🆕 `SM_RuinPole_A–C` | tenká tyč, výraznější prohnutí | nominál Ø 8 cm (Ø 5–10) | zábradlí, páka měchů, kolíky ⛺ |
+| ☐ | 🆕 `SM_RuinPoleBark_A–C` | tenká tyč s kůrou | nominál Ø 8 cm (Ø 5–10) | krokvové tyče, vzpěry, ráhna, krokvičky, přítlačné tyče, stojky stanu ⛺ |
+| ☐ | 🆕 `SM_RuinForkPost_A–C` | rozsocha s kůrou (kůl s vidlicí) | Ø 8–16 cm, délka 1,4–4,2 m | kůly přístřešku věže, vidlice žlabů, vidlice stříšky ⛺ |
+| ☐ | 🆕 `SM_RuinStake_A–C` | kůl s kůrou, nahoře holá špička | Ø 18–22 cm, délka 1,3–3,0 m | kryty brány |
+| ☐ | 🆕 `SM_RuinStakeSmall_A–B` | loupaný kůl, zašpičatělý na obou koncích | Ø 7 cm × 1,6 m (kolík 30 cm) | ramena jezdce, kolíky stanu ⛺ |
+| ☐ | 🆕 `SM_RuinGutter_A–B` | vydlabaný půlkmen | Ø 20 cm, délka po 100 cm | žlaby a svody |
+| ☐ | ❓ zářez srubu (nároží) | kulatiny se v nárožích křižují: řešit průnikem (bez meshe), nebo mesh se zářezem | – | srub obydlí |
+
+- ☐ Rozšířit `WOOD_NOMINAL`, `STONE_MESH_VERSION` a `assign_meshes` o kulaté průřezy. Výběr meshe podle `Stone.cat` a nového příznaku `bark`.
+
+---
+
+## 3. Generátor meshí: rozdělení skriptu
+
+**Původně:** `03_ruin/blocks/gen_stones.py` generoval kameny i dřevo. Výstup byl `stones/*.obj` vedle skriptu a build zříceniny ho importoval do `/Game/Skvt/Lapikus/Ruin/Stones`. Používá ho i 05, takže umístění pod `03_ruin` nesedělo.
+
+**Návrh ❓ (spojuje obě tvé možnosti):** jeden společný vstup a moduly podle materiálu.
+
+```
+tools/meshes/
+  gen_meshes.py        vstup: python gen_meshes.py <out> [stone wood bark textile wattle props]
+  mesh_common.py       noise, grid, waves, write_obj, UV v metrech
+  mesh_stone.py        lomove, zvetrale, opracovane kameny, kvadr (presun z gen_stones)
+  mesh_wood.py         tram, sloup, prkno (presun) + kulatina, tyc, rozsocha, kul, zlab
+  mesh_bark.py         kura: plast kulatiny s kurou, pasy kury na strechy
+  mesh_wattle.py       vyplet z prouti, dymnik, komin (prouti + mazanina)
+  mesh_textile.py      knihovni dily: uzel, smotane lano (platno a lana na miru jsou v zr_stavby)
+  mesh_props.py        vlastni props (kap. 5), slozene z funkci ostatnich modulu
+```
+
+- ☑ Rozhodnuto: jeden vstup `tools/meshes/gen_meshes.py` + moduly podle materiálu (14. 11. 2026). **Hotové:** `mesh_common.py`, `mesh_stone.py`, `mesh_wood.py`. Další moduly (`mesh_bark`, `mesh_wattle`, `mesh_textile`, `mesh_props`) přibydou s novými tvary.
+- ☑ Výstupní složky podle kategorie (14. 11. 2026): OBJ v `meshes/<kategorie>/` v kořeni (`stone`, `wood`), v UE `Ruin/Stones`, `Ruin/Wood` (`MESH_DIRS` v `zrlib/config.py`). Dřevo přesunuté do `Ruin/Wood`, ověřeno v UE (oba buildy, redirectory smazané). Další kategorie = modul + `CATEGORIES` + `MESH_DIRS` + `_needed_meshes`.
+- ☑ **Přesun beze změny tvaru:** stávající kameny a dřevo musí po refaktoringu vyjít bit po bitu stejné (md5 OBJ před a po, případně `fingerprint.py`). Teprve potom přidávat nové tvary. **Ověřeno:** všech 42 OBJ shodných s repem (md5), stejný výpis.
+- ☑ Starý `gen_stones.py` nechat jako tenký wrapper (volá `gen_meshes.py stone wood`), aby platily návody v `README_bloky.md`. Nebo opravit dokumentaci.
+- ☑ Aktualizovat `README_bloky.md`, `README_constructions.md`, `zrlib/config.py` (komentář), `README_PROJEKT.md` a hint ve `Zricenina_03_ruin_stav.md` (zjednodušení sítě kamenů).
+
+**Tvary „na míru“** (plátno, lana, výplet konkrétní stěny, plachta stanu) nejsou knihovní meshe, závisí na poloze dílců stavby. ❓ Rozhodnout, kde vznikají:
+- (a) při `gen_constructions.py` jako OBJ pro každou stavbu a pak import do UE,
+- (b) přímo v UE přes Dynamic Mesh / Geometry Script.
+
+---
+
+## 4. Ostatní procedurální meshe
+
+| ☐ | Asset | Popis | Druh | Použití |
+|---|---|---|---|---|
+| ☐ | 🆕 plátno přístřešku | prověšená plocha mezi krokvovými tyčemi, švy po spádu, oboustranná | na míru | `Vez_Pristresek` (6,2 × 4,7 m) |
+| ☐ | 🆕 štít plátna | trojúhelník zavěšený na krajní tyči | na míru | `Vez_Pristresek` (nad `Vez_Z`) |
+| ☐ | 🆕 lano | prověšený úsek mezi dvěma body | na míru | bouřková lana věže, vazby hřebene, šňůry stanu ⛺ |
+| ☐ | 🆕 `SM_RuinLashing_A–B` | ovázání na křížení tyčí | knihovní | přivázání krokví, ráhen, vidlic |
+| ☐ | 🆕 `SM_RuinBarkStrip_A–C` | prohnutý pás kůry, hrubá strana nahoru, roztřepené okraje | knihovní, nominál 0,7 × 1,6 m | přístřešek brány, stříška stanu ⛺ |
+| ☐ | 🆕 proutěná stěna | výplet mezi kůly, omazaný hlínou, místy odhalené proutí | na míru | západní stěna kovárny 5,7 × 1,9 m |
+| ☐ | 🆕 dymník | proutěný koš vymazaný hlínou, zužující se | parametrický | ohniště obydlí, výheň kovárny |
+| ☐ | 🆕 komín z proutí a hlíny | hranol 0,5–0,6 m, nepravidelný | parametrický | obydlí (vrch 5,3 m), kovárna (vrch 5,5 m) |
+| ☐ | 🆕 výplň spár srubu | tmavší pás mechu s hlínou mezi kulatinami | na míru | srub obydlí |
+| ☐ | ⛺ 🆕 plachta stanu do A | jeden díl přes hřeben, 2 štíty, odhrnutá chlopeň | na míru | `Nadvori_Stan` |
+
+---
+
+## 5. Materiály (`zrlib/config.py` → `MAT_LOOK`, `WOOD_FINISH`, textury)
+
+| ☐   | Materiál                                                             | Vlastnosti                                                                             | Použití                                       |
+| --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------- |
+| ☐   | 🆕 `MI_RuinBark`                                                     | smrková kůra, tmavě hnědá, hrubá; vnitřní strana pásu světlejší                        | kulatina s kůrou, pásy kůry                   |
+| ☐   | 🆕 `MI_RuinWood_Peeled` (finish `peeled`)                            | čerstvě loupané dřevo: světlé, nažloutlé, stopy po loupáku                             | loupaná kulatina v etapě 1                    |
+| ☐   | 🆕 `MI_RuinWood_EndGrain`                                            | čela s letokruhy, světlejší, s prasklinami                                             | čela všech kulatin                            |
+| ☐   | 🆕 `MI_RuinCanvas`                                                   | lněné plátno, **oboustranné**, zašedlé, místy záplaty a skvrny; ❓ pohyb ve větru (WPO) | přístřešek věže, stan ⛺                       |
+| ☐   | 🆕 `MI_RuinRope`                                                     | konopné lano, světle béžové, vláknité                                                  | lana, ovázání, šňůry                          |
+| ☐   | 🆕 `MI_RuinDaub`                                                     | mazanina: hlína na proutí, praskliny                                                   | stěna kovárny, dymníky, komíny                |
+| ☐   | 🆕 `MI_RuinWattle`                                                   | samotné proutí                                                                         | okraje výpletu, koš na staveništi             |
+| ☐   | 🆕 `MI_RuinChinking`                                                 | mech s hlínou ve spárách srubu                                                         | srub obydlí                                   |
+| ☐   | 🆕 `MI_RuinSoot` (nebo maska ve stávajících MI)                      | saze nad výhní a ohništěm, na stěně věže a pod komínem                                 | kovárna, obydlí                               |
+| ☐   | 🆕 udusaná hlína                                                     | podlaha síně, kovárny a dvorku: ❓ decal, deska, nebo vrstva landscapu                  | síň, kovárna                                  |
+| ☐   | 🆕 třísky a kůra na zemi                                             | decal                                                                                  | staveniště etapy 1                            |
+| ☐   | 🆕 kov (kované železo)                                               | tmavé, místy rez a ohlazené hrany                                                      | kovadlina, nářadí, svěrák, pruty, obruče sudu |
+| ☐   | 🆕 kůže                                                              | tmavá, popraskaná                                                                      | měchy                                         |
+| ☐   | 🆕 pískovec opracovaný (nebo ♻ `MI_RuinFrame` se `T_Rock_Sandstone`) |                                                                                        | brusný kotouč                                 |
+| ☐   | 🆕 textil hrubý (houně), sláma / kapradí                             |                                                                                        | lůžka (dům, stan ⛺)                           |
+| ☐   | ♻ `MI_RuinWood` `raw`, `_Tar`, `_Old`                                | beze změny                                                                             | krov, krytina, prkna, vybavení                |
+
+- ☐ Přepínání podle etapy: loupaná kulatina srubu v etapě 1 `peeled`, v etapě 2 ❓ `peeled`, nebo `raw` (už ztmavlá)? Krov `raw` → `tar`. Řeší kód přes `ETAPA`, meshe zůstávají stejné.
+
+---
+
+## 6. Props – vlastní modely ve stylu hradu
+
+**Zásady stylu:**
+- stejné materiály jako zřícenina a dostavby (`MI_Ruin*`), stejné zvětrání shora (`MAT_TOP`) a měřítko UV (1 UV = 1 m);
+- dřevo z dílců kap. 2 kde to jde (🧩): hrubé opracování, ohlazené hrany, praskliny jako u `SM_RuinTimber`;
+- ✋ tvary, které z dílců nesložíš (kovadlina, měch, sud, nářadí), se modelují zvlášť, ❓ procedurálně v `mesh_props.py`, nebo v Blenderu;
+- žádné ostré „CAD“ hrany, všechno trochu nakřivo a ošoupané;
+- každý prop je samostatný actor (`loose`), pivot na zemi.
+
+### 6.1 Kovárna (`Palac_Kovarna_Vybaveni`) – stojí už v etapě 1
+
+| ☐ | Prop | Rozměr | Druh |
+|---|---|---|---|
+| ☐ | špalek pod kovadlinu | Ø 0,5 m | 🧩 kulatina s kůrou, horní čelo |
+| ☐ | kovadlina | vrch 0,75 m (se špalkem) | ✋ kov |
+| ☐ | měch na dřevěném rámu | 1,7 × 0,8 m, rám ve výšce 0,9 m | ✋ kůže + 🧩 rám |
+| ☐ | páka měchů | tyč 2,2 m | 🧩 loupaná tyč |
+| ☐ | výfučna (měch → výheň) | přes boční zídku | ✋ kov / hlína |
+| ☐ | kalicí sud s vodou | Ø 0,6 m, výška 0,8 m | ✋ dužiny + obruče, voda |
+| ☐ | brus: kotouč na rámu, klika, korýtko | kotouč Ø 0,7 m, rám 1,2 × 0,6 m, osa 0,75 m | ✋ pískovec + 🧩 rám, korýtko jako žlab |
+| ☐ | ponk se svěrákem | 2,2 × 0,7 × 0,85 m | 🧩 prkna a trámky + ✋ svěrák |
+| ☐ | nářadí na liště: kleště, kladiva, sekáče | sada | ✋ kov + 🧩 lišta |
+| ☐ | hřebovnice na špalku | – | ✋ kov + 🧩 špalek |
+| ☐ | truhlík na dřevěné uhlí s víkem | 0,8 × 1,2 × 0,8 m | 🧩 prkna |
+| ☐ | dřevěné uhlí (výplň, žhavé ve výhni) | – | ✋ |
+| ☐ | hranice dřeva (polena) | 0,6 × 1,9 × 1,4 m | 🧩 štípaná polena ✋ + kulatina |
+| ☐ | železné pruty, koš hřebíků | do výklenku střílny | ✋ kov, 🧩 proutěný koš |
+| ☐ | VFX: oheň a jiskry ve výhni, kouř z komína | ohniště 0,4 × 0,4 m | Niagara ❓ teď, nebo s atmosférou |
+
+### 6.2 Obydlí, hotová stavba (etapa 2)
+
+| ☐ | Prop | Rozměr | Druh |
+|---|---|---|---|
+| ☐ | lůžko (3×) | 2,0 × 0,8 m | 🧩 + textil a sláma |
+| ☐ | stůl | 1,2 × 0,7 m | 🧩 |
+| ☐ | truhla (2×) | – | 🧩 prkna + ✋ kování |
+| ☐ | ponk u střílny (síň) | – | 🧩 (stejný jako v kovárně, menší) |
+| ☐ | police na osobní věci | – | 🧩 |
+| ☐ | hranice dřeva v síni | – | 🧩 (jako v kovárně) |
+| ☐ | dveře (2×) | 1,0 × 2,2 m | 🧩 prkna + svlaky |
+| ☐ | okenice (2×) | 0,6 × 0,6 a 0,5 × 0,5 m | 🧩 |
+| ☐ | žebřík na půdu | ze síně do štítu příčky | 🧩 tyče + příčky (sdílený s 6.3) |
+| ☐ | VFX: oheň v ohništi, kouř z komína | – | Niagara ❓ |
+
+### 6.3 Obydlí, staveniště (etapa 1, `Palac_Obydli_Stavenisko`)
+
+| ☐ | Prop | Rozměr | Druh |
+|---|---|---|---|
+| ☐ | tesařská koza (2×) | nese kulatinu 5,7 m | 🧩 kulatina s kůrou |
+| ☐ | rozpracovaná kulatina na kozách | 5,7 m, napůl loupaná | 🧩 ❓ mesh s přechodem kůra / loupané |
+| ☐ | žebřík | 4,5 m | 🧩 ❓ použitelný pro postavu? |
+| ☐ | dočasné vzpěry sloupů | Ø 10 cm × 3 m | 🧩 tyč s kůrou |
+| ☐ | hromada kulatiny na srub | 11 ks Ø 22 × 5,7 m ve 2 vrstvách | 🧩 kulatina s kůrou |
+| ☐ | hromada krokví a vaznice | 6 × 6,3 m + 5,7 m | 🧩 trámy |
+| ☐ | hromada prken | asi 20 ks | 🧩 prkna |
+| ☐ | hromada kamene | asi 1 m³ | 🧩 kameny zříceniny |
+| ☐ | hromada hlíny + koš mechu | – | ✋ hlína, 🧩 proutěný koš |
+| ☐ | tesařské nářadí: sekera, širočina, pila, loupák, kladivo | návrh je nezmiňuje, pro uvěřitelnost | ✋ kov + 🧩 topůrka |
+
+### 6.4 Brána
+
+| ☐ | Prop | Rozměr | Druh |
+|---|---|---|---|
+| ☐ | španělský jezdec (`Brana_Zataras`) | kmen Ø 18 × 3,4 m + 4 páry kůlů Ø 7 × 1,6 m | 🧩 kulatina s kůrou + loupané kůly, jeden actor |
+
+### 6.5 ⛺ Stan na nádvoří
+
+| ☐ | Prop | Rozměr | Druh |
+|---|---|---|---|
+| ☐ | lůžko z klád a tyčí (2×) | 2,0 × 0,7 × 0,25 m | 🧩 kulatina a tyče s kůrou |
+| ☐ | výplň kapradí / sláma + houně | – | ✋ |
+| ☐ | špalek k sezení | – | 🧩 (jako pod kovadlinu) |
+| ☐ | zavěšené boty a zbraně | – | ✋ ❓ sdílet se zbrojí posádky |
+| ☐ | ranec, truhlička | – | ✋ textil, 🧩 prkna |
+
+### 6.6 Sdílené props (vyrobit jednou, použít víckrát)
+
+- ☐ Špalek (kovárna, hřebovnice, stan ⛺).
+- ☐ Hranice polen (kovárna, síň).
+- ☐ Proutěný koš (staveniště, hřebíky v kovárně).
+- ☐ Žebřík (staveniště, půda).
+- ☐ Ponk (kovárna, síň).
+
+### 6.7 Hlídka na věži
+
+- ☐ ❓ Ohniště a vybavení hlídky ve 2. patře: návrh je výslovně neřeší. Jen poznámka pro game designera.
+
+---
+
+## 7. Nové typy staveb v 05 (kód, `zr_stavby/*`)
+
+Nejsou to assety, ale bez nich se assety do levelu nedostanou.
+
+| ☐ | Typ (pracovně) | Nový / rozšíření | Stavby |
+|---|---|---|---|
+| ☐ | `canvas_shelter` | 🆕 | `Vez_Pristresek` |
+| ☐ | `pult_roof` (krytina sdílená s `fan_roof`) | 🆕 | `Palac_Obydli_Krov`, `Palac_Kovarna_Pristresek` |
+| ☐ | `log_wall` (srub, otvory, prkenné štíty) | 🆕 | `Palac_Obydli_Srub` |
+| ☐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen` |
+| ☐ | `gutter` (žlab, vidlice, svod) | 🆕 | `Palac_Obydli_Okap`, `Palac_Kovarna_Okap` |
+| ☐ | `wattle_wall` | 🆕 | `Palac_Kovarna_Stena` |
+| ☐ | `palisade` (kůly, ráhna, průzory) | 🆕 | `Brana_Straz_Kryty` |
+| ☐ | `bark_roof` | 🆕 | `Brana_Straz_Pristresek`, ⛺ `Nadvori_Stan_Striska` |
+| ☐ | `tent` | ⛺ 🆕 | `Nadvori_Stan` |
+| ☐ | strop s výměnou / trámy na koruně | ♻ rozšíření `tower_floor` | `Palac_Obydli_Strop`, `Brana_Straz_Podesta` |
+| ☐ | `stone_addon` s parametrem tloušťky (0,8 m) | ♻ rozšíření | `Palac_Obydli_Kamen`, `Brana_Straz_Kamen` |
+| ☐ | `plank_floor` | ♻ beze změny | `Palac_Obydli_Podlaha` |
+| ☐ | staveniště + přepínač `ETAPA` (od / do etapy u dílců) | 🆕 | `Palac_Obydli_Stavenisko`, celé obydlí, ⛺ stan |
+| ☐ | rozmístění props (`loose`, seznam poloh z návrhů) | 🆕 | vybavení kovárny, domu, staveniště, stanu ⛺ |
+
+**Sdílené specy:**
+- ☐ `tools/ruin/tower_spec.py`: rozšířit o průlomy a přístřešek;
+- ☐ 🆕 `palac_spec.py`: dům, kovárna a `ETAPA`;
+- ☐ 🆕 `brana_spec.py`.
+
+---
+
+## 8. Úpravy zříceniny 03 (data, ne assety)
+
+| ☐ | Zeď | Změna | Zdroj |
+|---|---|---|---|
+| ☐ | `Vez_V` | 2 × `breaches` (hlavní průlom, nejnižší 9,45 m); ❓ `protect` SV rohu | `navrh_vez_pristresek.md` 3.1 |
+| ☐ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou | 3.2 |
+| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína) | `navrh_palac_obydli_stred.md` kap. 3 |
+| ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Palac_J` se po přestavbě změní | – |
+
+---
+
+## 9. Otevřené otázky, které ovlivní assety
+
+- ☐ ❓ Přiřazení kůra / bez kůry podle kap. 2.1: potvrdit, hlavně zábradlí brány, žlaby a rozpracovanou kulatinu.
+- ☐ ❓ Struktura generátoru (kap. 3): `tools/meshes/` s moduly, nebo samostatné skripty?
+- ☐ ❓ Tvary na míru (plátno, výplet, plachta): OBJ z `gen_constructions.py`, nebo Geometry Script v UE?
+- ☐ ❓ Props tvaru ✋ (kovadlina, měch, sud, nářadí): procedurálně v Pythonu, nebo v Blenderu?
+- ☐ ❓ Má se plátno hýbat ve větru (materiál s WPO, nebo cloth)?
+- ☐ ❓ Kovárna ve východní místnosti: potvrdit umístění.
+- ☐ ❓ Žebříky (staveniště, půda): jen kulisa, nebo použitelné pro postavu?
+- ☐ ❓ Stojí podesta brány v etapě 1? Určuje, jestli potřebuje přepínač `ETAPA`.
+- ☐ ❓ VFX ohně a kouře: v tomto kroku, nebo později s atmosférou?
+- ☐ ❓ Stan: rozhodnutí, jestli ve hře bude (do té doby ⛺ položky nízká priorita).
+
+---
+
+## 10. Závislosti (podklad pro prioritizaci)
+
+| Položka | Blokuje |
+|---|---|
+| refaktoring generátoru (kap. 3) | všechny nové meshe (kap. 2, 4, 6) |
+| kulatina a tyče, s kůrou i bez (kap. 2) | všechny stavby kromě krovu domu a kovárny, většinu props |
+| `MI_RuinBark`, `_Peeled`, `_EndGrain` | vzhled kulatiny |
+| úpravy 03 (kap. 8) | `Vez_Pristresek`, komín obydlí |
+| `pult_roof` | dům, kovárna |
+| kovárna | stojí už v etapě 1, dům potřebuje hřebíky (příběhově) |
+| `ETAPA` přepínač | staveniště, stan ⛺, rozlišení etap obydlí |
+| sdílené props (6.6) | props kovárny, domu, staveniště, stanu |
+| plátno + lano | `Vez_Pristresek`, stan ⛺ |
+| pásy kůry | přístřešek brány, stříška stanu ⛺ |
+| proutí + mazanina | stěna kovárny, dymníky, komíny |

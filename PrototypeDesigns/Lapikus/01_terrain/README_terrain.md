@@ -95,7 +95,7 @@ Masky vznikají jako `1 − SmoothStep(cos(konec), cos(začátek), cosSklonu)`.
 ### 5.2 Založení
 
 1. Content Browser → `Skvt/Lapikus` → pravé tlačítko → **Material** → `M_Landscape_Forest_Auto`.
-   - V projektu existuje jako **`M_Lanscape_Forest_Auto`** (překlep *Lanscape*). Přejmenovat lze přes pravé tlačítko → Rename; Unreal odkazy opraví sám, pak **Fix Up Redirectors** na složce.
+   - V projektu existuje jako **`M_Lanscape_Forest_Auto`** (překlep *Lanscape*). Přejmenovat lze přes pravé tlačítko → Rename; Unreal odkazy opraví sám, pak na složce pravé tlačítko → **Update Redirector References** (ve starších verzích UE **Fix Up Redirectors**), pokud tam redirectory zůstaly.
 2. Otevřít dvojklikem.
 
 ### 5.3 UV souřadnice

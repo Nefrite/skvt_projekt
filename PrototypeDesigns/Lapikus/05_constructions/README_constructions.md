@@ -154,7 +154,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
 Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižní zdi (`Vez_J`), **v** od jihozápadního rohu k severu. Obojí v metrech, osy zdí jsou na 0 a 11 m.
 
-**Dřevo:** tvary jsou meshe zašlého dřeva `SM_RuinTimber/Plank/Post_*` (praskliny, ohlazené hrany, prohyb; vlákna dělá normálová mapa materiálu, asi 2–3 tisíce trojúhelníků na kus). Generuje je `gen_stones.py`, importují se automaticky a vypínají se přes `WOOD_MESHES = False` v `zrlib\config.py`. Úpravy dřeva (materiály vytvoří skript 03):
+**Dřevo:** tvary jsou meshe zašlého dřeva `SM_RuinTimber/Plank/Post_*` (praskliny, ohlazené hrany, prohyb; vlákna dělá normálová mapa materiálu, asi 2–3 tisíce trojúhelníků na kus). Generuje je `tools\meshes\gen_meshes.py` (modul `mesh_wood.py`, OBJ v `meshes\wood`), importují se automaticky do `/Game/Skvt/Lapikus/Ruin/Wood` a vypínají se přes `WOOD_MESHES = False` v `zrlib\config.py`. Úpravy dřeva (materiály vytvoří skript 03):
 
 | Úprava | Materiál | Vzhled | Kde |
 |---|---|---|---|

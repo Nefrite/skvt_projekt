@@ -22,7 +22,7 @@ B3 = os.path.join(W, "03_ruin", "blocks")
 if A.state:
     for f in ("manual_edits.json", "terrain_from_level.json"):
         if os.path.exists(os.path.join(A.state, f)): shutil.copy(os.path.join(A.state, f), B3)
-shutil.rmtree(os.path.join(B3, "stones"), ignore_errors=True); os.symlink(os.path.join(src, "03_ruin", "blocks", "stones"), os.path.join(B3, "stones"))
+if os.path.isdir(os.path.join(src, "meshes")): os.symlink(os.path.join(src, "meshes"), os.path.join(W, "meshes"))   # OBJ pro import
 res = {}
 def rows(stones):
     r = []

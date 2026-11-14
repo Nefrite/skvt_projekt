@@ -130,8 +130,8 @@ def _terrain_cache_path():
     return os.path.join(os.path.dirname(os.path.abspath(LAYOUT_PATH)) if LAYOUT_PATH else _script_dir(), "terrain_from_level.json")
 
 def ensure_stone_meshes(unreal):
-    """meshe kamenu a dreva (import ze stones/*.obj vedle skriptu)"""
-    return ue_assets.ensure_stone_meshes(unreal, os.path.join(_script_dir(), "stones"))
+    """meshe kamenu a dreva (import z meshes/<kategorie>/*.obj v koreni, viz MESH_SRC v zrlib/config.py)"""
+    return ue_assets.ensure_stone_meshes(unreal, os.path.normpath(os.path.join(_script_dir(), "..", "..", ue_assets.MESH_SRC)))
 
 
 def sample_level_terrain(unreal, layout):

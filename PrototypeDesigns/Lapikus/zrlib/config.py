@@ -68,9 +68,13 @@ MAT_TOP = {
 MAT_VERSION = 7                          # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
                                          # (tinty MI_RuinFace/Frame zustanou, jak je mas; MAT_RESET viz nize)
 MAT_RESET = {"crown": 2, "core": 3, "frame": 4, "wood_tar": 6}      # MI starsi nez tato verze dostane znovu tint a texturu z MAT_LOOK / TEXTURES
-# --- zaoblene zvetrale kameny lice (gen_stones.py -> stones/*.obj vedle skriptu; skript je sam naimportuje)
+# --- knihovni meshe (tools/meshes/gen_meshes.py -> meshes/<kategorie>/*.obj v koreni vedle zrlib; skript je sam naimportuje)
 USE_STONE_MESHES = True                  # False = vsude kostky (Cube) jako drive
-STONE_DIR   = "/Game/Skvt/Lapikus/Ruin/Stones"
+MESH_SRC  = "meshes"                     # slozka s OBJ v koreni, podslozky podle kategorie (stone, wood, ...)
+MESH_ROOT = "/Game/Skvt/Lapikus/Ruin"
+MESH_DIRS = {"stone": "Stones",          # kategorie (= podslozka meshes/<kategorie>, CATEGORIES v gen_meshes.py)
+             "wood":  "Wood"}            #   -> slozka v UE MESH_ROOT/<slozka>
+STONE_DIR = MESH_ROOT + "/" + MESH_DIRS["stone"]
 STONE_RATIOS = [1.2, 1.8, 2.6, 3.4]      # pomer delka/vyska variant (SM_RuinStone_R12_A ...)
 STONE_VARIANTS = "ABC"
 STONE_NOMINAL = (30.0, 45.0, 30.0)        # vyska, hloubka (cm) jmenoviteho kamene; delka = vyska * pomer

@@ -1,6 +1,6 @@
 """Unreal: materialy (M_RuinStone, MI_*), import meshi kamenu a dreva, transformace instanci, fyzika"""
 import os
-from .config import ASHLAR_MESH, DRESSED_FRAMES, MAT_CORE, MAT_CROWN, MAT_DIR, MAT_FACE, MAT_FRAME, MAT_LOOK, MAT_RESET, MAT_TOP, MAT_VERSION, MAT_WOOD, MAT_WOOD_MI, STONE_DIR, STONE_MESH_VERSION, STONE_NOMINAL, STONE_OVERSIZE, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, TEXTURES, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI, WOOD_NOMINAL
+from .config import ASHLAR_MESH, DRESSED_FRAMES, MAT_CORE, MAT_CROWN, MAT_DIR, MAT_FACE, MAT_FRAME, MAT_LOOK, MAT_RESET, MAT_TOP, MAT_VERSION, MAT_WOOD, MAT_WOOD_MI, MESH_DIRS, MESH_ROOT, MESH_SRC, STONE_DIR, STONE_MESH_VERSION, STONE_NOMINAL, STONE_OVERSIZE, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, TEXTURES, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI, WOOD_NOMINAL
 from .stones import stone_mass_kg
 
 
@@ -199,48 +199,54 @@ def _build_master(unreal, master, d0, n0):
     eal.set_metadata_tag(master, "RuinMatVersion", str(MAT_VERSION))
     eal.save_loaded_asset(master)
 
-def _needed_meshes():
-    names = ["SM_RuinStone_%sR%02d_%s" % (w, round(r * 10), v) for w in ("", "W_") for r in STONE_RATIOS for v in STONE_VARIANTS]
-    if DRESSED_FRAMES: names += ["SM_RuinDressed_R%02d_%s" % (round(r * 10), v) for r in STONE_RATIOS for v in "AB"]
-    if WOOD_MESHES: names += ["%s_%s" % (k, v) for k in WOOD_NOMINAL for v in "ABC"]
-    return names + [ASHLAR_MESH]
+def mesh_dir(cat):
+    """slozka v UE pro kategorii meshi (MESH_DIRS v config.py)"""
+    return "%s/%s" % (MESH_ROOT, MESH_DIRS[cat])
 
-def ensure_stone_meshes(unreal, stones_dir):
-    """Nacte zaoblene kameny z STONE_DIR; chybejici naimportuje ze stones/*.obj vedle skriptu
-    (box kolize + Nanite). Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou.
-    stones_dir = slozka s *.obj (03_ruin/blocks/stones)."""
+def _needed_meshes():
+    """[(jmeno, kategorie)]; kategorie = podslozka OBJ (meshes/<kategorie>) i slozka v UE (mesh_dir)"""
+    names = [("SM_RuinStone_%sR%02d_%s" % (w, round(r * 10), v), "stone") for w in ("", "W_") for r in STONE_RATIOS for v in STONE_VARIANTS]
+    if DRESSED_FRAMES: names += [("SM_RuinDressed_R%02d_%s" % (round(r * 10), v), "stone") for r in STONE_RATIOS for v in "AB"]
+    if WOOD_MESHES: names += [("%s_%s" % (k, v), "wood") for k in WOOD_NOMINAL for v in "ABC"]
+    return names + [(ASHLAR_MESH, "stone")]
+
+def ensure_stone_meshes(unreal, mesh_src):
+    """Nacte knihovni meshe (kameny, drevo) ze slozek MESH_ROOT/<MESH_DIRS[kategorie]>; chybejici naimportuje
+    z mesh_src/<kategorie>/*.obj (box kolize + Nanite). Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou.
+    mesh_src = slozka meshes/ v koreni (MESH_SRC)."""
     if not USE_STONE_MESHES: return {}
     eal = unreal.EditorAssetLibrary
     def want(n): return max([v for pf, v in STONE_MESH_VERSION.items() if n.startswith(pf)] or [0])
+    need = _needed_meshes()
     missing = []
-    for n in _needed_meshes():
-        pth = _asset_path(STONE_DIR, n)
-        if not eal.does_asset_exist(pth): missing.append(n); continue
-        if want(n) and _ver(eal, unreal.load_asset(pth), "RuinStoneVersion") < want(n): missing.append(n)   # novejsi OBJ -> znovu
-    src = stones_dir
+    for n, cat in need:
+        pth = _asset_path(mesh_dir(cat), n)
+        if not eal.does_asset_exist(pth): missing.append((n, cat)); continue
+        if want(n) and _ver(eal, unreal.load_asset(pth), "RuinStoneVersion") < want(n): missing.append((n, cat))   # novejsi OBJ -> znovu
+    src = mesh_src
     tasks = []
-    for n in missing:
-        f = os.path.join(src, n + ".obj")
+    for n, cat in missing:
+        f = os.path.join(src, cat, n + ".obj")
         if not os.path.exists(f): continue
         t = unreal.AssetImportTask()
-        t.set_editor_property("filename", f); t.set_editor_property("destination_path", STONE_DIR)
+        t.set_editor_property("filename", f); t.set_editor_property("destination_path", mesh_dir(cat))
         t.set_editor_property("destination_name", n)
         t.set_editor_property("automated", True); t.set_editor_property("replace_existing", True)
         t.set_editor_property("save", True)
         tasks.append(t)
     if tasks:
-        unreal.log("Ruin: importuji %d kamenu z %s" % (len(tasks), src))
+        unreal.log("Ruin: importuji %d meshu z %s" % (len(tasks), src))
         unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks(tasks)
     out = {}; n_fix = 0
     sms = None
     try: sms = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     except Exception: pass
-    for n in _needed_meshes():
-        pth = _asset_path(STONE_DIR, n)
+    for n, cat in need:
+        dst = mesh_dir(cat); pth = _asset_path(dst, n)
         if not eal.does_asset_exist(pth):
             # Interchange obcas pojmenuje asset jinak (napr. podle objektu v OBJ) - zkus najit podle jmena
-            hits = [a for a in eal.list_assets(STONE_DIR, recursive=True) if a.split(".")[-1].startswith(n)] \
-                if eal.does_directory_exist(STONE_DIR) else []
+            hits = [a for a in eal.list_assets(dst, recursive=True) if a.split(".")[-1].startswith(n)] \
+                if eal.does_directory_exist(dst) else []
             if not hits: continue
             pth = hits[0]
         sm = unreal.load_asset(pth)
@@ -258,9 +264,10 @@ def ensure_stone_meshes(unreal, stones_dir):
         if _fix_collision(unreal, sm, sms): n_fix += 1
         out[n] = sm
     if n_fix: unreal.log("Ruin: kolize opravena u %d meshu kamenu (jednoducha kolize misto Complex as Simple -> jde fyzika)" % n_fix)
-    lost = [n for n in _needed_meshes() if n not in out]
+    lost = [n for n, _ in need if n not in out]
     if lost:
-        unreal.log_warning("Ruin: chybi %d kamenu (%s...) -> pouziji se kostky. Zkopiruj slozku stones/ vedle skriptu." % (len(lost), lost[0]))
+        unreal.log_warning("Ruin: chybi %d meshu (%s...) -> pouziji se kostky. Chybi slozka %s/ v koreni? (tools/meshes/gen_meshes.py)"
+                           % (len(lost), lost[0], MESH_SRC))
     return out
 
 def _fix_collision(unreal, sm, sms):
