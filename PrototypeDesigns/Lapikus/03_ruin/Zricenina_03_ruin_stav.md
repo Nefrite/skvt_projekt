@@ -27,7 +27,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - `Brana_Jih`: jižní stěna.
 - **`Hradba_V`** vede od jižní stěny strážní věže obloukem k JV rohu hlavní věže, asi 5–7 m od věže.
 - **`Hradba_Z_S`** končí pootočeným úsekem 08 a napojením na SZ roh strážní věže.
-- **Vstup do hlavní věže:** průlom 1,2 × 2,3 m ve `Vez_S` (s = 8 m), mimo osu původních dveří v 1. patře (6,5 m).
+- **Vstup do hlavní věže:** průlom 1,6 × 2,45 m ve `Vez_S` (s = 8,0 m), pod původními dveřmi v 1. patře (s = 7,62 m). Mezi vrchem průlomu a kapsami ochozu (3,85 m) zůstává 1,4 m zdiva.
 - **Příkop:** starý šíjový příkop je zasypaný (terén v UE). Nový se vykope ručně před linií strážní věže a hradby.
 - **Předhradí** se zatím nedělá.
 
