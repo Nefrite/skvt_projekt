@@ -1,12 +1,14 @@
 """kamen / dilec (Stone), prirazeni meshi podle pomeru stran, hmotnost"""
 import math, zlib
-from .config import ASHLAR_MESH, DRESSED_FRAMES, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI
+from .config import ASHLAR_MESH, DRESSED_FRAMES, POLE_MAX_D, ROUND_MESHES, ROUND_SHAPES, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI
 
 
 class Stone:
-    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough", "loose")
-    def __init__(self, sid, cat, x, y, z, yaw, sx, sy, sz, pitch=0.0, roll=0.0, seg=0):
+    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough", "loose", "shape", "bark")
+    def __init__(self, sid, cat, x, y, z, yaw, sx, sy, sz, pitch=0.0, roll=0.0, seg=0, shape=None, bark=False):
         self.span = None; self.mesh = None
+        self.shape = shape   # drevo: None = hranene (podle rozmeru tram / sloup / prkno), jinak kulatina: ROUND_SHAPES (round, stake, ...)
+        self.bark = bark     # kulatina s kurou (sloty Bark a EndGrain maji vlastni material, Wood podle upravy cat)
         self.rough = False   # odkryte jadro: lomovy kamen (mesh) misto kostky
         self.loose = False   # 05: samostatny actor misto instance (napr. prah, da se rucne posunout a ulozit pres capture)
         self.seg = seg   # usek zdi (index rovneho useku mezi zlomy)
@@ -21,6 +23,7 @@ def stone_mesh_name(st):
     if not USE_STONE_MESHES: return None
     if st.cat in WOOD_MI:
         if not WOOD_MESHES: return None
+        if st.shape: return round_mesh_name(st)
         v = "ABC"[zlib.crc32(st.id.encode()) % 3]
         if st.sz > 1.5 * max(st.sx, st.sy): return "SM_RuinPost_" + v          # sloup (delka nahoru)
         if st.sz < 0.45 * st.sy: return "SM_RuinPlank_" + v                     # prkno, fosna schodu
@@ -35,6 +38,13 @@ def stone_mesh_name(st):
     best = min(STONE_RATIOS, key=lambda q: abs(math.log(r / q)))
     v = STONE_VARIANTS[zlib.crc32(st.id.encode()) % len(STONE_VARIANTS)]
     return "SM_RuinStone_%sR%02d_%s" % ("W_" if st.cat == "crown" else "", round(best * 10), v)
+
+def round_mesh_name(st):
+    """kulatina: mesh podle tvaru (Stone.shape), kury (Stone.bark) a prumeru (tyc / kmen); varianta podle id"""
+    pref = ROUND_SHAPES[st.shape][1 if st.bark else 0]
+    if st.shape == "round" and min(st.sy, st.sz) <= POLE_MAX_D: pref = pref.replace("SM_RuinLog", "SM_RuinPole")
+    vs = ROUND_MESHES[pref][1]
+    return "%s_%s" % (pref, vs[zlib.crc32(st.id.encode()) % len(vs)])
 
 def assign_meshes(stones):
     for st in stones:

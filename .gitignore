@@ -74,3 +74,5 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 # Python cache (skripty v PrototypeDesigns a kdekoli jinde)
 __pycache__/
+# vygenerovane procedurni textury (tools/textures/gen_textures.py), OBJ uz ignoruje *.obj
+/PrototypeDesigns/Lapikus/textures/

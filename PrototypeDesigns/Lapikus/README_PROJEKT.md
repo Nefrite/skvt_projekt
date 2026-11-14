@@ -95,6 +95,7 @@ Claude outputs\Lapikus\
 ├─ 02_river\                body a skript řeky, maska koryta, návod
 ├─ 03_forest\               plán lesa, zóny, spliny, maska zón, náčrt
 ├─ meshes\                 OBJ knihovních meshí podle kategorie (stone, wood); nejsou v gitu, generuje tools\meshes\gen_meshes.py
+├─ textures\               procedurální textury (kůra, čela); nejsou v gitu, generuje tools\textures\gen_textures.py
 └─ tools\                   skripty pro přegenerování všech podkladů (meshe: tools\meshes\gen_meshes.py)
 ```
 

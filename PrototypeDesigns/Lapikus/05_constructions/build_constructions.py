@@ -169,7 +169,7 @@ def _rubble(R, data, rb, walls, P, terr, removed):
 
 # ------------------------------------------------------------------ Unreal
 CNAME = {"wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej", "wood_blood": "Drevo_Krev",
-         "wood_old": "Drevo_Stare", "floor": "Podlaha", "face": "Kamen", "core": "Malta", "frame": "Kvadr"}
+         "wood_old": "Drevo_Stare", "wood_peeled": "Drevo_Loupane", "floor": "Podlaha", "face": "Kamen", "core": "Malta", "frame": "Kvadr"}
 
 
 def build_in_unreal():

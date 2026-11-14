@@ -22,7 +22,8 @@ B3 = os.path.join(W, "03_ruin", "blocks")
 if A.state:
     for f in ("manual_edits.json", "terrain_from_level.json"):
         if os.path.exists(os.path.join(A.state, f)): shutil.copy(os.path.join(A.state, f), B3)
-if os.path.isdir(os.path.join(src, "meshes")): os.symlink(os.path.join(src, "meshes"), os.path.join(W, "meshes"))   # OBJ pro import
+for d_ in ("meshes", "textures"):                       # OBJ a PNG pro import
+    if os.path.isdir(os.path.join(src, d_)): os.symlink(os.path.join(src, d_), os.path.join(W, d_))
 res = {}
 def rows(stones):
     r = []

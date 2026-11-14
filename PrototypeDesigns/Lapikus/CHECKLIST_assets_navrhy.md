@@ -65,17 +65,19 @@ Stejný princip jako `SM_RuinTimber`: nominální délka 100 cm, délka a prům�
 
 | ☐ | Asset | Popis | Rozsah | Použití |
 |---|---|---|---|---|
-| ☐ | 🆕 `SM_RuinLog_A–C` | loupaná kulatina: nepravidelný kruh, sbíhavost, suky, stopy po loupání | nominál Ø 20 cm (Ø 12–24) | srub, trámy podesty, krokve kovárny, ramena jezdce |
-| ☐ | 🆕 `SM_RuinLogBark_A–C` | kulatina s kůrou, místa odloupnutá | nominál Ø 20 cm (Ø 12–24) | kmen jezdce, hřeben a okapová tyč věže, hromada kulatiny |
-| ☐ | 🆕 `SM_RuinPole_A–C` | tenká tyč, výraznější prohnutí | nominál Ø 8 cm (Ø 5–10) | zábradlí, páka měchů, kolíky ⛺ |
-| ☐ | 🆕 `SM_RuinPoleBark_A–C` | tenká tyč s kůrou | nominál Ø 8 cm (Ø 5–10) | krokvové tyče, vzpěry, ráhna, krokvičky, přítlačné tyče, stojky stanu ⛺ |
-| ☐ | 🆕 `SM_RuinForkPost_A–C` | rozsocha s kůrou (kůl s vidlicí) | Ø 8–16 cm, délka 1,4–4,2 m | kůly přístřešku věže, vidlice žlabů, vidlice stříšky ⛺ |
-| ☐ | 🆕 `SM_RuinStake_A–C` | kůl s kůrou, nahoře holá špička | Ø 18–22 cm, délka 1,3–3,0 m | kryty brány |
-| ☐ | 🆕 `SM_RuinStakeSmall_A–B` | loupaný kůl, zašpičatělý na obou koncích | Ø 7 cm × 1,6 m (kolík 30 cm) | ramena jezdce, kolíky stanu ⛺ |
-| ☐ | 🆕 `SM_RuinGutter_A–B` | vydlabaný půlkmen | Ø 20 cm, délka po 100 cm | žlaby a svody |
+| ☑ | 🆕 `SM_RuinLog_A–C` | loupaná kulatina: nepravidelný kruh, sbíhavost, suky, stopy po loupání | nominál Ø 20 cm (Ø 12–24) | srub, trámy podesty, krokve kovárny, ramena jezdce |
+| ☑ | 🆕 `SM_RuinLogBark_A–C` | kulatina s kůrou, místa odloupnutá | nominál Ø 20 cm (Ø 12–24) | kmen jezdce, hřeben a okapová tyč věže, hromada kulatiny |
+| ☑ | 🆕 `SM_RuinPole_A–C` | tenká tyč, výraznější prohnutí | nominál Ø 8 cm (Ø 5–10) | zábradlí, páka měchů, kolíky ⛺ |
+| ☑ | 🆕 `SM_RuinPoleBark_A–C` | tenká tyč s kůrou | nominál Ø 8 cm (Ø 5–10) | krokvové tyče, vzpěry, ráhna, krokvičky, přítlačné tyče, stojky stanu ⛺ |
+| ☑ | 🆕 `SM_RuinForkHead_A–B` | hlava rozsochy s kůrou (vidlice), nasadí se na kůl `SM_RuinLogBark` / `SM_RuinPoleBark` | Ø 8–16 cm, délka 1,4–4,2 m | kůly přístřešku věže, vidlice žlabů, vidlice stříšky ⛺ |
+| ☑ | 🆕 `SM_RuinStake_A–C` | kůl s kůrou, nahoře holá špička | Ø 18–22 cm, délka 1,3–3,0 m | kryty brány |
+| ☑ | 🆕 `SM_RuinStakeSmall_A–B` | loupaný kůl, zašpičatělý na obou koncích | Ø 7 cm × 1,6 m (kolík 30 cm) | ramena jezdce, kolíky stanu ⛺ |
+| ☑ | 🆕 `SM_RuinGutter_A–B` | vydlabaný půlkmen, loupaný | Ø 20 cm, délka po 100 cm | žlaby a svody |
+| ☑ | 🆕 `SM_RuinGutterBark_A–B` | vydlabaný půlkmen, kůra zvenku | Ø 20 cm, délka po 100 cm | žlaby a svody |
 | ☐ | ❓ zářez srubu (nároží) | kulatiny se v nárožích křižují: řešit průnikem (bez meshe), nebo mesh se zářezem | – | srub obydlí |
 
-- ☐ Rozšířit `WOOD_NOMINAL`, `STONE_MESH_VERSION` a `assign_meshes` o kulaté průřezy. Výběr meshe podle `Stone.cat` a nového příznaku `bark`.
+- ☑ Napojení (14. 11. 2026): `ROUND_MESHES`, `ROUND_SHAPES`, `SLOT_MI` v `zrlib/config.py`, `Stone.shape` + `Stone.bark`, sloty materiálů v `zrlib/ue_assets.apply_materials`. Ukázka `tools/meshes/Ukazka_Kulatina.py`, náhled `05_constructions/Kulatina_meshe_nahled.png`. **Neověřeno v UE.**
+- Rozhodnuto při stavbě: rozsocha je samostatná hlava (`SM_RuinForkHead`), ne celý kůl, aby se vidlice nenatahovala s délkou. Sloty jsou tři (`Wood`, `EndGrain`, `Bark`), odloupnutá místa jsou slot `Wood`.
 
 ---
 
@@ -130,9 +132,9 @@ tools/meshes/
 
 | ☐   | Materiál                                                             | Vlastnosti                                                                             | Použití                                       |
 | --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------- |
-| ☐   | 🆕 `MI_RuinBark`                                                     | smrková kůra, tmavě hnědá, hrubá; vnitřní strana pásu světlejší                        | kulatina s kůrou, pásy kůry                   |
-| ☐   | 🆕 `MI_RuinWood_Peeled` (finish `peeled`)                            | čerstvě loupané dřevo: světlé, nažloutlé, stopy po loupáku                             | loupaná kulatina v etapě 1                    |
-| ☐   | 🆕 `MI_RuinWood_EndGrain`                                            | čela s letokruhy, světlejší, s prasklinami                                             | čela všech kulatin                            |
+| ☑   | 🆕 `MI_RuinBark`                                                     | smrková kůra, tmavě hnědá, hrubá; vnitřní strana pásu světlejší                        | kulatina s kůrou, pásy kůry                   |
+| ☑   | 🆕 `MI_RuinWood_Peeled` (finish `peeled`)                            | čerstvě loupané dřevo: světlé, nažloutlé, stopy po loupáku                             | loupaná kulatina v etapě 1                    |
+| ☑   | 🆕 `MI_RuinWood_EndGrain`                                            | čela s letokruhy, světlejší, s prasklinami                                             | čela všech kulatin                            |
 | ☐   | 🆕 `MI_RuinCanvas`                                                   | lněné plátno, **oboustranné**, zašedlé, místy záplaty a skvrny; ❓ pohyb ve větru (WPO) | přístřešek věže, stan ⛺                       |
 | ☐   | 🆕 `MI_RuinRope`                                                     | konopné lano, světle béžové, vláknité                                                  | lana, ovázání, šňůry                          |
 | ☐   | 🆕 `MI_RuinDaub`                                                     | mazanina: hlína na proutí, praskliny                                                   | stěna kovárny, dymníky, komíny                |

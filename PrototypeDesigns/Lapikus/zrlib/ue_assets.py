@@ -1,10 +1,41 @@
 """Unreal: materialy (M_RuinStone, MI_*), import meshi kamenu a dreva, transformace instanci, fyzika"""
 import os
 from .config import ASHLAR_MESH, DRESSED_FRAMES, MAT_CORE, MAT_CROWN, MAT_DIR, MAT_FACE, MAT_FRAME, MAT_LOOK, MAT_RESET, MAT_TOP, MAT_VERSION, MAT_WOOD, MAT_WOOD_MI, MESH_DIRS, MESH_ROOT, MESH_SRC, STONE_DIR, STONE_MESH_VERSION, STONE_NOMINAL, STONE_OVERSIZE, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, TEXTURES, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI, WOOD_NOMINAL
+from .config import ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
 from .stones import stone_mass_kg
 
 
 def _asset_path(folder, name): return "%s/%s.%s" % (folder, name, name)
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # koren (vedle zrlib: meshes/, textures/)
+SLOT_MATS = {}          # materialy slotu kulatiny {"bark": MI, "endgrain": MI}, plni ensure_materials
+
+def ensure_textures(unreal):
+    """vlastni textury (textures/*.png z tools/textures/gen_textures.py) -> TEX_DIR; chybejici nebo starsi nez TEX_VERSION
+    naimportuje, normalove mapy nastavi jako normal (bez sRGB)"""
+    eal = unreal.EditorAssetLibrary; src = os.path.join(ROOT, TEX_SRC); todo = []
+    for name, kind in TEX_FILES.items():
+        pth = _asset_path(TEX_DIR, name)
+        if eal.does_asset_exist(pth) and _ver(eal, unreal.load_asset(pth), "RuinTexVersion") >= TEX_VERSION: continue
+        f = os.path.join(src, name + ".png")
+        if not os.path.exists(f): continue
+        t = unreal.AssetImportTask()
+        t.set_editor_property("filename", f); t.set_editor_property("destination_path", TEX_DIR)
+        t.set_editor_property("destination_name", name)
+        t.set_editor_property("automated", True); t.set_editor_property("replace_existing", True); t.set_editor_property("save", True)
+        todo.append((t, name, kind))
+    if not todo: return
+    unreal.log("Ruin: importuji %d textur z %s" % (len(todo), src))
+    unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([t for t, _, _ in todo])
+    for _, name, kind in todo:
+        tex = unreal.load_asset(_asset_path(TEX_DIR, name))
+        if not tex: continue
+        if kind == "normal":
+            try:
+                tex.set_editor_property("compression_settings", unreal.TextureCompressionSettings.TC_NORMALMAP)
+                tex.set_editor_property("srgb", False)
+            except Exception as ex: unreal.log_warning("Ruin: normalova mapa %s: %s (nastav rucne Compression = Normalmap)" % (name, ex))
+        eal.set_metadata_tag(tex, "RuinTexVersion", str(TEX_VERSION)); eal.save_loaded_asset(tex)
 
 def ensure_materials(unreal):
     """Vrati {"face": mat, "core": mat, "frame": mat}. Chybejici M_RuinStone / MI_Ruin* vytvori (jen poprve,
@@ -14,6 +45,7 @@ def ensure_materials(unreal):
     user = {"face": MAT_FACE, "core": MAT_CORE, "frame": MAT_FRAME, "crown": MAT_CROWN}
     if all(user.values()):
         return {c: unreal.load_asset(p) for c, p in user.items()}
+    ensure_textures(unreal)
     def pick(cat):
         for d, n in TEXTURES[cat]:
             if eal.does_asset_exist(d): return unreal.load_asset(d), (unreal.load_asset(n) if n and eal.does_asset_exist(n) else None)
@@ -73,6 +105,9 @@ def ensure_materials(unreal):
         mats[wc] = _wood_mi(unreal, master, pick, wc, wn)
     for wc in WOOD_MI:                                   # chybi-li textury, aspon stejne drevo vsude
         mats[wc] = mats[wc] or mats.get("wood")
+    for sc, sn in SLOT_MI.items():                       # sloty kulatiny: kura, cela
+        mats[sc] = _wood_mi(unreal, master, pick, sc, sn) or mats.get("wood")
+        SLOT_MATS[sc] = mats[sc]
     return mats
 
 def _wood_mi(unreal, master, pick, cat="wood", name="MI_RuinWood"):
@@ -208,6 +243,7 @@ def _needed_meshes():
     names = [("SM_RuinStone_%sR%02d_%s" % (w, round(r * 10), v), "stone") for w in ("", "W_") for r in STONE_RATIOS for v in STONE_VARIANTS]
     if DRESSED_FRAMES: names += [("SM_RuinDressed_R%02d_%s" % (round(r * 10), v), "stone") for r in STONE_RATIOS for v in "AB"]
     if WOOD_MESHES: names += [("%s_%s" % (k, v), "wood") for k in WOOD_NOMINAL for v in "ABC"]
+    if WOOD_MESHES: names += [("%s_%s" % (k, v), "wood") for k, (_, vs) in ROUND_MESHES.items() for v in vs]
     return names + [(ASHLAR_MESH, "stone")]
 
 def ensure_stone_meshes(unreal, mesh_src):
@@ -353,9 +389,30 @@ def _resolve(unreal, s, cube, meshes):
     if m is None: return cube, (100.0, 100.0, 100.0)
     if s.mesh == ASHLAR_MESH: return m, (100.0, 100.0, 100.0)
     if s.mesh.rsplit("_", 1)[0] in WOOD_NOMINAL: return m, WOOD_NOMINAL[s.mesh.rsplit("_", 1)[0]]
+    if s.mesh.rsplit("_", 1)[0] in ROUND_MESHES: return m, ROUND_MESHES[s.mesh.rsplit("_", 1)[0]][0]
     r = float(s.mesh.rsplit("_R", 1)[1][:2]) / 10
     h, d = STONE_NOMINAL[0], STONE_NOMINAL[1]
     return m, (h * r, d, h)
+
+def is_multi_slot(mesh_name):
+    """mesh s vice materialovymi sloty (kulatina: Wood, EndGrain, Bark)"""
+    return bool(mesh_name) and mesh_name.rsplit("_", 1)[0] in ROUND_MESHES
+
+_SLOT_ORDER = {2: ("wood", "endgrain"), 3: ("wood", "endgrain", "bark")}     # poradi slotu v OBJ (mesh_common.SLOT_ORDER)
+
+def apply_materials(unreal, comp, mesh, material, multi=False):
+    """material na komponentu meshe. Kulatina (multi): slot Wood = material (uprava dreva dilce), Bark a EndGrain = SLOT_MATS.
+    Slot se pozna podle jmena (usemtl z OBJ), jinak podle poradi."""
+    if not material: return
+    if not multi:
+        comp.set_material(0, material); return
+    try: slots = list(mesh.get_editor_property("static_materials"))
+    except Exception: slots = []
+    order = _SLOT_ORDER.get(len(slots), ("wood",) * max(len(slots), 1))
+    for i in range(max(len(slots), 1)):
+        nm = str(slots[i].get_editor_property("material_slot_name")).lower() if slots else ""
+        kind = "bark" if "bark" in nm else "endgrain" if ("endgrain" in nm or "end_grain" in nm) else "wood" if "wood" in nm else order[i]
+        comp.set_material(i, material if kind == "wood" else (SLOT_MATS.get(kind) or material))
 
 _PM = {}
 

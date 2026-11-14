@@ -46,3 +46,32 @@ def write_obj(path, P, UV, N, F, name, desc="zaobleny zvetraly kamen"):
         for t in UV: f.write("vt %.4f %.4f\n" % (t[0], t[1]))
         for n in N: f.write("vn %.4f %.4f %.4f\n" % (n[0], n[2], -n[1]))
         for a, b, c in F + 1: f.write("f %d/%d/%d %d/%d/%d %d/%d/%d\n" % (a, a, a, b, b, b, c, c, c))
+
+
+# ------------------------------------------------------------------ vice materialovych slotu (kulatina: drevo, cela, kura)
+SLOT_ORDER = ("Wood", "EndGrain", "Bark")      # poradi slotu v OBJ (usemtl); UE je pak mapuje podle jmena, jinak podle poradi
+
+
+def smooth_normals(P, F, group):
+    """normaly vrcholu: prumer normal ploch, svarene podle polohy jen uvnitr skupiny (group[v]) -> ostra hrana mezi skupinami"""
+    key = np.concatenate([np.round(P, 3), group[:, None].astype(float)], 1)
+    _, inv = np.unique(key, axis=0, return_inverse=True); inv = inv.ravel()
+    fn = np.cross(P[F[:, 1]] - P[F[:, 0]], P[F[:, 2]] - P[F[:, 0]])
+    acc = np.zeros((inv.max() + 1, 3))
+    for c in range(3): np.add.at(acc, inv[F[:, c]], fn)
+    N = acc[inv]
+    return N / (np.linalg.norm(N, axis=1, keepdims=True) + 1e-12)
+
+
+def write_obj_slots(path, P, UV, N, F, slot, name, desc):
+    """OBJ s materialovymi sloty: slot[f] = index do SLOT_ORDER; plochy serazene podle slotu, kazda skupina 'usemtl <jmeno>'"""
+    with open(path, "w") as f:
+        f.write("# %s - %s (cm, Z nahoru)\no %s\n" % (name, desc, name))
+        for p in P: f.write("v %.3f %.3f %.3f\n" % (p[0], p[2], -p[1]))
+        for t in UV: f.write("vt %.4f %.4f\n" % (t[0], t[1]))
+        for n in N: f.write("vn %.4f %.4f %.4f\n" % (n[0], n[2], -n[1]))
+        for si, sn in enumerate(SLOT_ORDER):
+            sel = F[slot == si]
+            if not len(sel): continue
+            f.write("usemtl %s\n" % sn)
+            for a, b, c in sel + 1: f.write("f %d/%d/%d %d/%d/%d %d/%d/%d\n" % (a, a, a, b, b, b, c, c, c))

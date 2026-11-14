@@ -2,6 +2,11 @@
 from .config import BLOCK_BP
 
 
+def apply_materials(unreal, comp, mesh, material, multi=False):
+    from .ue_assets import apply_materials as _am
+    _am(unreal, comp, mesh, material, multi)
+
+
 def _new_actor(unreal, eas):
     actor = eas.spawn_actor_from_class(unreal.Actor, unreal.Vector(0, 0, 0))
     sds = unreal.get_engine_subsystem(unreal.SubobjectDataSubsystem)
@@ -16,7 +21,7 @@ def _add_ism(unreal, sds, root):
     return comp
 
 def _ism_actor(unreal, eas, name, folder, parts, material, tag):
-    """Actor s InstancedStaticMeshComponent pro kazdy mesh v parts [(mesh, [Transform])].
+    """Actor s InstancedStaticMeshComponent pro kazdy mesh v parts [(mesh, [Transform], vice_slotu)].
     Komponenty pres SubobjectDataSubsystem, jinak Blueprint BLOCK_BP (pak jeden actor na mesh)."""
     actors = []
     try:
@@ -25,9 +30,9 @@ def _ism_actor(unreal, eas, name, folder, parts, material, tag):
             comps = [_add_ism(unreal, sds, root) for _ in parts]
         except Exception:
             eas.destroy_actor(actor); raise
-        for comp, (mesh, trs) in zip(comps, parts):
+        for comp, (mesh, trs, *mt) in zip(comps, parts):
             comp.set_static_mesh(mesh)
-            if material: comp.set_material(0, material)
+            apply_materials(unreal, comp, mesh, material, bool(mt and mt[0]))
             comp.add_instances(trs, False, True)
         actors.append(actor)
     except Exception as ex:
@@ -35,11 +40,11 @@ def _ism_actor(unreal, eas, name, folder, parts, material, tag):
         if not bp:
             raise RuntimeError("Nejde pridat InstancedStaticMeshComponent (%s) a chybi Blueprint %s. "
                                "Vytvor ho podle README_bloky.md kap. 1." % (ex, BLOCK_BP))
-        for mesh, trs in parts:
+        for mesh, trs, *mt in parts:
             actor = eas.spawn_actor_from_object(bp, unreal.Vector(0, 0, 0), unreal.Rotator())
             comp = actor.get_component_by_class(unreal.InstancedStaticMeshComponent)
             comp.set_static_mesh(mesh)
-            if material: comp.set_material(0, material)
+            apply_materials(unreal, comp, mesh, material, bool(mt and mt[0]))
             comp.add_instances(trs, False, True)
             actors.append(actor)
     for i, actor in enumerate(actors):
@@ -64,11 +69,12 @@ def destroy_tagged(eas, tag, keep=lambda a: True):
 
 def place_ism(unreal, eas, label, folder, stones, cube, meshes, material, tag, extra_tags=()):
     """kameny / dilce jedne skupiny -> actor(y) s Instanced Static Mesh (po meshich); vrati pocet kusu"""
-    from .ue_assets import _resolve, stone_transform
+    from .ue_assets import _resolve, stone_transform, is_multi_slot
     bym = {}
     for s in stones:
         m, nom = _resolve(unreal, s, cube, meshes)
-        bym.setdefault(m.get_path_name(), [m, []])[1].append(stone_transform(unreal, s, m, nom))
+        g = bym.setdefault(m.get_path_name(), [m, [], False])
+        g[1].append(stone_transform(unreal, s, m, nom)); g[2] = g[2] or (is_multi_slot(s.mesh) and m is not cube)
     for a_ in _ism_actor(unreal, eas, label, folder, [tuple(v) for _, v in sorted(bym.items())], material, tag) or []:
         a_.tags = list(a_.tags) + [unreal.Name(t) for t in extra_tags]
     return len(stones)
@@ -76,7 +82,7 @@ def place_ism(unreal, eas, label, folder, stones, cube, meshes, material, tag, e
 
 def spawn_loose(unreal, eas, s, cube, meshes, tags, folder, material):
     """samostatny kamen (sut, oddeleny kamen): vlastni actor se jmenem Kamen_<id> a tagem id:<id>"""
-    from .ue_assets import _resolve, stone_transform, ue_rotator
+    from .ue_assets import _resolve, stone_transform, ue_rotator, is_multi_slot
     m, nom = _resolve(unreal, s, cube, meshes)
     act = eas.spawn_actor_from_object(m, unreal.Vector(s.x, s.y, s.z), ue_rotator(unreal, s))
     if not act: return None
@@ -84,7 +90,7 @@ def spawn_loose(unreal, eas, s, cube, meshes, tags, folder, material):
     act.tags = [unreal.Name(t) if isinstance(t, str) else t for t in tags]
     act.set_folder_path(folder)
     act.set_actor_label("Kamen_" + s.id.replace("|", "_"))
-    if material: act.static_mesh_component.set_material(0, material)
+    apply_materials(unreal, act.static_mesh_component, m, material, is_multi_slot(s.mesh) and m is not cube)
     return act
 
 

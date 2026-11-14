@@ -44,7 +44,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
    1. Content Browser → `Skvt/Lapikus/Ruin` → pravé tlačítko → **Blueprint Class → Actor** → `BP_RuinBlocks`.
    2. Otevři ho a v panelu Components dej **Add → Instanced Static Mesh**. Komponentu nech, jak je, nic nenastavuj.
    3. **Compile** a **Save**.
-3. **Meshe kamenů a dřeva:** složka `meshes` (OBJ v podsložkách `stone` a `wood`) musí ležet v kořeni `Lapikus` vedle `zrlib`. OBJ nejsou v gitu (`*.obj` v `.gitignore`), po naklonování je vygeneruj: `python tools/meshes/gen_meshes.py`. Při prvním spuštění je skript sám naimportuje (kameny do `/Game/Skvt/Lapikus/Ruin/Stones`, dřevo do `/Ruin/Wood`), zapne Nanite a přidá krabicovou kolizi. Podrobnosti a ruční import v kap. 1.1.
+3. **Meshe kamenů a dřeva:** složka `meshes` (OBJ v podsložkách `stone` a `wood`) musí ležet v kořeni `Lapikus` vedle `zrlib`. OBJ ani textury nejsou v gitu, po naklonování je vygeneruj: `python tools/meshes/gen_meshes.py` a `python tools/textures/gen_textures.py`. Při prvním spuštění je skript sám naimportuje (kameny do `/Game/Skvt/Lapikus/Ruin/Stones`, dřevo do `/Ruin/Wood`), zapne Nanite a přidá krabicovou kolizi. Podrobnosti a ruční import v kap. 1.1.
 4. **Materiály:** skript při prvním spuštění vytvoří `M_RuinStone` a instance `MI_RuinFace`, `MI_RuinCore`, `MI_RuinFrame` v `/Game/Skvt/Lapikus/Ruin/Materials` (textury ze StarterContent). Další spuštění je už nepřepisují (kromě přechodu na novou `MAT_VERSION`, viz kap. 1.2), takže je můžeš ladit v editoru.
 5. **Ulož mapu a commitni.** Před generováním smaž sloupcovou zříceninu, pokud v mapě je. Nová ji sice smaže sama, ale sloučené meshe smazat musíš ručně.
 
@@ -55,6 +55,8 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 - `SM_RuinDressed_R12…R34_A/B`: opracované kameny ostění, nadpraží, parapetů a výklenků střílen. Rovné plochy, zaoblení 2,4–3,7 cm, nahoře o něco víc.
 - `SM_RuinAshlar`: kvádr s lehce sraženými hranami, jen dlažba.
 - **Dřevo** (`WOOD_MESHES = True`): `SM_RuinTimber_A/B/C` (trám, průvlak, schodnice, vzpěry), `SM_RuinPlank_A/B/C` (prkna, fošny schodů), `SM_RuinPost_A/B/C` (sloupy). Dřevo je vysušené od slunce: podélné praskliny (i až do čela), ohlazené a otlučené hrany, měkká promáčknutí, lehký prohyb a zkrut. Prkna jsou mírně prohnutá do misky. Vlákna a letokruhy dělá normálová mapa materiálu, ne geometrie. Síť je hrubá, asi 2–3 tisíce trojúhelníků na kus. Skript kus vybere podle tvaru a naskaluje na přesný rozměr.
+- **Kulatina** (`tools/meshes/mesh_log.py`, také v `meshes/wood`, v UE `Ruin/Wood`): `SM_RuinLog`, `SM_RuinLogBark`, `SM_RuinPole`, `SM_RuinPoleBark`, `SM_RuinStake`, `SM_RuinStakeSmall`, `SM_RuinForkHead`, `SM_RuinGutter`, `SM_RuinGutterBark`. Má víc materiálových slotů (`Wood`, `EndGrain`, `Bark`), popis v `README_constructions.md` kap. 4. Náhled: `05_constructions/Kulatina_meshe_nahled.png`.
+- **Textury** (`tools/textures/gen_textures.py` → `textures/*.png`, nejsou v gitu): kůra a čela kulatiny. Build je sám naimportuje do `/Game/Skvt/Lapikus/Ruin/Textures` (normálové mapy nastaví jako Normalmap). Po změně textur zvyš `TEX_VERSION` v `zrlib/config.py`.
 - Skript vybere ke každému bloku variantu podle poměru délka/výška a naškáluje ji **přesně na rozměr bloku** (`STONE_OVERSIZE = 1.04` = o 4 % větší, aby spáry nebyly moc hluboké). Polovina kamenů je otočená o 180°, takže se tvary méně opakují. Varianta je vázaná na ID bloku a po přegenerování se nemění.
 - Osy po importu kontroluje skript sám podle bounding boxu, takže nezáleží na tom, jak je importér otočí.
 - **Ruční import** (když automatický selže, v Output Logu je `Ruin: chybi … kamenu`):
@@ -63,7 +65,8 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
   3. Každý mesh otevři a dej **Collision → Add Box Simplified Collision** → Save. Bez toho postava projde zdí.
   4. Názvy assetů musí zůstat `SM_RuinStone_R12_A` atd.
 - **Vlastní tvary:** `python tools/meshes/gen_meshes.py` (z kořene, potřebuje numpy) přegeneruje OBJ do `meshes/<kategorie>/`. Jen část: `python tools/meshes/gen_meshes.py stone` (kategorie `stone`, `wood`). Tvar kamenů se ladí parametry `make_stone` v `tools/meshes/mesh_stone.py` (`radius`, `amp`, `edge`, `bulge`). Pak zvyš verzi v `STONE_MESH_VERSION` (`zrlib/config.py`), nebo smaž staré meshe v `Ruin/Stones` (`Ruin/Wood`), a spusť build znovu. Starý `gen_stones.py` dál funguje, volá nový generátor.
-- **Složky podle kategorie:** kategorie = modul `tools/meshes/mesh_<kategorie>.py` = podsložka `meshes/<kategorie>` = složka v UE podle `MESH_DIRS` (`zrlib/config.py`). Nová kategorie: postup v hlavičce `gen_meshes.py`.
+- **Složky podle kategorie:** kategorie = modul `tools/meshes/mesh_<kategorie>.py` = podsložka `meshes/<kategorie>` = složka v UE podle `MESH_DIRS` (`zrlib/config.py`). Nová kategorie: postup v hlavičce `gen_meshes.py`. Kategorie `wood` má dva moduly: `mesh_wood.py` (hraněné dřevo) volá `mesh_log.py` (kulatina).
+- **Náhled bez Unrealu:** `python tools/checks/preview_meshes.py meshes/wood <out.png> [prefix ...]` vykreslí meshe ze dvou pohledů, barvy podle slotů. Odvrácené plochy se nekreslí, takže otočené normály jsou vidět jako díry.
 - `USE_STONE_MESHES = False` vrátí všude kostky.
 
 ### 1.2 Materiály

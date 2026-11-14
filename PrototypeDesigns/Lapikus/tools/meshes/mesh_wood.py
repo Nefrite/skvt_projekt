@@ -1,4 +1,4 @@
-"""mesh_wood - drevo (OBJ, cm, Z nahoru).
+"""mesh_wood - drevo (OBJ, cm, Z nahoru). Kulatina je v mesh_log.py (stejna kategorie wood).
 
 Hranene drevo: SM_RuinTimber_A..C (tram 100x25x25), SM_RuinPost_A..C (sloup, delka nahoru), SM_RuinPlank_A..C
 (prkno 100x25x5): vysusene, podelne praskliny, ohlazene hrany, lehky prohyb; prkna miskovite prohnuta.
@@ -8,6 +8,7 @@ import math, os
 import numpy as np
 
 from mesh_common import write_obj
+import mesh_log
 
 
 def _rrect(w, h, r, n):
@@ -143,4 +144,4 @@ def build(out):
         P, UV, N, F = make_timber(*PLANK, seed=9500 + vi * 41, r=0.7, n_ring=64, cracks=(2, 3), crack_d=(1.0, 1.8),
                                   wane=0.9, bow=0.25, plank=True, crack_w=(0.8, 1.3))
         name = "SM_RuinPlank_%s" % v; write_obj(os.path.join(out, name + ".obj"), P, UV, N, F, name); made.append((name, len(P), len(F)))
-    return made
+    return made + mesh_log.build(out)          # kulatina (mesh_log.py)

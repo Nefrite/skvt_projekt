@@ -164,6 +164,21 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | bez úpravy (`raw`) | `MI_RuinWood` | šedohnědé, matné | vnitřní velké plochy: prkna v 1. patře a schody (ladí s podlahou) |
 | olej (`oil`) | `MI_RuinWood_Oil` | teplá tmavší hnědá, polomatné | jemná práce a vnitřní stavební dřevo (zatím nepoužito) |
 
+**Kulatina** (meshe z `tools\meshes\mesh_log.py`, OBJ v `meshes\wood`, v UE `/Game/Skvt/Lapikus/Ruin/Wood`): dílec je kulatina, když má `Stone.shape` (jinak hraněné dřevo podle rozměrů). Délka je vždy podél `sx` (svislý kůl = `pitch` 90°).
+
+| `shape` | Mesh (`bark` = False / True) | Poznámka |
+|---|---|---|
+| `round` | `SM_RuinLog` / `SM_RuinLogBark`, při průměru do 11 cm (`POLE_MAX_D`) `SM_RuinPole` / `SM_RuinPoleBark` | kmen, tyč; sbíhavost, suky, prohnutí; u loupané stopy po loupáku, u kůry odloupnutá místa (asi 20 %) |
+| `stake` | `SM_RuinStake` | kůl s kůrou, na +X zaseknutá špička (4–6 ploch) |
+| `stake2` | `SM_RuinStakeSmall` | loupaný kůl, špičky na obou koncích |
+| `fork` | `SM_RuinForkHead` | hlava rozsochy: kmen na −X, vidlice na +X. Na kůl se nasadí jako zvláštní dílec, aby se vidlice nenatahovala s délkou kůlu. |
+| `gutter` | `SM_RuinGutter` / `SM_RuinGutterBark` | žlab: řez nahoře (+Z), vydlabaný vnitřek; zvenku loupaný (stopy po loupáku), nebo s kůrou |
+
+- **Materiálové sloty:** `Wood` = materiál podle úpravy dílce (`cat`: `raw`, `tar`, `old`… a nově `peeled` = `MI_RuinWood_Peeled`, čerstvě loupané světlé dřevo), `EndGrain` = čela `MI_RuinWood_EndGrain` (letokruhy, trhliny), `Bark` = kůra `MI_RuinBark`. Materiály slotů vytvoří skript 03 (`SLOT_MI` v `zrlib\config.py`), vzhled v `MAT_LOOK["bark"]`, `["endgrain"]`, `["wood_peeled"]`.
+- **Textury** kůry a čel jsou vlastní, procedurální (`tools\textures\gen_textures.py`). Čela mají polární UV (u = úhel, v = vzdálenost od středu), takže letokruhy jsou soustředné a s náhodným posunem materiálu každé čelo jiné.
+- **Rozměry a varianty:** `ROUND_MESHES` v `zrlib\config.py` (musí odpovídat `NOMINAL` v `mesh_log.py`).
+- **Ukázka v UE:** `tools\meshes\Ukazka_Kulatina.py` postaví všechny meshe ve třech řadách (`peeled`, `raw`, `tar`) na `ORIGIN`. Má tag `Ukazka_Kulatina` a `MODE = "clear"` ji smaže. Level zříceniny ani stavby nemění.
+
 Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury, 0–1) a `DustAmount` / `DustTint` (zaprášení). U ostatních materiálů jsou na 0, takže se nic nemění. Rozdělení se mění v `constructions.json` → `finish` (výchozí hodnoty jsou v `WOOD_FINISH_DEFAULT` v `zrlib\config.py`). Neošetřené dřevo je `MI_RuinWood`, který vytvoří skript 03. Je to zašlé nelakované dřevo, šedohnědé a matné. Každý trám a prkno má trochu jiný odstín a vršky jsou vybledlé od slunce. Ladí se v `MI_RuinWood` (`TintA`/`TintB`, `Roughness`) nebo v `MAT_LOOK["wood"]` v `zrlib\config.py`. Vlastní materiál nastavíš v `MAT_WOOD_MI` (tamtéž).
 
 ---
