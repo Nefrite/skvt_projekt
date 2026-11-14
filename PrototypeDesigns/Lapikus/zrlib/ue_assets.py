@@ -1,7 +1,7 @@
 """Unreal: materialy (M_RuinStone, MI_*), import meshi kamenu a dreva, transformace instanci, fyzika"""
 import os
 from .config import ASHLAR_MESH, DRESSED_FRAMES, MAT_CORE, MAT_CROWN, MAT_DIR, MAT_FACE, MAT_FRAME, MAT_LOOK, MAT_RESET, MAT_TOP, MAT_VERSION, MAT_WOOD, MAT_WOOD_MI, MESH_DIRS, MESH_ROOT, MESH_SRC, STONE_DIR, STONE_MESH_VERSION, STONE_NOMINAL, STONE_OVERSIZE, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, TEXTURES, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI, WOOD_NOMINAL
-from .config import CLOTH_MACRO, CLOTH_MI, CLOTH_VERSION, LIB_MESHES, ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
+from .config import CLOTH_MACRO, CLOTH_MI, CLOTH_VERSION, MESH_FLIP, LIB_MESHES, ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
 from .stones import stone_mass_kg
 
 
@@ -175,7 +175,7 @@ def _set_top(unreal, mel, mi, cat, look=False):
         lk = MAT_LOOK[cat]
         for pn in ("TintA", "TintB"):
             c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
-        for pn in ("Tiling", "Roughness", "Desaturate", "DustAmount", "WindAmount", "WindSpeed", "WindScale", "MacroAmount", "MacroTiling"):
+        for pn in ("Tiling", "Roughness", "Desaturate", "DustAmount", "WindAmount", "WindSpeed", "WindScale", "MacroAmount", "MacroTiling", "Metallic"):
             if pn in lk: mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
         if "DustTint" in lk:
             c = lk["DustTint"]; mel.set_material_instance_vector_parameter_value(mi, "DustTint", unreal.LinearColor(c[0], c[1], c[2], 1))
@@ -262,6 +262,7 @@ def _build_master(unreal, master, d0, n0, wind=False, macro=None):
     rl = E(unreal.MaterialExpressionLinearInterpolate, 100, 650)
     C(ro, "", rl, "A"); C(one, "", rl, "B"); C(mask, "", rl, "Alpha")
     mel.connect_material_property(rl, "", unreal.MaterialProperty.MP_ROUGHNESS)
+    mel.connect_material_property(scal("Metallic", 0.0, 100, 850), "", unreal.MaterialProperty.MP_METALLIC)   # kov (props); jinak 0
     if n0:
         nx = E(unreal.MaterialExpressionTextureSampleParameter2D, -550, 1400)
         nx.set_editor_property("parameter_name", "Normal"); nx.set_editor_property("texture", n0)
@@ -420,8 +421,16 @@ def ue_rotator(unreal, s):
     Pitch a yaw se shoduji."""
     return unreal.Rotator(roll=-s.roll, pitch=s.pitch, yaw=s.yaw)
 
+def mesh_flipped(mesh_name):
+    """mesh je po importu OBJ otoceny o 180 st. a otoci se zpet (MESH_FLIP v config.py)"""
+    if not mesh_name or MESH_FLIP == "none": return False
+    if MESH_FLIP == "all": return True
+    pref = mesh_name.rsplit("_", 1)[0]
+    return pref in ROUND_MESHES or pref in LIB_MESHES
+
 def stone_transform(unreal, s, mesh, nominal):
-    """Transformace instance: mesh naskalovany presne na rozmer bloku (s.sx, s.sy, s.sz)."""
+    """Transformace instance: mesh naskalovany presne na rozmer bloku (s.sx, s.sy, s.sz).
+    Otoceny import (mesh_flipped): mesh se nejdriv otoci o 180 st. kolem sve osy X (stred meshe je v pocatku)."""
     rot, ext, role, c = _mesh_fix(unreal, mesh, nominal)
     k = STONE_OVERSIZE if s.mesh and s.cat == "face" else 1.0
     dims = [max(s.sx, 2) * k, max(s.sy, 2) * k, max(s.sz, 2) * k]
@@ -432,6 +441,9 @@ def stone_transform(unreal, s, mesh, nominal):
     st = unreal.Transform(location=unreal.Vector(s.x, s.y, s.z), rotation=ue_rotator(unreal, s),
                           scale=unreal.Vector(1, 1, 1))
     cm = unreal.MathLibrary.compose_transforms
+    if mesh_flipped(s.mesh):
+        local = cm(local, unreal.Transform(location=unreal.Vector(0, 0, 0), rotation=unreal.Rotator(roll=180.0, pitch=0.0, yaw=0.0),
+                                           scale=unreal.Vector(1, 1, 1)))
     return cm(cm(local, fix), st)
 
 def _unit(unreal, t):
@@ -468,7 +480,7 @@ def mesh_slots(mesh_name):
 def is_multi_slot(mesh_name):
     return mesh_slots(mesh_name) is not None
 
-_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "canvas", "wood")
+_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "wood")
 
 def apply_materials(unreal, comp, mesh, material, slots=None):
     """material na komponentu meshe. slots = poradi slotu v OBJ (mesh_slots) nebo None (jeden slot = material dilce).

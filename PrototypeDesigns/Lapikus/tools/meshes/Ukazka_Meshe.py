@@ -1,8 +1,8 @@
 """Ukazka_Meshe.py - v UE postavi ukazku knihovnich meshi s materialy (kontrola tvaru, slotu, textur).
 Unreal: Tools -> Execute Python Script -> tools/meshes/Ukazka_Meshe.py
 
-Kulatina (ROUND_MESHES) v radach podle upravy dreva slotu Wood (FINISHES), za ni rada ostatnich knihovnich meshi
-(LIB_MESHES: kura, prouti a mazanina, lano, ovazani, ukazka plachty) s jejich zakladnim materialem. Vse podel X.
+Kulatina (ROUND_MESHES) v radach podle upravy dreva slotu Wood (FINISHES), za ni rada na kazdou kategorii ostatnich
+knihovnich meshi (LIB_MESHES: kura, prouti a mazanina, lano a platno, props) s jejich zakladnim materialem. Vse podel X.
 Actory maji tag Ukazka_Meshe, Outliner slozka Ukazka/Meshe. MODE = "clear" ukazku smaze. Level zriceniny ani stavby nemeni.
 Meshe a textury naimportuje sam (stejne jako build) a chybejici materialy vytvori. Import a materialy se delaji MIMO
 transakci: Undo (Ctrl+Z) vrati jen actory ukazky.
@@ -55,11 +55,17 @@ def run():
                     place("%s_%s" % (pref, v), nom, cat, "Kulatina_" + fin, "Bark" in pref, y)
                     y += nom[1] + 40.0; row_len = max(row_len, nom[0])
             row_x += row_len + 80.0
-        y = ORIGIN[1]; row_len = 0.0                          # ostatni knihovni meshe
-        for pref, (nom, vs, _cat, _sl, base) in LIB_MESHES.items():
-            for v in vs:
-                place("%s_%s" % (pref, v), nom, base, "Knihovna", False, y)
-                y += nom[1] + 40.0; row_len = max(row_len, nom[0])
+        cats = []                                             # ostatni knihovni meshe: rada na kategorii
+        for _p, (_n, _v, cat_, _s, _b) in LIB_MESHES.items():
+            if cat_ not in cats: cats.append(cat_)
+        for cat_ in cats:
+            y = ORIGIN[1]; row_len = 0.0
+            for pref, (nom, vs, c_, _sl, base) in LIB_MESHES.items():
+                if c_ != cat_: continue
+                for v in vs:
+                    place("%s_%s" % (pref, v), nom, base, "Knihovna_" + cat_, False, y)
+                    y += nom[1] + 40.0; row_len = max(row_len, nom[0])
+            row_x += row_len + 80.0
     unreal.log("Ukazka meshi: %d actoru (kulatina %s + knihovna), slozka Ukazka/Meshe, tag %s" % (n, ", ".join(FINISHES), TAG))
 
 

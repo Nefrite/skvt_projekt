@@ -12,6 +12,11 @@ Textury jsou v odstinech sedi (barvu dava tint v materialu, MAT_LOOK v zrlib/con
   T_RuinDaub_*      mazanina (hlina se slamou, praskliny), i vypln spar srubu, dlazdice 0,5 m
   T_RuinCanvas_*    lnene platno: platnova vazba a nite (bez skvrn), dlazdice 0,25 m
   T_RuinCanvasMacro_D  velke skvrny a zasednuti plachty, dlazdice 4 m (M_RuinCloth: MacroTiling, MacroAmount)
+  T_RuinIron_*      kovane zelezo s patinou rzi: okuje, dulky po kladivu, hnede skvrny rzi (barva v texture), dlazdice 0,5 m
+  T_RuinIronClean_* kovane zelezo bez rzi (naradi, kovadlina): okuje a dulky, o neco svetlejsi
+  T_RuinLeather_*   kuze: vrasky, pory, odrena mista (barva v texture)
+  T_RuinCharcoal_*  drevene uhli: kousky s lomy, cerne spary
+  T_RuinWater_*     hladina: tmava, vlnky v normale
 Jen vybrane: python tools/textures/gen_textures.py [slozka] T_RuinRope T_RuinDaub
 Deterministicke (pevne seedy). Po zmene zvys TEX_VERSION v zrlib/config.py, jinak UE textury neprenacte.
 """
@@ -191,8 +196,58 @@ def canvas_macro():
     return np.clip(np.stack([d, d, d], -1), 0, 1), flat * 0.5 + 0.5
 
 
+def iron(rusty=True):
+    """kovane zelezo: tmave sede s okujemi, mele dulky po kladivu (bunky); rusty = skvrny rzi (tlumene hnede, ne cervene).
+    Barva je v texture (tint v materialu ~ bila), dlazdice 0,5 m"""
+    F1, F2, ID = voronoi(801, 160, 1.0)
+    r = np.random.default_rng(802); lum = r.uniform(0.85, 1.1, ID.max() + 1)[ID]
+    dent = (F1 / (F1 + F2 + 1e-6))                             # 0 ve stredu dulku, 0,5 na hrane
+    scale = pnoise(803, 40, (2, 10), (2, 10)); fine = pnoise(804, 80, (30, 120), (30, 120), 0.4)
+    rust = np.clip((pnoise(805, 40, (1, 6), (1, 6)) + 0.3 * pnoise(806, 60, (8, 30), (8, 30)) - 0.38) * 2.5, 0, 1) * 0.9
+    if not rusty: rust = np.zeros_like(rust)
+    g = ((0.22 if rusty else 0.26) + 0.06 * scale + 0.04 * fine) * lum * (0.92 + 0.16 * dent)
+    col = np.stack([g, g * 1.01, g * 1.04], -1)
+    rc = np.stack([0.30 + 0.05 * fine, 0.21 + 0.035 * fine, 0.14 + 0.02 * fine], -1)          # tlumena hneda rez
+    col = col * (1 - rust[..., None]) + rc * rust[..., None]
+    h = 0.6 * dent + 0.05 * fine + 0.25 * rust * (0.5 + 0.5 * fine)
+    return np.clip(col, 0, 1), normal_map(h, 9.0)
+
+
+def leather():
+    """kuze (mech): hnede, vrasky (protazene podel U), pory, odrena svetlejsi mista"""
+    wr = pnoise(901, 60, (2, 10), (10, 40), 0.6); wr2 = pnoise(902, 40, (8, 30), (1, 6), 0.6)
+    pores = pnoise(903, 120, (60, 200), (60, 200), 0.2); big = pnoise(904, 30, (1, 5), (1, 5))
+    wr3 = pnoise(905, 80, (10, 40), (10, 40), 0.5)
+    crease = 0.6 * np.exp(-(wr / 0.025) ** 2) * (wr3 > -0.2) + 0.3 * np.exp(-(wr2 / 0.02) ** 2) * (wr3 > 0.1)
+    worn = np.clip((big - 0.3) * 2.0, 0, 1)
+    h = -0.5 * crease + 0.08 * pores + 0.15 * big + 0.1 * wr3
+    g = 0.30 + 0.05 * pores - 0.07 * crease + 0.10 * worn + 0.02 * wr3
+    col = np.stack([g * 1.15, g * 0.75, g * 0.48], -1)
+    return np.clip(col, 0, 1), normal_map(h, 5.0)
+
+
+def charcoal():
+    """drevene uhli: kousky (bunky) s ostrymi hranami a lesklymi lomy, cerne spary mezi nimi, dlazdice 0,5 m"""
+    F1, F2, ID = voronoi(1001, 220, 1.0)
+    r = np.random.default_rng(1002); lum = r.uniform(0.6, 1.4, ID.max() + 1)[ID]; tilt = r.uniform(-1, 1, ID.max() + 1)[ID]
+    gap = np.exp(-((F2 - F1) / 0.006) ** 2)
+    grain = np.abs(np.sin(2 * math.pi * (_u[None, :] * 40 + 6 * pnoise(1003, 30, (2, 10), (2, 10)))))       # letokruhy na lomech
+    h = (1 - gap) * (0.6 + 0.2 * tilt * (F1 * 20)) + 0.03 * grain
+    g = (0.55 + 0.08 * grain) * lum * (1 - 0.8 * gap)        # svetla detailni textura; cernou barvu dava tint (MAT_LOOK charcoal)
+    col = np.stack([g, g, g * 1.05], -1)
+    return np.clip(col, 0, 1), normal_map(h, 8.0)
+
+
+def water():
+    """hladina ve sudu a korytu: skoro jednolita tmava, jemne vlnky jen v normale"""
+    rip = pnoise(1101, 40, (2, 12), (2, 12), 0.8)
+    d = 0.5 + 0.03 * pnoise(1102, 20, (1, 4), (1, 4))
+    return np.clip(np.stack([d, d, d], -1), 0, 1), normal_map(0.4 * rip, 1.5)
+
+
 TEXTURES = {"T_RuinBark": bark, "T_RuinEndGrain": endgrain, "T_RuinRope": rope, "T_RuinWattle": wattle,
-            "T_RuinDaub": daub, "T_RuinCanvas": canvas, "T_RuinCanvasMacro": canvas_macro}
+            "T_RuinDaub": daub, "T_RuinCanvas": canvas, "T_RuinCanvasMacro": canvas_macro,
+            "T_RuinIron": iron, "T_RuinIronClean": lambda: iron(False), "T_RuinLeather": leather, "T_RuinCharcoal": charcoal, "T_RuinWater": water}
 NO_NORMAL = {"T_RuinCanvasMacro"}           # jen barva
 
 

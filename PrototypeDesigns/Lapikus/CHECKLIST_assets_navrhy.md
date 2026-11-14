@@ -143,9 +143,9 @@ tools/meshes/
 | ☐   | 🆕 `MI_RuinSoot` (nebo maska ve stávajících MI)                      | saze nad výhní a ohništěm, na stěně věže a pod komínem                                 | kovárna, obydlí                               |
 | ☐   | 🆕 udusaná hlína                                                     | podlaha síně, kovárny a dvorku: ❓ decal, deska, nebo vrstva landscapu                  | síň, kovárna                                  |
 | ☐   | 🆕 třísky a kůra na zemi                                             | decal                                                                                  | staveniště etapy 1                            |
-| ☐   | 🆕 kov (kované železo)                                               | tmavé, místy rez a ohlazené hrany                                                      | kovadlina, nářadí, svěrák, pruty, obruče sudu |
-| ☐   | 🆕 kůže                                                              | tmavá, popraskaná                                                                      | měchy                                         |
-| ☐   | 🆕 pískovec opracovaný (nebo ♻ `MI_RuinFrame` se `T_Rock_Sandstone`) |                                                                                        | brusný kotouč                                 |
+| ☑   | 🆕 kov (kované železo) `MI_RuinIron` s patinou rzi + `MI_RuinIronClean` bez rzi                                               | tmavé, okuje; rez jen tlumeně hnědá                                                      | bez rzi: kovadlina, nářadí; s rzí: svěrák, pruty, obruče, osy |
+| ☑   | 🆕 kůže `MI_RuinLeather`                                                              | tmavá, popraskaná                                                                      | měchy                                         |
+| ☑   | 🆕 pískovec `MI_RuinSandstone` (StarterContent) (nebo ♻ `MI_RuinFrame` se `T_Rock_Sandstone`) |                                                                                        | brusný kotouč                                 |
 | ☐   | 🆕 textil hrubý (houně), sláma / kapradí                             |                                                                                        | lůžka (dům, stan ⛺)                           |
 | ☐   | ♻ `MI_RuinWood` `raw`, `_Tar`, `_Old`                                | beze změny                                                                             | krov, krytina, prkna, vybavení                |
 
@@ -166,20 +166,21 @@ tools/meshes/
 
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
-| ☐ | špalek pod kovadlinu | Ø 0,5 m | 🧩 kulatina s kůrou, horní čelo |
-| ☐ | kovadlina | vrch 0,75 m (se špalkem) | ✋ kov |
-| ☐ | měch na dřevěném rámu | 1,7 × 0,8 m, rám ve výšce 0,9 m | ✋ kůže + 🧩 rám |
-| ☐ | páka měchů | tyč 2,2 m | 🧩 loupaná tyč |
-| ☐ | výfučna (měch → výheň) | přes boční zídku | ✋ kov / hlína |
-| ☐ | kalicí sud s vodou | Ø 0,6 m, výška 0,8 m | ✋ dužiny + obruče, voda |
-| ☐ | brus: kotouč na rámu, klika, korýtko | kotouč Ø 0,7 m, rám 1,2 × 0,6 m, osa 0,75 m | ✋ pískovec + 🧩 rám, korýtko jako žlab |
-| ☐ | ponk se svěrákem | 2,2 × 0,7 × 0,85 m | 🧩 prkna a trámky + ✋ svěrák |
-| ☐ | nářadí na liště: kleště, kladiva, sekáče | sada | ✋ kov + 🧩 lišta |
-| ☐ | hřebovnice na špalku | – | ✋ kov + 🧩 špalek |
-| ☐ | truhlík na dřevěné uhlí s víkem | 0,8 × 1,2 × 0,8 m | 🧩 prkna |
-| ☐ | dřevěné uhlí (výplň, žhavé ve výhni) | – | ✋ |
-| ☐ | hranice dřeva (polena) | 0,6 × 1,9 × 1,4 m | 🧩 štípaná polena ✋ + kulatina |
-| ☐ | železné pruty, koš hřebíků | do výklenku střílny | ✋ kov, 🧩 proutěný koš |
+| ☑ | špalek pod kovadlinu | Ø 0,5 m | 🧩 kulatina s kůrou, horní čelo → `SM_RuinStump_A–B` |
+| ☑ | kovadlina | vrch 0,75 m (se špalkem) | ✋ kov → `SM_RuinAnvil` |
+| ☑ | měch na dřevěném rámu | 1,7 × 0,8 m, rám ve výšce 0,9 m | ✋ kůže + 🧩 rám → `SM_RuinBellows` (i rám a výfučna) |
+| ☑ | páka měchů | tyč 2,2 m | 🧩 loupaná tyč → kulatina `shape` round (tyč) |
+| ☑ | výfučna (měch → výheň) | přes boční zídku | ✋ kov / hlína → součást `SM_RuinBellows` |
+| ☑ | kalicí sud s vodou | Ø 0,6 m, výška 0,8 m | ✋ dužiny + obruče, voda → `SM_RuinBarrel` |
+| ☑ | brus: kotouč na rámu, **šlapací** (rozhodl Jirka 14. 11. 2026), korýtko | kotouč Ø 0,7 m, rám 1,2 × 0,6 m, osa 0,75 m | `SM_RuinGrindstoneTreadle` (kliková páka, ojnice, šlapadlo); `SM_RuinGrindstone` na ruční kliku zůstává v knihovně |
+| ☑ | třínohá stolička k brusu | sedátko Ø 32, výška 45 | 🧩 `SM_RuinStool` |
+| ☑ | ponk se svěrákem | 2,2 × 0,7 × 0,85 m | 🧩 prkna a trámky + ✋ svěrák → `SM_RuinWorkbench` |
+| ☑ | nářadí na liště: kleště, kladiva, sekáče | sada | ✋ kov + 🧩 lišta → `SM_RuinTongs`, `SM_RuinHammer`, `SM_RuinChisel` (lišta = prkno) |
+| ☑ | hřebovnice na špalku | – | ✋ kov + 🧩 špalek → `SM_RuinNailHeader` + `SM_RuinStump` |
+| ☑ | truhlík na dřevěné uhlí s víkem | 0,8 × 1,2 × 0,8 m | 🧩 prkna → `SM_RuinCoalBox` (s uhlím) + volné víko `SM_RuinCoalBoxLid` (bez pantů, pokládá se bokem) |
+| ◐ | dřevěné uhlí (výplň, žhavé ve výhni) | – | ✋ → výplň v `SM_RuinCoalBox` + `MI_RuinCharcoal`; žhavé uhlí přijde s výhní (`hearth`) |
+| ☑ | hranice dřeva (polena) | 0,6 × 1,9 × 1,4 m | 🧩 štípaná polena ✋ + kulatina → `SM_RuinWoodpile` |
+| ☑ | železné pruty, koš hřebíků | do výklenku střílny | ✋ kov, 🧩 proutěný koš → `SM_RuinIronBars`, `SM_RuinBasket` |
 | ☐ | VFX: oheň a jiskry ve výhni, kouř z komína | ohniště 0,4 × 0,4 m | Niagara ❓ teď, nebo s atmosférou |
 
 ### 6.2 Obydlí, hotová stavba (etapa 2)
@@ -189,12 +190,12 @@ tools/meshes/
 | ☐ | lůžko (3×) | 2,0 × 0,8 m | 🧩 + textil a sláma |
 | ☐ | stůl | 1,2 × 0,7 m | 🧩 |
 | ☐ | truhla (2×) | – | 🧩 prkna + ✋ kování |
-| ☐ | ponk u střílny (síň) | – | 🧩 (stejný jako v kovárně, menší) |
+| ☑ | ponk u střílny (síň) | – | 🧩 (stejný jako v kovárně, menší) → `SM_RuinWorkbench` (škálovat) |
 | ☐ | police na osobní věci | – | 🧩 |
-| ☐ | hranice dřeva v síni | – | 🧩 (jako v kovárně) |
+| ☑ | hranice dřeva v síni | – | 🧩 (jako v kovárně) → `SM_RuinWoodpile` |
 | ☐ | dveře (2×) | 1,0 × 2,2 m | 🧩 prkna + svlaky |
 | ☐ | okenice (2×) | 0,6 × 0,6 a 0,5 × 0,5 m | 🧩 |
-| ☐ | žebřík na půdu | ze síně do štítu příčky | 🧩 tyče + příčky (sdílený s 6.3) |
+| ☑ | žebřík na půdu | ze síně do štítu příčky | 🧩 tyče + příčky (sdílený s 6.3) → `SM_RuinLadder` (škálovat délku) |
 | ☐ | VFX: oheň v ohništi, kouř z komína | – | Niagara ❓ |
 
 ### 6.3 Obydlí, staveniště (etapa 1, `Palac_Obydli_Stavenisko`)
@@ -203,14 +204,14 @@ tools/meshes/
 |---|---|---|---|
 | ☐ | tesařská koza (2×) | nese kulatinu 5,7 m | 🧩 kulatina s kůrou |
 | ☐ | rozpracovaná kulatina na kozách | 5,7 m, napůl loupaná | 🧩 ❓ mesh s přechodem kůra / loupané |
-| ☐ | žebřík | 4,5 m | 🧩 ❓ použitelný pro postavu? |
+| ☑ | žebřík | 4,5 m | 🧩 ❓ použitelný pro postavu? → `SM_RuinLadder` |
 | ☐ | dočasné vzpěry sloupů | Ø 10 cm × 3 m | 🧩 tyč s kůrou |
 | ☐ | hromada kulatiny na srub | 11 ks Ø 22 × 5,7 m ve 2 vrstvách | 🧩 kulatina s kůrou |
 | ☐ | hromada krokví a vaznice | 6 × 6,3 m + 5,7 m | 🧩 trámy |
 | ☐ | hromada prken | asi 20 ks | 🧩 prkna |
 | ☐ | hromada kamene | asi 1 m³ | 🧩 kameny zříceniny |
 | ☐ | hromada hlíny + koš mechu | – | ✋ hlína, 🧩 proutěný koš |
-| ☐ | tesařské nářadí: sekera, širočina, pila, loupák, kladivo | návrh je nezmiňuje, pro uvěřitelnost | ✋ kov + 🧩 topůrka |
+| ◐ | tesařské nářadí: sekera, širočina, pila, loupák, kladivo, palice | návrh je nezmiňuje, pro uvěřitelnost | ✋ kov + 🧩 topůrka → `SM_RuinAxe`, `SM_RuinBroadaxe`, `SM_RuinCrosscutSaw` (dvoumužná), `SM_RuinNailHammer`, `SM_RuinMallet`; chybí loupák |
 
 ### 6.4 Brána
 
@@ -224,17 +225,17 @@ tools/meshes/
 |---|---|---|---|
 | ☐ | lůžko z klád a tyčí (2×) | 2,0 × 0,7 × 0,25 m | 🧩 kulatina a tyče s kůrou |
 | ☐ | výplň kapradí / sláma + houně | – | ✋ |
-| ☐ | špalek k sezení | – | 🧩 (jako pod kovadlinu) |
+| ☑ | špalek k sezení | – | 🧩 (jako pod kovadlinu) → `SM_RuinStump` |
 | ☐ | zavěšené boty a zbraně | – | ✋ ❓ sdílet se zbrojí posádky |
 | ☐ | ranec, truhlička | – | ✋ textil, 🧩 prkna |
 
-### 6.6 Sdílené props (vyrobit jednou, použít víckrát)
+### 6.6 Sdílené props (vyrobit jednou, použít víckrát) – hotové 14. 11. 2026: `SM_RuinStump`, `SM_RuinWoodpile`, `SM_RuinBasket`, `SM_RuinLadder`, `SM_RuinWorkbench`
 
-- ☐ Špalek (kovárna, hřebovnice, stan ⛺).
-- ☐ Hranice polen (kovárna, síň).
-- ☐ Proutěný koš (staveniště, hřebíky v kovárně).
-- ☐ Žebřík (staveniště, půda).
-- ☐ Ponk (kovárna, síň).
+- ☑ Špalek (kovárna, hřebovnice, stan ⛺).
+- ☑ Hranice polen (kovárna, síň).
+- ☑ Proutěný koš (staveniště, hřebíky v kovárně).
+- ☑ Žebřík (staveniště, půda).
+- ☑ Ponk (kovárna, síň).
 
 ### 6.7 Hlídka na věži
 

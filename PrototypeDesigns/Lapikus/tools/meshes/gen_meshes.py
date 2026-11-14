@@ -19,7 +19,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-import mesh_stone, mesh_wood, mesh_wattle, mesh_textile          # noqa: E402
+import mesh_stone, mesh_wood, mesh_wattle, mesh_textile, mesh_props          # noqa: E402
 
 # poradi = poradi generovani a vypisu
 CATEGORIES = {
@@ -27,6 +27,7 @@ CATEGORIES = {
     "wood":  mesh_wood.build,         # tramy, sloupy, prkna, kulatina (mesh_log), pasy kury (mesh_bark)
     "wattle": mesh_wattle.build,      # prouti a mazanina: dilec steny, dymnik, komin
     "textile": mesh_textile.build,    # lano, ovazani, ukazka plachty (make_canvas pro stavby na miru)
+    "props": mesh_props.build,        # vlastni props (kovarna, spalek, ponk, hranice, kos, zebrik ...)
 }
 DEFAULT_OUT = os.path.normpath(os.path.join(HERE, "..", "..", "meshes"))      # = MESH_SRC v zrlib/config.py
 

@@ -190,6 +190,35 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | `rope` | `SM_RuinRope` 100 × 1,5 cm | `textile` (`Ruin/Textile`) | `Rope` | `rope` | článek lana; prověšené lano = řetěz článků podél řetězovky |
 | `lashing` | `SM_RuinLashing` 7 × 10,5 cm | `textile` | `Rope` | `rope` | ovázání tyče Ø 8 cm (osa X), škáluje se s tyčí |
 
+**Props** (`tools\meshes\mesh_props.py`, kategorie `props`, OBJ v `meshes\props`, v UE `/Game/Skvt/Lapikus/Ruin/Props`): vlastní procedurální modely, dílec = `Stone` se `shape` z `LIB_SHAPES`, rozměry v `LIB_MESHES`. Slot `Wood` = materiál dílce (`cat`, úprava dřeva), ostatní sloty pevné.
+
+| `shape` | Mesh | Rozměr (cm) | Sloty |
+|---|---|---|---|
+| `stump` | `SM_RuinStump_A–B` | Ø 50 × 47 | Wood, EndGrain, Bark |
+| `anvil` | `SM_RuinAnvil` | 59 × 18 × 24 | IronClean |
+| `bellows` | `SM_RuinBellows` (měch na rámu s příčkami, výfučna, horní deska s rukojetí z jednoho kusu) | 210 × 85 × 139 | Wood, Iron, Leather |
+| `barrel` | `SM_RuinBarrel` (kalicí sud z 18 dužin se spárami, dno, obruče, voda) | Ø 61 × 80 | Wood, EndGrain, Iron, Water |
+| `grindstone` | `SM_RuinGrindstone` (kotouč na ose v ložiskách, spodek 3 cm ve vodě, rám s příčkami, ruční klika, koryto na 4 nohách) | 120 × 86 × 105 | Wood, Iron, Sandstone, Water |
+| `grindstone_treadle` | `SM_RuinGrindstoneTreadle` (šlapací: kliková páka, ojnice, šlapadlo na čepu u zadní nohy, strana +Y) – **použít v kovárně** | 120 × 86 × 105 | Wood, EndGrain, Iron, Sandstone, Water |
+| `stool` | `SM_RuinStool` (třínohá stolička k brusu) | 35 × 33 × 45 | Wood, EndGrain |
+| `workbench` | `SM_RuinWorkbench` (ponk se svěrákem, podélná příčka prostředkem) | 222 × 86 × 85 | Wood, Iron |
+| `tongs`, `hammer`, `chisel` | `SM_RuinTongs`, `SM_RuinHammer` (kladivo s příčným penem: hlava 11 cm, tlouk a pena souměrně kolem oka, toporo prochází okem), `SM_RuinChisel` | 50, 36, 21 délka | IronClean (kladivo + Wood, EndGrain) |
+| `mallet` | `SM_RuinMallet` (dřevěná palice do jedné ruky: hlava Ø 9 × 14 cm, na koncích železné obruče proti roztřepení) | 10 × 35 × 14 | Wood, EndGrain, IronClean |
+| `nail_hammer` | `SM_RuinNailHammer` (tesařské kladivo na hřebíky: kulatá úderná plocha, rozpolcený drápák zahnutý k toporu, toporo u hlavy tenčí, prochází okem) | 3 × 34 × 11 | Wood, EndGrain, IronClean |
+| `broadaxe` | `SM_RuinBroadaxe` (širočina: ostří ~27 cm s bradou k toporu, broušená jen z líce, plynulý náběh z oka do čepele, toporo 70 cm vyhnuté od rubu, prochází okem) | 7 × 72 × 25 | Wood, EndGrain, IronClean |
+| `axe` | `SM_RuinAxe` (sekera na štípání: klínovitá hlava s týlem, ostří ~11 cm, čepel vychází z oka, toporo 75 cm prochází okem) | 5 × 77 × 19 | Wood, EndGrain, IronClean |
+| `crosscut_saw` | `SM_RuinCrosscutSaw` (dvoumužná pila: list 152 cm s břichem a zuby, ke koncům užší, svislé rukojeti 3 cm od konců listu) | 151 × 4 × 28 | Wood, EndGrain, IronClean |
+| `nail_header` | `SM_RuinNailHeader` | 25 × 6 × 1,5 | IronClean |
+| `coal_box` | `SM_RuinCoalBox` (truhlík s uhlím: ~420 kousků na tmavém podkladu, bez víka) | 81 × 121 × 80 | Wood, Charcoal |
+| `coal_box_lid` | `SM_RuinCoalBoxLid` (volné víko truhlíku bez pantů: 3 prkna, 2 lajsny zespodu, držadlo; položit bokem nebo na truhlík) | 80 × 120 × 11 | Wood |
+| `woodpile` | `SM_RuinWoodpile` (štípaná polena, délka podél Y) | 191 × 65 × 136 | Wood, EndGrain, Bark |
+| `iron_bars` | `SM_RuinIronBars` (svazek prutů) | 103 × 9 × 4 | Iron |
+| `basket` | `SM_RuinBasket` | Ø 44 × 37 | Wattle |
+| `ladder` | `SM_RuinLadder` (tyče s kůrou, příčle po 30 cm) | 450 × 54 × 8 | Wood, EndGrain, Bark |
+
+- Materiály props: dvě železa – `MI_RuinIron` (slot Iron, s patinou tlumeně hnědé rzi, `Metallic` 0,5: kování, obruče, osy, pruty) a `MI_RuinIronClean` (slot IronClean, bez rzi, `Metallic` 0,8: nářadí a kovadlina); barva v textuře `T_RuinIron` / `T_RuinIronClean` (`TEX_VERSION` 4, `MAT_VERSION` 10, `MAT_RESET` iron 10), `MI_RuinLeather`, `MI_RuinSandstone` (StarterContent), `MI_RuinWater`, `MI_RuinCharcoal` (černou barvu dává tint, textura je jen světlý detail). Parametr `Metallic` je nově v `M_RuinStone` (výchozí 0, kámen a dřevo beze změny; `MAT_VERSION` 8 → master se při buildu přestaví).
+- Náhled: `05_constructions\Props_kovarna_nahled.png`, textury `Props_textury_nahled.png`.
+
 - **Materiály:** `MI_RuinRope`, `MI_RuinWattle`, `MI_RuinDaub`, `MI_RuinChinking` (výplň spár srubu, textura mazaniny) na `M_RuinStone`; plátno `MI_RuinCanvas` na novém `M_RuinCloth` (oboustranný). Vzhled v `MAT_LOOK` (`zrlib\config.py`).
 - **Skvrny plachty:** textura plátna (dlaždice 25 cm) je bez skvrn, jinak by se opakovaly. Skvrny a zašednutí dává velká textura `T_RuinCanvasMacro` (dlaždice 4 m), kterou `M_RuinCloth` přimíchá: `MacroAmount` (síla, výchozí 0,6), `MacroTiling` (0,25 = dlaždice 4 m).
 - **Plátno na míru:** `mesh_textile.make_canvas(okap0, okap1, hřeben0, hřeben1, rafters=…, sag=…)` vrátí plachtu prověšenou mezi tyčemi (cm, souřadnice stavby), `write_canvas` ji zapíše jako OBJ. Ukázka `SM_RuinCanvasSample_A` (3 × 2,4 m, 5 tyčí, sklon 22,6°). Napojení do stavby přijde s typem `canvas_shelter`.
