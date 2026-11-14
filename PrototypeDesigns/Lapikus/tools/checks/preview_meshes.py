@@ -1,5 +1,5 @@
 """preview_meshes.py - nahled knihovnich meshi (OBJ) bez Unrealu: mrizka meshi, kazdy ze dvou pohledu,
-barva podle materialoveho slotu (usemtl), odvracene plochy se nekresli (otocene normaly = diry).
+barva podle materialoveho slotu (usemtl: Wood, EndGrain, Bark, Daub, Wattle, Rope, Canvas), odvracene plochy se nekresli (otocene normaly = diry).
 
     python tools/checks/preview_meshes.py <slozka s OBJ nebo meshes/> <out.png> [prefix ...]
 
@@ -9,7 +9,8 @@ import math, os, sys
 import numpy as np
 from PIL import Image, ImageDraw
 
-SLOT_COL = {"Wood": (205, 170, 120), "EndGrain": (230, 190, 110), "Bark": (95, 70, 50), None: (170, 170, 170)}
+SLOT_COL = {"Wood": (205, 170, 120), "EndGrain": (230, 190, 110), "Bark": (95, 70, 50), "Daub": (185, 155, 115),
+            "Wattle": (105, 80, 50), "Rope": (215, 195, 145), "Canvas": (225, 220, 200), None: (170, 170, 170)}
 
 
 def load_obj(path):

@@ -63,14 +63,15 @@ def smooth_normals(P, F, group):
     return N / (np.linalg.norm(N, axis=1, keepdims=True) + 1e-12)
 
 
-def write_obj_slots(path, P, UV, N, F, slot, name, desc):
-    """OBJ s materialovymi sloty: slot[f] = index do SLOT_ORDER; plochy serazene podle slotu, kazda skupina 'usemtl <jmeno>'"""
+def write_obj_slots(path, P, UV, N, F, slot, name, desc, names=SLOT_ORDER):
+    """OBJ s materialovymi sloty: slot[f] = index do names (vychozi SLOT_ORDER kulatiny); plochy serazene podle slotu,
+    kazda skupina 'usemtl <jmeno>'. Jmena slotu mapuje UE na materialy (SLOT_MI v zrlib/config.py)."""
     with open(path, "w") as f:
         f.write("# %s - %s (cm, Z nahoru)\no %s\n" % (name, desc, name))
         for p in P: f.write("v %.3f %.3f %.3f\n" % (p[0], p[2], -p[1]))
         for t in UV: f.write("vt %.4f %.4f\n" % (t[0], t[1]))
         for n in N: f.write("vn %.4f %.4f %.4f\n" % (n[0], n[2], -n[1]))
-        for si, sn in enumerate(SLOT_ORDER):
+        for si, sn in enumerate(names):
             sel = F[slot == si]
             if not len(sel): continue
             f.write("usemtl %s\n" % sn)

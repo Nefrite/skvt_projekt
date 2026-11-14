@@ -177,7 +177,23 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 - **Materiálové sloty:** `Wood` = materiál podle úpravy dílce (`cat`: `raw`, `tar`, `old`… a nově `peeled` = `MI_RuinWood_Peeled`, čerstvě loupané světlé dřevo), `EndGrain` = čela `MI_RuinWood_EndGrain` (letokruhy, trhliny), `Bark` = kůra `MI_RuinBark`. Materiály slotů vytvoří skript 03 (`SLOT_MI` v `zrlib\config.py`), vzhled v `MAT_LOOK["bark"]`, `["endgrain"]`, `["wood_peeled"]`.
 - **Textury** kůry a čel jsou vlastní, procedurální (`tools\textures\gen_textures.py`). Čela mají polární UV (u = úhel, v = vzdálenost od středu), takže letokruhy jsou soustředné a s náhodným posunem materiálu každé čelo jiné.
 - **Rozměry a varianty:** `ROUND_MESHES` v `zrlib\config.py` (musí odpovídat `NOMINAL` v `mesh_log.py`).
-- **Ukázka v UE:** `tools\meshes\Ukazka_Kulatina.py` postaví všechny meshe ve třech řadách (`peeled`, `raw`, `tar`) na `ORIGIN`. Má tag `Ukazka_Kulatina` a `MODE = "clear"` ji smaže. Level zříceniny ani stavby nemění.
+- **Ukázka v UE:** `tools\meshes\Ukazka_Meshe.py` postaví kulatinu ve třech řadách (`peeled`, `raw`, `tar`) a za ní řadu ostatních knihovních meshí, na `ORIGIN`. Má tag `Ukazka_Meshe` a `MODE = "clear"` ji smaže (i starší ukázku `Ukazka_Kulatina`). Import a materiály dělá mimo transakci, Undo vrátí jen actory. Level zříceniny ani stavby nemění.
+
+**Další knihovní meshe** (`LIB_MESHES` v `zrlib\config.py`, dílec = `Stone` se `shape` z `LIB_SHAPES`, `cat` = materiál):
+
+| `shape` | Mesh | Kategorie (UE) | Sloty | `cat` | Poznámka |
+|---|---|---|---|---|---|
+| `bark_strip` | `SM_RuinBarkStrip` 160 × 70 cm | `wood` (`Ruin/Wood`) | `Bark`, `EndGrain` (spodek = lýko) | `bark` | pás kůry, délka podél X = po spádu, hrubá strana nahoru (+Z) |
+| `wattle_panel` | `SM_RuinWattlePanel` 100 × 8 × 100 cm | `wattle` (`Ruin/Wattle`) | `Daub`, `Wattle` | `daub` | dílec stěny v rovině XZ, rovné okraje → skládá se vedle sebe a nad sebe |
+| `smoke_hood` | `SM_RuinSmokeHood` 140 × 120 × 100 cm | `wattle` | `Daub`, `Wattle` | `daub` | dymník, škáluje se na rozměr |
+| `chimney` | `SM_RuinChimney` 60 × 60 × 100 cm | `wattle` | `Daub`, `Wattle` | `daub` | komín, výška přes `sz` |
+| `rope` | `SM_RuinRope` 100 × 1,5 cm | `textile` (`Ruin/Textile`) | `Rope` | `rope` | článek lana; prověšené lano = řetěz článků podél řetězovky |
+| `lashing` | `SM_RuinLashing` 7 × 10,5 cm | `textile` | `Rope` | `rope` | ovázání tyče Ø 8 cm (osa X), škáluje se s tyčí |
+
+- **Materiály:** `MI_RuinRope`, `MI_RuinWattle`, `MI_RuinDaub`, `MI_RuinChinking` (výplň spár srubu, textura mazaniny) na `M_RuinStone`; plátno `MI_RuinCanvas` na novém `M_RuinCloth` (oboustranný). Vzhled v `MAT_LOOK` (`zrlib\config.py`).
+- **Skvrny plachty:** textura plátna (dlaždice 25 cm) je bez skvrn, jinak by se opakovaly. Skvrny a zašednutí dává velká textura `T_RuinCanvasMacro` (dlaždice 4 m), kterou `M_RuinCloth` přimíchá: `MacroAmount` (síla, výchozí 0,6), `MacroTiling` (0,25 = dlaždice 4 m).
+- **Plátno na míru:** `mesh_textile.make_canvas(okap0, okap1, hřeben0, hřeben1, rafters=…, sag=…)` vrátí plachtu prověšenou mezi tyčemi (cm, souřadnice stavby), `write_canvas` ji zapíše jako OBJ. Ukázka `SM_RuinCanvasSample_A` (3 × 2,4 m, 5 tyčí, sklon 22,6°). Napojení do stavby přijde s typem `canvas_shelter`.
+- **Vítr:** `M_RuinCloth` posouvá vrcholy podél normály: `WindAmount` (cm, výchozí 0 = staticky), `WindSpeed`, `WindScale`. Zapnout v `MI_RuinCanvas` nebo v `MAT_LOOK["canvas"]`. Úchyty na tyčích se zatím hýbou stejně jako zbytek plachty, proto jen malé hodnoty (1–3 cm).
 
 Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury, 0–1) a `DustAmount` / `DustTint` (zaprášení). U ostatních materiálů jsou na 0, takže se nic nemění. Rozdělení se mění v `constructions.json` → `finish` (výchozí hodnoty jsou v `WOOD_FINISH_DEFAULT` v `zrlib\config.py`). Neošetřené dřevo je `MI_RuinWood`, který vytvoří skript 03. Je to zašlé nelakované dřevo, šedohnědé a matné. Každý trám a prkno má trochu jiný odstín a vršky jsou vybledlé od slunce. Ladí se v `MI_RuinWood` (`TintA`/`TintB`, `Roughness`) nebo v `MAT_LOOK["wood"]` v `zrlib\config.py`. Vlastní materiál nastavíš v `MAT_WOOD_MI` (tamtéž).
 

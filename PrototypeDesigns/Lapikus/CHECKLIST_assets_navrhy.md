@@ -18,7 +18,7 @@ Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro n
 - **Stan** se drží v seznamu, položky jsou označené ⛺.
 - **Generátor meshí** se rozdělí podle typu materiálu, případně jeden společný s novým názvem (kap. 3).
 
-Značky: 🆕 nový asset · ♻ existuje, jen použít / rozšířit · ⛺ jen pro stan · ❓ čeká na rozhodnutí · 🧩 skládá se z dílců · ✋ modeluje se jako samostatný tvar.
+Značky: ☑ hotovo · ◐ rozpracováno (část hotová, zbytek přijde se stavbou) · 🆕 nový asset · ♻ existuje, jen použít / rozšířit · ⛺ jen pro stan · ❓ čeká na rozhodnutí · 🧩 skládá se z dílců · ✋ modeluje se jako samostatný tvar.
 
 ---
 
@@ -115,15 +115,15 @@ tools/meshes/
 
 | ☐ | Asset | Popis | Druh | Použití |
 |---|---|---|---|---|
-| ☐ | 🆕 plátno přístřešku | prověšená plocha mezi krokvovými tyčemi, švy po spádu, oboustranná | na míru | `Vez_Pristresek` (6,2 × 4,7 m) |
-| ☐ | 🆕 štít plátna | trojúhelník zavěšený na krajní tyči | na míru | `Vez_Pristresek` (nad `Vez_Z`) |
-| ☐ | 🆕 lano | prověšený úsek mezi dvěma body | na míru | bouřková lana věže, vazby hřebene, šňůry stanu ⛺ |
-| ☐ | 🆕 `SM_RuinLashing_A–B` | ovázání na křížení tyčí | knihovní | přivázání krokví, ráhen, vidlic |
-| ☐ | 🆕 `SM_RuinBarkStrip_A–C` | prohnutý pás kůry, hrubá strana nahoru, roztřepené okraje | knihovní, nominál 0,7 × 1,6 m | přístřešek brány, stříška stanu ⛺ |
-| ☐ | 🆕 proutěná stěna | výplet mezi kůly, omazaný hlínou, místy odhalené proutí | na míru | západní stěna kovárny 5,7 × 1,9 m |
-| ☐ | 🆕 dymník | proutěný koš vymazaný hlínou, zužující se | parametrický | ohniště obydlí, výheň kovárny |
-| ☐ | 🆕 komín z proutí a hlíny | hranol 0,5–0,6 m, nepravidelný | parametrický | obydlí (vrch 5,3 m), kovárna (vrch 5,5 m) |
-| ☐ | 🆕 výplň spár srubu | tmavší pás mechu s hlínou mezi kulatinami | na míru | srub obydlí |
+| ◐ | 🆕 plátno přístřešku | prověšená plocha mezi krokvovými tyčemi, oboustranná | na míru | `Vez_Pristresek` (6,2 × 4,7 m). **Generátor hotový:** `mesh_textile.make_canvas` (rohy, polohy tyčí, prověšení) + `write_canvas` → OBJ; ukázka `SM_RuinCanvasSample_A`. Napojení přijde s typem `canvas_shelter`. |
+| ◐ | 🆕 štít plátna | trojúhelník zavěšený na krajní tyči | na míru | `Vez_Pristresek` (nad `Vez_Z`); stejný `make_canvas` (zdegenerovaný čtyřúhelník), se stavbou |
+| ☑ | 🆕 `SM_RuinRope_A–B` | článek lana 100 cm, Ø 1,5 cm, 3 prameny; prověšené lano = řetěz článků podél řetězovky (počítá stavba) | knihovní | bouřková lana věže, vazby hřebene, šňůry stanu ⛺ |
+| ☑ | 🆕 `SM_RuinLashing_A–B` | ovázání na křížení tyčí (zavity kolem tyče Ø 8 cm, škáluje se s tyčí) | knihovní | přivázání krokví, ráhen, vidlic |
+| ☑ | 🆕 `SM_RuinBarkStrip_A–C` | prohnutý pás kůry 160 × 70 cm, hrubá strana nahoru, roztřepené okraje, spodek světlé lýko | knihovní | přístřešek brány, stříška stanu ⛺ |
+| ☑ | 🆕 `SM_RuinWattlePanel_A–C` | dílec proutěné stěny s mazaninou 100 × 100 × 8 cm, rovné okraje → skládá se do libovolné stěny; ~10 % odhaleného vypletu | knihovní | západní stěna kovárny 5,7 × 1,9 m |
+| ☑ | 🆕 `SM_RuinSmokeHood_A–B` | dymník: zužující se koš z proutí s hlínou 140 × 120 → 50 × 50, výška 100 cm (škáluje se) | knihovní | ohniště obydlí, výheň kovárny |
+| ☑ | 🆕 `SM_RuinChimney_A–B` | komín z proutí a hlíny 60 × 60 cm, výška 100 cm (škáluje se) | knihovní | obydlí (vrch 5,3 m), kovárna (vrch 5,5 m) |
+| ◐ | 🆕 výplň spár srubu | tmavší pás mechu s hlínou mezi kulatinami | na míru | srub obydlí; **materiál hotový** (`MI_RuinChinking`), geometrie přijde s typem `log_wall` |
 | ☐ | ⛺ 🆕 plachta stanu do A | jeden díl přes hřeben, 2 štíty, odhrnutá chlopeň | na míru | `Nadvori_Stan` |
 
 ---
@@ -135,11 +135,11 @@ tools/meshes/
 | ☑   | 🆕 `MI_RuinBark`                                                     | smrková kůra, tmavě hnědá, hrubá; vnitřní strana pásu světlejší                        | kulatina s kůrou, pásy kůry                   |
 | ☑   | 🆕 `MI_RuinWood_Peeled` (finish `peeled`)                            | čerstvě loupané dřevo: světlé, nažloutlé, stopy po loupáku                             | loupaná kulatina v etapě 1                    |
 | ☑   | 🆕 `MI_RuinWood_EndGrain`                                            | čela s letokruhy, světlejší, s prasklinami                                             | čela všech kulatin                            |
-| ☐   | 🆕 `MI_RuinCanvas`                                                   | lněné plátno, **oboustranné**, zašedlé, místy záplaty a skvrny; ❓ pohyb ve větru (WPO) | přístřešek věže, stan ⛺                       |
-| ☐   | 🆕 `MI_RuinRope`                                                     | konopné lano, světle béžové, vláknité                                                  | lana, ovázání, šňůry                          |
-| ☐   | 🆕 `MI_RuinDaub`                                                     | mazanina: hlína na proutí, praskliny                                                   | stěna kovárny, dymníky, komíny                |
-| ☐   | 🆕 `MI_RuinWattle`                                                   | samotné proutí                                                                         | okraje výpletu, koš na staveništi             |
-| ☐   | 🆕 `MI_RuinChinking`                                                 | mech s hlínou ve spárách srubu                                                         | srub obydlí                                   |
+| ☑   | 🆕 `MI_RuinCanvas`                                                   | lněné plátno, **oboustranné**, zašedlé, místy záplaty a skvrny; ❓ pohyb ve větru (WPO) | přístřešek věže, stan ⛺                       |
+| ☑   | 🆕 `MI_RuinRope`                                                     | konopné lano, světle béžové, vláknité                                                  | lana, ovázání, šňůry                          |
+| ☑   | 🆕 `MI_RuinDaub`                                                     | mazanina: hlína na proutí, praskliny                                                   | stěna kovárny, dymníky, komíny                |
+| ☑   | 🆕 `MI_RuinWattle`                                                   | samotné proutí                                                                         | okraje výpletu, koš na staveništi             |
+| ☑   | 🆕 `MI_RuinChinking`                                                 | mech s hlínou ve spárách srubu                                                         | srub obydlí                                   |
 | ☐   | 🆕 `MI_RuinSoot` (nebo maska ve stávajících MI)                      | saze nad výhní a ohništěm, na stěně věže a pod komínem                                 | kovárna, obydlí                               |
 | ☐   | 🆕 udusaná hlína                                                     | podlaha síně, kovárny a dvorku: ❓ decal, deska, nebo vrstva landscapu                  | síň, kovárna                                  |
 | ☐   | 🆕 třísky a kůra na zemi                                             | decal                                                                                  | staveniště etapy 1                            |
@@ -284,10 +284,10 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 ## 9. Otevřené otázky, které ovlivní assety
 
 - ☐ ❓ Přiřazení kůra / bez kůry podle kap. 2.1: potvrdit, hlavně zábradlí brány, žlaby a rozpracovanou kulatinu.
-- ☐ ❓ Struktura generátoru (kap. 3): `tools/meshes/` s moduly, nebo samostatné skripty?
-- ☐ ❓ Tvary na míru (plátno, výplet, plachta): OBJ z `gen_constructions.py`, nebo Geometry Script v UE?
-- ☐ ❓ Props tvaru ✋ (kovadlina, měch, sud, nářadí): procedurálně v Pythonu, nebo v Blenderu?
-- ☐ ❓ Má se plátno hýbat ve větru (materiál s WPO, nebo cloth)?
+- ☑ Struktura generátoru (kap. 3): `tools/meshes/gen_meshes.py` + moduly podle materiálu, OBJ v `meshes/<kategorie>/` (rozhodnuto 14. 11. 2026).
+- ☑ Tvary na míru: OBJ (14. 11. 2026). Plátno `mesh_textile.make_canvas`, lano z knihovních článků, výplet z knihovních dílců.
+- ☑ Props tvaru ✋: procedurálně v Pythonu (vizuální prototyp, 14. 11. 2026).
+- ◐ Plátno ve větru: připraveno v materiálu (`M_RuinCloth`, parametr `WindAmount`, výchozí 0 = staticky). Vítr ani napnutí plachet zatím řešené nejsou; prověšení dává `make_canvas` (`sag`).
 - ☐ ❓ Kovárna ve východní místnosti: potvrdit umístění.
 - ☐ ❓ Žebříky (staveniště, půda): jen kulisa, nebo použitelné pro postavu?
 - ☐ ❓ Stojí podesta brány v etapě 1? Určuje, jestli potřebuje přepínač `ETAPA`.

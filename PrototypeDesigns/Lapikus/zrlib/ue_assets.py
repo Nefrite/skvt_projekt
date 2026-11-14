@@ -1,14 +1,14 @@
 """Unreal: materialy (M_RuinStone, MI_*), import meshi kamenu a dreva, transformace instanci, fyzika"""
 import os
 from .config import ASHLAR_MESH, DRESSED_FRAMES, MAT_CORE, MAT_CROWN, MAT_DIR, MAT_FACE, MAT_FRAME, MAT_LOOK, MAT_RESET, MAT_TOP, MAT_VERSION, MAT_WOOD, MAT_WOOD_MI, MESH_DIRS, MESH_ROOT, MESH_SRC, STONE_DIR, STONE_MESH_VERSION, STONE_NOMINAL, STONE_OVERSIZE, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, TEXTURES, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI, WOOD_NOMINAL
-from .config import ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
+from .config import CLOTH_MACRO, CLOTH_MI, CLOTH_VERSION, LIB_MESHES, ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
 from .stones import stone_mass_kg
 
 
 def _asset_path(folder, name): return "%s/%s.%s" % (folder, name, name)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # koren (vedle zrlib: meshes/, textures/)
-SLOT_MATS = {}          # materialy slotu kulatiny {"bark": MI, "endgrain": MI}, plni ensure_materials
+SLOT_MATS = {}          # materialy slotu {"bark": MI, "endgrain": MI, "rope": MI, ..., "canvas": MI}, plni ensure_materials
 
 def ensure_textures(unreal):
     """vlastni textury (textures/*.png z tools/textures/gen_textures.py) -> TEX_DIR; chybejici nebo starsi nez TEX_VERSION
@@ -105,10 +105,35 @@ def ensure_materials(unreal):
         mats[wc] = _wood_mi(unreal, master, pick, wc, wn)
     for wc in WOOD_MI:                                   # chybi-li textury, aspon stejne drevo vsude
         mats[wc] = mats[wc] or mats.get("wood")
-    for sc, sn in SLOT_MI.items():                       # sloty kulatiny: kura, cela
+    for sc, sn in SLOT_MI.items():                       # sloty: kura, cela, lano, prouti, mazanina, vypln spar
         mats[sc] = _wood_mi(unreal, master, pick, sc, sn) or mats.get("wood")
         SLOT_MATS[sc] = mats[sc]
+    cloth = _cloth_master(unreal, pick)                  # platno: oboustranny material s posunem ve vetru
+    for sc, sn in CLOTH_MI.items():
+        mats[sc] = (_wood_mi(unreal, cloth, pick, sc, sn) if cloth else None) or mats.get("wood")
+        SLOT_MATS[sc] = mats[sc]
     return mats
+
+def _cloth_master(unreal, pick):
+    """M_RuinCloth: stejny graf jako M_RuinStone (textura, tint, zvetrani shora), navic oboustranny a posun ve vetru
+    (WindAmount cm, WindSpeed, WindScale; WindAmount 0 = staticke). Vytvori se jednou, prestavi pri vyssi CLOTH_VERSION."""
+    eal = unreal.EditorAssetLibrary
+    d0, n0 = pick("canvas")
+    if not d0: return None
+    path = _asset_path(MAT_DIR, "M_RuinCloth")
+    if eal.does_asset_exist(path):
+        m = unreal.load_asset(path)
+        if _ver(eal, m, "RuinClothVersion") >= CLOTH_VERSION: return m
+        unreal.MaterialEditingLibrary.delete_all_material_expressions(m)
+    else:
+        m = unreal.AssetToolsHelpers.get_asset_tools().create_asset("M_RuinCloth", MAT_DIR, unreal.Material, unreal.MaterialFactoryNew())
+    try: m.set_editor_property("two_sided", True)
+    except Exception as ex: unreal.log_warning("Ruin: M_RuinCloth two_sided: %s (zapni rucne Two Sided)" % ex)
+    mac = unreal.load_asset(CLOTH_MACRO) if eal.does_asset_exist(CLOTH_MACRO) else None
+    _build_master(unreal, m, d0, n0, wind=True, macro=mac)
+    eal.set_metadata_tag(m, "RuinClothVersion", str(CLOTH_VERSION)); eal.save_loaded_asset(m)
+    unreal.log("Ruin: vytvoren material %s (oboustranny, vitr WindAmount)" % path)
+    return m
 
 def _wood_mi(unreal, master, pick, cat="wood", name="MI_RuinWood"):
     """MI_RuinWood(_Tar/_Oil): drevo na M_RuinStone (textura dreva, tint podle upravy, matne). Bez textur dreva -> MAT_WOOD."""
@@ -150,15 +175,17 @@ def _set_top(unreal, mel, mi, cat, look=False):
         lk = MAT_LOOK[cat]
         for pn in ("TintA", "TintB"):
             c = lk[pn]; mel.set_material_instance_vector_parameter_value(mi, pn, unreal.LinearColor(c[0], c[1], c[2], 1))
-        for pn in ("Tiling", "Roughness", "Desaturate", "DustAmount"):
+        for pn in ("Tiling", "Roughness", "Desaturate", "DustAmount", "WindAmount", "WindSpeed", "WindScale", "MacroAmount", "MacroTiling"):
             if pn in lk: mel.set_material_instance_scalar_parameter_value(mi, pn, lk[pn])
         if "DustTint" in lk:
             c = lk["DustTint"]; mel.set_material_instance_vector_parameter_value(mi, "DustTint", unreal.LinearColor(c[0], c[1], c[2], 1))
     mel.update_material_instance(mi)
 
-def _build_master(unreal, master, d0, n0):
+def _build_master(unreal, master, d0, n0, wind=False, macro=None):
     """graf M_RuinStone: textura s nahodnym posunem UV a tintem na kamen + zvetrani shora podle normaly
-    (VertexNormalWS.z: plochy nahoru svetlejsi / nazelenale a drsnejsi, rozbite texturou)"""
+    (VertexNormalWS.z: plochy nahoru svetlejsi / nazelenale a drsnejsi, rozbite texturou).
+    wind=True (M_RuinCloth): navic posun vrcholu podel normaly = WindAmount * vlny (cas + poloha ve svete) a velke skvrny
+    (macro = textura T_RuinCanvasMacro, UV * MacroTiling, sila MacroAmount; 0,5 = beze zmeny) proti opakovani male dlazdice."""
     mel = unreal.MaterialEditingLibrary; eal = unreal.EditorAssetLibrary
     for prop in ("used_with_instanced_static_meshes", "used_with_nanite"):
         try: master.set_editor_property(prop, True)
@@ -197,6 +224,17 @@ def _build_master(unreal, master, d0, n0):
     bc = E(unreal.MaterialExpressionLinearInterpolate, 0, 0)
     C(bc0, "", bc, "A"); C(vec("DustTint", (0.40, 0.37, 0.32), -300, -450), "", bc, "B")
     C(scal("DustAmount", 0.0, -300, -550), "", bc, "Alpha")
+    if wind and macro:
+        mu = E(unreal.MaterialExpressionMultiply, -800, -700); C(add, "", mu, "A"); C(scal("MacroTiling", 0.25, -1000, -750), "", mu, "B")
+        mt = E(unreal.MaterialExpressionTextureSampleParameter2D, -550, -800)
+        mt.set_editor_property("parameter_name", "Macro"); mt.set_editor_property("texture", macro); C(mu, "", mt, "UVs")
+        k2 = E(unreal.MaterialExpressionConstant, -550, -600); k2.set_editor_property("r", 2.0)
+        m2 = E(unreal.MaterialExpressionMultiply, -350, -750); C(mt, "R", m2, "A"); C(k2, "", m2, "B")
+        one_ = E(unreal.MaterialExpressionConstant, -350, -600); one_.set_editor_property("r", 1.0)
+        ml = E(unreal.MaterialExpressionLinearInterpolate, -150, -700); C(one_, "", ml, "A"); C(m2, "", ml, "B")
+        C(scal("MacroAmount", 0.6, -350, -850), "", ml, "Alpha")
+        bcm = E(unreal.MaterialExpressionMultiply, 0, -300); C(bc, "", bcm, "A"); C(ml, "", bcm, "B")
+        bc = bcm
     # --- zvetrani shora: maska = saturate((N.z - TopStart) * TopSharp) * TopAmount, rozbita jasem textury
     vn = E(unreal.MaterialExpressionVertexNormalWS, -1400, 900)
     cm = E(unreal.MaterialExpressionComponentMask, -1200, 900)
@@ -230,6 +268,29 @@ def _build_master(unreal, master, d0, n0):
         nx.set_editor_property("sampler_type", unreal.MaterialSamplerType.SAMPLERTYPE_NORMAL)
         C(uv, "", nx, "UVs")
         mel.connect_material_property(nx, "RGB", unreal.MaterialProperty.MP_NORMAL)
+    if wind:
+        # WPO = normala * WindAmount * 0.5 * (sin(t*WindSpeed + p.(1,0.7,0)*WindScale) + sin(1.7*t*WindSpeed + 2.3*p.(...)*WindScale))
+        wp = E(unreal.MaterialExpressionWorldPosition, -1400, 1700)
+        dv = E(unreal.MaterialExpressionConstant3Vector, -1400, 1850); dv.set_editor_property("constant", unreal.LinearColor(1.0, 0.7, 0.0, 0))
+        dp = E(unreal.MaterialExpressionDotProduct, -1200, 1750); C(wp, "", dp, "A"); C(dv, "", dp, "B")
+        ws = E(unreal.MaterialExpressionMultiply, -1000, 1750); C(dp, "", ws, "A"); C(scal("WindScale", 0.01, -1200, 1900), "", ws, "B")
+        tm = E(unreal.MaterialExpressionTime, -1400, 2000)
+        ts = E(unreal.MaterialExpressionMultiply, -1000, 2000); C(tm, "", ts, "A"); C(scal("WindSpeed", 0.6, -1200, 2100), "", ts, "B")
+        a1 = E(unreal.MaterialExpressionAdd, -800, 1850); C(ws, "", a1, "A"); C(ts, "", a1, "B")
+        s1 = E(unreal.MaterialExpressionSine, -650, 1850); C(a1, "", s1, "")
+        k17 = E(unreal.MaterialExpressionConstant, -1000, 2200); k17.set_editor_property("r", 1.7)
+        k23 = E(unreal.MaterialExpressionConstant, -1000, 1650); k23.set_editor_property("r", 2.3)
+        t2 = E(unreal.MaterialExpressionMultiply, -800, 2100); C(ts, "", t2, "A"); C(k17, "", t2, "B")
+        w2 = E(unreal.MaterialExpressionMultiply, -800, 1650); C(ws, "", w2, "A"); C(k23, "", w2, "B")
+        a2 = E(unreal.MaterialExpressionAdd, -650, 2000); C(w2, "", a2, "A"); C(t2, "", a2, "B")
+        s2 = E(unreal.MaterialExpressionSine, -500, 2000); C(a2, "", s2, "")
+        ss = E(unreal.MaterialExpressionAdd, -350, 1900); C(s1, "", ss, "A"); C(s2, "", ss, "B")
+        half2 = E(unreal.MaterialExpressionConstant, -350, 2050); half2.set_editor_property("r", 0.5)
+        am = E(unreal.MaterialExpressionMultiply, -200, 1950); C(ss, "", am, "A"); C(half2, "", am, "B")
+        wa = E(unreal.MaterialExpressionMultiply, -50, 1950); C(am, "", wa, "A"); C(scal("WindAmount", 0.0, -200, 2100), "", wa, "B")
+        vn2 = E(unreal.MaterialExpressionVertexNormalWS, -200, 1750)
+        wpo = E(unreal.MaterialExpressionMultiply, 100, 1850); C(vn2, "", wpo, "A"); C(wa, "", wpo, "B")
+        mel.connect_material_property(wpo, "", unreal.MaterialProperty.MP_WORLD_POSITION_OFFSET)
     mel.recompile_material(master)
     eal.set_metadata_tag(master, "RuinMatVersion", str(MAT_VERSION))
     eal.save_loaded_asset(master)
@@ -243,7 +304,8 @@ def _needed_meshes():
     names = [("SM_RuinStone_%sR%02d_%s" % (w, round(r * 10), v), "stone") for w in ("", "W_") for r in STONE_RATIOS for v in STONE_VARIANTS]
     if DRESSED_FRAMES: names += [("SM_RuinDressed_R%02d_%s" % (round(r * 10), v), "stone") for r in STONE_RATIOS for v in "AB"]
     if WOOD_MESHES: names += [("%s_%s" % (k, v), "wood") for k in WOOD_NOMINAL for v in "ABC"]
-    if WOOD_MESHES: names += [("%s_%s" % (k, v), "wood") for k, (_, vs) in ROUND_MESHES.items() for v in vs]
+    if WOOD_MESHES: names += [("%s_%s" % (k, v), "wood") for k, (_, vs, _s) in ROUND_MESHES.items() for v in vs]
+    names += [("%s_%s" % (k, v), cat) for k, (_, vs, cat, _s, _c) in LIB_MESHES.items() for v in vs]
     return names + [(ASHLAR_MESH, "stone")]
 
 def ensure_stone_meshes(unreal, mesh_src):
@@ -390,28 +452,36 @@ def _resolve(unreal, s, cube, meshes):
     if s.mesh == ASHLAR_MESH: return m, (100.0, 100.0, 100.0)
     if s.mesh.rsplit("_", 1)[0] in WOOD_NOMINAL: return m, WOOD_NOMINAL[s.mesh.rsplit("_", 1)[0]]
     if s.mesh.rsplit("_", 1)[0] in ROUND_MESHES: return m, ROUND_MESHES[s.mesh.rsplit("_", 1)[0]][0]
+    if s.mesh.rsplit("_", 1)[0] in LIB_MESHES: return m, LIB_MESHES[s.mesh.rsplit("_", 1)[0]][0]
     r = float(s.mesh.rsplit("_R", 1)[1][:2]) / 10
     h, d = STONE_NOMINAL[0], STONE_NOMINAL[1]
     return m, (h * r, d, h)
 
+def mesh_slots(mesh_name):
+    """sloty meshe s vice materialy v poradi v OBJ (kulatina, kura, prouti ...), jinak None (jeden material)"""
+    if not mesh_name: return None
+    pref = mesh_name.rsplit("_", 1)[0]
+    if pref in ROUND_MESHES: return ROUND_MESHES[pref][2]
+    if pref in LIB_MESHES and len(LIB_MESHES[pref][3]) > 1: return LIB_MESHES[pref][3]
+    return None
+
 def is_multi_slot(mesh_name):
-    """mesh s vice materialovymi sloty (kulatina: Wood, EndGrain, Bark)"""
-    return bool(mesh_name) and mesh_name.rsplit("_", 1)[0] in ROUND_MESHES
+    return mesh_slots(mesh_name) is not None
 
-_SLOT_ORDER = {2: ("wood", "endgrain"), 3: ("wood", "endgrain", "bark")}     # poradi slotu v OBJ (mesh_common.SLOT_ORDER)
+_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "canvas", "wood")
 
-def apply_materials(unreal, comp, mesh, material, multi=False):
-    """material na komponentu meshe. Kulatina (multi): slot Wood = material (uprava dreva dilce), Bark a EndGrain = SLOT_MATS.
-    Slot se pozna podle jmena (usemtl z OBJ), jinak podle poradi."""
+def apply_materials(unreal, comp, mesh, material, slots=None):
+    """material na komponentu meshe. slots = poradi slotu v OBJ (mesh_slots) nebo None (jeden slot = material dilce).
+    Slot "wood" = material dilce (uprava dreva / cat), ostatni = SLOT_MATS. Slot se pozna podle jmena (usemtl z OBJ),
+    jinak podle poradi v slots."""
     if not material: return
-    if not multi:
+    if not slots:
         comp.set_material(0, material); return
-    try: slots = list(mesh.get_editor_property("static_materials"))
-    except Exception: slots = []
-    order = _SLOT_ORDER.get(len(slots), ("wood",) * max(len(slots), 1))
-    for i in range(max(len(slots), 1)):
-        nm = str(slots[i].get_editor_property("material_slot_name")).lower() if slots else ""
-        kind = "bark" if "bark" in nm else "endgrain" if ("endgrain" in nm or "end_grain" in nm) else "wood" if "wood" in nm else order[i]
+    try: st = list(mesh.get_editor_property("static_materials"))
+    except Exception: st = []
+    for i in range(max(len(st), 1)):
+        nm = str(st[i].get_editor_property("material_slot_name")).lower().replace("_", "") if st else ""
+        kind = next((k for k in _KINDS if k in nm), None) or (slots[i] if i < len(slots) else "wood")
         comp.set_material(i, material if kind == "wood" else (SLOT_MATS.get(kind) or material))
 
 _PM = {}

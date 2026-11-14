@@ -15,11 +15,19 @@ MAT_DIR   = "/Game/Skvt/Lapikus/Ruin/Materials"
 # --- vlastni procedurni textury (tools/textures/gen_textures.py -> textures/*.png v koreni; skript je sam naimportuje)
 TEX_SRC = "textures"
 TEX_DIR = "/Game/Skvt/Lapikus/Ruin/Textures"
-TEX_VERSION = 1                          # vyssi nez v projektu -> textury se naimportuji znovu (po zmene gen_textures.py)
-TEX_FILES = {"T_RuinBark_D": "color", "T_RuinBark_N": "normal", "T_RuinEndGrain_D": "color", "T_RuinEndGrain_N": "normal"}
+TEX_VERSION = 2                          # vyssi nez v projektu -> textury se naimportuji znovu (po zmene gen_textures.py)
+TEX_FILES = {"T_Ruin%s_%s" % (t, k): ("color" if k == "D" else "normal")
+             for t in ("Bark", "EndGrain", "Rope", "Wattle", "Daub", "Canvas") for k in "DN"}
+TEX_FILES["T_RuinCanvasMacro_D"] = "color"         # velke skvrny plachty (M_RuinCloth)
+CLOTH_MACRO = TEX_DIR + "/T_RuinCanvasMacro_D"
 TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
     "bark":     [(TEX_DIR + "/T_RuinBark_D", TEX_DIR + "/T_RuinBark_N")],
     "endgrain": [(TEX_DIR + "/T_RuinEndGrain_D", TEX_DIR + "/T_RuinEndGrain_N")],
+    "rope":     [(TEX_DIR + "/T_RuinRope_D", TEX_DIR + "/T_RuinRope_N")],
+    "wattle":   [(TEX_DIR + "/T_RuinWattle_D", TEX_DIR + "/T_RuinWattle_N")],
+    "daub":     [(TEX_DIR + "/T_RuinDaub_D", TEX_DIR + "/T_RuinDaub_N")],
+    "chinking": [(TEX_DIR + "/T_RuinDaub_D", TEX_DIR + "/T_RuinDaub_N")],       # vypln spar srubu = mazanina, jiny tint
+    "canvas":   [(TEX_DIR + "/T_RuinCanvas_D", TEX_DIR + "/T_RuinCanvas_N")],
     "wood_peeled": [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
                     ("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N")],
     "wood_tar": [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
@@ -66,6 +74,17 @@ MAT_LOOK = {
     "bark":     dict(TintA=(0.20, 0.14, 0.10), TintB=(0.32, 0.25, 0.19), Tiling=2.0, Roughness=0.95),
     # cela (slot EndGrain): svetle okrove, letokruhy z textury; UV polarni (v = vzdalenost od stredu v m), dlazdice 0,5 m
     "endgrain": dict(TintA=(0.62, 0.48, 0.30), TintB=(0.82, 0.66, 0.44), Tiling=2.0, Roughness=0.9),
+    # konopne lano: svetle bezove; dlazdice 0,25 m (UV lana v = obvod * 0,25) -> Tiling 4
+    "rope":     dict(TintA=(0.55, 0.45, 0.30), TintB=(0.72, 0.60, 0.42), Tiling=4.0, Roughness=0.95),
+    # prouti (vyplet, kde opadala hlina): sedohnede pruty s kurou
+    "wattle":   dict(TintA=(0.28, 0.22, 0.15), TintB=(0.42, 0.34, 0.24), Tiling=2.0, Roughness=0.95),
+    # mazanina: svetla okrova hlina se slamou
+    "daub":     dict(TintA=(0.55, 0.45, 0.32), TintB=(0.70, 0.58, 0.43), Tiling=2.0, Roughness=0.97),
+    # vypln spar srubu: tmavsi hlina s mechem
+    "chinking": dict(TintA=(0.24, 0.24, 0.15), TintB=(0.36, 0.34, 0.22), Tiling=4.0, Roughness=1.0),
+    # lnene platno (M_RuinCloth, oboustranne): zasedle, skvrny; WindAmount = pohyb ve vetru v cm (0 = staticke)
+    "canvas":   dict(TintA=(0.60, 0.56, 0.48), TintB=(0.74, 0.70, 0.61), Tiling=4.0, Roughness=0.9,
+                     WindAmount=0.0, WindSpeed=0.6, WindScale=0.01, MacroAmount=0.6, MacroTiling=0.25),
 }
 # zvetrani shora (v materialu podle normaly): plochy mirici nahoru svetlejsi, nazelenale (lisejnik, prach), drsnejsi.
 # TopStart = od jakeho sklonu (0 svisla stena .. 1 vodorovny vrsek), TopSharp = ostrost prechodu, TopAmount = sila
@@ -82,6 +101,11 @@ MAT_TOP = {
     "wood_peeled": dict(TopTint=(1.05, 1.03, 0.98), TopStart=0.6, TopSharp=3.0, TopAmount=0.2),
     "bark":     dict(TopTint=(1.15, 1.20, 1.05), TopStart=0.55, TopSharp=3.0, TopAmount=0.3),    # vrch kury: prach, lisejnik
     "endgrain": dict(TopTint=(1.10, 1.08, 1.02), TopStart=0.6, TopSharp=3.0, TopAmount=0.2),
+    "rope":     dict(TopTint=(1.05, 1.05, 1.00), TopStart=0.6, TopSharp=3.0, TopAmount=0.2),
+    "wattle":   dict(TopTint=(1.10, 1.12, 1.02), TopStart=0.6, TopSharp=3.0, TopAmount=0.25),
+    "daub":     dict(TopTint=(1.08, 1.06, 1.00), TopStart=0.55, TopSharp=3.0, TopAmount=0.3),     # vrch vymyty destem
+    "chinking": dict(TopTint=(0.90, 1.05, 0.80), TopStart=0.5, TopSharp=3.0, TopAmount=0.4),      # mech nahore
+    "canvas":   dict(TopTint=(1.05, 1.05, 1.00), TopStart=0.6, TopSharp=3.0, TopAmount=0.25),
 }
 MAT_VERSION = 7                          # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
                                          # (tinty MI_RuinFace/Frame zustanou, jak je mas; MAT_RESET viz nize)
@@ -91,7 +115,9 @@ USE_STONE_MESHES = True                  # False = vsude kostky (Cube) jako driv
 MESH_SRC  = "meshes"                     # slozka s OBJ v koreni, podslozky podle kategorie (stone, wood, ...)
 MESH_ROOT = "/Game/Skvt/Lapikus/Ruin"
 MESH_DIRS = {"stone": "Stones",          # kategorie (= podslozka meshes/<kategorie>, CATEGORIES v gen_meshes.py)
-             "wood":  "Wood"}            #   -> slozka v UE MESH_ROOT/<slozka>
+             "wood":  "Wood",            #   -> slozka v UE MESH_ROOT/<slozka>
+             "wattle": "Wattle",
+             "textile": "Textile"}
 STONE_DIR = MESH_ROOT + "/" + MESH_DIRS["stone"]
 STONE_RATIOS = [1.2, 1.8, 2.6, 3.4]      # pomer delka/vyska variant (SM_RuinStone_R12_A ...)
 STONE_VARIANTS = "ABC"
@@ -109,18 +135,19 @@ STONE_PHYSICS = dict(density=2600.0,     # kg/m3 (vapenec, piskovec, zula 2500-2
 WOOD_MESHES = True                       # tramy, prkna, sloupy z meshu zasleho dreva (SM_RuinTimber/Plank/Post_*); False = kostky
 WOOD_NOMINAL = {"SM_RuinTimber": (100.0, 25.0, 25.0), "SM_RuinPlank": (100.0, 25.0, 5.0), "SM_RuinPost": (25.0, 25.0, 100.0)}
 DRESSED_FRAMES = True                     # osteni, nadprazi, strilny z opracovanych kamenu SM_RuinDressed_* (False = kvadr SM_RuinAshlar)
-# kulatina (tools/meshes/mesh_log.py): prefix -> (jmenovity rozmer delka, sirka, vyska v cm = NOMINAL v mesh_log.py, varianty).
-# Delka podel sx dilce (svisly kul / sloup = pitch 90). Sloty: Wood (material podle upravy dilce), EndGrain, Bark (SLOT_MI).
+# kulatina (tools/meshes/mesh_log.py): prefix -> (jmenovity rozmer delka, sirka, vyska v cm = NOMINAL v mesh_log.py, varianty,
+# sloty v poradi v OBJ). Delka podel sx dilce (svisly kul / sloup = pitch 90).
+# Sloty: wood = material podle upravy dilce (cat), ostatni = SLOT_MI.
 ROUND_MESHES = {
-    "SM_RuinLog":        ((100.0, 20.0, 20.0), "ABC"),   # loupana kulatina
-    "SM_RuinLogBark":    ((100.0, 20.0, 20.0), "ABC"),   # kulatina s kurou
-    "SM_RuinPole":       ((100.0, 8.0, 8.0), "ABC"),     # loupana tyc
-    "SM_RuinPoleBark":   ((100.0, 8.0, 8.0), "ABC"),     # tyc s kurou
-    "SM_RuinStake":      ((200.0, 20.0, 20.0), "ABC"),   # kul s kurou, zaseknuta spicka na +X
-    "SM_RuinStakeSmall": ((160.0, 7.0, 7.0), "AB"),      # loupany kul, spicky na obou koncich
-    "SM_RuinForkHead":   ((45.0, 30.0, 12.0), "AB"),     # hlava rozsochy: kmen na -X, vidlice na +X, ramena v rovine XY
-    "SM_RuinGutter":     ((100.0, 20.0, 11.0), "AB"),    # loupany zlab: rez nahore (+Z), vydlabany
-    "SM_RuinGutterBark": ((100.0, 20.0, 11.0), "AB"),    # zlab s kurou zvenku
+    "SM_RuinLog":        ((100.0, 20.0, 20.0), "ABC", ("wood", "endgrain")),   # loupana kulatina
+    "SM_RuinLogBark":    ((100.0, 20.0, 20.0), "ABC", ("wood", "endgrain", "bark")),   # kulatina s kurou
+    "SM_RuinPole":       ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain")),     # loupana tyc
+    "SM_RuinPoleBark":   ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain", "bark")),     # tyc s kurou
+    "SM_RuinStake":      ((200.0, 20.0, 20.0), "ABC", ("wood", "endgrain", "bark")),   # kul s kurou, zaseknuta spicka na +X
+    "SM_RuinStakeSmall": ((160.0, 7.0, 7.0), "AB", ("wood", "endgrain")),      # loupany kul, spicky na obou koncich
+    "SM_RuinForkHead":   ((45.0, 30.0, 12.0), "AB", ("wood", "endgrain", "bark")),     # hlava rozsochy: kmen na -X, vidlice na +X, ramena v rovine XY
+    "SM_RuinGutter":     ((100.0, 20.0, 11.0), "AB", ("wood", "endgrain")),    # loupany zlab: rez nahore (+Z), vydlabany
+    "SM_RuinGutterBark": ((100.0, 20.0, 11.0), "AB", ("wood", "endgrain", "bark")),    # zlab s kurou zvenku
 }
 ROUND_SHAPES = {   # Stone.shape -> (prefix loupany, prefix s kurou); None = tvar existuje jen v druhe variante
     "round":  ("SM_RuinLog", "SM_RuinLogBark"),          # Pole / PoleBark, kdyz prumer <= POLE_MAX_D
@@ -130,9 +157,29 @@ ROUND_SHAPES = {   # Stone.shape -> (prefix loupany, prefix s kurou); None = tva
     "gutter": ("SM_RuinGutter", "SM_RuinGutterBark"),
 }
 POLE_MAX_D = 11.0                        # cm: tenci kulatina = tyc (SM_RuinPole*), jinak SM_RuinLog*
-SLOT_MI = {"bark": "MI_RuinBark", "endgrain": "MI_RuinWood_EndGrain"}   # materialy slotu Bark a EndGrain kulatiny
+# materialy slotu (jmeno slotu v OBJ malymi pismeny -> MI na M_RuinStone); slot "wood" / neznamy = material dilce (cat).
+# Klice jsou zaroven kategorie dilcu (Stone.cat = "rope", "daub" ... -> material slotu).
+SLOT_MI = {"bark": "MI_RuinBark", "endgrain": "MI_RuinWood_EndGrain", "rope": "MI_RuinRope", "wattle": "MI_RuinWattle",
+           "daub": "MI_RuinDaub", "chinking": "MI_RuinChinking"}
+CLOTH_MI = {"canvas": "MI_RuinCanvas"}   # na M_RuinCloth: oboustranny, posun ve vetru (WindAmount, vychozi 0 = staticke)
+CLOTH_VERSION = 2                        # vyssi nez v projektu -> skript prestavi graf M_RuinCloth
+# dalsi knihovni meshe: prefix -> (jmenovity rozmer cm, varianty, kategorie (MESH_DIRS), sloty v poradi v OBJ, zakladni cat).
+# Dilec: Stone.shape z LIB_SHAPES, Stone.cat = material slotu wood / jednoho slotu (napr. "rope", "canvas").
+LIB_MESHES = {
+    "SM_RuinBarkStrip":    ((160.0, 70.0, 9.0), "ABC", "wood", ("bark", "endgrain"), "bark"),       # pas kury (spodek = lyko)
+    "SM_RuinWattlePanel":  ((100.0, 8.0, 100.0), "ABC", "wattle", ("daub", "wattle"), "daub"),      # dilec proutene steny XZ
+    "SM_RuinSmokeHood":    ((140.0, 120.0, 100.0), "AB", "wattle", ("daub", "wattle"), "daub"),     # dymnik
+    "SM_RuinChimney":      ((60.0, 60.0, 100.0), "AB", "wattle", ("daub", "wattle"), "daub"),       # komin
+    "SM_RuinRope":         ((100.0, 1.5, 1.5), "AB", "textile", ("rope",), "rope"),                 # clanek lana
+    "SM_RuinLashing":      ((7.0, 10.5, 10.5), "AB", "textile", ("rope",), "rope"),                 # ovazani tyce O 8 cm
+    "SM_RuinCanvasSample": ((300.0, 221.6, 93.8), "A", "textile", ("canvas",), "canvas"),           # ukazka plachty
+}
+LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePanel", "smoke_hood": "SM_RuinSmokeHood",
+              "chimney": "SM_RuinChimney", "rope": "SM_RuinRope", "lashing": "SM_RuinLashing"}
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2,
-                      "SM_RuinLog": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2}   # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
+                      "SM_RuinLog": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2,       # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark
+                      "SM_RuinBarkStrip": 1, "SM_RuinWattlePanel": 1, "SM_RuinSmokeHood": 1, "SM_RuinChimney": 1,
+                      "SM_RuinRope": 1, "SM_RuinLashing": 1, "SM_RuinCanvasSample": 1}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # zaloha, kdyz chybi textury dreva pro MI_RuinWood
 MAT_WOOD_MI = None                       # vlastni material neosetreneho dreva (cesta); None = MI_RuinWood (vytvori skript)
 # druhy dreva (Stone.cat): "wood" bez upravy (MI_RuinWood), "wood_tar" dehtovane, "wood_oil" morene olejem,

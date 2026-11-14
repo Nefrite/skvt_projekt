@@ -8,7 +8,7 @@ import math, os
 import numpy as np
 
 from mesh_common import write_obj
-import mesh_log
+import mesh_log, mesh_bark
 
 
 def _rrect(w, h, r, n):
@@ -144,4 +144,4 @@ def build(out):
         P, UV, N, F = make_timber(*PLANK, seed=9500 + vi * 41, r=0.7, n_ring=64, cracks=(2, 3), crack_d=(1.0, 1.8),
                                   wane=0.9, bow=0.25, plank=True, crack_w=(0.8, 1.3))
         name = "SM_RuinPlank_%s" % v; write_obj(os.path.join(out, name + ".obj"), P, UV, N, F, name); made.append((name, len(P), len(F)))
-    return made + mesh_log.build(out)          # kulatina (mesh_log.py)
+    return made + mesh_log.build(out) + mesh_bark.build(out)          # kulatina (mesh_log.py), pasy kury (mesh_bark.py)
