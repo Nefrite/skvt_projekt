@@ -16,6 +16,8 @@ Uprava zriceniny:
 
 Pouziti v UE: Tools -> Execute Python Script -> build_ruin_blocks.py      (cely hrad)
                                             -> casti/<Cast>.py           (jen jedna cast: Obvod, Palac, Ostroh)
+                                            -> ../../build_normal.py     (cely hrad + vsechny stavby 05)
+                                            -> ../../build_fullscope.py  (oprava: smaze generovane actory a meshe, vse znovu)
   (ruin_layout.json a manual_edits.json vedle skriptu, nebo nastav LAYOUT_PATH)
   Cast smaze a postavi jen sve actory (tag cast:<Cast>), ostatni casti zustanou. Pocita se vzdy cely hrad
   (navaznosti mezi zdmi, teren), stavi se jen vybrana cast.
@@ -26,14 +28,15 @@ Kod je rozdeleny (od 11/2026):
   zr_ruin/               vnitrni moduly zriceniny: decay (rozpad, otvory), prep (priprava zdi), wall (zed z bloku),
                          post (koruna pod strechou, zlabky, jadro), floor (dlazba), rubble (sut), compute (cely hrad)
   ../../zrlib/           sdilena knihovna 03 + 05 + tools: config (MATERIALY, MESHE, DREVO, FYZIKA - nastaveni vzhledu),
-                         geom, stones, ue_assets, ue_actors, level
+                         geom, stones, ue_assets, ue_actors, level, pipeline (spousteni: casti, stavby, normal, fullscope)
 """
 import json, math, os, random, sys, zlib
 
 
 def _boot():
     """najde sdilenou knihovnu zrlib (koren repozitare) a vnitrni moduly zr_ruin. Moduly se pri kazdem spusteni
-    nactou znovu (Python v Unrealu si je jinak drzi v pameti a po uprave souboru by bezel stary kod)."""
+    nactou znovu (Python v Unrealu si je jinak drzi v pameti a po uprave souboru by bezel stary kod); kdyz skript
+    nacita zrlib/pipeline.py jako knihovnu (sys._zr_keep), zustanou - zahodil je uz vstupni skript."""
     here = os.path.dirname(os.path.abspath(__file__))
     root = os.path.normpath(os.path.join(here, "..", ".."))
     if not os.path.isdir(os.path.join(root, "zrlib")):
@@ -41,7 +44,8 @@ def _boot():
     for p in (root, here):
         if p in sys.path: sys.path.remove(p)
         sys.path.insert(0, p)
-    for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_ruin")]: del sys.modules[k]
+    if not getattr(sys, "_zr_keep", False):
+        for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_ruin")]: del sys.modules[k]
 _boot()
 
 from zrlib.config import *                                   # noqa: F401,F403  (nastaveni vzhledu - zrlib/config.py)

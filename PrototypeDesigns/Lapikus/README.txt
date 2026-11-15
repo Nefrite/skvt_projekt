@@ -9,6 +9,10 @@ README_PROJEKT.md - stav projektu, rozhodnuti, souradnice, jak navazat a pregene
 03_ruin\     - plan stavby zriceniny: predloha Lapikus, stav ~1540, pudorys, hratelnost, postup -> README_ruin.md
 04_forest\   - plan smiseneho lesa: zony, druhy stromu, PCG graf, olse podel reky, checklist
                -> README_forest.md
+05_constructions\ - dodatecne stavby zriceniny (drevo, dostavby, sut) -> README_constructions.md
+build_normal.py    - UE: cely hrad (03) + vsechny stavby (05), aditivne (jen chybejici / zastarale assety)
+build_fullscope.py - UE: oprava - smaze generovane actory a meshe a vse postavi znovu
+zrlib\       - sdilena knihovna skriptu 03 + 05 (config.py = vzhled, pipeline.py = spousteni)
 tools\       - skripty pro pregenerovani terenu, reky, masek a zon (viz README_PROJEKT.md kap. 6)
 
 Zakladni import: Location 0, 0, 3200 / Scale 50, 50, 12.5 / 8 x 8 komponent 63x63

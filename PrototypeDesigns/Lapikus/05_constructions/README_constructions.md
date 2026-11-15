@@ -18,7 +18,7 @@ Kapsy ve zdech patří ke zřícenině. Dřevo, které v nich leží, patří se
 | `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Ostroh_Dostavba.py` (kamenná dostavba u ostrohu), `Ostroh_Podlaha.py` (prkenná podlaha u ostrohu), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). V `Ostroh_Krov.py` navíc `KRYTINA`: `False` postaví jen sloupy, příčku a trámy (ladění trámoví a dostavby), `True` i latě, prkna, lišty a hřeben. Dostavba je na krytině nezávislá (výšky bere z trámů). |
 | `build_constructions.py` | nastavení, registr typů staveb (`TYPES`, povinné klíče `REQUIRED`), build / capture / freeze v UE. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
 | `zr_stavby\*.py` | typy staveb: `vez.py` (dřevo ve věži, `tower_floor`), `krov.py` (krov u ostrohu `fan_roof` + společná geometrie), `dostavba.py` (`stone_addon`), `podlaha.py` (`plank_floor`) |
-| `..\zrlib\*.py` | sdílená knihovna s 03 (`config.py` = materiály, dřevo, fyzika; geometrie, Unreal) |
+| `..\zrlib\*.py` | sdílená knihovna s 03 (`config.py` = materiály, dřevo, fyzika; geometrie, Unreal; `pipeline.py` = spouštění: stavby, části, `build_normal.py`, `build_fullscope.py`) |
 | `constructions.json` | data staveb (`floors` → `Vez_Patra`, `frames` → `Ostroh_Krov`, `addons` → `Ostroh_Dostavba`, `Ostroh_Podlaha`) a nastavení suti (`rubble`) |
 | `Stavby_ostroh_dostavba_nahled.png` | náhled uzavřené obytné části u ostrohu zvenku a zevnitř |
 | `Stavby_ostroh_podlaha_nahled.png` | náhled podlahy u ostrohu |
@@ -38,6 +38,7 @@ Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks`
 2. **Pak stavby:** **Tools → Execute Python Script →**
    - **jedna stavba:** `05_constructions\stavby\Ostroh_Krov.py` (nebo `Ostroh_Dostavba.py`, `Ostroh_Podlaha.py`, `Vez_Patra.py`, `Sut.py`). Smaže a postaví jen tuto stavbu, ostatní zůstanou, jak jsou.
    - **všechno:** `05_constructions\build_constructions.py`.
+   - **zřícenina i stavby jedním spuštěním:** `build_normal.py` v kořeni prototypu (aditivně), nebo `build_fullscope.py` (oprava: smaže generované actory a meshe a vše postaví znovu; popis v `03_ruin\blocks\README_bloky.md` kap. 2.1).
    - Každý actor má tag `Zricenina_Stavby` a `stavba:<jméno>`. Zříceniny se build staveb nedotkne a build zříceniny nesmaže stavby.
 3. V Outlineru přibude:
    - `Stavby/Vez/Vez_Patra_Drevo`: trámy, prkna, průvlak, sloupy, schody a ochoz (Instanced Static Mesh),

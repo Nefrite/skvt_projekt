@@ -109,6 +109,9 @@ Hrad je rozdělený na tři části, které se dají stavět zvlášť. Při lad
 
 - **Tools → Execute Python Script → `03_ruin\blocks\casti\Palac.py`** (nebo `Ostroh.py`, `Obvod.py`). Smaže a postaví jen actory této části, ostatní zůstanou, jak jsou.
 - `build_ruin_blocks.py` spuštěný přímo dál staví **celý hrad**.
+- **Všechno najednou** (kořen prototypu, logika v `zrlib\pipeline.py`):
+  - `build_normal.py`: celý hrad (03) a po něm všechny stavby (05). Aditivní: doimportuje jen chybějící nebo zastaralé meshe a textury, materiály nechá.
+  - `build_fullscope.py`: oprava. Nejdřív smaže všechny generované actory (zřícenina, stavby, ukázky) a knihovní meshe `SM_Ruin*`, textury naimportuje znovu a meshe vytvoří jako nové assety; pak staví stejně jako normal. S `MATERIALY = True` smaže a znovu vytvoří i generované materiály (ruční ladění v nich se ztratí). Použij, když jsou assety poškozené (NaN v bounds, `InverseFast` v logu, prázdné náhledy). Ruční úpravy uložené přes capture zůstávají. Po běhu nepoužívej Undo.
 - Každý actor zříceniny má tag `cast:<Část>` a `zed:<jméno zdi>`, podle nich build části maže jen svoje actory. Actor zříceniny bez těchto tagů smaže jen build celého hradu.
 - Počítá se vždy celý hrad (návaznosti mezi zdmi, např. výška `Brana_S` podle oblouku brány, terén z levelu). Staví se jen vybraná část, takže je to výrazně rychlejší.
 - **Nová zeď:** do části se zařadí podle jména (`CASTI` nahoře v `build_ruin_blocks.py`, platí první shoda). Co nespadá pod `Palac_*` ani `ZBudova_*`, patří do `Obvod`.
@@ -311,6 +314,7 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 |---|---|
 | `build_ruin_blocks.py` | generátor z bloků (čistý Python), `MODE = "build"` / `"capture"`; spuštěný přímo staví celý hrad; mimo UE vypíše počty bloků po částech |
 | `casti\Obvod.py`, `casti\Palac.py`, `casti\Ostroh.py` | postaví jen jednu část hradu (kap. 2.1) |
+| `..\..\build_normal.py`, `..\..\build_fullscope.py` | celý hrad + všechny stavby 05: aditivní build / oprava se smazáním generovaných actorů a meshí (kap. 2.1) |
 | `ruin_layout.json` | zdi, otvory, presety stáří, `edits`, `edits_examples`, `volumes_examples`, výšková mřížka terénu |
 | `manual_edits.json` | ručně smazané (`removed`), posunuté (`moved`) a oddělené (`detached`) kameny |
 | `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |
@@ -337,6 +341,9 @@ zrlib\                    sdílená knihovna 03 + 05 + tools (čistý Python, be
   ue_actors.py            Unreal: ISM actory, samostatné kameny, mazání podle tagů, capture (03 i 05 stejně)
   level.py                Unreal: bourací objemy, terén z landscapu
   validate.py             kontrola dat (chybějící klíč = srozumitelná chyba se jménem zdi / stavby)
+  pipeline.py             spouštění v UE: načtení 03 / 05 jako knihoven, build částí a staveb, build_all (normal / fullscope)
+build_normal.py           celý hrad (03) + všechny stavby (05), aditivně
+build_fullscope.py        oprava: smaže generované actory a meshe, vše znovu
 03_ruin\blocks\
   build_ruin_blocks.py    vstup: nastavení běhu, soubory (layout, manual_edits), build a capture v UE
   casti\*.py              build jedné části hradu
@@ -354,6 +361,7 @@ tools\checks\
   common.py               společné načtení stavu jako v UE (terén z levelu, ruční úpravy), průniky kvádrů
 ```
 
+- **Jedna kopie `zrlib` na běh (15. 11. 2026):** spouštěče (`casti\*.py`, `stavby\*.py`, `build_normal.py`, `build_fullscope.py`) na začátku zahodí moduly z minulého běhu a dál načítají přes `zrlib\pipeline.py`, který už nic nezahazuje. Dřív si 05 načítalo zříceninu s vlastní kopií `zrlib`, takže stav knihovny (např. materiály slotů `ue_assets.SLOT_MATS`) viděly 03 a 05 různě. Nový spouštěč: zkopíruj existující, začátek je popsaný v hlavičce `pipeline.py`.
 - **V Unrealu se nic nemění:** spouští se pořád `build_ruin_blocks.py`, `casti\*.py`, `detach_stones.py`. Složka `zrlib` musí ležet v kořeni vedle `03_ruin` a `05_constructions`. Moduly se při každém spuštění načtou znovu, takže úprava souboru se projeví hned (bez restartu editoru).
 - **Mimo UE:** `python tools\checks\run_checks.py` (volitelně `--layout <ruin_layout.json>`, `--only openings,floating,ostroh`). Nahradil `test_openings.py`.
 - **Refaktoring:** `python tools\checks\fingerprint.py . pred.json` před změnou, po změně `python tools\checks\fingerprint.py . po.json --compare pred.json`. Volitelně `--state <složka s manual_edits.json a terrain_from_level.json>`, `--heightmap <png>` (přidá generátory dat). Rozdělení skriptů v 11/2026 dává bit po bitu stejný výstup jako předtím.

@@ -13,6 +13,7 @@ Zricenina zustava ve 03: zdi, otvory, kapsy pro tramy, kamenna dlazba. Dostavby 
 Pouziti v UE: Tools -> Execute Python Script ->
   - stavby/<Stavba>.py      jen jedna stavba (Vez_Patra.py, Ostroh_Krov.py, Ostroh_Dostavba.py, Ostroh_Podlaha.py, Sut.py) - ostatni se nesmazou ani neprestavi
   - build_constructions.py  vsechny stavby najednou
+  - ../build_normal.py      cely hrad (03) + vsechny stavby; ../build_fullscope.py = oprava (smaze generovane actory a meshe, vse znovu)
   - MODE = "build"   postavit (smaze jen sve actory s tagem Zricenina_Stavby)
   - MODE = "capture" ulozit rucne smazane / posunute kusy do constructions_edits.json
   - MODE = "freeze"  (volitelne) sut bez fyziky, staticka
@@ -30,11 +31,12 @@ Kod (od 11/2026):
 Nova stavba: modul v zr_stavby s funkci build, zaznam v TYPES (+ REQUIRED), polozka v constructions.json,
 kopie launcheru ve stavby/ se jmenem stavby.
 """
-import importlib.util, json, os, sys
+import json, os, sys
 
 
 def _boot():
-    """sdilena knihovna zrlib (koren repozitare) a typy staveb zr_stavby; v UE pri kazdem spusteni nactene znovu"""
+    """sdilena knihovna zrlib (koren repozitare) a typy staveb zr_stavby; v UE pri kazdem spusteni nactene znovu
+    (ne kdyz skript nacita zrlib/pipeline.py jako knihovnu - sys._zr_keep, moduly zahodil uz vstupni skript)"""
     here = os.path.dirname(os.path.abspath(__file__))
     root = os.path.normpath(os.path.join(here, ".."))
     if not os.path.isdir(os.path.join(root, "zrlib")):
@@ -42,12 +44,13 @@ def _boot():
     for p in (root, here):
         if p in sys.path: sys.path.remove(p)
         sys.path.insert(0, p)
-    for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_stavby")]: del sys.modules[k]
+    if not getattr(sys, "_zr_keep", False):
+        for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_stavby")]: del sys.modules[k]
 _boot()
 
 from zrlib.config import CONSTR_TAG, CUBE_MESH
 from zrlib.geom import inside_poly
-from zrlib import ue_assets, ue_actors, validate
+from zrlib import pipeline, ue_assets, ue_actors, validate
 from zr_stavby import vez, krov, dostavba, podlaha
 from zr_stavby.krov import ostroh_geom, roof_under, build_fan_roof, _pt          # noqa: F401  (pro nastroje)
 from zr_stavby.dostavba import build_stone_addon, addon_polygon                 # noqa: F401
@@ -97,16 +100,8 @@ def _ruin_dir():
 
 
 def load_ruin():
-    """nacte generator zriceniny jako knihovnu (nic nepostavi)"""
-    d = _ruin_dir()
-    sys._ruin_import_only = True
-    try:
-        sp = importlib.util.spec_from_file_location("build_ruin_blocks", os.path.join(d, "build_ruin_blocks.py"))
-        R = importlib.util.module_from_spec(sp); sp.loader.exec_module(R)
-    finally:
-        sys._ruin_import_only = False
-    R.LAYOUT_PATH = os.path.join(d, "ruin_layout.json")
-    return R
+    """nacte generator zriceniny jako knihovnu (nic nepostavi); sdili s nim jednu kopii zrlib"""
+    return pipeline.load_ruin(_ruin_dir())
 
 
 def load_data():

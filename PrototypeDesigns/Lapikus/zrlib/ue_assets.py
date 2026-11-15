@@ -10,13 +10,13 @@ def _asset_path(folder, name): return "%s/%s.%s" % (folder, name, name)
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # koren (vedle zrlib: meshes/, textures/)
 SLOT_MATS = {}          # materialy slotu {"bark": MI, "endgrain": MI, "rope": MI, ..., "canvas": MI}, plni ensure_materials
 
-def ensure_textures(unreal):
+def ensure_textures(unreal, force=False):
     """vlastni textury (textures/*.png z tools/textures/gen_textures.py) -> TEX_DIR; chybejici nebo starsi nez TEX_VERSION
-    naimportuje, normalove mapy nastavi jako normal (bez sRGB)"""
+    naimportuje (force=True vsechny), normalove mapy nastavi jako normal (bez sRGB)"""
     eal = unreal.EditorAssetLibrary; src = os.path.join(ROOT, TEX_SRC); todo = []
     for name, kind in TEX_FILES.items():
         pth = _asset_path(TEX_DIR, name)
-        if eal.does_asset_exist(pth) and _ver(eal, unreal.load_asset(pth), "RuinTexVersion") >= TEX_VERSION: continue
+        if not force and eal.does_asset_exist(pth) and _ver(eal, unreal.load_asset(pth), "RuinTexVersion") >= TEX_VERSION: continue
         f = os.path.join(src, name + ".png")
         if not os.path.exists(f): continue
         t = unreal.AssetImportTask()
@@ -333,6 +333,7 @@ def _bbox_ok(bb):
     return all(math.isfinite(q) for q in v) and all(v[i + 3] - v[i] > 1e-3 for i in range(3))
 
 IMPORT_TMP = MESH_ROOT + "/_Import"      # docasna slozka importu (po zpracovani se smaze)
+TEST_TMP = "/Game/Skvt/Lapikus/_TestFormatu"            # docasna slozka testu tools/checks/UE_Test_Formatu_OBJ.py
 # nastaveni buildu ciloveho assetu = klic cache (DDC). min_lightmap_resolution 80 pridano 15. 11. 2026 (MESH_AXES 10):
 # pod klicem s predchozimi dvema polozkami uz v cache lezi poskozene zaznamy (stavely je assety s bDoFastBuild)
 BUILD_CFG = {"use_high_precision_tangent_basis": True, "use_full_precision_u_vs": True, "min_lightmap_resolution": 80}
@@ -349,7 +350,7 @@ def _has_fast_flag(unreal, asset_path):
             return FAST_FLAG in f.read()
     except Exception: return None
 
-def _import_one(unreal, sms, task, n, cat):
+def _import_one(unreal, sms, task, n, cat, fresh=False):
     """Import jednoho OBJ do ciloveho assetu bez priznaku bDoFastBuild a s cistym klicem cache.
     Chyba UE: mesh s priznakem bDoFastBuild (forum UE "Meshes built from Interchange have uninitialized bounds") se
     stavi fast buildem a bounds vykreslovacich dat zustanou neinicializovane -> nahodne NaN: "found NaN in Bounds",
@@ -359,7 +360,7 @@ def _import_one(unreal, sms, task, n, cat):
     Proto: OBJ se naimportuje do docasneho assetu (IMPORT_TMP; cerstvy import priznak nema), existujici cil
     s priznakem se smaze, cil vznikne kopii docasneho assetu, postavi se z jeho mesh description s fast_build=False
     a pak s nastavenim BUILD_CFG (klic cache, pod kterym se nikdy fast nestavelo).
-    Vrati (StaticMesh nebo None, chyba nebo None)."""
+    fresh=True smaze existujici cil vzdy (oprava). Vrati (StaticMesh nebo None, chyba nebo None)."""
     eal = unreal.EditorAssetLibrary
     unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
     tp = _asset_path(IMPORT_TMP, n)
@@ -371,9 +372,9 @@ def _import_one(unreal, sms, task, n, cat):
     tmp = unreal.load_asset(tp)
     dp = _asset_path(mesh_dir(cat), n)
     try:
-        if eal.does_asset_exist(dp) and _has_fast_flag(unreal, dp):
+        if eal.does_asset_exist(dp) and (fresh or _has_fast_flag(unreal, dp)):
             eal.delete_asset(dp)                             # priznak nejde zrusit -> novy asset (instance v levelu se
-            if eal.does_asset_exist(dp): return None, "asset s bDoFastBuild nejde smazat"    # po buildu postavi znovu)
+            if eal.does_asset_exist(dp): return None, "stary asset nejde smazat"             # po buildu postavi znovu)
         if not eal.does_asset_exist(dp):
             eal.duplicate_asset(tp, "%s/%s" % (mesh_dir(cat), n))
         sm = unreal.load_asset(dp)
@@ -395,10 +396,10 @@ def _import_one(unreal, sms, task, n, cat):
         try: eal.delete_asset(tp)
         except Exception: pass
 
-def ensure_stone_meshes(unreal, mesh_src):
-    """Nacte knihovni meshe (kameny, drevo) ze slozek MESH_ROOT/<MESH_DIRS[kategorie]>; chybejici naimportuje
-    z mesh_src/<kategorie>/*.obj (box kolize + Nanite). Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou.
-    mesh_src = slozka meshes/ v koreni (MESH_SRC)."""
+def ensure_stone_meshes(unreal, mesh_src, force=False):
+    """Nacte knihovni meshe (kameny, drevo, props ...) ze slozek MESH_ROOT/<MESH_DIRS[kategorie]>; chybejici nebo
+    zastarale naimportuje z mesh_src/<kategorie>/*.obj (box kolize + Nanite); force=True vsechny, jako nove assety.
+    Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou. mesh_src = slozka meshes/ v koreni (MESH_SRC)."""
     if not USE_STONE_MESHES: return {}
     eal = unreal.EditorAssetLibrary
     def want(n): return max([v for pf, v in STONE_MESH_VERSION.items() if n.startswith(pf)] or [0])
@@ -406,7 +407,7 @@ def ensure_stone_meshes(unreal, mesh_src):
     missing = []
     for n, cat in need:
         pth = _asset_path(mesh_dir(cat), n)
-        if not eal.does_asset_exist(pth): missing.append((n, cat)); continue
+        if force or not eal.does_asset_exist(pth): missing.append((n, cat)); continue
         a = unreal.load_asset(pth)
         if (want(n) and _ver(eal, a, "RuinStoneVersion") < want(n)) or _ver(eal, a, "RuinMeshAxes") < MESH_AXES \
                 or (isinstance(a, unreal.StaticMesh) and not _bbox_ok(a.get_bounding_box())) or _has_fast_flag(unreal, pth):
@@ -435,7 +436,7 @@ def ensure_stone_meshes(unreal, mesh_src):
             task.make_dialog(False)
             for t, (n, cat) in tasks:
                 task.enter_progress_frame(1, "Import %s" % n)
-                sm, err = _import_one(unreal, sms, t, n, cat)
+                sm, err = _import_one(unreal, sms, t, n, cat, fresh=force)
                 if err: failed.append("%s (%s)" % (n, err))
                 if sm is None: continue
                 done.add(n)
@@ -485,6 +486,35 @@ def ensure_stone_meshes(unreal, mesh_src):
         unreal.log_warning("Ruin: chybi %d meshu (%s...) -> pouziji se kostky. Chybi slozka %s/ v koreni? (tools/meshes/gen_meshes.py)"
                            % (len(lost), lost[0], MESH_SRC))
     return out
+
+GENERATED = ("M_Ruin", "MI_Ruin", "PM_Ruin")        # generovane materialy v MAT_DIR (repair_assets s materials=True)
+
+def _delete_assets(unreal, folder, prefixes):
+    """smaze assety ve slozce, jejichz jmeno zacina nekterym z prefixes; vrati pocet"""
+    eal = unreal.EditorAssetLibrary; n = 0
+    if not eal.does_directory_exist(folder): return 0
+    for a in eal.list_assets(folder, recursive=False):
+        if a.split(".")[-1].startswith(tuple(prefixes)) and eal.delete_asset(a): n += 1
+    return n
+
+def repair_assets(unreal, mesh_src, materials=False):
+    """Oprava assetu (build_fullscope.py): smaze docasne slozky importu a testu a vsechny knihovni meshe SM_Ruin*,
+    textury naimportuje znovu a meshe vytvori jako nove assety (bez priznaku bDoFastBuild, viz _import_one).
+    materials=True smaze i generovane materialy (GENERATED v MAT_DIR); vytvori je znovu build (all_materials),
+    rucni ladeni v nich se ztrati. Volat az po smazani actoru, ktere meshe pouzivaji (pipeline.clear_level),
+    a mimo transakci. Vrati dict(deleted_meshes, deleted_materials, meshes)."""
+    eal = unreal.EditorAssetLibrary
+    for d in (IMPORT_TMP, TEST_TMP):
+        try:
+            if eal.does_directory_exist(d): eal.delete_directory(d)
+        except Exception: pass
+    n_del = sum(_delete_assets(unreal, mesh_dir(c), ("SM_Ruin",)) for c in MESH_DIRS)
+    n_mat = _delete_assets(unreal, MAT_DIR, GENERATED) if materials else 0
+    if materials: SLOT_MATS.clear(); _PM.clear()
+    ensure_textures(unreal, force=True)
+    _FIX.clear()
+    meshes = ensure_stone_meshes(unreal, mesh_src, force=True)
+    return dict(deleted_meshes=n_del, deleted_materials=n_mat, meshes=len(meshes))
 
 def _fix_collision(unreal, sm, sms):
     """volne kameny s fyzikou potrebuji jednoduchou kolizi: Complex as Simple (import OBJ / Interchange) fyziku nepusti.
