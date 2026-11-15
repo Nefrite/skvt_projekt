@@ -97,6 +97,48 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 - **Oprava natočení v UE (11/2026):** UE má `roll` opačně než výpočty, kontroly a náhledy. Do UE se proto posílá `-roll` (`zrlib/ue_assets.ue_rotator`), capture ho vrací zpět. Dřív byly v UE kusy s `roll` nakloněné na opačnou stranu. Nejvíc to bylo vidět na prknech v bočních polích krovu, kde vznikaly průsvitné spáry. Týká se to i mírně nakloněných kamenů zříceniny a dřeva ve věži, proto je potřeba přestavět 03 i 05.
 
+## Palác – kovárna ve východní místnosti (11/2026)
+
+- **Návrh:** `new_designs/navrh_palac_kovarna.md`. V kap. 0 je přehled, co je hotové a co zbývá. Staví se po krocích: úprava 03 a přístřešek bez krytiny → výheň → krytina → stěna z proutí a okap → vybavení a úklid suti. Hotové jsou první čtyři kroky, zbývá vybavení a úklid suti.
+- **Úprava zříceniny (03, část `Palac`, 15. 11. 2026):**
+  - celá `Palac_J` je zanořená o jednu řadu kamene do země (`z_offset` −0,31 m): posunutá po ose Z jako celek i se střílnami a výklenky, počet řad se nemění;
+  - u věže je koruna `Palac_J` rozebraná (`breaches` s = 29,6–33, `floor` 6,1): vychází 5,2 m v s = 28,5–29,3 a 4,0–4,8 m dál k věži, komín kovárny (5,5 m) ji přesahuje;
+  - ve vnitřním líci `Palac_J` je kapsa pro východní pozednici kovárny (s = 30,55; řada 4,04–4,43 m nad terénem), `protect` nad ní drží jednu řadu kamene;
+  - parametr zdi `drop_rows` (horní kameny každé vrstvy pryč, `zr_ruin/post.py`) je v kódu, žádná zeď ho nepoužívá;
+  - obojí je v `tools/ruin/palac_spec.py` → `ruin_edits`, do `ruin_layout.json` to zapisuje `gen_layout.py`;
+  - **koruny `Palac_J` v návrhu domu (`navrh_palac_obydli_stred.md`) jsou tím o 0,31 m výš než skutečnost.**
+- **Přístřešek (15. 11. 2026):** 05 `Palac_Kovarna_Pristresek` (typ `pult_roof`, `05_constructions/zr_stavby/pult.py`) v koutě mezi `Palac_J` a věží:
+  - východní pozednice 20 × 20 cm s vrchem ve 4,24 m (spodek na spáře řad zdi): jižní konec 0,3 m v kapse `Palac_J`, severní na sloupu (s = 30,55; n = 5,3). V koutě sloup není,
+  - 3 sloupy 18 × 18 cm na západě (s = 25,85; n = 0,9 / 3,1 / 5,3) s pozednicí ve 2,5 m,
+  - 6 krokví z loupané kulatiny Ø 16 cm, sklon 20,3° k západu, přesah 0,9 m (pod ním bude zvenku u západní stěny hranice dřeva),
+  - pod každým sloupem patní kámen jako samostatný actor (dá se doladit a uložit přes capture),
+  - krytina (večer 15. 11. 2026): latě, prkna po spádu s lištami přes spáry, prostup komína s mezerou 3 cm, okapová hrana s = 24,85; od líce `Palac_J` 3,5 cm (kameny koruny v s = 27–29 leží v úrovni střechy a vystupují z líce), lemování prknem na stojato u věže a podél `Palac_J`,
+  - všechno dřevo bez úpravy (`raw`).
+- **Výheň (15. 11. 2026):** 05 `Palac_Kovarna_Vyhen` (typ `hearth`, `05_constructions/zr_stavby/ohniste.py`) **v koutě místnosti**:
+  - kamenný stůl s = 29,75–30,73; n = 0,72–1,9; výška 0,75 m, hliněný maz, ohniště 0,4 × 0,4 m pod komínem,
+  - výklenek střílny s = 29 hned vedle stolu zůstává volný (manipulační prostor),
+  - boční zídka n = 1,9–2,2, výška 1,2 m, s otvorem pro výfučnu,
+  - dymník 1,4 × 1,2 m se spodním okrajem 1,8 m, visí na 4 závěsných tyčích z výměn mezi krokvemi n = 0,9 a 1,8,
+  - komín 0,5 × 0,5 m, střed s = 30,0; n = 1,35, vrch 5,5 m. Rozebranou korunu `Palac_J` přesahuje o 0,3–1,5 m.
+- **Stěna a okap (15. 11. 2026, večer):**
+  - 05 `Palac_Kovarna_Stena` (typ `wattle_wall`, `zr_stavby/stena.py`): proutí s hlínou v s = 25,85; n = 0,7–5,4, výška 2,1 m, dílce mezi sloupy, kůly na spojích,
+  - 05 `Palac_Kovarna_Okap` (typ `gutter`, `zr_stavby/okap.py`): loupaný žlab Ø 20 cm v s = 24,8; n = 0,72–5,9 se spádem 1,5 % k severu na třech rozsochách, sud na vodu pod jeho koncem (samostatný actor), svod se nedělá.
+- **Rozměry:** `tools/ruin/palac_spec.py` (rám paláce `s` / `n`, konstanty `K_*`, `J_SINK`, `J_BREACH`), data generuje `gen_layout.py` (03) a `tools/constructions/gen_constructions.py` → `palac` (05).
+- **Spuštění v UE:** `03_ruin/blocks/casti/Palac.py`, pak `05_constructions/stavby/Palac_Kovarna_Pristresek.py`, `Palac_Kovarna_Vyhen.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py` a `Sut.py`. Úprava 03, kostra a výheň ověřené v UE (Jirka 15. 11. 2026); krytina, stěna a okap jen mimo UE (`run_checks.py`, náhled `05_constructions/Stavby_palac_kovarna_nahled.png`).
+- **Zbývá:** rozmístění vybavení, úklid suti (suť teď leží i pod výhní).
+
+## Palác – dům posádky v prostřední místnosti (11/2026)
+
+- **Návrh a plán po etapách:** `new_designs/navrh_palac_obydli_stred.md`, kap. 0 (platí přednostně před staršími kapitolami).
+- **Etapy = tři sady actorů** s tagy `stage:base` (stojí už v etapě 1 a zůstává), `stage:final` (dostavba) a `stage:site` (staveniště). Etapa 1 = `base` + `site`, etapa 2 = `base` + `final`. Přepíná se v Blueprintu. Sady: `zrlib/config.py` → `STAGES`.
+- **Zřícenina se kvůli domu nemění.** Plánované snížení koruny `Palac_J` u komína odpadlo, po zanoření zdi je koruna u komína 4,4–4,8 m.
+- **Krok 1 hotový (16. 11. 2026), sada `base`:**
+  - 05 `Palac_Obydli_Kamen` (typ `stone_fill`, `05_constructions/zr_stavby/zdivo.py`): obě příčky srovnané kamenem na 1,4 m včetně zazděných dveří, podezdívky severní stěny (osa n = 6,2, vchod s = 13,8–14,8) a příčky (osa s = 15,75, dveře n = 3,3–4,3);
+  - 05 `Palac_Obydli_Ohniste` (typ `hearth`): kamenný základ 1,4 × 1,4 × 0,5 m u jižní zdi ve světnici (s = 16,2–17,6), studené ohniště; dymník a komín přijdou s krovem do sady `final`;
+  - suť v domě a na zápraží uklizená.
+- **Spuštění v UE:** `05_constructions/stavby/Palac_Obydli_Kamen.py`, `Palac_Obydli_Ohniste.py`, pak `Sut.py`. Ověřeno jen mimo UE (`run_checks.py --only obydli`, náhled `05_constructions/Stavby_palac_obydli_nahled.png`).
+- **Zbývá:** krov, srub se štíty, krytina, dymník a komín, strop, podlaha, okap, vybavení, staveniště.
+
 ## Optimalizace do budoucna (zatím není potřeba)
 
 - **Stav 11/2026:** zřícenina má asi 23 500 kamenů a 34,5 mil. trojúhelníků. Z toho připadá 24,7 mil. na lomové kameny (`SM_RuinStone`), 6,2 mil. na korunu (`_W`) a 3,4 mil. na ostění (`SM_RuinDressed`). Dřevo ve věži má asi 0,5 mil. Unikátních meshí je jen 33, zbytek jsou instance. S Nanite to není problém.

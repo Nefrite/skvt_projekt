@@ -1,5 +1,7 @@
 """preview3d.py - 3D nahled kamenu a dilcu bez Unrealu (three.js ve headless Chromiu, se stiny).
 python preview3d.py ostroh <vystup.png> [--layout <ruin_layout.json>] [--no-roof]
+python preview3d.py kovarna <vystup.png>      kovarna ve vychodni mistnosti palace (Palac_Kovarna_*)
+python preview3d.py obydli <vystup.png> [--stage 1|2]   dum v prostredni mistnosti (Palac_Obydli_*); etapa 1 = base + site, 2 = base + final
 Jako knihovna: render(boxes, views, out_png), stone_boxes(stones, colf, z0)
   boxes = [(stred (m), R 3x3 (sloupce = lokalni osy), polovicni rozmery (m), rgb)]
   views = [dict(title, eye=(x,y,z), target=(x,y,z), fov=35 nebo ortho=sirka_m)] -> mrizka obrazku (kazdy w x h)
@@ -7,7 +9,12 @@ Potrebuje: node, playwright (npm i playwright; npx playwright install chromium) 
 import json, math, os, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 def render(boxes, views, out_png, w=1000, h=700, cols=2):
-    data = [[*c, *[R[i][j] for i in range(3) for j in range(3)], *e, *col] for c, R, e, col in boxes]
+    # Unreal je levotocivy (X dopredu, Y vpravo, Z nahoru), three.js pravotocivy: souradnice UE vykreslene primo by daly
+    # zrcadlovy obraz (vychod a zapad prohozene). Proto se osa Y prevraci (stred, osy kvadru, kamera); lokalni osa Y
+    # kvadru se otoci zpet, aby matice zustala rotaci (kvadr je soumerny).
+    mir = lambda R: [[R[0][0], -R[0][1], R[0][2]], [-R[1][0], R[1][1], -R[1][2]], [R[2][0], -R[2][1], R[2][2]]]
+    data = [[c[0], -c[1], c[2], *[mir(R)[i][j] for i in range(3) for j in range(3)], *e, *col] for c, R, e, col in boxes]
+    views = [dict(v, eye=(v["eye"][0], -v["eye"][1], v["eye"][2]), target=(v["target"][0], -v["target"][1], v["target"][2])) for v in views]
     three = open(os.path.join(HERE, "node_modules/three/build/three.min.js")).read()
     html = """<html><body style='margin:0;background:#fff'><div id=g style='display:grid;grid-template-columns:repeat(%d,%dpx)'></div>
 <script>%s</script><script>
@@ -22,7 +29,7 @@ const m=new THREE.Matrix4(), c=new THREE.Color(); let cx=0,cy=0,cz=0;
 B.forEach((b,i)=>{ m.set(b[3]*b[12],b[4]*b[13],b[5]*b[14],b[0], b[6]*b[12],b[7]*b[13],b[8]*b[14],b[1], b[9]*b[12],b[10]*b[13],b[11]*b[14],b[2], 0,0,0,1);
   im.setMatrixAt(i,m); im.setColorAt(i,c.setRGB(b[15],b[16],b[17])); cx+=b[0];cy+=b[1];cz+=b[2]; });
 scene.add(im); sun.target.position.set(cx/B.length,cy/B.length,cz/B.length); scene.add(sun.target);
-sun.position.set(cx/B.length-40,cy/B.length-55,cz/B.length+80);
+sun.position.set(cx/B.length-40,cy/B.length+55,cz/B.length+80);
 const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true}); r.setSize(W,H); r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap;
 const g=document.getElementById('g');
 V.forEach(v=>{ let cam; if(v.ortho){const a=W/H; cam=new THREE.OrthographicCamera(-v.ortho/2,v.ortho/2,v.ortho/2/a,-v.ortho/2/a,0.1,500);} else cam=new THREE.PerspectiveCamera(v.fov||35,W/H,0.1,500);
@@ -71,10 +78,64 @@ def ostroh(out, layout=None, roof=True):
     render(bx, V, out)
 
 
+def kovarna_scene(S):
+    """kovarna ve vychodni mistnosti palace: (kvadry, pohledy) - zricenina kolem + stavby Palac_Kovarna_*"""
+    fr = next(f for f in S["data"]["frames"] if f["name"] == "Palac_Kovarna_Pristresek")
+    O, U, V = fr["origin"], fr["u"], fr["v"]
+    sn = lambda x, y: (((x - O[0]) * U[0] + (y - O[1]) * U[1]) / 100, ((x - O[0]) * V[0] + (y - O[1]) * V[1]) / 100)
+    P = lambda s, n, z: ((O[0] + (U[0] * s + V[0] * n) * 100) / 100, (O[1] + (U[1] * s + V[1] * n) * 100) / 100, z)
+    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if 18 < sn(s.x, s.y)[0] < 35 and -3 < sn(s.x, s.y)[1] < 13]
+    new = [s for n, g in S["groups"].items() if n.startswith("Palac_Kovarna") for s in g.get("stones", []) + g.get("loose", [])]
+    z0 = S["terr"].z(*[c * 100 for c in P(*fr["ref"], 0)[:2]])
+    col = dict(COL, wood=(0.66, 0.54, 0.38), face=(0.60, 0.55, 0.48), daub=(0.72, 0.60, 0.42), charcoal=(0.10, 0.10, 0.11))   # nove drevo svetlejsi, kamen vyhne tmavsi nez zricenina
+    bx = stone_boxes(ruin, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0) + \
+         stone_boxes(new, lambda s: (0.50, 0.47, 0.42) if s.loose and s.cat == "face" else col.get(s.cat, (0.6, 0.6, 0.6)), z0)
+    V_ = [dict(title="ze dvorku od severu", eye=P(27.2, 8.4, 1.7), target=P(28.6, 2.5, 2.0), fov=62),
+          dict(title="shora od severozapadu", eye=P(19.5, 13.5, 11.0), target=P(28.2, 3.0, 2.0), fov=40),
+          dict(title="zevnitr od ponku k vyhni", eye=P(26.4, 1.7, 1.7), target=P(30.6, 2.6, 2.3), fov=68),
+          dict(title="pohled od severu (kolmo)", eye=P(28.0, 30.0, 2.6), target=P(28.0, 3.0, 2.6), ortho=10.5),
+          dict(title="zvenku od zapadu (stena, okap, sud)", eye=P(20.5, 7.5, 2.4), target=P(25.5, 3.0, 1.6), fov=55),
+          dict(title="strecha u komina (shora)", eye=P(27.0, 4.5, 7.5), target=P(30.0, 1.4, 4.4), fov=45),
+          dict(title="okap a sud zblizka", eye=P(22.6, 6.8, 1.9), target=P(24.8, 5.2, 1.6), fov=50),
+          dict(title="lemovani u Palac_J zevnitr", eye=P(26.0, 4.5, 2.2), target=P(29.0, 0.8, 3.6), fov=60)]
+    return bx, V_
+
+
+def obydli_scene(S, stage=2):
+    """dum v prostredni mistnosti palace: (kvadry, pohledy); stage 1 = sady base + site, 2 = base + final"""
+    fr = next(f for f in S["data"]["addons"] if f["name"] == "Palac_Obydli_Kamen")
+    O, U, V = fr["origin"], fr["u"], fr["v"]
+    sn = lambda x, y: (((x - O[0]) * U[0] + (y - O[1]) * U[1]) / 100, ((x - O[0]) * V[0] + (y - O[1]) * V[1]) / 100)
+    P = lambda s, n, z: ((O[0] + (U[0] * s + V[0] * n) * 100) / 100, (O[1] + (U[1] * s + V[1] * n) * 100) / 100, z)
+    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if 6 < sn(s.x, s.y)[0] < 25.5 and -3 < sn(s.x, s.y)[1] < 13]
+    show = ("base", "site") if stage == 1 else ("base", "final")
+    new = [s for n, g in S["groups"].items() if n.startswith("Palac_Obydli") for s in g.get("stones", []) + g.get("loose", []) if s.stage in show]
+    z0 = S["terr"].z(*[c * 100 for c in P(*fr["ref"], 0)[:2]])
+    col = dict(COL, wood=(0.66, 0.54, 0.38), face=(0.80, 0.68, 0.50), daub=(0.72, 0.60, 0.42), charcoal=(0.10, 0.10, 0.11))   # novy kamen okrove, at je videt
+    bx = stone_boxes(ruin, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0) + stone_boxes(new, lambda s: col.get(s.cat, (0.6, 0.6, 0.6)), z0)
+    V_ = [dict(title="od nadvori portalem (etapa %d)" % stage, eye=P(16.6, 11.6, 1.7), target=P(15.0, 4.0, 1.2), fov=62),
+          dict(title="shora od severovychodu", eye=P(27.0, 15.0, 12.0), target=P(15.5, 3.5, 1.0), fov=40),
+          dict(title="ze svetnice k ohnisti a pricce", eye=P(19.8, 5.0, 1.7), target=P(16.3, 1.6, 0.7), fov=68),
+          dict(title="pudorys (sever nahore)", eye=P(15.75, 4.4, 40.0), target=P(15.75, 4.6, 0.0), ortho=15.0)]
+    return bx, V_
+
+
+def obydli(out, layout=None, stage=2):
+    sys.path.insert(0, HERE); import common
+    render(*obydli_scene(common.state(layout), stage), out)
+
+
+def kovarna(out, layout=None):
+    sys.path.insert(0, HERE); import common
+    render(*kovarna_scene(common.state(layout)), out)
+
+
 if __name__ == "__main__":
     import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument("preset", choices=["ostroh"]); ap.add_argument("out")
+    ap = argparse.ArgumentParser(); ap.add_argument("preset", choices=["ostroh", "kovarna", "obydli"]); ap.add_argument("--stage", type=int, default=2); ap.add_argument("out")
     ap.add_argument("--layout"); ap.add_argument("--no-roof", action="store_true")
     a = ap.parse_args()
-    {"ostroh": ostroh}[a.preset](a.out, a.layout, not a.no_roof)
+    if a.preset == "kovarna": kovarna(a.out, a.layout)
+    elif a.preset == "obydli": obydli(a.out, a.layout, a.stage)
+    else: ostroh(a.out, a.layout, not a.no_roof)
     print("nahled:", a.out)

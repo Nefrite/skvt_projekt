@@ -4,9 +4,10 @@ from .config import ASHLAR_MESH, DRESSED_FRAMES, LIB_MESHES, LIB_SHAPES, POLE_MA
 
 
 class Stone:
-    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough", "loose", "shape", "bark")
+    __slots__ = ("id", "cat", "x", "y", "z", "yaw", "pitch", "roll", "sx", "sy", "sz", "seg", "span", "mesh", "rough", "loose", "shape", "bark", "stage")
     def __init__(self, sid, cat, x, y, z, yaw, sx, sy, sz, pitch=0.0, roll=0.0, seg=0, shape=None, bark=False):
         self.span = None; self.mesh = None
+        self.stage = None    # 05: sada actoru pro prepinani etap ve hre (STAGES v zrlib/config.py: base / final / site); None = bez etap
         self.shape = shape   # None = podle cat a rozmeru; kulatina: ROUND_SHAPES (round, stake, ...); knihovni mesh: LIB_SHAPES (rope, ...)
         self.bark = bark     # kulatina s kurou (sloty Bark a EndGrain maji vlastni material, Wood podle upravy cat)
         self.rough = False   # odkryte jadro: lomovy kamen (mesh) misto kostky

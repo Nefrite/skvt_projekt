@@ -15,18 +15,21 @@ Kapsy ve zdech patří ke zřícenině. Dřevo, které v nich leží, patří se
 
 | Soubor | Obsah |
 |---|---|
-| `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Ostroh_Dostavba.py` (kamenná dostavba u ostrohu), `Ostroh_Podlaha.py` (prkenná podlaha u ostrohu), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). V `Ostroh_Krov.py` navíc `KRYTINA`: `False` postaví jen sloupy, příčku a trámy (ladění trámoví a dostavby), `True` i latě, prkna, lišty a hřeben. Dostavba je na krytině nezávislá (výšky bere z trámů). |
+| `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Ostroh_Dostavba.py` (kamenná dostavba u ostrohu), `Ostroh_Podlaha.py` (prkenná podlaha u ostrohu), `Palac_Kovarna_Pristresek.py` (přístřešek kovárny v paláci), `Palac_Kovarna_Vyhen.py` (výheň kovárny), `Palac_Kovarna_Stena.py` (stěna z proutí), `Palac_Kovarna_Okap.py` (žlab a sud), `Palac_Obydli_Kamen.py` a `Palac_Obydli_Ohniste.py` (dům posádky: kamenné části a základ ohniště), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). V `Ostroh_Krov.py` navíc `KRYTINA`: `False` postaví jen sloupy, příčku a trámy (ladění trámoví a dostavby), `True` i latě, prkna, lišty a hřeben. Dostavba je na krytině nezávislá (výšky bere z trámů). Stejný přepínač `KRYTINA` má `Palac_Kovarna_Pristresek.py` (výchozí `True`). |
 | `build_constructions.py` | nastavení, registr typů staveb (`TYPES`, povinné klíče `REQUIRED`), build / capture / freeze v UE. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
-| `zr_stavby\*.py` | typy staveb: `vez.py` (dřevo ve věži, `tower_floor`), `krov.py` (krov u ostrohu `fan_roof` + společná geometrie), `dostavba.py` (`stone_addon`), `podlaha.py` (`plank_floor`) |
+| `zr_stavby\*.py` | typy staveb: `vez.py` (dřevo ve věži, `tower_floor`), `krov.py` (krov u ostrohu `fan_roof` + společná geometrie), `dostavba.py` (`stone_addon`), `podlaha.py` (`plank_floor`), `pult.py` (pultová střecha na sloupech, `pult_roof`), `ohniste.py` (ohniště / výheň s dymníkem a komínem, `hearth`), `zdivo.py` (zdivo z kamene rozvalin: srovnání korun, podezdívky, `stone_fill`), `stena.py` (stěna z proutí, `wattle_wall`), `okap.py` (žlab na rozsochách se sudem, `gutter`) |
 | `..\zrlib\*.py` | sdílená knihovna s 03 (`config.py` = materiály, dřevo, fyzika; geometrie, Unreal; `pipeline.py` = spouštění: stavby, části, `build_normal.py`, `build_fullscope.py`) |
-| `constructions.json` | data staveb (`floors` → `Vez_Patra`, `frames` → `Ostroh_Krov`, `addons` → `Ostroh_Dostavba`, `Ostroh_Podlaha`) a nastavení suti (`rubble`) |
+| `constructions.json` | data staveb (`floors` → `Vez_Patra`, `frames` → `Ostroh_Krov`, `Palac_Kovarna_Pristresek`, `addons` → `Ostroh_Dostavba`, `Ostroh_Podlaha`, `Palac_Kovarna_Vyhen`, `Palac_Kovarna_Stena`, `Palac_Kovarna_Okap`) a nastavení suti (`rubble`) |
+| `Stavby_palac_kovarna_nahled.png` | náhled kovárny ve východní místnosti paláce (přístřešek s krytinou, výheň, stěna z proutí, okap se sudem; 8 pohledů, dílce jsou v náhledu jen kvádry) |
 | `Stavby_ostroh_dostavba_nahled.png` | náhled uzavřené obytné části u ostrohu zvenku a zevnitř |
 | `Stavby_ostroh_podlaha_nahled.png` | náhled podlahy u ostrohu |
+| `Stavby_palac_obydli_nahled.png` | náhled domu posádky v prostřední místnosti paláce (zatím kamenné části; nový kámen je v náhledu okrový) |
 | `constructions_edits.json` | ručně smazané (`removed`) a posunuté (`moved`) kusy. Vzniká přes capture, nepřepisovat. |
 | `Stavby_vez_nahled.png` | řez věží: patra, schody, ochoz |
 | `..\tools\constructions\gen_constructions.py` | vytvoří `constructions.json` z `ruin_layout_draft.json` |
 | `..\tools\constructions\check_tower.py` | náhled řezu věží bez Unrealu (zřícenina + stavby) |
 | `..\tools\ruin\tower_spec.py` | **společné rozměry věže** pro 03 i 05 (podlaha, výška patra, polohy trámů, průvlaku, otvorů, dveří) |
+| `..\tools\ruin\palac_spec.py` | **společné rozměry staveb v paláci**: souřadný rám paláce (`s` podél `Palac_J`, `n` k severu) a kovárna (linie sloupů, pozednice, krokve, komín) |
 
 Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks` proto musí ležet vedle `05_constructions` (jinak v `build_constructions.py` nastav `RUIN_DIR`) a v kořeni musí být `zrlib`.
 
@@ -36,7 +39,7 @@ Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks`
 
 1. **Nejdřív zřícenina:** `03_ruin\blocks\build_ruin_blocks.py`. Ta změří terén (`terrain_from_level.json`) a postaví zdi a kapsy.
 2. **Pak stavby:** **Tools → Execute Python Script →**
-   - **jedna stavba:** `05_constructions\stavby\Ostroh_Krov.py` (nebo `Ostroh_Dostavba.py`, `Ostroh_Podlaha.py`, `Vez_Patra.py`, `Sut.py`). Smaže a postaví jen tuto stavbu, ostatní zůstanou, jak jsou.
+   - **jedna stavba:** `05_constructions\stavby\Ostroh_Krov.py` (nebo `Ostroh_Dostavba.py`, `Ostroh_Podlaha.py`, `Vez_Patra.py`, `Palac_Kovarna_Pristresek.py`, `Palac_Kovarna_Vyhen.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py`, `Sut.py`). Smaže a postaví jen tuto stavbu, ostatní zůstanou, jak jsou.
    - **všechno:** `05_constructions\build_constructions.py`.
    - **zřícenina i stavby jedním spuštěním:** `build_normal.py` v kořeni prototypu (aditivně), nebo `build_fullscope.py` (oprava: smaže generované actory a meshe a vše postaví znovu; popis v `03_ruin\blocks\README_bloky.md` kap. 2.1).
    - Každý actor má tag `Zricenina_Stavby` a `stavba:<jméno>`. Zříceniny se build staveb nedotkne a build zříceniny nesmaže stavby.
@@ -45,6 +48,10 @@ Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks`
    - `Stavby/Ostroh/Ostroh_Krov_Drevo_Dehet`: krov a krytina u ostrohu,
    - `Stavby/Ostroh/Ostroh_Dostavba_Kamen` a `..._Drevo_Stare`: kamenná dostavba a dřevěná nadpraží,
    - `Stavby/Ostroh/Ostroh_Podlaha_Drevo` a `..._Drevo_Dehet`: prkna a podvaly podlahy,
+   - `Stavby/Palac/Palac_Kovarna_Pristresek_Drevo`: sloupy, pozednice, krokve a krytina přístřešku kovárny (latě, prkna, lišty, lemování); patní kameny sloupů jsou samostatné actory ve stejné složce,
+   - `Stavby/Palac/Palac_Kovarna_Vyhen_Kamen`, `..._Mazanina` (maz stolu, dymník, komín), `..._Uhli`, `..._Drevo` (výměny, závěsné tyče),
+   - `Stavby/Palac/Palac_Kovarna_Stena_Mazanina` (dílce stěny z proutí) a `..._Drevo` (kůly),
+   - `Stavby/Palac/Palac_Kovarna_Okap_Drevo` (žlab, rozsochy); sud na vodu je samostatný actor ve stejné složce,
    - `Stavby/Sut/<část hradu>/Kamen_…`: kameny suti jako samostatné actory.
 
 **Ruční úpravy:** smaž instanci nebo kámen, posuň kámen suti. Pak ve skriptu dané stavby (`stavby\<Stavba>.py`) nastav `MODE = "capture"` a spusť ho. Změny se zapíšou do `constructions_edits.json`, úpravy ostatních staveb v něm zůstanou, a platí i po dalším buildu.
@@ -76,6 +83,7 @@ Usazené kameny ve hře spí, dokud do nich někdo nestrčí. Staticky bez fyzik
 | dostavba u ostrohu (okno, dveře, tloušťka, kámen, trámy dokola příčky v `gen_constructions.py`) | `gen_constructions.py`, pak `Ostroh_Krov.py` **i** `Ostroh_Dostavba.py` (dostavba sahá pod střechu, výšky bere z krovu) a `Sut.py` (úklid uvnitř) |
 | **polohy trámů, průvlaku, otvorů nebo dveří** (`tower_spec.py`), **krov u ostrohu** (`ostroh_spec.py`) | `gen_layout.py` **i** `gen_constructions.py` (kapsy jsou ve zdech), pak oba buildy |
 | zdi, rozpad, otvory zříceniny | `build_ruin_blocks.py`, pak `build_constructions.py` (trámy se kontrolují proti zdem) |
+| kovárna v paláci (`palac_spec.py`, `gen_constructions.py` → `palac`) | `gen_constructions.py`, pak `Palac_Kovarna_Pristresek.py`, `Palac_Kovarna_Vyhen.py` (výměny u komína berou výšku z krokví), `Palac_Kovarna_Stena.py` a `Palac_Kovarna_Okap.py` (žlab bere výšku z okapové hrany krytiny). Zřícenina se mění při změně kapsy pro východní pozednici, zanoření `Palac_J` (`J_SINK`) nebo rozebrání koruny u věže (`J_BREACH`); pak `gen_layout.py` a část `Palac`. |
 
 Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
@@ -152,6 +160,65 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 - **Suť:** na podlaze se nepostaví (`Sut.py`).
 
 
+
+**`frames` → `Palac_Kovarna_Pristresek`** (typ `pult_roof`, `zr_stavby\pult.py`): přístřešek kovárny ve východní místnosti paláce, v koutě mezi `Palac_J` a věží (`Vez_Z`). Návrh: `new_designs\navrh_palac_kovarna.md`. Kostra, krytina s prostupem komína a lemování.
+
+- **Rám stavby:** `origin`, `u`, `v` = rám paláce z `palac_spec.py` (`s` podél `Palac_J` k věži, `n` k severu), rozměry v metrech. `axis` = osa, po které střecha padá (`"u"`: spád k západu). Výšky se počítají od terénu v bodě `ref` (střed přístřešku).
+- **Podpory** (`supports`): pozednice kolmé na spád, každá s polohou `at`, rozsahem `span`, vrchem `top`, průřezem `sec` a sloupy (`posts`, `post`).
+  - `VE` u věže: 20 × 20 cm, vrch 4,24 m (spodek na spáře řad `Palac_J`, kapsa se zarovnává na řady). Jižní konec je 0,3 m v kapse `Palac_J` (03, `kapsa` z `palac_spec.py`), severní na sloupu n = 5,3, 10 cm od líce věže. V koutě sloup není, stojí tam výheň.
+  - `VW` na západě: 18 × 18 cm, vrch 2,5 m, 3 sloupy (n = 0,9 / 3,1 / 5,3) v s = 25,85, těsně východně od výklenku střílny s = 25.
+- **Patní kameny** (`pads`): plochý kámen z rozvalin 36 × 36 × 14 cm pod každým sloupem, 4 cm v zemi. Jsou to **samostatné actory** (`Palac_Kovarna_Pristresek|VE|K0` …), dají se ručně doladit a uložit přes `MODE = "capture"`.
+- **Krokve** (`rafters`): 6 ks loupané kulatiny Ø 16 cm (`SM_RuinLog`), n = 0,9 až 5,4 po 0,9 m, od s = 30,65 (10 cm před lícem věže) po s = 24,95 (přesah 0,9 m za západní pozednici; pod ním bude zvenku u stěny hranice dřeva). Sklon 20,3°, osedlání 3 cm (`seat`). Typ umí i hraněné krokve (`sec` místo `d`) a víc než dvě podpory (dům posádky).
+- **Dřevo:** všechno `raw` (nad výhní žádný dehet).
+- **Prostup komína** (`openings`): střed s = 30,0; n = 1,35 (mezi krokvemi n = 0,9 a 1,8), strana 0,5 m; vůle 12 cm od krokví, 20 cm od pozednice. Krytina kolem něj má mezeru 3 cm (`hole_gap`).
+- **Krytina** (`roof`, 15. 11. 2026): stejná skladba jako u ostrohu, ale vlastní kód (`pult._pult_cover`): krokve jsou rovnoběžné, takže latě jdou přes celou šířku a prkna nejsou rozdělená do polí mezi trámy.
+  - **latě** 6 × 5 cm napříč krokvemi (9 řad): u horního konce krokví, u okapu, těsně nad a pod prostupem komína, mezi nimi nejvýš po 0,9 m (`lath_step`);
+  - **prkna** 3,5 cm, šířka 22–30 cm, spára 1,5 cm, po spádu od líce věže (mezera 0,5 cm) po okapovou hranu s = 24,85 (10 cm za konci krokví, `eave_over`, nad osou žlabu). Pásy se kladou od okrajů prostupu ven, prkna nad prostupem jsou rozdělená;
+  - **lišty** 10 × 3,5 cm přes každou spáru, nahoře končí pod lemováním;
+  - **od líce `Palac_J` mezera 3,5 cm** (`side_gap`): kameny koruny v s = 27–29 leží v úrovni střechy a vystupují z líce o 1–3 cm;
+  - vrch krytiny: okap 2,36 m, u komína 4,27 m, u věže 4,54 m nad terénem. Pokrytí půdorysu mimo prostup 99,2 % (zbytek jsou mezery u zdí).
+- **Lemování** (`flashing`): prkno 3,5 × 25 cm na stojato na krytině podél věže (horní okraj, 0,5 cm od líce) a podél `Palac_J` (na hraně krajního prkna).
+- **Rozměry** jsou v `tools\ruin\palac_spec.py` (konstanty `K_*`, krytina `K_ROOF`, lemování `K_FLASH`). Po změně přegeneruj `gen_constructions.py`; když se mění východní pozednice (kapsa), i `gen_layout.py` a postav část `Palac`.
+- **Kontrola a náhled:** `tools\checks\run_checks.py --only palac`, `tools\checks\preview3d.py kovarna <out.png>`.
+
+**`addons` → `Palac_Kovarna_Vyhen`** (typ `hearth`, `zr_stavby\ohniste.py`): výheň v koutě mezi `Palac_J` a věží pod přístřeškem kovárny. Rám a výšky jako u přístřešku (`roof` = jméno střechy).
+
+- **Stůl** (`table`): kámen z rozvalin, s = 29,75–30,73; n = 0,72–1,9 (2 cm od líce věže i `Palac_J`); výška 0,75 m ve 3 řadách, kameny střídavě podél a napříč. Nahoře hliněný maz 4 cm (`daub`, kostky s materiálem `MI_RuinDaub`).
+- **Ohniště** (`pit`): 0,4 × 0,4 m pod komínem (střed s = 30,0; n = 1,35), dřevěné uhlí 2 cm pod úrovní mazu (`MI_RuinCharcoal`). Žhavé uhlí a oheň zatím nejsou.
+- **Boční zídka** (`walls`): severně od stolu, n = 1,9–2,2, výška 1,2 m v 5 řadách, stojí na zemi. Ve 4. řadě (0,72–0,96 m) je otvor 0,2 m pro výfučnu měchů (`hole`).
+- **Dymník** (`hood`): `SM_RuinSmokeHood` 1,4 × 1,2 × 1,0 m, spodní okraj 1,8 m, střed v ose komína, východní okraj u věže.
+- **Komín** (`chimney`): `SM_RuinChimney` 0,5 × 0,5 m od vrchu dymníku (2,8 m) do 5,5 m, 1,2 m nad krytinou.
+- **Výměny** (`trimmers`): 2 loupané kulatiny Ø 10 cm mezi krokvemi n = 0,9 a 1,8, v úrovni krokví, 3 cm od komína na východ a na západ. Mezi nimi bude otvor v krytině.
+- **Závěsné tyče** (`hangers`): 4 loupané tyče Ø 5 cm z konců výměn k rohům spodního okraje dymníku. Dymník tak nevisí ve vzduchu.
+- **Rozměry** jsou v `tools\ruin\palac_spec.py` (`K_FORGE`, `K_FORGE_WALL`, `K_HOOD`, `K_CHIMNEY`, `K_TRIMMER`, `K_HANGER`).
+- Typ je obecný: bez `walls`, `trimmers` a `hangers` postaví ohniště domu (základ, dymník, komín).
+
+**`addons` → `Palac_Kovarna_Stena`** (typ `wattle_wall`, `zr_stavby\stena.py`, 15. 11. 2026): západní stěna kovárny z proutí omazaného hlínou v linii západních sloupů přístřešku.
+
+- **Poloha:** s = 25,85; n = 0,7–5,4 (od líce `Palac_J` po severní sloup), výška 2,1 m nad terénem, tloušťka 8 cm, 3 cm v zemi. Pod západní pozednicí zůstává volný pruh 0,22 m.
+- **Dílce** `SM_RuinWattlePanel` (1 × 1 m, rovné okraje) se skalují na pole mezi sloupy, nejvýš 1,1 × 1,05 m (`tile`). Spodní pás (do vrchu patních kamenů, 0,1 m) končí u patních kamenů, výš dílce končí u sloupů (mezera 0,5 cm).
+- **Kůly** (`stake`): loupané Ø 9 cm na svislých spojích dílců (zakryjí spáry), 0,3 m v zemi, 6 cm nad stěnou.
+- Rozměry: `palac_spec.py` → `K_WALL`. Sloupy a patní kameny bere z přístřešku (`posts`).
+
+**`addons` → `Palac_Kovarna_Okap`** (typ `gutter`, `zr_stavby\okap.py`, 15. 11. 2026): žlab pod západním okapem přístřešku a sud na dešťovou vodu.
+
+- **Žlab:** loupaný vydlabaný kmen Ø 20 cm (`SM_RuinGutter`), osa s = 24,8 (pod okapovou hranou krytiny s = 24,85); n = 0,72–5,9; spád k severu 1,5 % (7,8 cm). Vrch 12 cm pod spodkem prken na jižním konci, 20 cm na severním (2,20 → 2,13 m nad terénem). Výška se počítá z krytiny střechy `roof` (`pult.roof_layers`).
+- **Rozsochy:** 3 hlavy `SM_RuinForkHead` (ramena napříč žlabem) na kůlech s kůrou Ø 12 cm (0,4 m v zemi) v n = 0,9 / 3,1 / 5,3. Žlab leží ve vidlici: osa žlabu je 28 cm (varianta A) / 26 cm (B) nad středem hlavy (`FORK_SEAT`, změřeno na OBJ pro žlab Ø 20).
+- **Sud** `SM_RuinBarrel` pod severním koncem žlabu (s = 24,8; n = 5,9), **samostatný actor** (dá se doladit a uložit přes capture). Svod se nedělá, voda padá ze žlabu asi 1,3 m.
+- Rozměry: `palac_spec.py` → `K_GUTTER`, `K_BARREL`. Typ je obecný (pro `Palac_Obydli_Okap`), počítá se střechou typu `pult_roof`.
+
+**Etapy stavby (sady actorů).** Stavba s klíčem `stage` v datech se staví po sadách: `base` (stojí už v etapě 1 a zůstává), `final` (dostavba, přibude v etapě 2), `site` (staveniště, jen v etapě 1). Každý actor sady má tag `stage:<sada>` a v názvu příponu (`…_Kamen_Base`). Přepnutí etapy ve hře = zobrazit a skrýt actory podle tagu: etapa 1 = `base` + `site`, etapa 2 = `base` + `final`. Dílec může mít vlastní sadu (`Stone.stage`), jinak patří do sady stavby; u ohniště dává `stage_top` sadu dymníku a komína. Sady jsou v `zrlib\config.py` (`STAGES`, `STAGE_TAG`). Stavby bez `stage` (věž, ostroh, kovárna) se nemění.
+
+**`addons` → `Palac_Obydli_Kamen`** (typ `stone_fill`, `zr_stavby\zdivo.py`, sada `base`): kamenné části domu posádky v prostřední místnosti paláce. Návrh a plán po etapách: `new_designs\navrh_palac_obydli_stred.md`, kap. 0.
+
+- **Části** (`parts`): obdélník v rámu paláce (`a` = s, `c` = n), vrch `top` v m nad terénem v bodě `ref`, mezery `gaps` (dveře).
+  - `W`, `E`: srovnání korun `Palac_pricka_1` a `_2` na 1,4 m v celé tloušťce 0,8 m, včetně zazdění jejich dveří.
+  - `N`: podezdívka severní srubové stěny (osa n = 6,2; 0,45 × 0,45 m), vchod s = 13,8–14,8 volný.
+  - `P`: podezdívka srubové příčky (osa s = 15,75), dveře n = 3,3–4,3 volné.
+- **Kámen** (`stone`): jako ve zdech hradu, řady 25–40 cm, kusy 35–60 cm, přes tloušťku po 0,42 m (`row`), spáry 1,5 cm, 10 cm v zemi (`sink`). Spodek každého kamene kopíruje zříceninu pod ním (po 5 cm podél zdi, kameny se v místě skoku dělí); kde zeď chybí, stojí zdivo na terénu.
+- **Suť** v domě a na zápraží je uklizená (`clear_poly`, platí pro `Sut.py`).
+- **`Palac_Obydli_Ohniste`** (typ `hearth`, sada `base`, `stage_top` = `final`): kamenný základ 1,4 × 1,4 × 0,5 m u jižní zdi ve světnici s mazem a studeným ohništěm. Dymník a komín přibudou s krovem.
+- **Rozměry:** `tools\ruin\palac_spec.py` (`D_*`, funkce `obydli`). **Kontrola a náhled:** `run_checks.py --only obydli`, `preview3d.py obydli <out.png> [--stage 1|2]`.
 
 Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižní zdi (`Vez_J`), **v** od jihozápadního rohu k severu. Obojí v metrech, osy zdí jsou na 0 a 11 m.
 

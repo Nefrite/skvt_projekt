@@ -51,13 +51,14 @@ Lapikus/
     blocks/manual_edits.json  rucni upravy z levelu (NEPREPISOVAT)
   05_constructions/
     build_constructions.py    TYPES, REQUIRED, SECTIONS, compute, build v UE, capture, freeze
-    zr_stavby/{vez,krov,dostavba,podlaha}.py   typy staveb
+    zr_stavby/{vez,krov,dostavba,podlaha,pult,ohniste,stena,okap}.py   typy staveb (pult = pultova strecha s krytinou, pult_roof;
+                              ohniste = hearth; stena = stena z prouti, wattle_wall; okap = zlab na rozsochach a sud, gutter)
     stavby/<Stavba>.py        spusteni jedne stavby v UE (MODE build / capture)
     constructions.json        VYGENEROVANA data
     constructions_edits.json  rucni upravy (NEPREPISOVAT)
   tools/
     ruin/gen_layout.py        draft + heightmapa -> ruin_layout.json
-    ruin/ostroh_spec.py, tower_spec.py   sdilene rozmery 03 + 05
+    ruin/ostroh_spec.py, tower_spec.py, palac_spec.py   sdilene rozmery 03 + 05 (palac_spec = ram palace, kovarna)
     constructions/gen_constructions.py   ruin_layout -> constructions.json
     meshes/gen_meshes.py      knihovni meshe -> meshes/<kategorie>/*.obj: mesh_common, mesh_stone, mesh_wood (+ mesh_log = kulatina,
                               mesh_bark = pasy kury), mesh_wattle (prouti, dymnik, komin), mesh_textile (lano, ovazani, make_canvas),
@@ -119,6 +120,8 @@ Tagy actorů v levelu: zřícenina `cast:<Část>` a `zed:<Zeď>`, dostavby `sta
 | kamenná dostavba, práh, malta | `Ostroh_Dostavba.py` |
 | podlaha | `Ostroh_Podlaha.py` |
 | úklid suti | `Sut.py` |
+| dům v paláci (`palac_spec.py` → `obydli`); etapy: stavba se `stage` v datech → actory po sadách `base` / `final` / `site` (tag `stage:<sada>`) | `05_constructions/stavby/Palac_Obydli_Kamen.py`, `Palac_Obydli_Ohniste.py`, pak `Sut.py` |
+| kovárna v paláci (`palac_spec.py`, `gen_constructions.py` → `palac`) | `05_constructions/stavby/Palac_Kovarna_Pristresek.py`, pak `Palac_Kovarna_Vyhen.py` (výměny u komína berou výšku z krokví), `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py` (žlab bere výšku z okapové hrany krytiny). Když se změní kapsa pro východní pozednici, zanoření `Palac_J` (`J_SINK`) nebo rozebrání koruny u věže (`J_BREACH`): `gen_layout.py`, `03_ruin/blocks/casti/Palac.py` a až pak stavby a `Sut.py`. |
 | nový nebo změněný mesh, prop, textura | `gen_meshes.py` / `gen_textures.py` mimo UE, zvednout verzi (`STONE_MESH_VERSION`, `TEX_VERSION`); doimportuje je kterýkoli build. Kontrola vzhledu: `tools/meshes/Ukazka_Meshe.py` |
 | všechno | `build_normal.py` (kořen): celý hrad a po něm všechny stavby. Totéž co `build_ruin_blocks.py`, pak `build_constructions.py` |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py` (kořen): smaže generované actory a meshe `SM_Ruin*`, textury a meshe naimportuje znovu a vše postaví. `MATERIALY = True` smaže i generované materiály (ruční ladění se ztratí). Po běhu nepoužívat Undo. |
@@ -127,11 +130,12 @@ Ruční úpravy v levelu ukládá Jirka přes `MODE = "capture"` ve stejném skr
 
 ## 6. Kontroly a testy
 
-- `python tools/checks/run_checks.py [--layout <ruin_layout.json>] [--only openings,floating,ostroh]`:
+- `python tools/checks/run_checks.py [--layout <ruin_layout.json>] [--only openings,floating,ostroh,palac]`:
   - `openings`: nad otvory nesmí chybět řada (žádná „kapsa“ nad překladem);
   - `floating`: kameny bez podpory. Známé jsou 3, aktuálně hlásí 5, což je starší stav;
   - `ostroh`: průniky (trámy × zřícenina, krytina × zřícenina, dostavba × krov, dostavba × zřícenina, podlaha × …) a pokrytí krytinou (≥ 99,5 %).
-- `python tools/checks/preview3d.py ostroh <out.png> [--no-roof]`:
+  - `palac`: přístřešek kovárny – průniky dřeva a patních kamenů se zříceninou, sloupy na patních kamenech, krokve na pozednicích, sklon 20° ± 1°, vůle komína ≥ 10 cm, světlá výška, pokrytí krytinou ≥ 99 %, lemování na krytině; stěna z proutí (průniky, zaplnění linie, výška); okap (průniky, okapová hrana nad žlabem, spád, konec nad sudem, sud na zemi); výheň – průniky se zříceninou a se dřevem, výměny v krokvích, komín ≥ 0,8 m nad krytinou, dymník nad ohništěm.
+- `python tools/checks/preview3d.py ostroh <out.png> [--no-roof]`, `python tools/checks/preview3d.py kovarna <out.png>`:
   - 3D náhled přes three.js v headless Chromiu;
   - potřebuje `node_modules` s `three@0.160.0` a playwright ve složce `tools/checks` (ve scratchpadu stačí symlink);
   - jako knihovna: `render(boxes, views, out)` a `stone_boxes(...)` pro vlastní pohledy (detail okna, malta obarvená jinak).

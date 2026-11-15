@@ -350,7 +350,9 @@ build_fullscope.py        oprava: smaže generované actory a meshe, vše znovu
   zr_ruin\decay.py        rozpad: typy otvorů, stav otvoru, profil výšky zdi, parametry stáří, šum rozebírání
   zr_ruin\prep.py         příprava dat zdi: podstavba, ref_z, ochrana do výšky otvoru jiné zdi, bourací objemy
   zr_ruin\wall.py         zeď po krocích: prepare_wall, snap_openings, forbidden, lay_courses, build_frames, finish_wall
-  zr_ruin\post.py         úpravy kamenů zdi: koruna pod střechou, žlábky pro trámy, rozpadlé jádro, zvětralá koruna
+  zr_ruin\post.py         úpravy kamenů zdi: koruna pod střechou, žlábky pro trámy, rozpadlé jádro, zvětralá koruna,
+                          horní řada pryč (drop_rows v datech zdi: horní kameny každé vrstvy; zatím žádná zeď ho nepoužívá).
+                          Celá zeď zanořená do země = z_offset (Palac_J o řadu, palac_spec.py)
   zr_ruin\floor.py        kamenná dlažba (layout → floors)
   zr_ruin\rubble.py       suť u paty zdí (staví 05)
   zr_ruin\compute.py      celý hrad: všechny zdi a podlahy → kameny

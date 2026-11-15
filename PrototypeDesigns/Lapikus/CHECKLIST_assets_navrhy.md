@@ -7,8 +7,8 @@ Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro n
 | Návrh | Stav | Etapa |
 |---|---|---|
 | `navrh_vez_pristresek.md` | vybraná varianta B, průlomy `Vez_J` + `Vez_V` | 1 i 2 |
-| `navrh_palac_obydli_stred.md` (+ `_etapa1.png`) | dům v prostřední místnosti | 1 = rozestavěno, 2 = hotovo |
-| `navrh_palac_kovarna.md` | návrh | 1 i 2 |
+| `navrh_palac_obydli_stred.md` (+ `_etapa1.png`) | dům v prostřední místnosti; **staví se** (16. 11. 2026: plán po etapách v kap. 0, kamenné části hotové) | 1 = rozestavěno, 2 = hotovo |
+| `navrh_palac_kovarna.md` | vybraný návrh, **staví se** (15. 11. 2026: úprava 03, kostra přístřešku a výheň v koutě hotové; přehled v kap. 0 návrhu) | 1 i 2 |
 | `navrh_brana_straz.md` | návrh | otevřené |
 | `navrh_nadvori_stan.md` | **možná bude**, v seznamu se drží | jen 1 |
 
@@ -250,23 +250,24 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ☐ | Typ (pracovně) | Nový / rozšíření | Stavby |
 |---|---|---|---|
 | ☐ | `canvas_shelter` | 🆕 | `Vez_Pristresek` |
-| ☐ | `pult_roof` (krytina sdílená s `fan_roof`) | 🆕 | `Palac_Obydli_Krov`, `Palac_Kovarna_Pristresek` |
+| ☑ | `pult_roof` (krytina stejné skladby jako `fan_roof`, vlastní kód) | 🆕 | `Palac_Obydli_Krov`, `Palac_Kovarna_Pristresek`. **Hotovo 15. 11. 2026:** sloupy na patních kamenech, pozednice, krokve (`zr_stavby/pult.py`), krytina s prostupem komína (latě, prkna, lišty) a lemování na stojato. Kostra ověřená v UE, krytina zatím ne. Pro dům chybí vaznice / víc podpor ověřit na datech domu. |
 | ☐ | `log_wall` (srub, otvory, prkenné štíty) | 🆕 | `Palac_Obydli_Srub` |
-| ☐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen` |
-| ☐ | `gutter` (žlab, vidlice, svod) | 🆕 | `Palac_Obydli_Okap`, `Palac_Kovarna_Okap` |
-| ☐ | `wattle_wall` | 🆕 | `Palac_Kovarna_Stena` |
+| ◐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen`. **Hotovo 15. 11. 2026:** `zr_stavby/ohniste.py`, postavená `Palac_Kovarna_Vyhen` (stůl, maz, ohniště, zídka s otvorem pro výfučnu, dymník na závěsných tyčích, komín, výměny). Chybí žhavé uhlí, saze, oheň. Ověřeno v UE (15. 11. 2026). |
+| ◐ | `gutter` (žlab, vidlice, svod) | 🆕 | `Palac_Obydli_Okap`, `Palac_Kovarna_Okap`. **Hotovo 15. 11. 2026:** `zr_stavby/okap.py`: žlab pod okapovou hranou `pult_roof` se spádem, rozsochy (hlava `SM_RuinForkHead` na kůlu), sud jako samostatný actor; postavený `Palac_Kovarna_Okap`. Svod (pro dům) chybí. Neověřeno v UE. |
+| ☑ | `wattle_wall` | 🆕 | `Palac_Kovarna_Stena`. **Hotovo 15. 11. 2026:** `zr_stavby/stena.py`: dílce `SM_RuinWattlePanel` mezi sloupy (spodní pás mezi patními kameny), kůly na spojích. Neověřeno v UE. |
 | ☐ | `palisade` (kůly, ráhna, průzory) | 🆕 | `Brana_Straz_Kryty` |
 | ☐ | `bark_roof` | 🆕 | `Brana_Straz_Pristresek`, ⛺ `Nadvori_Stan_Striska` |
 | ☐ | `tent` | ⛺ 🆕 | `Nadvori_Stan` |
 | ☐ | strop s výměnou / trámy na koruně | ♻ rozšíření `tower_floor` | `Palac_Obydli_Strop`, `Brana_Straz_Podesta` |
 | ☐ | `stone_addon` s parametrem tloušťky (0,8 m) | ♻ rozšíření | `Palac_Obydli_Kamen`, `Brana_Straz_Kamen` |
 | ☐ | `plank_floor` | ♻ beze změny | `Palac_Obydli_Podlaha` |
-| ☐ | staveniště + přepínač `ETAPA` (od / do etapy u dílců) | 🆕 | `Palac_Obydli_Stavenisko`, celé obydlí, ⛺ stan |
+| ◐ | etapy: sady actorů `base` / `final` / `site` s tagem `stage:<sada>` (místo přepínače `ETAPA`) | 🆕 | **Hotovo 16. 11. 2026:** sady v `zrlib/config.py`, `Stone.stage`, build po sadách. Staveniště (`Palac_Obydli_Stavenisko`) a ⛺ stan ještě ne. |
+| ☑ | `stone_fill` (srovnání koruny zdi kamenem v plné tloušťce, zazdění otvoru, podezdívky) | 🆕 místo rozšíření `stone_addon` | `Palac_Obydli_Kamen` (16. 11. 2026, neověřeno v UE) |
 | ☐ | rozmístění props (`loose`, seznam poloh z návrhů) | 🆕 | vybavení kovárny, domu, staveniště, stanu ⛺ |
 
 **Sdílené specy:**
 - ☐ `tools/ruin/tower_spec.py`: rozšířit o průlomy a přístřešek;
-- ☐ 🆕 `palac_spec.py`: dům, kovárna a `ETAPA`;
+- ◐ 🆕 `palac_spec.py`: dům, kovárna a `ETAPA`. Hotový rám paláce a přístřešek kovárny (15. 11. 2026); dům a `ETAPA` ne;
 - ☐ 🆕 `brana_spec.py`.
 
 ---
@@ -277,7 +278,8 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 |---|---|---|---|
 | ☐ | `Vez_V` | 2 × `breaches` (hlavní průlom, nejnižší 9,45 m); ❓ `protect` SV rohu | `navrh_vez_pristresek.md` 3.1 |
 | ☐ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou | 3.2 |
-| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína) | `navrh_palac_obydli_stred.md` kap. 3 |
+| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | `navrh_palac_obydli_stred.md` kap. 0.2 |
+| ☑ | `Palac_J` | celá zeď zanořená o jednu řadu do země (`z_offset` −0,31), rozebraná koruna u věže (`breaches` s = 29,6–33, komín kovárny ji přesahuje) a `kapsa` pro východní pozednici kovárny v s = 30,55 (15. 11. 2026, neověřeno v UE) | `navrh_palac_kovarna.md` kap. 3, `palac_spec.py` |
 | ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Palac_J` se po přestavbě změní | – |
 
 ---
@@ -289,7 +291,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 - ☑ Tvary na míru: OBJ (14. 11. 2026). Plátno `mesh_textile.make_canvas`, lano z knihovních článků, výplet z knihovních dílců.
 - ☑ Props tvaru ✋: procedurálně v Pythonu (vizuální prototyp, 14. 11. 2026).
 - ◐ Plátno ve větru: připraveno v materiálu (`M_RuinCloth`, parametr `WindAmount`, výchozí 0 = staticky). Vítr ani napnutí plachet zatím řešené nejsou; prověšení dává `make_canvas` (`sag`).
-- ☐ ❓ Kovárna ve východní místnosti: potvrdit umístění.
+- ☑ Kovárna ve východní místnosti: potvrzeno (Jirka 15. 11. 2026). Svod se nedělá, žlab ústí do sudu. Saze, udusaná hlína, žhavé uhlí a VFX ohně se pro kovárnu zatím nedělají.
 - ☐ ❓ Žebříky (staveniště, půda): jen kulisa, nebo použitelné pro postavu?
 - ☐ ❓ Stojí podesta brány v etapě 1? Určuje, jestli potřebuje přepínač `ETAPA`.
 - ☐ ❓ VFX ohně a kouře: v tomto kroku, nebo později s atmosférou?

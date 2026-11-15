@@ -3,6 +3,12 @@ tagy, materialy, zaoblene kameny, drevo, fyzika volnych kamenu. Uprav tady (driv
 
 RUIN_TAG = "Zricenina_Ruin"                      # tag actoru zriceniny 03_ruin
 CONSTR_TAG = "Zricenina_Stavby"                  # tag actoru staveb 05_constructions
+# etapy stavby (05): kazdy dilec stavby s etapami patri do jedne sady; actor sady ma tag STAGE_TAG + jmeno sady.
+# Prepnuti ve hre = zobrazit / skryt (i kolizi) actory podle tagu: etapa 1 = base + site, etapa 2 = base + final.
+STAGE_TAG = "stage:"
+STAGES = ("base",    # postaveno uz v etape 1 a zustava (v etape 2 se nic z toho neskryva)
+          "final",   # dostavba: pribude v etape 2
+          "site")    # staveniste: naradi, zebriky, kozy, vzpery, hromady materialu - jen v etape 1
 CUBE_MESH = "/Engine/BasicShapes/Cube.Cube"
 # --- materialy: None = skript si sam vytvori M_RuinStone + MI_RuinFace/Core/Frame v MAT_DIR (textury ze StarterContent);
 #     nebo cesta k vlastnimu materialu, napr. "/Game/Megascans/.../MI_Rock.MI_Rock"

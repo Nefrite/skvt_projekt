@@ -251,7 +251,7 @@
    "access": 0.18,
    "seed": 10,
    "access_points": [
-    91.46723965088249
+    91.4672396508825
    ],
    "openings": [
     {
@@ -767,6 +767,14 @@
      "w": 1.1,
      "sill": 10,
      "h": 2.0
+    },
+    {
+     "kind": "kapsa",
+     "s": 30.547,
+     "w": 0.26,
+     "sill": 4.33,
+     "h": 0.24,
+     "_": "vychodni pozednice kovarny (palac_spec.py)"
     }
    ],
    "breaches": [
@@ -774,9 +782,24 @@
      "s0": 16.5,
      "s1": 20.5,
      "floor": 6.0
+    },
+    {
+     "s0": 29.6,
+     "s1": 33.0,
+     "floor": 6.1,
+     "slope_l": 0.8,
+     "_": "rozebrana koruna u veze: komin kovarny ji presahuje (palac_spec.py)"
     }
    ],
-   "rubble": "out"
+   "rubble": "out",
+   "z_offset": -0.31,
+   "protect": [
+    {
+     "s0": 30.3,
+     "s1": 30.9,
+     "min": 4.95
+    }
+   ]
   },
   {
    "name": "Palac_S",

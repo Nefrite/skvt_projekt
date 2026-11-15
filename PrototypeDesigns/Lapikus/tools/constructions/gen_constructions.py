@@ -3,6 +3,7 @@ Dodatecne stavby "druheho zabydleni" zriceniny:
   - tower_floors: drevene vestavby ve vezi (tramy, prkna, pruvlak, schody, podesta); rozmery veze sdili se zriceninou
     pres tools/ruin/tower_spec.py
   - ostroh: krov u ostrohu (ostroh_spec.py, sdileny s 03), kamenna dostavba obytne casti a prkenna podlaha
+  - palac: kovarna ve vychodni mistnosti (palac_spec.py): pristresek s pultovou strechou a krytinou, vyhen, stena z prouti, okap
   - nastaveni volne suti
 
 python gen_constructions.py <ruin_layout_draft.json> <vystup constructions.json> [<03_ruin/blocks/ruin_layout.json>]
@@ -15,6 +16,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "ruin"))
 sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..")))          # zrlib
 from tower_spec import VEZ_F, VEZ_ST, spec as tower_spec
 from ostroh_spec import spec as ostroh_spec
+from palac_spec import frame as palac_frame, kovarna as kovarna_spec, obydli as obydli_spec
 from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, project_s, point_at
 
 # --- uzavreni obytne casti u ostrohu (05, zricenina se nemeni): jednoradove kamenne dostavby na korunach zdi az pod strechu
@@ -253,11 +255,88 @@ def ostroh(LAY):
     return frames, [addon, floor]
 
 
+def palac(LAY):
+    """stavby v palaci (ram palace: s podel Palac_J, n k severu; rozmery v palac_spec.py) -> (frames, addons).
+    Kovarna ve vychodni mistnosti: pristresek s pultovou strechou v koute mezi Palac_J a vezi, spad k zapadu;
+    vyhen v koute u veze (kamenny stul, bocni zidka, dymnik, komin)."""
+    K = kovarna_spec(LAY["walls"]); F = K["frame"]; R = K["rafter"]
+    pristresek = dict(
+        name="Palac_Kovarna_Pristresek", type="pult_roof", folder="Stavby/Palac", origin=F["origin"], u=F["s"], v=F["n"],
+        axis="u",                                                    # strecha pada po ose s (k zapadu)
+        ref=[round((K["s_east"] + K["s_west"]) / 2, 3), round(sum(K["roof"]["n"]) / 2, 3)],   # vysky od terenu uprostred pristresku
+        supports=[dict(id="VE", at=K["s_east"], span=list(K["plate_e"]["span"]), top=K["plate_e"]["top"], sec=list(K["plate_e"]["sec"]),
+                       posts=list(K["post_e"]["n"]), post=K["post_e"]["post"]),      # pozednice u veze: jizni konec v kapse Palac_J (03), severni na sloupu
+                  dict(id="VW", at=K["s_west"], span=list(K["plate_w"]["span"]), top=K["plate_w"]["top"], sec=list(K["plate_w"]["sec"]),
+                       posts=list(K["post_w"]["n"]), post=K["post_w"]["post"])],     # zapadni pozednice na 3 sloupech
+        rafters=dict(d=R["d"], bark=R["bark"], pos=list(R["n"]), a0=K["s_hi"], a1=K["s_lo"], seat=R["seat"]),   # loupana kulatina
+        pads=dict(K["pad"]),                                         # patni kameny pod sloupy (samostatne actory)
+        plan=dict(a=list(K["roof"]["s"]), c=list(K["roof"]["n"])),   # pudorys strechy (krytina)
+        openings=[dict(kind="chimney", a=K["chimney"]["s"], c=K["chimney"]["n"], w=K["chimney"]["w"])],   # prostup komina krytinou
+        roof=dict(K["roof_cover"]),                                  # krytina: late, prkna po spadu, listy (skladba jako u ostrohu)
+        flashing=[dict(K["flashing"], edge="top"),                   # lemovani: prkno na stojato u veze (horni okraj)
+                  dict(K["flashing"], edge="c0")],                   # ... a podel Palac_J (jizni okraj)
+        finish=dict(posts="raw", plates="raw", rafters="raw",        # nad vyhni zadny dehet
+                    roof_laths="raw", roof_boards="raw", roof_battens="raw", roof_flashing="raw"))
+    C = K["chimney"]; FG = K["forge"]; FW = K["forge_wall"]
+    vyhen = dict(
+        name="Palac_Kovarna_Vyhen", type="hearth", folder="Stavby/Palac", origin=F["origin"], u=F["s"], v=F["n"],
+        roof="Palac_Kovarna_Pristresek",                             # vysky od terenu strechy, vymeny mezi jejimi krokvemi
+        table=dict(a=list(FG["s"]), c=list(FG["n"]), h=FG["h"], course=FG["course"]),      # kamenny stul v koute mezi Palac_J a vezi
+        daub=FG["daub"], pit=dict(a=C["s"], c=C["n"], w=FG["pit"], d=0.02),           # hlineny maz, ohniste pod kominem
+        walls=[dict(id="Z", a=list(FG["s"]), c=list(FW["n"]), h=FW["h"], course=FW["course"],   # bocni zidka k mechum
+                    hole=dict(a=C["s"], w=FW["hole"]["w"], z=list(FW["hole"]["z"])))],           # otvor pro vyfucnu
+        hood=dict(a=C["s"], c=C["n"], size=list(K["hood"]["size"]), bottom=K["hood"]["bottom"], h=K["hood"]["h"]),
+        chimney=dict(a=C["s"], c=C["n"], w=C["w"], top=C["top"]),
+        trimmers=dict(K["trimmer"]), hangers=dict(K["hanger"]),
+        stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), joint=LAY["params"]["JOINT"]),   # kamen z rozvalin, kratsi kusy
+        finish=dict(trimmers="raw", hangers="raw"))
+    W = K["wall"]; PW = K["post_w"]
+    stena = dict(
+        name="Palac_Kovarna_Stena", type="wattle_wall", folder="Stavby/Palac", origin=F["origin"], u=F["s"], v=F["n"],
+        a=K["s_west"], c=list(W["n"]), h=W["h"], t=W["t"], sink=W["sink"], gap=W["gap"],   # v linii zapadnich sloupu
+        posts=[dict(c=c, w=PW["post"], pad=dict(w=K["pad"]["l"], top=round(K["pad"]["h"] - K["pad"]["sink"], 3)))
+               for c in PW["n"]],                                    # sloupy pristresku na patnich kamenech: stena mezi nimi
+        tile=list(W["tile"]), stake=dict(W["stake"]),
+        finish=dict(stakes="raw"))
+    GU = K["gutter"]; BA = K["barrel"]
+    okap = dict(
+        name="Palac_Kovarna_Okap", type="gutter", folder="Stavby/Palac", origin=F["origin"], u=F["s"], v=F["n"],
+        roof="Palac_Kovarna_Pristresek",                             # vyska od okapove hrany krytiny
+        a=GU["s"], c=list(GU["n"]), d=GU["d"], drop=GU["drop"], fall=GU["fall"], bark=False,   # loupany zlab, spad k +c (sever)
+        forks=list(GU["forks"]), post_d=GU["post_d"], sink=GU["sink"],
+        barrel=dict(a=BA[0], c=BA[1]),                               # sud na destovou vodu pod koncem zlabu (svod se nedela)
+        finish=dict(gutter="raw", forks="raw", barrel="raw"))
+    # --- dum posadky v prostredni mistnosti (navrh_palac_obydli_stred.md), zatim kamenne casti; etapy = sady actoru (stage)
+    D = obydli_spec(LAY["walls"]); rect = lambda p: dict(a=list(p["s"]), c=list(p["n"]), top=p["top"])
+    P = lambda s, n: [round(F["origin"][0] + (F["s"][0] * s + F["n"][0] * n) * 100, 1), round(F["origin"][1] + (F["s"][1] * s + F["n"][1] * n) * 100, 1)]
+    (ps0, ps1), (pn0, pn1) = D["plan"]["s"], D["plan"]["n"]
+    ref = [round((ps0 + ps1) / 2, 3), round((D["n0"] + D["n_north"]) / 2, 3)]
+    kamen = dict(
+        name="Palac_Obydli_Kamen", type="stone_fill", folder="Stavby/Palac/Obydli", origin=F["origin"], u=F["s"], v=F["n"], ref=ref,
+        stage="base",                                                # stoji uz v etape 1
+        parts=[dict(id="W", **rect(D["fill_w"])),                    # srovnani koruny Palac_pricka_1 vcetne zazdeni dveri
+               dict(id="E", **rect(D["fill_e"])),                    # srovnani koruny Palac_pricka_2
+               dict(id="N", **rect(D["sill_n"]), gaps=[["a", D["sill_n"]["door"][0], D["sill_n"]["door"][1]]]),    # podezdivka severni steny, vchod
+               dict(id="P", **rect(D["sill_p"]), gaps=[["c", D["sill_p"]["door"][0], D["sill_p"]["door"][1]]])],   # podezdivka pricky, dvere
+        stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), course=(LAY["params"]["COURSE_MIN"], LAY["params"]["COURSE_MAX"]),
+                   joint=LAY["params"]["JOINT"], row=0.42, sink=0.10),
+        clear_poly=[P(ps0, pn0), P(ps1, pn0), P(ps1, pn1), P(ps0, pn1)])       # sut v dome a na zaprazi uklizena
+    H = D["hearth"]; hc = [round(sum(H["s"]) / 2, 3), round(sum(H["n"]) / 2, 3)]
+    ohniste = dict(
+        name="Palac_Obydli_Ohniste", type="hearth", folder="Stavby/Palac/Obydli", origin=F["origin"], u=F["s"], v=F["n"],
+        stage="base", stage_top="final",                             # kamenny zaklad v etape 1, dymnik a komin az v etape 2
+        table=dict(a=list(H["s"]), c=list(H["n"]), h=H["h"], course=H["course"]),
+        daub=H["daub"], pit=dict(a=hc[0], c=hc[1], w=H["pit"], d=0.02),               # studene ohniste uprostred zakladu
+        stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), joint=LAY["params"]["JOINT"]))   # dymnik a komin prijdou s krovem (roof)
+    return [pristresek], [vyhen, stena, okap, kamen, ohniste]
+
+
 if __name__ == "__main__":
     D = json.load(open(sys.argv[1]))
     LAY = json.load(open(sys.argv[3] if len(sys.argv) > 3 else os.path.join(HERE, "..", "..", "03_ruin", "blocks", "ruin_layout.json")))
     floors = tower_floors(D)
     frames, addons = ostroh(LAY)
+    p_frames, p_addons = palac(LAY); frames += p_frames; addons += p_addons
     out = dict(version=1, units="UE cm (pozice), m (rozmery v ramu veze)",
                note="Drevene vestavby a sut. Zricenina (zdi, kapsy, dlazba) je v 03_ruin/blocks/ruin_layout.json.",
                rubble=dict(enabled=True, folder="Stavby/Sut"),

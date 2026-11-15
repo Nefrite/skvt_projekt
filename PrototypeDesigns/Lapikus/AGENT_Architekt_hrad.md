@@ -34,7 +34,7 @@ Výstup je text: specifikace, tabulky rozměrů, seznam změn v datech, popisy n
 |---|---|
 | **Zřícenina** (`03_ruin`) | stav kolem roku 1650 (preset `1650`). Střechy a stropy pryč, zdi rozebrané, suť u zdí, kapsy po trámech. Zdivo z lomového kamene v řadách, líc z obou stran a jádro uprostřed. |
 | **Druhé zabydlení** (`05_constructions`) | později. Lidé si ruinu **provizorně, ale na delší dobu** upravili. Staví jeden až tři lidé s jednoduchým nářadím z **kamene z rozvalin** (stejně velký jako ve zdech) a z místního dřeva. Žádné kovové konstrukce, sklo jen výjimečně. |
-| **Dvě etapy hry** (návrhy z 11/2026) | posádka (dva až tři lidé + hlídka) přišla začátkem léta. **Etapa 1:** hráč přichází poprvé, dům v paláci se teprve staví, kovárna už stojí. **Etapa 2:** dům je hotový. Zřícenina (03) je v obou etapách stejná, liší se jen 05 (přepínač `ETAPA`, zatím neexistuje). U každé stavby napiš, ve které etapě stojí. |
+| **Dvě etapy hry** (návrhy z 11/2026) | posádka (dva až tři lidé + hlídka) přišla začátkem léta. **Etapa 1:** hráč přichází poprvé, dům v paláci se teprve staví, kovárna už stojí. **Etapa 2:** dům je hotový. Zřícenina (03) je v obou etapách stejná, liší se jen 05. Etapy jsou tři sady actorů: `base` (stojí už v etapě 1 a zůstává), `final` (dostavba), `site` (staveniště); u každého prvku napiš sadu. Co je jednou postavené, se neskrývá (`KNOWHOW_hrad.md` kap. 2). |
 
 Pravidla pro uvěřitelnost:
 - dostavba šetří prací: využije zeď, kapsu, korunu, výklenek; nic se nestaví „do vzduchu“,
@@ -50,7 +50,7 @@ Plošina ~67 × 25 m na výšce **Z ≈ 3129 cm**. Jižní hrana padá 7–8 m s
 | **Obvodová hradba** | `Hradba_Z_S` (1,8 m, 93 m, střílny), `Hradba_V` (2,5 m) | 5–7 m, u brány nižší, průlom na severu, suťová rampa v SZ rohu. U ostrohu cíleně snížená na ~3,3 m (`cap`) se žlábky pro trámy krovu (`notches`). |
 | **Brána** | `Brana_V`, `Brana_S`, `Brana_J`, `Brana_Jih` (1,8 m) | gotický oblouk stojí, vrata pryč, most přes příkop zřícený |
 | **Věž** | `Vez_J`, `Vez_V`, `Vez_S`, `Vez_Z` (2,5 m, 11 × 11 m) | vysoká, vstup v 1. patře, kapsy po trámech, dlažba v přízemí |
-| **Palác** | `Palac_J`, `Palac_S`, `Palac_Z` (1,4 m), `Palac_pricka_1`, `_2` (0,8 m) | J 8–11 m, S 4–8 m, příčky 4–7 m, sklep pod západní částí (zatím jen v návrhu dat) |
+| **Palác** | `Palac_J`, `Palac_S`, `Palac_Z` (1,4 m), `Palac_pricka_1`, `_2` (0,8 m) | J 8–11 m, S 4–8 m, příčky 4–7 m, sklep pod západní částí (zatím jen v návrhu dat). `Palac_J` je od 15. 11. 2026 celá zanořená o jednu řadu kamene do země (`z_offset` −0,31 m; střílny a výklenky jsou o tolik níž), u věže má rozebranou korunu (4,0–4,8 m, `breaches`) a kapsu pro pozednici kovárny v s = 30,55. |
 | **Západní budova u ostrohu** | `ZBudova_V`, `ZBudova_S` (1,2 m) | nízká, ve `ZBudova_V` vybouraná původní zeď v místě okna dostavby (`edits` → `cut`). Dnes uzavřená obytná místnost. |
 
 **Co už stojí v 05** (podrobně v `05_constructions\README_constructions.md`):
@@ -62,6 +62,9 @@ Plošina ~67 × 25 m na výšce **Z ≈ 3129 cm**. Jižní hrana padá 7–8 m s
 | `Ostroh_Dostavba` | jednořadé kamenné zdi 0,45 m na korunách `ZBudova_V`, `ZBudova_S` a hradby až pod střechu. Malta 10 cm uprostřed (proti prosvítání), pod dostavbou `ZBudova_V` i ve zdi zříceniny. Dveře 1,6 m s prahem, okno 1,25 m, dřevěná nadpraží uložená 25 cm do zdi, o půl řady výš, podložená polovičními kameny. |
 | `Ostroh_Podlaha` | podvaly 14 × 10 cm po 0,8 m na zemi, prkna 4,5 cm, vyříznutá kolem sloupů |
 | `Sut` | volná suť s fyzikou, v obytné části uklizená |
+| `Palac_Kovarna_Pristresek` (15. 11. 2026) | kostra přístřešku kovárny v koutě `Palac_J` × věž: 1 sloup 20 cm u věže (n = 5,3) a 3 sloupy 18 cm v s = 25,85 na patních kamenech, pozednice (vrch 4,24 a 2,5 m; východní je jižním koncem v kapse `Palac_J`), 6 krokví z loupané kulatiny Ø 16 cm, sklon 20° k západu, přesah 0,9 m za západní linii (pod ním hranice dřeva). Krytina z prken po spádu s lištami, okapová hrana s = 24,85, prostup komína, lemování u věže a podél `Palac_J`. Všechno `raw`. |
+| `Palac_Kovarna_Stena`, `Palac_Kovarna_Okap` (15. 11. 2026) | západní stěna z proutí a hlíny v s = 25,85 (n = 0,7–5,4, výška 2,1 m) mezi sloupy přístřešku; žlab Ø 20 cm v s = 24,8 (n = 0,72–5,9, spád k severu) na třech rozsochách, sud na vodu pod jeho koncem (n = 5,9) |
+| `Palac_Kovarna_Vyhen` (15. 11. 2026) | výheň **v koutě** mezi `Palac_J` a věží (n = 0,72–1,9), vedle volného výklenku střílny s = 29: kamenný stůl 1,2 × 1,0 × 0,75 m s hliněným mazem a ohništěm, boční zídka 1,2 m s otvorem pro výfučnu, dymník (spodní okraj 1,8 m) na 4 závěsných tyčích z výměn mezi krokvemi, komín 0,5 m do 5,5 m (střed s = 30,0; n = 1,35) |
 
 **Ostroh má zvláštní účel.** Do jeho obsazení a vybavení nezasahuj, dokud ho Jirka nepopíše.
 
@@ -70,9 +73,9 @@ Plošina ~67 × 25 m na výšce **Z ≈ 3129 cm**. Jižní hrana padá 7–8 m s
 | Návrh | Co | Stav (15. 11. 2026) |
 |---|---|---|
 | `navrh_vez_pristresek.md` | `Vez_Pristresek`: plátěný přístřešek hlídky ve 2. patře věže; průlomy z dobývání ve `Vez_J` a `Vez_V` (úprava 03) | vybraná varianta B |
-| `navrh_palac_obydli_stred.md` | `Palac_Obydli_*`: dům posádky v **prostřední** místnosti paláce (srub, pultová střecha, ohniště s komínem); snížení koruny `Palac_J` u komína (úprava 03); etapa 1 = staveniště | platný návrh domu |
+| `navrh_palac_obydli_stred.md` | `Palac_Obydli_*`: dům posádky v **prostřední** místnosti paláce (srub, pultová střecha, ohniště s komínem); úprava 03 odpadla; plán po etapách v kap. 0 | **staví se**: kamenné části (`Palac_Obydli_Kamen`) a základ ohniště hotové, zbývá krov, srub, krytina, vybavení, staveniště |
 | `navrh_palac_obydli.md` | dům ve východní místnosti u věže | **zavržená varianta**, jen pro srovnání |
-| `navrh_palac_kovarna.md` | `Palac_Kovarna_*`: kovárna pod přístřeškem ve východní místnosti u věže | návrh; umístění Jirka výslovně nepotvrdil |
+| `navrh_palac_kovarna.md` | `Palac_Kovarna_*`: kovárna pod přístřeškem ve východní místnosti u věže | **staví se**; přístřešek s krytinou, výheň, stěna a okap hotové, zbývá vybavení a úklid suti |
 | `navrh_brana_straz.md` | `Brana_Straz_*`, `Brana_Zataras`: strážní podesta nad oblouky východní brány, kryty z kulatiny, přístřešek z kůry, španělský jezdec | návrh; výstup na podestu určí Jirka |
 | `navrh_nadvori_stan.md` | `Nadvori_Stan`: stan pro dva na nádvoří (jen etapa 1) | podmíněný, Jirka nerozhodl, jestli ve hře bude |
 
@@ -97,10 +100,13 @@ Nemusíš číst kód. Tohle je model, ve kterém stavitel umí pracovat:
 | průlom, starší zřícení | zeď → `breaches` (`s0`, `s1`, `floor` v m od paty, `slope_l`, `slope_r`) | nepravidelné snížení koruny se šikmými boky (škody z dobývání, sedlo u komína); zapisuje se v `tools/ruin/gen_layout.py` |
 | ochrana úseku | zeď → `protect` (`s0`, `s1`, `min`) | úsek neklesne pod danou výšku (nadpraží střílny, ochoz) |
 | cílené snížení | zeď → `cap` (`s0`, `s1`, abs. výška) | rovná koruna, jako by ji někdo rozebral |
+| celá zeď zanořená do země | zeď → `z_offset` (m, záporný) | zeď se posune po ose Z jako celek i s otvory, počet řad se nemění |
+| horní řada pryč | zeď → `drop_rows` (počet řad) | koruna si nechá tvar, jen je níž (horní kameny každé vrstvy pryč); zatím nepoužito |
+| kapsa pro trám | zeď → `openings` → `kapsa` (`s`, `w`, `sill`, `h`) | uložení pozednice nebo trámu do vnitřního líce místo sloupu |
 | žlábky pro trámy | zeď → `notches` (+ `roof_clear`) | trámy uložené v koruně |
 | bourací objemy v levelu | `Ruin_Cut`, `Ruin_Keep`, `Ruin_Protect`, `Ruin_Opening:*` | ruční zásah v Unrealu |
 
-Sdílené rozměry pro 03 i 05 jsou v `tools/ruin/ostroh_spec.py` (krov u ostrohu, okno). Tak to dělej i u nových staveb, které zasahují do zříceniny: **jeden zdroj rozměrů pro obě složky**.
+Sdílené rozměry pro 03 i 05 jsou v `tools/ruin/ostroh_spec.py` (krov u ostrohu, okno) a `tools/ruin/palac_spec.py` (rám paláce, kovárna). Tak to dělej i u nových staveb, které zasahují do zříceniny: **jeden zdroj rozměrů pro obě složky**.
 
 **Dostavby (05)** mají typy:
 
@@ -110,8 +116,11 @@ Sdílené rozměry pro 03 i 05 jsou v `tools/ruin/ostroh_spec.py` (krov u ostroh
 | `fan_roof` | sloupy, příčka, trámy na korunu nebo do žlábků, krytina z prken |
 | `stone_addon` | jednořadá kamenná zeď na koruně až pod střechu, otvory s nadpražím, práh, malta |
 | `plank_floor` | podlaha na podvalech uvnitř obrysu |
+| `pult_roof` | pultová střecha: sloupy na patních kamenech, pozednice a vaznice (libovolný počet podpor), krokve hraněné nebo z kulatiny, spád po ose rámu stavby. Krytina zatím ne. |
+| `stone_fill` | zdivo z kamene rozvalin v plné tloušťce: srovnání koruny zdi na danou výšku, zazdění otvoru, nízké podezdívky s mezerami pro dveře |
+| `hearth` | ohniště nebo výheň: kamenný blok v řadách s hliněným mazem a ohništěm, boční zídky (i s otvorem), dymník a komín z knihovních meshí, výměny mezi krokvemi a závěsné tyče dymníku |
 
-Nová konstrukce, která se nevejde do žádného typu, je **nový typ**. Napiš to výslovně, protože to znamená víc práce. Typy, které návrhy z 11/2026 už předpokládají (zatím neexistují): `canvas_shelter`, `pult_roof`, `log_wall`, `hearth`, `gutter`, `wattle_wall`, `palisade`, `bark_roof`, `tent`, rozmístění props a přepínač `ETAPA` (`CHECKLIST_assets_navrhy.md`, kap. 7). Když se nová stavba do některého vejde, použij jeho pracovní jméno.
+Nová konstrukce, která se nevejde do žádného typu, je **nový typ**. Napiš to výslovně, protože to znamená víc práce. Typy, které návrhy z 11/2026 už předpokládají (zatím neexistují): `canvas_shelter`, `log_wall`, `gutter`, `wattle_wall`, `palisade`, `bark_roof`, `tent`, rozmístění props a přepínač `ETAPA` (`CHECKLIST_assets_navrhy.md`, kap. 7). Když se nová stavba do některého vejde, použij jeho pracovní jméno.
 
 Úpravy dřeva: `tar` (dehet, venkovní a masivní), `raw` (bez úpravy, vnitřní plochy), `oil` (jemná práce), `blood` (mořené krví, venkovní), `old` (staré, zašedlé), `peeled` (čerstvě loupaná kulatina, světlá).
 
@@ -182,7 +191,8 @@ Ke každému návrhu napiš, co má stavitel zkontrolovat. Nástroje už existuj
 - `run_checks.py`:
   - otvory: nad otvory nesmí chybět řada kamenů;
   - kameny bez podpory;
-  - u ostrohu průniky dřeva se zdivem, pokrytí krytinou a mezery pod střechou.
+  - u ostrohu průniky dřeva se zdivem, pokrytí krytinou a mezery pod střechou;
+  - u kovárny v paláci (`--only palac`) průniky se zříceninou, uložení sloupů a krokví, sklon, vůle komína, světlá výška, pokrytí krytinou, stěna a okap.
 - `preview3d.py`: 3D náhled bez Unrealu (pohledy zvenku a zevnitř).
 - Pro novou stavbu dopiš vlastní kritéria, například:
   - „krytina pokrývá ≥ 99,5 % půdorysu místnosti“,

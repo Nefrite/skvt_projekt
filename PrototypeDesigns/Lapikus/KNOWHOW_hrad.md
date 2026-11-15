@@ -15,7 +15,7 @@ Stav: 15. 11. 2026.
 ## 1. Zlatá pravidla
 
 1. **Zřícenina (03) a dostavby (05) jsou oddělené.** `03_ruin` je hrad po rozpadu (~1650), `05_constructions` pozdější „druhé zabydlení“, které na zřícenině stojí a nemění ji. Zásah do 03 (snížení, žlábek, průlom, vybourání) se vždy uvádí výslovně jako „vyžaduje úpravu 03“ a s částí, kterou je pak nutné přestavět (`Obvod`, `Palac`, `Ostroh`).
-2. **Jeden zdroj rozměrů.** Co potřebuje 03 i 05, je v jednom specu (`tools/ruin/ostroh_spec.py`, `tower_spec.py`; pro palác a bránu vzniknou `palac_spec.py`, `brana_spec.py`). Nikdy stejné číslo na dvou místech.
+2. **Jeden zdroj rozměrů.** Co potřebuje 03 i 05, je v jednom specu (`tools/ruin/ostroh_spec.py`, `tower_spec.py`, `palac_spec.py`; pro bránu vznikne `brana_spec.py`). Nikdy stejné číslo na dvou místech.
 3. **Ruční úpravy se nepřepisují.** `manual_edits.json` a `constructions_edits.json` vznikají přes capture z levelu. Capture vždy **před** dalším generováním.
 4. **Generovaná data se needitují ručně.** `ruin_layout.json` a `constructions.json` vznikají z generátorů (`gen_layout.py`, `gen_constructions.py`), ruční změna se při příštím generování ztratí.
 5. **Nic nevisí ve vzduchu.** Každý prvek má napsané, na čem leží (koruna, kapsa, žlábek, sloup, terén).
@@ -29,7 +29,8 @@ Stav: 15. 11. 2026.
 
 - **Předloha:** hrad Lapikus nad Plenkovickým potokem, herní rozměry asi 0,9× skutečnosti. Plošina ~67 × 25 m, jižní hrana padá 7–8 m skalní stěnou.
 - **Vrstvy:** zřícenina ~1650 (preset `1650`) → druhé zabydlení (jeden až tři lidé, jednoduché nářadí, kámen z rozvalin, místní dřevo, žádné kovové konstrukce, sklo jen výjimečně). Staré a nové musí jít od sebe poznat.
-- **Dvě etapy hry:** posádka přišla začátkem léta. Etapa 1 = hráč přichází poprvé, dům se staví, kovárna stojí, hlídka spí pod plachtou na věži. Etapa 2 = dům hotový. Zřícenina je v obou stejná, liší se jen 05 (přepínač `ETAPA`, zatím neexistuje).
+- **Dvě etapy hry:** posádka přišla začátkem léta. Etapa 1 = hráč přichází poprvé, dům se staví, kovárna stojí, hlídka spí pod plachtou na věži. Etapa 2 = dům hotový. Zřícenina je v obou stejná, liší se jen 05.
+- **Etapy = tři sady actorů** (16. 11. 2026): `base` (stojí už v etapě 1 a zůstává), `final` (dostavba), `site` (staveniště). Actor má tag `stage:<sada>`; etapa 1 = `base` + `site`, etapa 2 = `base` + `final`. Stavba se počítá jednou jako hotová, etapa 1 je výběr. Co je jednou postavené, se neskrývá a nemění (ani materiál).
 - **Pohyb postavy (Character Movement):** průchod ≥ 1,2 m; dveře aspoň 1,0 × 2,2 m; schod nejvýš ~45 cm; rampa ≤ 44°; zídka do 50 cm se dá přejít, vyšší ne.
 - **Úpravy dřeva:** `tar` (dehet, venkovní a masivní), `raw` (bez úpravy), `oil` (jemná práce), `blood` (mořené krví), `old` (zašedlé), `peeled` (čerstvě loupaná kulatina).
 - **Kulatina:** nosné a trvalé dřevo loupané, provizorní a nezpracované s kůrou.
@@ -43,7 +44,7 @@ Stav: 15. 11. 2026.
 | Terén | výška v m × 100 = světové Z v cm; landscape 252 × 252 m, střed 0, 0 |
 | Světové strany | z názvů zdí: `_S` sever, `_J` jih, `_V` východ, `_Z` západ. Ověřit z dat, nehádat. |
 | Poloha na zdi | `s` v metrech od prvního bodu zdi v `ruin_layout.json` |
-| Palác (návrhy) | `s` podél `Palac_J` od jejího prvního bodu (UE −2350 / −50), `n` kolmo k severu; vektory `s` = (0,9758; −0,2184), `n` = (−0,2189; −0,9757) |
+| Palác (návrhy, `tools/ruin/palac_spec.py` → `frame`) | `s` podél `Palac_J` od jejího prvního bodu (UE −2350 / −50), `n` kolmo k severu; vektory `s` = (0,9759; −0,2184), `n` = (−0,2184; −0,9759); líc věže s = 30,75, vnitřní líc `Palac_J` n = 0,7, `Palac_S` n = 8,8 |
 | Věž (návrhy) | `u` od J-Z rohu k východu, `v` k severu; výšky od podlahy přízemí (`VEZ_F`, Z 3150); vnitřek 1,25–9,75 m |
 | Brána (návrhy) | počátek v SZ rohu strážní věže (UE 1930 / −3107), `u` podél `Brana_S` k východu, `d` k jihu; výšky absolutně v Z |
 | Jména | zdi, stavby a parametry přesně jako v datech (`ZBudova_V`, `Ostroh_Krov`, `cap`, `notches`) |
@@ -73,6 +74,13 @@ Podrobná tabulka podle druhu změny je v `AGENT_Stavitel_hrad.md`, kap. 5. Spol
 - **Zvětralá koruna a lomové kusy jádra** mají tvar menší než svůj blok. Nic (malta, dřevo) k nim nelícuj na hranu bloku.
 - **Zarovnání na řady:** otvory a nadpraží v dostavbě se zarovnávají na řady kamenů. Malé posuny v metrech proto můžou skočit o celou řadu, výsledek ověř.
 - **Ruční data:** `ruin_layout.json` a `constructions.json` jsou generované, ruční změny v nich se ztratí.
+- **„Zeď o řadu níž“ má tři významy, nejdřív se zeptej, který platí** (15. 11. 2026, `Palac_J`: myšleno bylo zanoření, postaveno ubrání řady).
+  - Zanoření celé zdi do země: `z_offset` (m, záporný). Výška jedné řady = výška první celé řady nad terénem dané zdi (u `Palac_J` 0,31 m), pak spáry u země vypadají stejně. Posouvá i otvory, takže `sill` nových otvorů (kapsa) musí být o tolik vyšší.
+  - Ubrání horní řady: `drop_rows` (`zr_ruin/post.py` → `drop_top_rows`). Není přesné: kameny zpola přikryté sousedem zůstanou (asi pětina délky), na stupních koruny klesne zeď o dvě řady.
+  - Nikdy `raise` se záporným `dh`: posun profilu rozpadu změní i rozebírání líce, koruna klesla o 0 až 2 m podle místa.
+- **Místní snížení koruny rozpadem = `breaches`** (`floor` v m od paty před rozebíráním líce). Výsledek jde po řadách (0,3–0,4 m) a závisí na rozebírání, proto ho po změně změř (`run_checks.py --only palac` hlídá přesah komína). `breaches` ani `protect` neposouvají kameny mimo svůj úsek.
+- **Kapsa se zarovnává na řady kamene.** Trám do ní navrhuj se spodkem na spáře řad (pozednice kovárny 4,24 m), jinak vyjde kapsa o řadu vedle a trám narazí do kamene.
+- **Nový otvor `kapsa` ostatní kameny zdi nemění** (ověřeno na `Palac_J` porovnáním koruny před a po), pokud se přidá na konec seznamu otvorů.
 
 ### 5.2 Import meshí a assety v Unrealu
 
@@ -93,7 +101,13 @@ Podrobná tabulka podle druhu změny je v `AGENT_Stavitel_hrad.md`, kap. 5. Spol
 - **Rotační tělesa (`mesh_props.add_lathe`):** obrys jde zdola od osy ven, po plášti nahoru a nahoře zpět k ose. Opačné pořadí = normály dovnitř (pád: kotouč brusu, obruče, okraj koše 14. 11. 2026). Kontrola `tools/checks/check_normals.py`.
 - **Hranoly (`mesh_props.add_box`):** zaoblení hran musí být funkcí polohy (bod promítnutý na zaoblený kvádr), aby sousední stěny sdílely hranu. Posun lemu po normále každé stěny zvlášť dělal přečnívající lemy a štěrbiny – v UE to vypadalo jako vybarvené vnitřky (kovadlina, ponk, nářadí; opraveno 15. 11. 2026). `check_normals.py` u propů z prolínajících se dílů hlásí falešné poplachy – rozhoduje náhled `preview_meshes.py` (žádné trny a lemy na hranách).
 
-### 5.5 Kód
+### 5.5 Náhledy a kontroly mimo Unreal
+
+- **Náhled `preview3d.py` byl zrcadlový (opraveno 15. 11. 2026).** Unreal je levotočivý (X dopředu, Y vpravo), three.js pravotočivý. Souřadnice UE vykreslené přímo dají zrcadlový obraz: východ a západ prohozené. `render` proto převrací osu Y (středy, osy kvádrů, kamera). Náhledy vytvořené před opravou (`Stavby_ostroh_*_nahled.png`) mohou být zrcadlové. Vlastní kreslení (matplotlib, three.js) vždy ověř na něčem, co má jasnou stranu (věž je na východním konci paláce).
+- **Krytina a dřevo podél líce zříceniny:** líc není rovina, kameny (i koruny v úrovni střechy) vystupují 1–3 cm. Nech od líce mezeru aspoň 3,5 cm a ověř průnikem (`common.collisions`); krytina kovárny 0,5 cm od `Palac_J` narážela do kamenů koruny v s = 27–29 (15. 11. 2026).
+- **Patní kámen a prvek těsně u zdi:** co stojí do 10 cm od líce, kontroluj průnikem se zříceninou (`common.collisions`). Patní kámen 50 cm pod sloupem 10 cm od věže zasahoval do věže i do `Palac_J` (15. 11. 2026), proto má 36 cm.
+
+### 5.6 Kód
 
 - **Kód:** komentáře a identifikátory bez diakritiky (UE Python konzole), dokumentace (`*.md`) česky s diakritikou.
 
@@ -126,8 +140,16 @@ Postup, který se osvědčil u poškozených bounds (15. 11. 2026):
 | 15. 11. 2026 | meshe se importují přes dočasný asset, cíl s `bDoFastBuild` se maže, vlastní klíč cache (`BUILD_CFG`) | kap. 5.2 |
 | 15. 11. 2026 | dva celkové buildy: `build_normal.py` (aditivní) a `build_fullscope.py` (oprava); fullscope materiály ve výchozím stavu nemaže | ruční ladění materiálů se nemá ztratit |
 | 15. 11. 2026 | level je celý generovaný skriptem, skripty můžou počítat s prázdným projektem | Jirka může cokoli generovaného ručně smazat |
+| 15. 11. 2026 | **kovárna ve východní místnosti paláce potvrzena**; staví se ve 4 krocích (přístřešek bez krytiny → výheň a krytina → stěna a okap → vybavení) | po každém kroku náhled a kontrola v UE |
+| 15. 11. 2026 | kovárna: západní linie s = 25,85 (ne 25,5), komín s = 30,0; n = 1,35 (mezi krokvemi n = 0,9 a 1,8), žlab do sudu bez svodu | stěna končila ve výklenku střílny, komín procházel pozednicí, svod by přehradil dvorek (`navrh_palac_kovarna.md`) |
+| 15. 11. 2026 | **výheň kovárny je v koutě** mezi `Palac_J` a věží (ne u věže dál od zdi); celá `Palac_J` zanořená o řadu kamene do země (03 `z_offset` −0,31 m, počet řad se nemění) a u věže rozebraná (`breaches`), aby ji komín přesahoval; rohový sloup odpadl, východní pozednice je v kapse `Palac_J`; komín mezi krokvemi n = 0,9 a 1,8 | rozhodl Jirka; výklenek střílny s = 29 vedle výhně zůstává volný jako manipulační prostor |
+| 15. 11. 2026 | kovárna: krokve přesahují západní stěnu o 0,9 m, hranice dřeva je zvenku pod přesahem; dymník visí na závěsných tyčích z výměn mezi krokvemi | dřevo má být kryté a nezabírat místo v kovárně; nic nevisí ve vzduchu |
+| 15. 11. 2026 | krytina `pult_roof` má vlastní kód (stejná skladba jako u ostrohu): latě přes celou šířku, prkna od okrajů prostupu komína ven; okapová hrana 10 cm za konci krokví nad osou žlabu; výšku žlabu bere `gutter` z krytiny střechy | krokve jsou rovnoběžné, dělení na klínová pole krovu u ostrohu tu nemá smysl; žlab se posune se střechou |
+| 16. 11. 2026 | **dům posádky se staví po etapách** podle `navrh_palac_obydli_stred.md` kap. 0: tři sady actorů s anglickými jmény, přepnutí v Blueprintu podle tagu; dřevo surové v obou etapách (dehtování možná později); ohniště má v etapě 1 celý kamenný základ, studené; dveře a okenice otevřené; žebříky jen kulisa; sklep se neřeší; ladí se nejdřív hotový stav | hráč domem jen prochází, etapy dávají dojem času |
+| 16. 11. 2026 | úprava 03 u komína domu a dozdívka koruny `Palac_J` odpadají | po zanoření zdi o 0,31 m je koruna u komína 4,4–4,8 m a všude nad krytinou |
+| 15. 11. 2026 | typy `pult_roof`, `hearth`, `gutter` se píšou obecně (i pro dům); `ETAPA`, saze, udusaná hlína, žhavé uhlí a VFX ohně se s kovárnou nedělají | kovárna stojí v obou etapách; okno věže nad střechou se neřeší |
 
-**Nerozhodnuto** (neber jako dané): umístění kovárny ve východní místnosti (jen předpoklad), jestli bude stan na nádvoří, přiřazení kůra / loupané u jednotlivých staveb, výstup na podestu brány, přepínání etap, použitelnost žebříků, poloha cisterny. Aktuální seznam: `CHECKLIST_assets_navrhy.md` kap. 9 a `AGENT_GameDesign_hrad.md` kap. 6.
+**Nerozhodnuto** (neber jako dané): jestli bude stan na nádvoří, přiřazení kůra / loupané u jednotlivých staveb, výstup na podestu brány, poloha cisterny. Aktuální seznam: `CHECKLIST_assets_navrhy.md` kap. 9 a `AGENT_GameDesign_hrad.md` kap. 6.
 
 ## 8. Kde co je
 

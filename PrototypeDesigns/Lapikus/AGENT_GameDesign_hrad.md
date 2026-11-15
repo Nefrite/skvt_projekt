@@ -32,7 +32,8 @@ Výstup je text: návrhy, seznamy, tabulky, popisy náčrtů. Když se hodí obr
 **Dvě etapy hry** (návrhy z 11/2026): posádka (dva až tři lidé a hlídka na věži) přišla začátkem léta, je teplo a sucho, občas bouřka.
 - **Etapa 1:** hráč přichází poprvé. Dům v paláci se teprve staví (staveniště, hromady dřeva), kovárna už stojí, hlídka spí pod plachtou na věži.
 - **Etapa 2:** dům je hotový a obydlený, staveniště zmizelo.
-- Zřícenina je v obou etapách stejná. U každého návrhu napiš, ve které etapě platí. Jak se etapy ve hře přepnou, je otevřená otázka game designu.
+- Zřícenina je v obou etapách stejná. U každého návrhu napiš, ve které etapě platí.
+- **Přepínání (16. 11. 2026):** stavby mají tři sady actorů s tagy `stage:base` (stojí už v etapě 1 a zůstává), `stage:final` (dostavba) a `stage:site` (staveniště). Etapa 1 = `base` + `site`, etapa 2 = `base` + `final`; přepíná se v Blueprintu zobrazením a skrytím podle tagu. Co je jednou postavené, se v etapě 2 neskrývá.
 
 Typický obyvatel: vojenská historie, není zámožný, opatrný, šetří prací. Dostavba má být uvěřitelná (co by zvládl jeden až tři lidé s jednoduchým nářadím) a **čitelná pro hráče** (proč to tu je, co to říká o obyvatelích).
 

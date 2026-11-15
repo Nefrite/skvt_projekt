@@ -6,12 +6,21 @@ Stavi zvlast od zriceniny (03_ruin/blocks/build_ruin_blocks.py), takze se da lad
   - krov u ostrohu: sloupy, pricka (hreben), vejir tramu a tramy dokola pricky, krytina (constructions.json -> frames)
   - kamenne dostavby z kamene rozvalin (constructions.json -> addons): jednoradove zdi na korunach zriceniny az pod strechu
   - prkenne podlahy na podvalech (constructions.json -> addons, typ plank_floor)
+  - pultove strechy na sloupech (constructions.json -> frames, typ pult_roof): pristresek kovarny v palaci
+  - ohniste / vyhne (constructions.json -> addons, typ hearth): kamenny stul, zidka, dymnik a komin z prouti a hliny
+  - zdivo z kamene rozvalin (constructions.json -> addons, typ stone_fill): srovnani korun zdi, zazdeni otvoru, podezdivky
+  - steny z prouti a hliny (addons, typ wattle_wall): dilce mezi sloupy, kuly na spojich
+  - okapy (addons, typ gutter): vydlabany zlab na rozsochach pod okapem, sud na destovou vodu (samostatny actor)
+  - etapy: stavba se "stage" v datech stavi actory po sadach (base / final / site) s tagem stage:<sada> (zrlib/config.py)
   - prah dveri v dostavbe: samostatny actor (soucast Ostroh_Dostavba), vyska se doladi rucne a ulozi pres capture
   - volna sut na zemi u zdi (samostatne actory, lze posouvat a mazat); v obyvane casti u ostrohu uklizena
 Zricenina zustava ve 03: zdi, otvory, kapsy pro tramy, kamenna dlazba. Dostavby ji nemeni, jen na ni stoji.
 
 Pouziti v UE: Tools -> Execute Python Script ->
-  - stavby/<Stavba>.py      jen jedna stavba (Vez_Patra.py, Ostroh_Krov.py, Ostroh_Dostavba.py, Ostroh_Podlaha.py, Sut.py) - ostatni se nesmazou ani neprestavi
+  - stavby/<Stavba>.py      jen jedna stavba (Vez_Patra.py, Ostroh_Krov.py, Ostroh_Dostavba.py, Ostroh_Podlaha.py,
+                            Palac_Kovarna_Pristresek.py, Palac_Kovarna_Vyhen.py, Palac_Kovarna_Stena.py, Palac_Kovarna_Okap.py,
+                            Palac_Obydli_Kamen.py,
+                            Palac_Obydli_Ohniste.py, Sut.py) - ostatni se nesmazou ani neprestavi
   - build_constructions.py  vsechny stavby najednou
   - ../build_normal.py      cely hrad (03) + vsechny stavby; ../build_fullscope.py = oprava (smaze generovane actory a meshe, vse znovu)
   - MODE = "build"   postavit (smaze jen sve actory s tagem Zricenina_Stavby)
@@ -26,7 +35,9 @@ Mimo UE: python build_constructions.py  -> statistika
 Kod (od 11/2026):
   build_constructions.py   tento soubor: nastaveni, data, registr typu staveb (TYPES), build / capture / freeze v Unrealu
   zr_stavby/               typy staveb: vez (drevo ve vezi), krov (krov u ostrohu + spolecna geometrie),
-                           dostavba (kamenna dostavba), podlaha (prkenna podlaha)
+                           dostavba (kamenna dostavba), podlaha (prkenna podlaha), pult (pultova strecha na sloupech),
+                           ohniste (ohniste / vyhen s dymnikem a kominem), zdivo (zdivo z kamene rozvalin),
+                           stena (stena z prouti), okap (zlab, rozsochy, sud)
   ../zrlib/                sdilena knihovna s 03 (config = materialy, drevo, fyzika; geom, stones, ue_assets, ue_actors)
 Nova stavba: modul v zr_stavby s funkci build, zaznam v TYPES (+ REQUIRED), polozka v constructions.json,
 kopie launcheru ve stavby/ se jmenem stavby.
@@ -48,21 +59,22 @@ def _boot():
         for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_stavby")]: del sys.modules[k]
 _boot()
 
-from zrlib.config import CONSTR_TAG, CUBE_MESH
+from zrlib.config import CONSTR_TAG, CUBE_MESH, STAGE_TAG, STAGES
 from zrlib.geom import inside_poly
 from zrlib import pipeline, ue_assets, ue_actors, validate
-from zr_stavby import vez, krov, dostavba, podlaha
+from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap
 from zr_stavby.krov import ostroh_geom, roof_under, build_fan_roof, _pt          # noqa: F401  (pro nastroje)
 from zr_stavby.dostavba import build_stone_addon, addon_polygon                 # noqa: F401
 from zr_stavby.podlaha import build_plank_floor                                 # noqa: F401
 from zr_stavby.vez import build_tower_floor                                     # noqa: F401
+from zr_stavby.pult import build_pult_roof, pult_geom                          # noqa: F401
 
 # ------------------------------------------------------------------ nastaveni
 MODE = "build"
 DATA_PATH = None                         # None = constructions.json vedle skriptu
 RUIN_DIR = None                          # None = ../03_ruin/blocks (vedle slozky 05_constructions)
 ONLY = None                              # napr. ["Vez_Patra"], ["Ostroh_Dostavba"] nebo ["Sut"] = postavit jen tuto cast
-ROOF_COVER = True                        # krov u ostrohu s krytinou (late, prkna, listy, hreben); False = jen sloupy, pricka a tramy
+ROOF_COVER = True                        # krov u ostrohu a pultove strechy s krytinou (late, prkna, listy, hreben, lemovani); False = jen kostra
 RUBBLE_PHYSICS = True                    # kameny suti maji trvalou fyziku (hmotnost podle objemu); False = staticke
 
 # ------------------------------------------------------------------ typy staveb
@@ -74,6 +86,11 @@ TYPES = {
     "stone_addon": lambda s, c: dostavba.build_stone_addon(s, c["P"], c["walls"], c["terr"], c["data"].get("frames", []), c["geom"],
                                                    addons=c["data"].get("addons", [])),
     "plank_floor": lambda s, c: podlaha.build_plank_floor(s, c["P"], c["walls"], c["terr"]),
+    "pult_roof":   lambda s, c: pult.build_pult_roof(s, c["P"], c["walls"], c["terr"], c["geom"], cover=ROOF_COVER),
+    "hearth":      lambda s, c: ohniste.build_hearth(s, c["terr"], c["data"].get("frames", []), c["geom"]),
+    "stone_fill":  lambda s, c: zdivo.build_stone_fill(s, c["walls"], c["terr"]),
+    "wattle_wall": lambda s, c: stena.build_wattle_wall(s, c["terr"]),
+    "gutter":      lambda s, c: okap.build_gutter(s, c["terr"], c["data"].get("frames", []), c["geom"]),
 }
 # povinne klice dat (kontrola se srozumitelnou chybou misto KeyError uprostred vypoctu)
 REQUIRED = {
@@ -81,6 +98,11 @@ REQUIRED = {
     "fan_roof":    ["name", "posts", "beams", "notches", "wall", "wall_t", "beam", "rise", "crossbeam", "n", "u"],
     "stone_addon": ["name", "roof", "walls"],
     "plank_floor": ["name", "outline", "u", "n"],
+    "pult_roof":   ["name", "origin", "u", "v", "supports", "rafters"],
+    "hearth":      ["name", "origin", "u", "v", "table"],
+    "stone_fill":  ["name", "origin", "u", "v", "parts"],
+    "wattle_wall": ["name", "origin", "u", "v", "a", "c", "h", "t"],
+    "gutter":      ["name", "origin", "u", "v", "roof", "a", "c", "d"],
 }
 SECTIONS = (("floors", "tower_floor"), ("frames", None), ("addons", None))   # sekce constructions.json a vychozi typ
 
@@ -136,6 +158,9 @@ def compute(R, data, removed=(), moved=None, volumes=None):
             if typ not in TYPES: continue
             validate.require(spec, REQUIRED.get(typ, []), "constructions.json -> %s -> %s (%s)" % (sec, spec.get("name"), typ))
             st = TYPES[typ](spec, ctx); R.assign_meshes(st)
+            if spec.get("stage"):                                  # stavba s etapami: dilce bez vlastni sady patri do sady stavby
+                if spec["stage"] not in STAGES: raise ValueError("%s: neznama sada etapy %s (STAGES v zrlib/config.py)" % (spec["name"], spec["stage"]))
+                for s in st: s.stage = s.stage or spec["stage"]
             st = [s for s in st if s.id not in removed]
             # loose = samostatne actory (rucne posunute se ulozi pres capture), jinak Instanced Static Mesh
             out[spec["name"]] = dict(folder=spec.get("folder", "Stavby"), stones=[s for s in st if not s.loose], loose=[s for s in st if s.loose])
@@ -151,8 +176,9 @@ def compute(R, data, removed=(), moved=None, volumes=None):
 
 def _rubble(R, data, rb, walls, P, terr, removed):
     """volna sut u zdi (samostatne actory s fyzikou); v obyvanych castech (dostavby, podlahy) uklizena"""
-    clear = [p for p in (addon_polygon(ad) for ad in data.get("addons", []) if ad.get("clear_rubble")) if p]
+    clear = [p for p in (addon_polygon(ad) for ad in data.get("addons", []) if ad.get("clear_rubble") and ad.get("type") == "stone_addon") if p]
     clear += [[tuple(q) for q in ad["outline"]] for ad in data.get("addons", []) if ad.get("type") == "plank_floor"]   # na podlaze sut neni
+    clear += [[tuple(q) for q in ad["clear_poly"]] for sec in ("frames", "addons") for ad in data.get(sec, []) if ad.get("clear_poly")]   # uklizeny pudorys stavby
     out = {}
     for name, r in R.make_rubble(walls, P, terr, removed).items():
         sts = [s for s in r["stones"] if not any(inside_poly(p, s.x, s.y) for p in clear)]
@@ -164,7 +190,8 @@ def _rubble(R, data, rb, walls, P, terr, removed):
 
 # ------------------------------------------------------------------ Unreal
 CNAME = {"wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej", "wood_blood": "Drevo_Krev",
-         "wood_old": "Drevo_Stare", "wood_peeled": "Drevo_Loupane", "floor": "Podlaha", "face": "Kamen", "core": "Malta", "frame": "Kvadr"}
+         "wood_old": "Drevo_Stare", "wood_peeled": "Drevo_Loupane", "floor": "Podlaha", "face": "Kamen", "core": "Malta", "frame": "Kvadr",
+         "daub": "Mazanina", "charcoal": "Uhli"}
 
 
 def build_in_unreal():
@@ -179,12 +206,15 @@ def build_in_unreal():
         ue_actors.destroy_tagged(eas, tag, lambda a: not ONLY or ue_actors.tag_value(a, "stavba:") in ONLY)
         for name, g in groups.items():
             st_tag = "stavba:" + g.get("stavba", name)
-            bycat = {}
-            for s in g["stones"]: bycat.setdefault(s.cat, []).append(s)
-            for cat, sts in sorted(bycat.items()):
-                n += ue_actors.place_ism(unreal, eas, "%s_%s" % (name, CNAME.get(cat, cat)), g["folder"], sts, cube, meshes, mats.get(cat), tag, [st_tag])
+            bycat = {}                                              # actor = material x sada etapy (prepinani etap podle tagu stage:<sada>)
+            for s in g["stones"]: bycat.setdefault((s.cat, s.stage or ""), []).append(s)
+            for (cat, stage), sts in sorted(bycat.items()):
+                label = "%s_%s%s" % (name, CNAME.get(cat, cat), "_" + stage.capitalize() if stage else "")
+                n += ue_actors.place_ism(unreal, eas, label, g["folder"], sts, cube, meshes, mats.get(cat), tag,
+                                         [st_tag] + ([STAGE_TAG + stage] if stage else []))
             for s in g["loose"]:
-                act = ue_actors.spawn_loose(unreal, eas, s, cube, meshes, [tag, "RuinStone", "id:" + s.id, st_tag], g["folder"], mats.get(s.cat))
+                act = ue_actors.spawn_loose(unreal, eas, s, cube, meshes, [tag, "RuinStone", "id:" + s.id, st_tag] + ([STAGE_TAG + s.stage] if s.stage else []),
+                                            g["folder"], mats.get(s.cat))
                 if act is None: continue
                 if RUBBLE_PHYSICS and g.get("physics"):                     # fyzika jen u suti
                     ue_assets.stone_physics(unreal, act, s, asleep=s.id in moved)

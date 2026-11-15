@@ -14,7 +14,7 @@ from zrlib.geom import interp
 from zrlib.stones import Stone
 
 
-from .post import cut_notches, roof_clear, rough_core, mark_crown
+from .post import cut_notches, roof_clear, rough_core, mark_crown, drop_top_rows
 from types import SimpleNamespace
 
 
@@ -467,6 +467,8 @@ def build_frames(w, stones):
 def finish_wall(w, stones, removed):
     """dodatecne upravy kamenu zdi -> (kameny, stavy otvoru, delka)"""
     wd, P, shift, seg, L, states, T, face_d, core_w = w.wd, w.P, w.shift, w.seg, w.L, w.states, w.T, w.face_d, w.core_w
+    # cela zed o radu (rady) niz: horni kameny kazde vrstvy pryc (drop_rows v datech zdi)
+    if wd.get("drop_rows"): stones = drop_top_rows(stones, wd["drop_rows"])
     # odkryte jadro: kde chybi lic, rozpadne se jadro na lomove kameny ruzne zapustene (ne hladka tmava stena s ostrou hranou)
     if P.get("CORE_ROUGH", True): stones = rough_core(stones, wd, P, face_d, core_w, T, removed)
     # zlabky v korune pro tramy (dodatecne vysekane): kameny horni rady v miste zlabku o d nizsi

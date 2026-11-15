@@ -152,6 +152,28 @@ def rough_core(stones, wd, P, face_d, core_w, T, removed=()):
     return out
 
 
+def drop_top_rows(stones, n=1):
+    """cela zed o n rad kamene niz (pozdejsi rozebrani koruny): v kazde vrstve (lic, jadro, lic) zmizi kameny, na kterych
+    ve stejne vrstve nic nelezi (odkryte aspon z poloviny delky). Tvar koruny zustava, jen je o radu niz. Osteni, nadprazi
+    a narozni kvadry (bez span) zustavaji."""
+    for _ in range(int(n)):
+        lay = lambda s: int(s.id.split("|")[2]) if s.id.count("|") >= 3 else 0
+        body = [s for s in stones if s.span and s.cat in ("face", "core")]
+        bylay = {}
+        for s in body: bylay.setdefault(lay(s), []).append(s)
+        gone = set()
+        for s in body:
+            top = s.z + s.sz / 2; L = s.span[1] - s.span[0]
+            iv = sorted((max(s.span[0], b.span[0]), min(s.span[1], b.span[1])) for b in bylay[lay(s)]
+                        if b is not s and b.z - b.sz / 2 > top - 3 and b.span[1] > s.span[0] and b.span[0] < s.span[1])
+            cov = 0.0; x = s.span[0]                                  # delka zakryta cimkoli vys ve stejne vrstve
+            for a, b in iv:
+                if b > x: cov += b - max(a, x); x = b
+            if cov < 0.5 * L: gone.add(id(s))
+        stones = [s for s in stones if id(s) not in gone]
+    return stones
+
+
 def mark_crown(stones):
     """koruna: odkryte horni kameny (nic na nich nelezi ve stejne vrstve) -> kategorie crown (zvetrale tvary, material koruny)"""
     byz = {}
