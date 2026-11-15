@@ -13,9 +13,9 @@ import numpy as np
 def load(path):
     V, F, S = [], [], []; cur = None
     for ln in open(path):
-        if ln.startswith("v "): x, y, z = map(float, ln.split()[1:4]); V.append((x, -z, y))
+        if ln.startswith("v "): x, y, z = map(float, ln.split()[1:4]); V.append((x, -y, z))      # OBJ -> osy UE (mesh_common.obj_v)
         elif ln.startswith("usemtl"): cur = ln.split()[1]
-        elif ln.startswith("f "): F.append([int(t.split("/")[0]) - 1 for t in ln.split()[1:4]]); S.append(cur)
+        elif ln.startswith("f "): F.append([int(t.split("/")[0]) - 1 for t in ln.split()[1:4]][::-1]); S.append(cur)   # trojuhelnik obracene (mesh_common.obj_f)
     return np.array(V), np.array(F), np.array(S, dtype=object)
 
 

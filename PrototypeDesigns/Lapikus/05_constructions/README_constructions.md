@@ -208,6 +208,12 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | `broadaxe` | `SM_RuinBroadaxe` (širočina: ostří ~27 cm s bradou k toporu, broušená jen z líce, plynulý náběh z oka do čepele, toporo 70 cm vyhnuté od rubu, prochází okem) | 7 × 72 × 25 | Wood, EndGrain, IronClean |
 | `axe` | `SM_RuinAxe` (sekera na štípání: klínovitá hlava s týlem, ostří ~11 cm, čepel vychází z oka, toporo 75 cm prochází okem) | 5 × 77 × 19 | Wood, EndGrain, IronClean |
 | `crosscut_saw` | `SM_RuinCrosscutSaw` (dvoumužná pila: list 152 cm s břichem a zuby, ke koncům užší, svislé rukojeti 3 cm od konců listu) | 151 × 4 × 28 | Wood, EndGrain, IronClean |
+| `bed`, `bed_folded` | `SM_RuinBed` (lůžko: nohy, čelo v hlavě, bočnice, laťky, sypaná sláma, houně přes slámu s převisem do stran), `SM_RuinBedFolded` (houně složená v nohách) | 200 × 87 × 62 | Wood, Straw, Wool |
+| `table` | `SM_RuinTable` (stůl: deska ze 3 prken, rozkročené nohy, luby, příčky dole) | 120 × 70 × 76 | Wood |
+| `chest` | `SM_RuinChest` (truhla: prkna, nožky, zavřené víko, železné pásy, závěs s okem na zámek, držadla) | 95 × 55 × 51 | Wood, Iron |
+| `shelf` | `SM_RuinShelf` (police na osobní věci, stojí u zdi stranou +Y: 2 bočnice, 3 desky, zadní lišta) | 100 × 28 × 90 | Wood |
+| `door` | `SM_RuinDoor` (dveře 1,0 × 2,2 m: 4 prkna, zezadu 3 svlaky a vzpěry Z, na líci (−Y) pásové závěsy na ose X = −50, kruh, zástrčka) | 102 × 9 × 219 | Wood, Iron |
+| `shutter` | `SM_RuinShutter` (okenice 60 × 60: 3 prkna, 2 svlaky, závěsy na ose X = −30, kolík; pro okénko 50 × 50 škálovat 0,83) | 61 × 8 × 59 | Wood, EndGrain, Iron |
 | `nail_header` | `SM_RuinNailHeader` | 25 × 6 × 1,5 | IronClean |
 | `coal_box` | `SM_RuinCoalBox` (truhlík s uhlím: ~420 kousků na tmavém podkladu, bez víka) | 81 × 121 × 80 | Wood, Charcoal |
 | `coal_box_lid` | `SM_RuinCoalBoxLid` (volné víko truhlíku bez pantů: 3 prkna, 2 lajsny zespodu, držadlo; položit bokem nebo na truhlík) | 80 × 120 × 11 | Wood |
@@ -216,6 +222,7 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | `basket` | `SM_RuinBasket` | Ø 44 × 37 | Wattle |
 | `ladder` | `SM_RuinLadder` (tyče s kůrou, příčle po 30 cm) | 450 × 54 × 8 | Wood, EndGrain, Bark |
 
+- Materiály lůžka: `MI_RuinStraw` (sláma, textura `T_RuinStraw`), `MI_RuinWool` (houně z nebarvené vlny, `T_RuinWool`); sloty Straw, Wool.
 - Materiály props: dvě železa – `MI_RuinIron` (slot Iron, s patinou tlumeně hnědé rzi, `Metallic` 0,5: kování, obruče, osy, pruty) a `MI_RuinIronClean` (slot IronClean, bez rzi, `Metallic` 0,8: nářadí a kovadlina); barva v textuře `T_RuinIron` / `T_RuinIronClean` (`TEX_VERSION` 4, `MAT_VERSION` 10, `MAT_RESET` iron 10), `MI_RuinLeather`, `MI_RuinSandstone` (StarterContent), `MI_RuinWater`, `MI_RuinCharcoal` (černou barvu dává tint, textura je jen světlý detail). Parametr `Metallic` je nově v `M_RuinStone` (výchozí 0, kámen a dřevo beze změny; `MAT_VERSION` 8 → master se při buildu přestaví).
 - Náhled: `05_constructions\Props_kovarna_nahled.png`, textury `Props_textury_nahled.png`.
 

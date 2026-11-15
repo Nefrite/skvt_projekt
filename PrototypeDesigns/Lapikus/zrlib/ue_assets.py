@@ -1,7 +1,7 @@
 """Unreal: materialy (M_RuinStone, MI_*), import meshi kamenu a dreva, transformace instanci, fyzika"""
 import os
 from .config import ASHLAR_MESH, DRESSED_FRAMES, MAT_CORE, MAT_CROWN, MAT_DIR, MAT_FACE, MAT_FRAME, MAT_LOOK, MAT_RESET, MAT_TOP, MAT_VERSION, MAT_WOOD, MAT_WOOD_MI, MESH_DIRS, MESH_ROOT, MESH_SRC, STONE_DIR, STONE_MESH_VERSION, STONE_NOMINAL, STONE_OVERSIZE, STONE_PHYSICS, STONE_RATIOS, STONE_VARIANTS, TEXTURES, USE_STONE_MESHES, WOOD_MESHES, WOOD_MI, WOOD_NOMINAL
-from .config import CLOTH_MACRO, CLOTH_MI, CLOTH_VERSION, MESH_FLIP, LIB_MESHES, ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
+from .config import CLOTH_MACRO, CLOTH_MI, CLOTH_VERSION, MESH_AXES, LIB_MESHES, ROUND_MESHES, SLOT_MI, TEX_DIR, TEX_FILES, TEX_SRC, TEX_VERSION
 from .stones import stone_mass_kg
 
 
@@ -309,6 +309,92 @@ def _needed_meshes():
     names += [("%s_%s" % (k, v), cat) for k, (_, vs, cat, _s, _c) in LIB_MESHES.items() for v in vs]
     return names + [(ASHLAR_MESH, "stone")]
 
+_OBJ_BOX = {}          # jmeno meshe -> (min, max) z OBJ v osach UE (mesh_common.obj_v: UE = (x, -y, z) z OBJ)
+
+def _obj_box(path):
+    """bounding box OBJ v osach UE, nebo None"""
+    mn = [1e30] * 3; mx = [-1e30] * 3
+    try:
+        with open(path) as f:
+            for ln in f:
+                if ln.startswith("v "):
+                    x, y, z = (float(t) for t in ln.split()[1:4]); p = (x, -y, z)
+                    for i in range(3):
+                        if p[i] < mn[i]: mn[i] = p[i]
+                        if p[i] > mx[i]: mx[i] = p[i]
+    except (OSError, ValueError): return None
+    return (mn, mx) if mx[0] >= mn[0] else None
+
+def _bbox_ok(bb):
+    """bounding box assetu je pouzitelny (ne NaN, nenulovy); po hromadnem importu ho UE obcas vrati s NaN"""
+    import math
+    try: v = [float(q) for q in (bb.min.x, bb.min.y, bb.min.z, bb.max.x, bb.max.y, bb.max.z)]
+    except Exception: return False
+    return all(math.isfinite(q) for q in v) and all(v[i + 3] - v[i] > 1e-3 for i in range(3))
+
+IMPORT_TMP = MESH_ROOT + "/_Import"      # docasna slozka importu (po zpracovani se smaze)
+# nastaveni buildu ciloveho assetu = klic cache (DDC). min_lightmap_resolution 80 pridano 15. 11. 2026 (MESH_AXES 10):
+# pod klicem s predchozimi dvema polozkami uz v cache lezi poskozene zaznamy (stavely je assety s bDoFastBuild)
+BUILD_CFG = {"use_high_precision_tangent_basis": True, "use_full_precision_u_vs": True, "min_lightmap_resolution": 80}
+FAST_FLAG = b"bDoFastBuild"
+
+def _has_fast_flag(unreal, asset_path):
+    """Ma ulozeny asset priznak bDoFastBuild? Python ho nevidi, hleda se jako text v .uasset (jmeno vlastnosti se
+    uklada jen pri nevychozi hodnote = True). None = soubor neni. Mesh s priznakem UE stavi vzdy fast buildem
+    (bez Nanite, neinicializovane bounds -> nahodne NaN) a build ani ulozeni ho nezrusi; jedina cesta je asset
+    smazat a vytvorit znovu (test tools/checks/UE_Test_Formatu_OBJ.py, MODE "pricina", 15. 11. 2026)."""
+    try:
+        cd = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_content_dir())
+        with open(os.path.join(cd, asset_path[len("/Game/"):].split(".")[0] + ".uasset"), "rb") as f:
+            return FAST_FLAG in f.read()
+    except Exception: return None
+
+def _import_one(unreal, sms, task, n, cat):
+    """Import jednoho OBJ do ciloveho assetu bez priznaku bDoFastBuild a s cistym klicem cache.
+    Chyba UE: mesh s priznakem bDoFastBuild (forum UE "Meshes built from Interchange have uninitialized bounds") se
+    stavi fast buildem a bounds vykreslovacich dat zustanou neinicializovane -> nahodne NaN: "found NaN in Bounds",
+    InverseFast / precision loss, prazdny nahled. Python to nepozna (get_bounds je v poradku), priznak build ani
+    ulozeni nezrusi a UE si vysledek ulozi do cache (DDC) pod klicem z geometrie a nastaveni buildu - dalsi build
+    se stejnym klicem (i v cistem assetu) vezme poskozena data znovu.
+    Proto: OBJ se naimportuje do docasneho assetu (IMPORT_TMP; cerstvy import priznak nema), existujici cil
+    s priznakem se smaze, cil vznikne kopii docasneho assetu, postavi se z jeho mesh description s fast_build=False
+    a pak s nastavenim BUILD_CFG (klic cache, pod kterym se nikdy fast nestavelo).
+    Vrati (StaticMesh nebo None, chyba nebo None)."""
+    eal = unreal.EditorAssetLibrary
+    unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+    tp = _asset_path(IMPORT_TMP, n)
+    if not eal.does_asset_exist(tp):        # Interchange obcas pojmenuje asset jinak (podle objektu v OBJ)
+        hits = [a for a in eal.list_assets(IMPORT_TMP, recursive=True) if a.split(".")[-1].startswith(n)] \
+            if eal.does_directory_exist(IMPORT_TMP) else []
+        if not hits: return None, "import se nepovedl"
+        tp = hits[0]
+    tmp = unreal.load_asset(tp)
+    dp = _asset_path(mesh_dir(cat), n)
+    try:
+        if eal.does_asset_exist(dp) and _has_fast_flag(unreal, dp):
+            eal.delete_asset(dp)                             # priznak nejde zrusit -> novy asset (instance v levelu se
+            if eal.does_asset_exist(dp): return None, "asset s bDoFastBuild nejde smazat"    # po buildu postavi znovu)
+        if not eal.does_asset_exist(dp):
+            eal.duplicate_asset(tp, "%s/%s" % (mesh_dir(cat), n))
+        sm = unreal.load_asset(dp)
+        desc = tmp.get_static_mesh_description(0)
+        done = False
+        for args, kw in ((([desc],), {"build_simple_collision": False, "fast_build": False}), (([desc], False, False), {})):
+            try:
+                sm.build_from_static_mesh_descriptions(*args, **kw); done = True; break
+            except TypeError: continue                       # jina signatura
+        if not done: return sm, "build z mesh description nejde"
+        if sms:
+            bs = sms.get_lod_build_settings(sm, 0)
+            for k, v in BUILD_CFG.items(): bs.set_editor_property(k, v)   # chyba = neznama vlastnost -> mesh mezi "failed"
+            sms.set_lod_build_settings(sm, 0, bs)             # radny build s klicem cache, ktery fast build nezna
+        return sm, None
+    except Exception as ex:
+        return unreal.load_asset(dp) if eal.does_asset_exist(dp) else None, str(ex)
+    finally:
+        try: eal.delete_asset(tp)
+        except Exception: pass
+
 def ensure_stone_meshes(unreal, mesh_src):
     """Nacte knihovni meshe (kameny, drevo) ze slozek MESH_ROOT/<MESH_DIRS[kategorie]>; chybejici naimportuje
     z mesh_src/<kategorie>/*.obj (box kolize + Nanite). Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou.
@@ -321,25 +407,52 @@ def ensure_stone_meshes(unreal, mesh_src):
     for n, cat in need:
         pth = _asset_path(mesh_dir(cat), n)
         if not eal.does_asset_exist(pth): missing.append((n, cat)); continue
-        if want(n) and _ver(eal, unreal.load_asset(pth), "RuinStoneVersion") < want(n): missing.append((n, cat))   # novejsi OBJ -> znovu
+        a = unreal.load_asset(pth)
+        if (want(n) and _ver(eal, a, "RuinStoneVersion") < want(n)) or _ver(eal, a, "RuinMeshAxes") < MESH_AXES \
+                or (isinstance(a, unreal.StaticMesh) and not _bbox_ok(a.get_bounding_box())) or _has_fast_flag(unreal, pth):
+            missing.append((n, cat))                     # novejsi OBJ, stary zapis os, vadne bounds nebo bDoFastBuild -> znovu
     src = mesh_src
+    for n, cat in need:                                  # rozmery z OBJ: nezavisle na tom, co UE vrati po importu
+        b = _obj_box(os.path.join(src, cat, n + ".obj"))
+        if b: _OBJ_BOX[n] = b
     tasks = []
     for n, cat in missing:
         f = os.path.join(src, cat, n + ".obj")
         if not os.path.exists(f): continue
         t = unreal.AssetImportTask()
-        t.set_editor_property("filename", f); t.set_editor_property("destination_path", mesh_dir(cat))
+        t.set_editor_property("filename", f); t.set_editor_property("destination_path", IMPORT_TMP)
         t.set_editor_property("destination_name", n)
         t.set_editor_property("automated", True); t.set_editor_property("replace_existing", True)
-        t.set_editor_property("save", True)
-        tasks.append(t)
-    if tasks:
-        unreal.log("Ruin: importuji %d meshu z %s" % (len(tasks), src))
-        unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks(tasks)
-    out = {}; n_fix = 0
+        t.set_editor_property("save", False)
+        tasks.append((t, (n, cat)))
+    out = {}; n_fix = 0; bad_bounds = []; failed = []; done = set(); flagged = []
     sms = None
     try: sms = unreal.get_editor_subsystem(unreal.StaticMeshEditorSubsystem)
     except Exception: pass
+    if tasks:
+        unreal.log("Ruin: importuji %d meshu z %s (po jednom, pres %s)" % (len(tasks), src, IMPORT_TMP))
+        with unreal.ScopedSlowTask(len(tasks), "Importuji meshe zriceniny...") as task:
+            task.make_dialog(False)
+            for t, (n, cat) in tasks:
+                task.enter_progress_frame(1, "Import %s" % n)
+                sm, err = _import_one(unreal, sms, t, n, cat)
+                if err: failed.append("%s (%s)" % (n, err))
+                if sm is None: continue
+                done.add(n)
+                if sms:
+                    try:      # jednoducha kolize = kvadr (hrac nepropadne)
+                        sms.remove_collisions(sm); sms.add_simple_collisions(sm, unreal.ScriptCollisionShapeType.BOX)
+                    except Exception as ex: unreal.log_warning("Ruin: kolize %s: %s (pridej rucne Collision -> Add Box)" % (n, ex))
+                    try:
+                        ns = sm.get_editor_property("nanite_settings"); ns.set_editor_property("enabled", True)
+                        sms.set_nanite_settings(sm, ns, True)
+                    except Exception as ex: unreal.log_warning("Ruin: Nanite %s: %s (zapni rucne v meshi)" % (n, ex))
+                if want(n): eal.set_metadata_tag(sm, "RuinStoneVersion", str(want(n)))
+                eal.set_metadata_tag(sm, "RuinMeshAxes", str(MESH_AXES))
+                eal.save_loaded_asset(sm)
+        try:
+            if eal.does_directory_exist(IMPORT_TMP): eal.delete_directory(IMPORT_TMP)
+        except Exception: pass
     for n, cat in need:
         dst = mesh_dir(cat); pth = _asset_path(dst, n)
         if not eal.does_asset_exist(pth):
@@ -350,18 +463,22 @@ def ensure_stone_meshes(unreal, mesh_src):
             pth = hits[0]
         sm = unreal.load_asset(pth)
         if not isinstance(sm, unreal.StaticMesh): continue
-        if n in [t.get_editor_property("destination_name") for t in tasks] and sms:
-            try:      # jednoducha kolize = kvadr (hrac nepropadne)
-                sms.remove_collisions(sm); sms.add_simple_collisions(sm, unreal.ScriptCollisionShapeType.BOX)
-            except Exception as ex: unreal.log_warning("Ruin: kolize %s: %s (pridej rucne Collision -> Add Box)" % (n, ex))
-            try:
-                ns = sm.get_editor_property("nanite_settings"); ns.set_editor_property("enabled", True)
-                sms.set_nanite_settings(sm, ns, True)
-            except Exception as ex: unreal.log_warning("Ruin: Nanite %s: %s (zapni rucne v meshi)" % (n, ex))
-            if want(n): eal.set_metadata_tag(sm, "RuinStoneVersion", str(want(n)))
-            eal.save_loaded_asset(sm)
         if _fix_collision(unreal, sm, sms): n_fix += 1
+        if not _bbox_ok(sm.get_bounding_box()):
+            bad_bounds.append(n)
+        if _has_fast_flag(unreal, pth): flagged.append(n)
         out[n] = sm
+    if tasks:
+        unreal.log("Ruin: radny build (bez fast buildu): %d / %d meshu" % (len(done) - len([f for f in failed if f.split(" ")[0] in done]), len(tasks)))
+    if failed:
+        unreal.log_warning("Ruin: import / radny build se nepodaril u %d meshu: %s" % (len(failed), "; ".join(failed[:6])))
+    if flagged:
+        unreal.log_warning("Ruin: %d meshu ma v assetu priznak bDoFastBuild (%s%s) - UE je stavi fast buildem (nahodne NaN "
+                           "v bounds, bez Nanite). Smaz je v Content Browseru (Force Delete) a spust build znovu."
+                           % (len(flagged), ", ".join(flagged[:6]), "..." if len(flagged) > 6 else ""))
+    if bad_bounds:
+        unreal.log_warning("Ruin: %d meshu ma po importu vadne bounds (NaN): %s - rozmer se vezme z OBJ, pri pristim buildu se "
+                           "naimportuji znovu (pripadne v meshi Build / Reimport)" % (len(bad_bounds), ", ".join(bad_bounds)))
     if n_fix: unreal.log("Ruin: kolize opravena u %d meshu kamenu (jednoducha kolize misto Complex as Simple -> jde fyzika)" % n_fix)
     lost = [n for n, _ in need if n not in out]
     if lost:
@@ -396,14 +513,23 @@ def _mesh_fix(unreal, mesh, nominal):
     Vrati (Transform rotace+posun pro jednotkove meritko, extent po osach meshe, role os)."""
     key = mesh.get_path_name()
     if key in _FIX: return _FIX[key]
-    bb = mesh.get_bounding_box()
-    mn, mx = bb.min, bb.max
-    ext = [max(mx.x - mn.x, 0.01), max(mx.y - mn.y, 0.01), max(mx.z - mn.z, 0.01)]
-    c = [(mx.x + mn.x) / 2, (mx.y + mn.y) / 2, (mx.z + mn.z) / 2]
+    ob = _OBJ_BOX.get(mesh.get_name())
+    if ob:                                               # nase meshe: rozmer z OBJ (UE bounds byvaji po importu NaN)
+        (mnx, mny, mnz), (mxx, mxy, mxz) = ob
+    else:
+        bb = mesh.get_bounding_box()
+        if not _bbox_ok(bb):                             # cizi mesh bez platnych bounds: jmenovity rozmer, stred v pocatku
+            unreal.log_warning("Ruin: mesh %s nema platne bounds, pouzije se jmenovity rozmer" % key)
+            h = [v / 2.0 for v in nominal]; mnx, mny, mnz = (-h[0], -h[1], -h[2]); mxx, mxy, mxz = h
+        else:
+            mnx, mny, mnz, mxx, mxy, mxz = bb.min.x, bb.min.y, bb.min.z, bb.max.x, bb.max.y, bb.max.z
+    ext = [max(mxx - mnx, 0.01), max(mxy - mny, 0.01), max(mxz - mnz, 0.01)]
+    c = [(mxx + mnx) / 2, (mxy + mny) / 2, (mxz + mnz) / 2]
     import itertools
     em = max(ext); nm = max(nominal)
-    best = min(itertools.permutations(range(3)),
-               key=lambda pr: sum(abs(ext[i] / em - nominal[pr[i]] / nm) for i in range(3)))
+    err = lambda pr: sum(abs(ext[i] / em - nominal[pr[i]] / nm) for i in range(3))
+    best = min(itertools.permutations(range(3)), key=err)
+    if err((0, 1, 2)) <= err(best) + 0.02: best = (0, 1, 2)      # OBJ v osach UE: osy sedi, prohozeni jen u ciziho meshe
     # sloupce rotace: osa meshe i -> svetova role best[i]; liche permutace -> zrcadleni jedne osy (det = +1)
     cols = []
     for i in range(3):
@@ -421,16 +547,8 @@ def ue_rotator(unreal, s):
     Pitch a yaw se shoduji."""
     return unreal.Rotator(roll=-s.roll, pitch=s.pitch, yaw=s.yaw)
 
-def mesh_flipped(mesh_name):
-    """mesh je po importu OBJ otoceny o 180 st. a otoci se zpet (MESH_FLIP v config.py)"""
-    if not mesh_name or MESH_FLIP == "none": return False
-    if MESH_FLIP == "all": return True
-    pref = mesh_name.rsplit("_", 1)[0]
-    return pref in ROUND_MESHES or pref in LIB_MESHES
-
 def stone_transform(unreal, s, mesh, nominal):
-    """Transformace instance: mesh naskalovany presne na rozmer bloku (s.sx, s.sy, s.sz).
-    Otoceny import (mesh_flipped): mesh se nejdriv otoci o 180 st. kolem sve osy X (stred meshe je v pocatku)."""
+    """Transformace instance: mesh naskalovany presne na rozmer bloku (s.sx, s.sy, s.sz)."""
     rot, ext, role, c = _mesh_fix(unreal, mesh, nominal)
     k = STONE_OVERSIZE if s.mesh and s.cat == "face" else 1.0
     dims = [max(s.sx, 2) * k, max(s.sy, 2) * k, max(s.sz, 2) * k]
@@ -441,9 +559,6 @@ def stone_transform(unreal, s, mesh, nominal):
     st = unreal.Transform(location=unreal.Vector(s.x, s.y, s.z), rotation=ue_rotator(unreal, s),
                           scale=unreal.Vector(1, 1, 1))
     cm = unreal.MathLibrary.compose_transforms
-    if mesh_flipped(s.mesh):
-        local = cm(local, unreal.Transform(location=unreal.Vector(0, 0, 0), rotation=unreal.Rotator(roll=180.0, pitch=0.0, yaw=0.0),
-                                           scale=unreal.Vector(1, 1, 1)))
     return cm(cm(local, fix), st)
 
 def _unit(unreal, t):
@@ -480,7 +595,7 @@ def mesh_slots(mesh_name):
 def is_multi_slot(mesh_name):
     return mesh_slots(mesh_name) is not None
 
-_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "wood")
+_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "straw", "wool", "wood")
 
 def apply_materials(unreal, comp, mesh, material, slots=None):
     """material na komponentu meshe. slots = poradi slotu v OBJ (mesh_slots) nebo None (jeden slot = material dilce).

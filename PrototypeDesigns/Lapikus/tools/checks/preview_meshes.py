@@ -11,16 +11,16 @@ from PIL import Image, ImageDraw
 
 SLOT_COL = {"Wood": (205, 170, 120), "EndGrain": (230, 190, 110), "Bark": (95, 70, 50), "Daub": (185, 155, 115),
             "Wattle": (105, 80, 50), "Rope": (215, 195, 145), "Canvas": (225, 220, 200),
-            "Iron": (85, 70, 62), "IronClean": (75, 78, 86), "Leather": (120, 75, 45), "Sandstone": (200, 180, 140), "Water": (60, 90, 110), "Charcoal": (35, 33, 32),
+            "Iron": (85, 70, 62), "IronClean": (75, 78, 86), "Leather": (120, 75, 45), "Sandstone": (200, 180, 140), "Water": (60, 90, 110), "Charcoal": (35, 33, 32), "Straw": (215, 185, 110), "Wool": (125, 115, 100),
             None: (170, 170, 170)}
 
 
 def load_obj(path):
     V, F, S = [], [], []; cur = None
     for ln in open(path):
-        if ln.startswith("v "): x, y, z = map(float, ln.split()[1:4]); V.append((x, -z, y))      # OBJ Y-up -> UE Z-up
+        if ln.startswith("v "): x, y, z = map(float, ln.split()[1:4]); V.append((x, -y, z))      # OBJ -> osy UE (mesh_common.obj_v)
         elif ln.startswith("usemtl"): cur = ln.split()[1]
-        elif ln.startswith("f "): F.append([int(t.split("/")[0]) - 1 for t in ln.split()[1:4]]); S.append(cur)
+        elif ln.startswith("f "): F.append([int(t.split("/")[0]) - 1 for t in ln.split()[1:4]][::-1]); S.append(cur)   # trojuhelnik obracene (mesh_common.obj_f)
     return np.array(V), np.array(F), S
 
 

@@ -17,6 +17,8 @@ Textury jsou v odstinech sedi (barvu dava tint v materialu, MAT_LOOK v zrlib/con
   T_RuinLeather_*   kuze: vrasky, pory, odrena mista (barva v texture)
   T_RuinCharcoal_*  drevene uhli: kousky s lomy, cerne spary
   T_RuinWater_*     hladina: tmava, vlnky v normale
+  T_RuinStraw_*     slama: prekrizena stebla (lozka, podestylka)
+  T_RuinWool_*      houne: hruba vlnena vazba, plstnaty chlup
 Jen vybrane: python tools/textures/gen_textures.py [slozka] T_RuinRope T_RuinDaub
 Deterministicke (pevne seedy). Po zmene zvys TEX_VERSION v zrlib/config.py, jinak UE textury neprenacte.
 """
@@ -238,6 +240,51 @@ def charcoal():
     return np.clip(col, 0, 1), normal_map(h, 8.0)
 
 
+def _strands(seed, n, length, width, angle_sd, base_angle=0.0):
+    """nahodna stebla / vlakna (usecky) kreslena periodicky do dlazdice -> (vyska 0..1, jas stebla 0..1)"""
+    from PIL import ImageDraw
+    r = np.random.default_rng(seed)
+    H = Image.new("F", (N, N), 0.0); L = Image.new("F", (N, N), 0.0)
+    dh = ImageDraw.Draw(H); dl = ImageDraw.Draw(L)
+    for k in range(n):
+        x, y = r.uniform(0, N, 2); a = base_angle + r.normal(0, angle_sd); ln = length * r.uniform(0.5, 1.3)
+        dx, dy = math.cos(a) * ln / 2, math.sin(a) * ln / 2; w = max(1, int(round(width * r.uniform(0.7, 1.3))))
+        hv = (k + 1) / n; lv = r.uniform(0.6, 1.0)
+        for ox in (-N, 0, N):
+            for oy in (-N, 0, N):
+                seg = [(x - dx + ox, y - dy + oy), (x + dx + ox, y + dy + oy)]
+                dh.line(seg, fill=hv, width=w); dl.line(seg, fill=lv, width=w)
+    return np.asarray(H, float), np.asarray(L, float)
+
+
+def straw():
+    """slama (lozko, podestylka): prekrizena stebla v ruznych smerech, zlatave se svetlymi uzlinami, mezery tmave.
+    Barva v texture (tint ~ bily), dlazdice 0,5 m"""
+    h1, l1 = _strands(1201, 2200, 220, 5, 0.9)
+    h2, l2 = _strands(1202, 1400, 160, 4, 0.9, math.pi / 2)
+    top = np.where(h2 > 0, 1, 0) ; h = np.maximum(h1 * 0.6, (h2 > 0) * (0.4 + 0.6 * h2))
+    lum = np.where(h2 > 0, l2, l1); filled = (h1 > 0) | (h2 > 0)
+    var = pnoise(1203, 40, (2, 10), (2, 10))
+    g = np.where(filled, (0.55 + 0.25 * lum) * (0.92 + 0.08 * var), 0.18)
+    col = np.stack([g * 1.0, g * 0.82, g * 0.48], -1)
+    return np.clip(col, 0, 1), normal_map(h, 6.0)
+
+
+def wool():
+    """houne (hruba vlnena pokryvka): hruba platnova vazba ~4 mm, plstnaty chlup, nebarvena seda vlna, pruhy
+    v osnove jen naznacene. Barva v texture (tint ~ bily), dlazdice 0,5 m"""
+    uu = _u[None, :]; vv = _u[:, None]; k = 128
+    wu = np.sin(2 * math.pi * k * uu); wv = np.sin(2 * math.pi * k * vv)
+    weave = 0.5 + 0.25 * np.sign(wu * wv) * np.minimum(np.abs(wu), np.abs(wv)) ** 0.5
+    fuzz = pnoise(1301, 120, (60, 250), (60, 250), 0.3); felt = pnoise(1302, 50, (4, 25), (4, 25), 0.6)
+    slub = pnoise(1303, 40, (1, 3), (20, 80), 0.3)
+    hf, _ = _strands(1304, 2500, 18, 1, 3.0)
+    h = 0.7 * weave + 0.25 * fuzz + 0.2 * felt + 0.15 * (hf > 0)
+    d = 0.42 + 0.10 * (weave - 0.5) + 0.06 * felt + 0.03 * slub + 0.03 * fuzz + 0.05 * (hf > 0)
+    col = np.stack([d * 1.0, d * 0.94, d * 0.86], -1)
+    return np.clip(col, 0, 1), normal_map(h, 7.0)
+
+
 def water():
     """hladina ve sudu a korytu: skoro jednolita tmava, jemne vlnky jen v normale"""
     rip = pnoise(1101, 40, (2, 12), (2, 12), 0.8)
@@ -247,7 +294,8 @@ def water():
 
 TEXTURES = {"T_RuinBark": bark, "T_RuinEndGrain": endgrain, "T_RuinRope": rope, "T_RuinWattle": wattle,
             "T_RuinDaub": daub, "T_RuinCanvas": canvas, "T_RuinCanvasMacro": canvas_macro,
-            "T_RuinIron": iron, "T_RuinIronClean": lambda: iron(False), "T_RuinLeather": leather, "T_RuinCharcoal": charcoal, "T_RuinWater": water}
+            "T_RuinIron": iron, "T_RuinIronClean": lambda: iron(False), "T_RuinLeather": leather, "T_RuinCharcoal": charcoal, "T_RuinWater": water,
+            "T_RuinStraw": straw, "T_RuinWool": wool}
 NO_NORMAL = {"T_RuinCanvasMacro"}           # jen barva
 
 

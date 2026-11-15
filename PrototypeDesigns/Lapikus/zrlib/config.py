@@ -17,7 +17,7 @@ TEX_SRC = "textures"
 TEX_DIR = "/Game/Skvt/Lapikus/Ruin/Textures"
 TEX_VERSION = 4                          # vyssi nez v projektu -> textury se naimportuji znovu (po zmene gen_textures.py)
 TEX_FILES = {"T_Ruin%s_%s" % (t, k): ("color" if k == "D" else "normal")
-             for t in ("Bark", "EndGrain", "Rope", "Wattle", "Daub", "Canvas", "Iron", "IronClean", "Leather", "Charcoal", "Water") for k in "DN"}
+             for t in ("Bark", "EndGrain", "Rope", "Wattle", "Daub", "Canvas", "Iron", "IronClean", "Leather", "Charcoal", "Water", "Straw", "Wool") for k in "DN"}
 TEX_FILES["T_RuinCanvasMacro_D"] = "color"         # velke skvrny plachty (M_RuinCloth)
 CLOTH_MACRO = TEX_DIR + "/T_RuinCanvasMacro_D"
 TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
@@ -33,6 +33,8 @@ TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
     "leather":  [(TEX_DIR + "/T_RuinLeather_D", TEX_DIR + "/T_RuinLeather_N")],
     "charcoal": [(TEX_DIR + "/T_RuinCharcoal_D", TEX_DIR + "/T_RuinCharcoal_N")],
     "water":    [(TEX_DIR + "/T_RuinWater_D", TEX_DIR + "/T_RuinWater_N")],
+    "straw":    [(TEX_DIR + "/T_RuinStraw_D", TEX_DIR + "/T_RuinStraw_N")],
+    "wool":     [(TEX_DIR + "/T_RuinWool_D", TEX_DIR + "/T_RuinWool_N")],
     "sandstone": [("/Game/StarterContent/Textures/T_Rock_Sandstone_D", "/Game/StarterContent/Textures/T_Rock_Sandstone_N")],
     "wood_peeled": [("/Game/StarterContent/Textures/T_Wood_Pine_D", "/Game/StarterContent/Textures/T_Wood_Pine_N"),
                     ("/Game/StarterContent/Textures/T_Wood_Oak_D", "/Game/StarterContent/Textures/T_Wood_Oak_N")],
@@ -98,6 +100,8 @@ MAT_LOOK = {
     "sandstone": dict(TintA=(0.75, 0.68, 0.55), TintB=(0.90, 0.82, 0.68), Tiling=1.0, Roughness=0.95),     # brusny kotouc
     "water":    dict(TintA=(0.05, 0.07, 0.08), TintB=(0.06, 0.08, 0.09), Tiling=1.0, Roughness=0.05),
     "charcoal": dict(TintA=(0.035, 0.035, 0.038), TintB=(0.07, 0.07, 0.075), Tiling=2.0, Roughness=0.8),   # tmavost z tintu, textura je jen detail
+    "straw":    dict(TintA=(0.85, 0.85, 0.85), TintB=(1.0, 1.0, 1.0), Tiling=2.0, Roughness=0.9),      # slama v luzku (barva v texture)
+    "wool":     dict(TintA=(0.85, 0.85, 0.85), TintB=(1.0, 1.0, 1.0), Tiling=2.0, Roughness=1.0),      # houne, nebarvena vlna
 }
 # zvetrani shora (v materialu podle normaly): plochy mirici nahoru svetlejsi, nazelenale (lisejnik, prach), drsnejsi.
 # TopStart = od jakeho sklonu (0 svisla stena .. 1 vodorovny vrsek), TopSharp = ostrost prechodu, TopAmount = sila
@@ -125,18 +129,27 @@ MAT_TOP = {
     "sandstone": dict(TopTint=(1.05, 1.05, 1.00), TopStart=0.6, TopSharp=3.0, TopAmount=0.2),
     "water":    dict(TopTint=(1.0, 1.0, 1.0), TopStart=0.9, TopSharp=3.0, TopAmount=0.0),
     "charcoal": dict(TopTint=(1.0, 1.0, 1.0), TopStart=0.9, TopSharp=3.0, TopAmount=0.0),
+    "straw":    dict(TopTint=(1.0, 1.0, 1.0), TopStart=0.9, TopSharp=3.0, TopAmount=0.0),
+    "wool":     dict(TopTint=(1.0, 1.0, 1.0), TopStart=0.9, TopSharp=3.0, TopAmount=0.0),
 }
 MAT_VERSION = 10                         # vyssi nez v projektu -> skript prestavi graf M_RuinStone a doplni parametry MI_*
                                          # (tinty MI_RuinFace/Frame zustanou, jak je mas; MAT_RESET viz nize)
 MAT_RESET = {"crown": 2, "core": 3, "frame": 4, "wood_tar": 6, "charcoal": 9, "iron": 10}      # MI starsi nez tato verze dostane znovu tint a texturu z MAT_LOOK / TEXTURES
 # --- knihovni meshe (tools/meshes/gen_meshes.py -> meshes/<kategorie>/*.obj v koreni vedle zrlib; skript je sam naimportuje)
 USE_STONE_MESHES = True                  # False = vsude kostky (Cube) jako drive
-# Import OBJ do UE otoci mesh o 180 st. (OBJ je Y-up, UE prevadi osy jinak, nez cekal zapis v mesh_common.write_obj).
-# Oprava pri stavbe: otoceni meshe o 180 st. kolem jeho osy X (assety ani OBJ se neprenacitaji).
-#   "new"  = kulatina, knihovni meshe a props (ROUND_MESHES, LIB_MESHES); kameny a hranene drevo beze zmeny
-#   "all"  = vsechny meshe vcetne kamenu zriceniny (koruna: zvetrala strana nahoru, jak je navrzeno)
-#   "none" = bez opravy (puvodni stav)
-MESH_FLIP = "new"
+# OBJ se zapisuje rovnou v osach UE (mesh_common.obj_v), asset stoji spravne i v Content Browseru.
+MESH_AXES = 10                           # verze importu meshi: mesh importovany se starsi se naimportuje znovu, at je
+                                         # v STONE_MESH_VERSION cokoliv. 1 = OBJ Y-up (v UE naležato, pri stavbe se otacel),
+                                         # 2 = osy UE, ale lice naruby, 3 = hromadny import (nektere meshe s poskozenymi
+                                         # vykreslovacimi daty), 4 = import po jednom (poskozena data ale UE vzal z cache
+                                         # DDC, protoze OBJ byly stejne), 5 = OBJ s presnosti 0,1 mm (nova data, cista cache),
+                                         # 6 = po importu plne prestaveni meshe (Interchange "fast build" nechava v UE
+                                         # neinicializovane bounds vykreslovacich dat -> nahodne NaN), 7 = prestaveni
+                                         # s kontrolou bounds (kontrola NaN nepozna, build byl porad fast), 8 = po importu
+                                         # build z mesh description s fast_build=False (cache vratila poskozena data),
+                                         # 9 = import do docasneho assetu, cil se stavi jen radne (ue_assets._import_one),
+                                         # 10 = cil s priznakem bDoFastBuild se smaze a vytvori znovu + novy klic cache
+                                         # (BUILD_CFG); pricina NaN = priznak v assetech kamenu a poskozena cache
 MESH_SRC  = "meshes"                     # slozka s OBJ v koreni, podslozky podle kategorie (stone, wood, ...)
 MESH_ROOT = "/Game/Skvt/Lapikus/Ruin"
 MESH_DIRS = {"stone": "Stones",          # kategorie (= podslozka meshes/<kategorie>, CATEGORIES v gen_meshes.py)
@@ -187,7 +200,8 @@ POLE_MAX_D = 11.0                        # cm: tenci kulatina = tyc (SM_RuinPole
 # Klice jsou zaroven kategorie dilcu (Stone.cat = "rope", "daub" ... -> material slotu).
 SLOT_MI = {"bark": "MI_RuinBark", "endgrain": "MI_RuinWood_EndGrain", "rope": "MI_RuinRope", "wattle": "MI_RuinWattle",
            "daub": "MI_RuinDaub", "chinking": "MI_RuinChinking", "iron": "MI_RuinIron", "ironclean": "MI_RuinIronClean", "leather": "MI_RuinLeather",
-           "sandstone": "MI_RuinSandstone", "water": "MI_RuinWater", "charcoal": "MI_RuinCharcoal"}
+           "sandstone": "MI_RuinSandstone", "water": "MI_RuinWater", "charcoal": "MI_RuinCharcoal",
+           "straw": "MI_RuinStraw", "wool": "MI_RuinWool"}
 CLOTH_MI = {"canvas": "MI_RuinCanvas"}   # na M_RuinCloth: oboustranny, posun ve vetru (WindAmount, vychozi 0 = staticke)
 CLOTH_VERSION = 2                        # vyssi nez v projektu -> skript prestavi graf M_RuinCloth
 # dalsi knihovni meshe: prefix -> (jmenovity rozmer cm, varianty, kategorie (MESH_DIRS), sloty v poradi v OBJ, zakladni cat).
@@ -224,6 +238,13 @@ LIB_MESHES = {
     "SM_RuinBroadaxe": ((6.9, 72.1, 25.0), "A", "props", ('wood', 'endgrain', 'ironclean'), "wood"),   # sekera sirocina
     "SM_RuinAxe": ((4.6, 76.5, 18.7), "A", "props", ('wood', 'endgrain', 'ironclean'), "wood"),   # sekera na stipani
     "SM_RuinCrosscutSaw": ((150.9, 3.9, 28.3), "A", "props", ('wood', 'endgrain', 'ironclean'), "wood"),   # dvoumuzna pila
+    "SM_RuinBed": ((200.2, 87.2, 61.9), "A", "props", ('wood', 'straw', 'wool'), "wood"),   # luzko, houne pres slamu
+    "SM_RuinBedFolded": ((200.3, 80.3, 62.5), "A", "props", ('wood', 'straw', 'wool'), "wood"),   # luzko, houne slozena
+    "SM_RuinTable": ((119.7, 69.5, 76.2), "A", "props", ('wood',), "wood"),   # stul
+    "SM_RuinChest": ((95.4, 54.6, 51.2), "A", "props", ('wood', 'iron'), "wood"),   # truhla
+    "SM_RuinShelf": ((100.2, 27.7, 89.6), "A", "props", ('wood',), "wood"),   # police
+    "SM_RuinDoor": ((101.8, 9.3, 219.3), "A", "props", ('wood', 'iron'), "wood"),   # dvere 1,0 x 2,2
+    "SM_RuinShutter": ((61.4, 8.4, 59.2), "A", "props", ('wood', 'endgrain', 'iron'), "wood"),   # okenice 60 x 60 (50 x 50 = skala 0,83)
 }
 LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePanel", "smoke_hood": "SM_RuinSmokeHood",
               "chimney": "SM_RuinChimney", "rope": "SM_RuinRope", "lashing": "SM_RuinLashing",
@@ -250,12 +271,19 @@ LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePa
               "nail_hammer": "SM_RuinNailHammer",
               "broadaxe": "SM_RuinBroadaxe",
               "axe": "SM_RuinAxe",
-              "crosscut_saw": "SM_RuinCrosscutSaw"}
+              "crosscut_saw": "SM_RuinCrosscutSaw",
+              "bed": "SM_RuinBed",
+              "bed_folded": "SM_RuinBedFolded",
+              "table": "SM_RuinTable",
+              "chest": "SM_RuinChest",
+              "shelf": "SM_RuinShelf",
+              "door": "SM_RuinDoor",
+              "shutter": "SM_RuinShutter"}
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2,
                       "SM_RuinLog": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2,       # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark
                       "SM_RuinBarkStrip": 1, "SM_RuinWattlePanel": 1, "SM_RuinSmokeHood": 1, "SM_RuinChimney": 1,
                       "SM_RuinRope": 1, "SM_RuinLashing": 1, "SM_RuinCanvasSample": 1,
-                      "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
+                      "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2, "SM_RuinBed": 1, "SM_RuinBedFolded": 1, "SM_RuinTable": 1, "SM_RuinChest": 1, "SM_RuinShelf": 1, "SM_RuinDoor": 1, "SM_RuinShutter": 1}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # zaloha, kdyz chybi textury dreva pro MI_RuinWood
 MAT_WOOD_MI = None                       # vlastni material neosetreneho dreva (cesta); None = MI_RuinWood (vytvori skript)
 # druhy dreva (Stone.cat): "wood" bez upravy (MI_RuinWood), "wood_tar" dehtovane, "wood_oil" morene olejem,

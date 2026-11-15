@@ -146,7 +146,7 @@ tools/meshes/
 | ☑   | 🆕 kov (kované železo) `MI_RuinIron` s patinou rzi + `MI_RuinIronClean` bez rzi                                               | tmavé, okuje; rez jen tlumeně hnědá                                                      | bez rzi: kovadlina, nářadí; s rzí: svěrák, pruty, obruče, osy |
 | ☑   | 🆕 kůže `MI_RuinLeather`                                                              | tmavá, popraskaná                                                                      | měchy                                         |
 | ☑   | 🆕 pískovec `MI_RuinSandstone` (StarterContent) (nebo ♻ `MI_RuinFrame` se `T_Rock_Sandstone`) |                                                                                        | brusný kotouč                                 |
-| ☐   | 🆕 textil hrubý (houně), sláma / kapradí                             |                                                                                        | lůžka (dům, stan ⛺)                           |
+| ◐   | 🆕 textil hrubý (houně), sláma / kapradí → `MI_RuinWool`, `MI_RuinStraw` (kapradí zatím ne)                             |                                                                                        | lůžka (dům, stan ⛺)                           |
 | ☐   | ♻ `MI_RuinWood` `raw`, `_Tar`, `_Old`                                | beze změny                                                                             | krov, krytina, prkna, vybavení                |
 
 - ☐ Přepínání podle etapy: loupaná kulatina srubu v etapě 1 `peeled`, v etapě 2 ❓ `peeled`, nebo `raw` (už ztmavlá)? Krov `raw` → `tar`. Řeší kód přes `ETAPA`, meshe zůstávají stejné.
@@ -187,14 +187,14 @@ tools/meshes/
 
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
-| ☐ | lůžko (3×) | 2,0 × 0,8 m | 🧩 + textil a sláma |
-| ☐ | stůl | 1,2 × 0,7 m | 🧩 |
-| ☐ | truhla (2×) | – | 🧩 prkna + ✋ kování |
+| ☑ | lůžko (3×) | 2,0 × 0,8 m | 🧩 + textil a sláma → `SM_RuinBed` (houně přes slámu), `SM_RuinBedFolded` (houně složená) |
+| ☑ | stůl | 1,2 × 0,7 m | 🧩 → `SM_RuinTable` |
+| ☑ | truhla (2×) | – | 🧩 prkna + ✋ kování → `SM_RuinChest` |
 | ☑ | ponk u střílny (síň) | – | 🧩 (stejný jako v kovárně, menší) → `SM_RuinWorkbench` (škálovat) |
-| ☐ | police na osobní věci | – | 🧩 |
+| ☑ | police na osobní věci | – | 🧩 → `SM_RuinShelf` |
 | ☑ | hranice dřeva v síni | – | 🧩 (jako v kovárně) → `SM_RuinWoodpile` |
-| ☐ | dveře (2×) | 1,0 × 2,2 m | 🧩 prkna + svlaky |
-| ☐ | okenice (2×) | 0,6 × 0,6 a 0,5 × 0,5 m | 🧩 |
+| ☑ | dveře (2×) | 1,0 × 2,2 m | 🧩 prkna + svlaky → `SM_RuinDoor` (zrcadlit podle strany závěsů) |
+| ☑ | okenice (2×) | 0,6 × 0,6 a 0,5 × 0,5 m | 🧩 → `SM_RuinShutter` (60 × 60, menší škálovat 0,83) |
 | ☑ | žebřík na půdu | ze síně do štítu příčky | 🧩 tyče + příčky (sdílený s 6.3) → `SM_RuinLadder` (škálovat délku) |
 | ☐ | VFX: oheň v ohništi, kouř z komína | – | Niagara ❓ |
 

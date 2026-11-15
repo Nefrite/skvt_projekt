@@ -36,16 +36,31 @@ def grid(e_, b_lo, b_hi, R_face, step, n_band=7):
     return np.concatenate([a - band(b_lo)[::-1], flat, b + band(b_hi)])
 
 
+def obj_v(p):
+    """bod / normala UE (x, y, z) -> OBJ. Import OBJ do UE (Interchange, overeno tools/checks/UE_Osy_OBJ.py 15. 11. 2026)
+    bere osy tak, jak jsou, jen otoci znamenko Y: UE = (X, -Y, Z) z OBJ, a protoze tim mesh zrcadli, otoci i poradi
+    vrcholu trojuhelniku. Zapis proto Y otoci predem (obj_v) a trojuhelniky zapise obracene (obj_f): v OBJ je pak
+    lice proti smeru hodin jako v norme OBJ a v UE vyjde presne mesh generatoru (osy i lice)."""
+    return (p[0], -p[1], p[2])
+
+
+def obj_f(a, b, c):
+    """trojuhelnik (indexy od 1) do OBJ: obracene poradi k zrcadleni v obj_v (viz tam)"""
+    return "f %d/%d/%d %d/%d/%d %d/%d/%d\n" % (a, a, a, c, c, c, b, b, b)
+
+
+def _write_vtn(f, P, UV, N):
+    for p in P: f.write("v %.4f %.4f %.4f\n" % obj_v(p))       # 0,1 mm (od MESH_AXES 5; jina data = novy klic DDC v UE)
+    for t in UV: f.write("vt %.4f %.4f\n" % (t[0], t[1]))
+    for n in N: f.write("vn %.4f %.4f %.4f\n" % obj_v(n))
+
+
 def write_obj(path, P, UV, N, F, name, desc="zaobleny zvetraly kamen"):
-    """zapis OBJ (UE souradnice cm, Z nahoru -> OBJ Y-up). desc = popis v hlavicce; kameny a hranene drevo
-    pouzivaji puvodni text, aby se stavajici OBJ nezmenily (STONE_MESH_VERSION by je jinak nemusel prenacist)."""
+    """zapis OBJ v osach UE (cm, Z nahoru). desc = popis v hlavicce. Prevod os viz obj_v."""
     with open(path, "w") as f:
         f.write("# %s - %s (cm, Z nahoru)\no %s\n" % (name, desc, name))
-        # OBJ je Y-up: UE (x, y, z) -> OBJ (x, z, -y); skript stejne kontroluje osy podle bounding boxu
-        for p in P: f.write("v %.3f %.3f %.3f\n" % (p[0], p[2], -p[1]))
-        for t in UV: f.write("vt %.4f %.4f\n" % (t[0], t[1]))
-        for n in N: f.write("vn %.4f %.4f %.4f\n" % (n[0], n[2], -n[1]))
-        for a, b, c in F + 1: f.write("f %d/%d/%d %d/%d/%d %d/%d/%d\n" % (a, a, a, b, b, b, c, c, c))
+        _write_vtn(f, P, UV, N)
+        for a, b, c in F + 1: f.write(obj_f(a, b, c))
 
 
 # ------------------------------------------------------------------ vice materialovych slotu (kulatina: drevo, cela, kura)
@@ -68,11 +83,9 @@ def write_obj_slots(path, P, UV, N, F, slot, name, desc, names=SLOT_ORDER):
     kazda skupina 'usemtl <jmeno>'. Jmena slotu mapuje UE na materialy (SLOT_MI v zrlib/config.py)."""
     with open(path, "w") as f:
         f.write("# %s - %s (cm, Z nahoru)\no %s\n" % (name, desc, name))
-        for p in P: f.write("v %.3f %.3f %.3f\n" % (p[0], p[2], -p[1]))
-        for t in UV: f.write("vt %.4f %.4f\n" % (t[0], t[1]))
-        for n in N: f.write("vn %.4f %.4f %.4f\n" % (n[0], n[2], -n[1]))
+        _write_vtn(f, P, UV, N)
         for si, sn in enumerate(names):
             sel = F[slot == si]
             if not len(sel): continue
             f.write("usemtl %s\n" % sn)
-            for a, b, c in sel + 1: f.write("f %d/%d/%d %d/%d/%d %d/%d/%d\n" % (a, a, a, b, b, b, c, c, c))
+            for a, b, c in sel + 1: f.write(obj_f(a, b, c))
