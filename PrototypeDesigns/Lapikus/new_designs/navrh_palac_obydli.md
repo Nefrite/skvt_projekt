@@ -1,6 +1,8 @@
 # Návrh: Palac_Obydli – obytná stavba posádky ve východní části paláce
 
-Specifikace od architekta pro stavitele (šablona `Lapikus\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno. Vybraná varianta C** (pultová střecha opřená o jižní zeď a věž, rozhodl Jirka 14. 11. 2026). Náčrt: `navrh_palac_obydli.png` (schéma, ne přesný model). Nahrazuje východní místnost ze staršího `navrh_palac_posadka.md`.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno. Vybraná varianta C** (pultová střecha opřená o jižní zeď a věž, rozhodl Jirka 14. 11. 2026). Náčrt: `navrh_palac_obydli.png` (schéma, ne přesný model). Nahrazuje východní místnost ze staršího `navrh_palac_posadka.md`.
+
+**ZAVRŽENÁ VARIANTA (stav 15. 11. 2026).** Dům u věže se stavět nebude: ve východní místnosti má být kovárna a komín u věže má špatný tah. Platí `navrh_palac_obydli_stred.md` (dům v prostřední místnosti). Tento dokument zůstává jen pro srovnání (rozdíly jsou v kap. 8 platného návrhu) a neaktualizuje se.
 
 ## 1. Zadání
 

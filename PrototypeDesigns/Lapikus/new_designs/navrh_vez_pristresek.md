@@ -1,6 +1,11 @@
 # Návrh: Vez_Pristresek – plátěný přístřešek hlídky na věži
 
-Specifikace od architekta pro stavitele (šablona `Lapikus\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh, nepostaveno. Vybraná varianta B** (západní 2/3 šířky) a **průlomy z dobývání ve `Vez_J` a `Vez_V`** místo rovného snížení (rozhodl Jirka 14. 11. 2026). Náčrt: `navrh_vez_pristresek.png` (schéma, ne přesný model).
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh, nepostaveno. Vybraná varianta B** (západní 2/3 šířky) a **průlomy z dobývání ve `Vez_J` a `Vez_V`** místo rovného snížení (rozhodl Jirka 14. 11. 2026). Náčrt: `navrh_vez_pristresek.png` (schéma, ne přesný model).
+
+**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`:
+- **Hotové dílce:** kulatina a tyče s kůrou `SM_RuinLogBark`, `SM_RuinPoleBark`, hlava rozsochy `SM_RuinForkHead` (kůl s vidlicí = kůl + hlava), lano `SM_RuinRope`, ovázání `SM_RuinLashing`, kameny zříceniny. Materiály `MI_RuinBark`, `MI_RuinRope`, oboustranné plátno `MI_RuinCanvas` (vítr připravený parametrem `WindAmount`, výchozí 0).
+- **Plátno a štít:** generátor prověšené plochy je hotový (`tools/meshes/mesh_textile.make_canvas`), napojení na stavbu chybí.
+- **Chybí:** typ stavby `canvas_shelter`, rozšíření `tools/ruin/tower_spec.py`, úprava 03 (průlomy `Vez_V` a `Vez_J`, kap. 3).
 
 ## 1. Zadání
 
@@ -128,12 +133,12 @@ Pultový přístřešek se spádem k jihu nad JZ částí patra (u = 1,25–7,3 
 - **Odvodnění:** k jihu. Plátno končí nad korunou `Vez_J` asi 0,5 m za okapovou tyčí, voda stéká po koruně ven. Vůle mezi krokvovou tyčí a korunou je na konci přesahu nejméně 13 cm.
 - **Světlá výška:** pod okapovou tyčí 2,65 m. Koruna zdi je 1,75–2,45 m nad podlahou patra, mezi korunou a tyčí zůstávají průhledy 0,2–0,9 m.
 - **Kůly:** západní kůl je přivázaný ke zdi `Vez_Z` a stojí těsně u jižního ostění výklenku okna. Výklenek zůstává volný. Východní kůl stojí volně na trámu.
-- **Úprava dřeva:** `raw` (čerstvá kulatina) pro všechno dřevo.
+- **Úprava dřeva:** čerstvá kulatina **s kůrou** pro všechno dřevo (kůly, hřeben, okapová tyč, krokvové tyče, vzpěry); přiřazení podle `CHECKLIST_assets_navrhy.md` kap. 2.1, čeká na potvrzení. Řezy a čela `raw`.
 - **Otvory:** žádné.
 
 ## 5. Dostavba 05
 
-- **Typ:** **nový** (pracovně `canvas_shelter`): kulatina, prověšená plocha plátna jako statický mesh, lana. Potřebuje nový oboustranný materiál plátna.
+- **Typ:** **nový** (pracovně `canvas_shelter`): kulatina, prověšená plocha plátna jako statický mesh, lana. Oboustranný materiál plátna už existuje (`MI_RuinCanvas`).
 - **Název stavby:** `Vez_Pristresek`, složka `Stavby/Vez`.
 - **Klíčové parametry:**
   - `u0` 1.25, `u1` 7.3 (rozsah plátna),

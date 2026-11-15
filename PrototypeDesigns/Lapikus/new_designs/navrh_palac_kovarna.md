@@ -1,6 +1,11 @@
 # Návrh: Palac_Kovarna – provizorní kovárna pod přístřeškem
 
-Specifikace od architekta pro stavitele (šablona `AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh, nepostaveno.** Náčrt: `navrh_palac_kovarna.png` (schéma, ne přesný model).
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh, nepostaveno.** Náčrt: `navrh_palac_kovarna.png` (schéma, ne přesný model).
+
+**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`, kap. 6.1:
+- **Vybavení je hotové** jako vlastní procedurální props (`tools/meshes/mesh_props.py`), zatím nerozmístěné: špalek `SM_RuinStump`, kovadlina `SM_RuinAnvil`, měchy s rámem a výfučnou `SM_RuinBellows`, páka (loupaná tyč `SM_RuinPole`), kalicí sud `SM_RuinBarrel`, **šlapací brus** `SM_RuinGrindstoneTreadle` s třínohou stoličkou `SM_RuinStool`, ponk se svěrákem `SM_RuinWorkbench`, kleště, kladivo, sekáč (`SM_RuinTongs`, `SM_RuinHammer`, `SM_RuinChisel`), hřebovnice `SM_RuinNailHeader`, truhlík na uhlí `SM_RuinCoalBox` s volným víkem `SM_RuinCoalBoxLid`, hranice dřeva `SM_RuinWoodpile`, železné pruty `SM_RuinIronBars`, koš `SM_RuinBasket`.
+- **Hotové dílce stavby:** loupaná kulatina `SM_RuinLog` (krokve), dílce proutěné stěny `SM_RuinWattlePanel`, dymník `SM_RuinSmokeHood`, komín `SM_RuinChimney`, žlab `SM_RuinGutter`.
+- **Chybí:** typy staveb `pult_roof`, `hearth`, `wattle_wall`, `gutter`, rozmístění props, `tools/ruin/palac_spec.py`. Dále žhavé uhlí ve výhni, saze, udusaná hlína, oheň a kouř.
 
 ## 1. Zadání
 
@@ -87,10 +92,10 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 |---|---|---|
 | Kovadlina na špalku | špalek Ø 0,5 m, vrch kovadliny 0,75 m | 28,5; 2,1 (1,0 m před výhní) |
 | Kalicí sud | Ø 0,6 m, výška 0,8 m, s vodou | 28,9; 3,4 |
-| Brus | pískovcový kotouč Ø 0,7 m na dřevěném rámu 1,2 × 0,6 m, osa 0,75 m, klika, pod kotoučem korýtko s vodou | 26,3–27,5; 4,0–4,6 (u otevřené strany kvůli světlu) |
+| Brus | pískovcový kotouč Ø 0,7 m na dřevěném rámu 1,2 × 0,6 m, osa 0,75 m, **šlapací** (kliková páka, ojnice, šlapadlo; rozhodl Jirka 14. 11. 2026), pod kotoučem korýtko s vodou; u něj třínohá stolička (sedátko Ø 32 cm, výška 45 cm) | 26,3–27,5; 4,0–4,6 (u otevřené strany kvůli světlu) |
 | Ponk se svěrákem | 2,2 × 0,7 m, výška 0,85 m | u jižní zdi: 26,0–28,2; 0,75–1,45 |
 | Nářadí | kleště, kladiva, sekáče na liště | na jižní zdi nad ponkem |
-| Truhlík na dřevěné uhlí | 0,8 × 1,2 m, výška 0,8 m, s víkem | u západní stěny: 25,65–26,45; 2,0–3,2 |
+| Truhlík na dřevěné uhlí | 0,8 × 1,2 m, výška 0,8 m, s volným víkem (bez pantů, pokládá se bokem) | u západní stěny: 25,65–26,45; 2,0–3,2 |
 | Zásoba dřeva | hranice 0,6 × 1,9 m, výška 1,4 m | u západní stěny: 25,65–26,25; 3,4–5,3 |
 | Železo a hotové hřebíky | pruty, koš | ve výklenku střílny s = 29 |
 | Hřebovnice | na menším špalku | u kovadliny |
@@ -121,7 +126,7 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 
 - **Složka:** `Stavby/Palac`.
 - **Sdílené rozměry:** `tools/ruin/palac_spec.py` (společně s domem).
-- **Vybavení nejsou generované dílce.** Měchy, kovadlina, brus, sud a nářadí jsou hotové modely, které generátor jen rozmístí. Kdo je vyrobí, není v tomto návrhu určeno.
+- **Vybavení nejsou generované dílce.** Měchy, kovadlina, brus, sud a nářadí jsou hotové modely, které generátor jen rozmístí. Jsou to vlastní props ve stylu hradu (rozhodl Jirka 14. 11. 2026), všechny už existují.
 - **Suť:** v celé východní místnosti uklizená (`clear_rubble`).
 - **Ruční doladění (`loose`):** všechno vybavení.
 

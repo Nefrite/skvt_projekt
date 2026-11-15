@@ -1,6 +1,10 @@
 # Návrh: Brana_Straz – strážní podesta nad oblouky východní brány
 
-Specifikace od architekta pro stavitele (šablona `AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh, nepostaveno.** Náčrt: `navrh_brana_straz.png` (schéma, ne přesný model).
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh, nepostaveno.** Náčrt: `navrh_brana_straz.png` (schéma, ne přesný model).
+
+**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`:
+- **Hotové dílce:** loupaná kulatina `SM_RuinLog` (trámy podesty Ø 22), kůly se špičkou `SM_RuinStake` (kryty), tyče s kůrou `SM_RuinPoleBark` (ráhna, zábradlí, krokvičky, přítlačné tyče), kulatina s kůrou `SM_RuinLogBark` (sloupky, vaznice, kmen jezdce), loupané kůly `SM_RuinStakeSmall` (ramena jezdce), pásy kůry `SM_RuinBarkStrip`, ovázání `SM_RuinLashing`, prkna `SM_RuinPlank`. Materiál kůry `MI_RuinBark` už existuje.
+- **Chybí:** typy staveb `palisade` a `bark_roof`, trámy na koruně (rozšíření `tower_floor`), `tools/ruin/brana_spec.py`, složení španělského jezdce do jednoho actoru. Otevřený zůstává výstup na podestu a etapa (kap. 9).
 
 ## 1. Zadání
 
@@ -89,8 +93,8 @@ Kůly Ø 18–22 cm nastojato, těsně vedle sebe, nahoře zašpičatělé. Drž
 
 ### 4.6 Úprava dřeva
 
-- Kulatina, kůly, tyče a prkna: `raw` (čerstvé).
-- Kůra: nový materiál (tmavě hnědá, hrubá).
+- Kulatina, kůly, tyče a prkna: čerstvé dřevo. Trámy podesty a ramena jezdce loupané, kůly krytů, ráhna, zábradlí, kostra přístřešku a kmen jezdce s kůrou (přiřazení podle `CHECKLIST_assets_navrhy.md` kap. 2.1, čeká na potvrzení). Prkna `raw`.
+- Kůra: materiál `MI_RuinBark` (tmavě hnědá, hrubá).
 
 ## 5. Dostavba 05
 

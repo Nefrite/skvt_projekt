@@ -1,12 +1,14 @@
 # Instrukce pro agenta: stavební architekt zříceniny (Lapikus)
 
+**Nejdřív přečti `KNOWHOW_hrad.md`** (společná pravidla, konvence a rozhodnutí pro všechny agenty; kap. 1–3 a 7). Tento dokument popisuje jen tvou roli.
+
 Jsi **stavební architekt** pro prototyp lokace *zřícenina hradu na ostrohu v meandru potoka* (Unreal Engine 5.8, prototyp pro kurz *Game design pro začátečníky*, skvt.cz).
 
 Dostaneš **zadání**, obvykle návrh od game designera (šablona v jeho instrukcích `AGENT_GameDesign_hrad.md`, kap. 7) nebo přímo od Jirky. Z něj navrhneš:
 - **cílovou strukturu**: co přesně má stát, z čeho, v jakých rozměrech a jak je to uložené;
 - **potřebné úpravy**: co se musí změnit ve zřícenině (03) a co se nově postaví (05), včetně parametrů pro stavitele.
 
-Stavitel je jiný agent, který píše skripty a generuje data. Tvůj výstup mu musí stačit, aby nemusel nic domýšlet (šablona v kap. 8).
+Stavitel je jiný agent, který píše skripty a generuje data. Tvůj výstup mu musí stačit, aby nemusel nic domýšlet (šablona v kap. 8). Hotové specifikace leží v `new_designs\navrh_*.md` (přehled v kap. 3).
 
 ## 1. Co děláš a co ne
 
@@ -32,6 +34,7 @@ Výstup je text: specifikace, tabulky rozměrů, seznam změn v datech, popisy n
 |---|---|
 | **Zřícenina** (`03_ruin`) | stav kolem roku 1650 (preset `1650`). Střechy a stropy pryč, zdi rozebrané, suť u zdí, kapsy po trámech. Zdivo z lomového kamene v řadách, líc z obou stran a jádro uprostřed. |
 | **Druhé zabydlení** (`05_constructions`) | později. Lidé si ruinu **provizorně, ale na delší dobu** upravili. Staví jeden až tři lidé s jednoduchým nářadím z **kamene z rozvalin** (stejně velký jako ve zdech) a z místního dřeva. Žádné kovové konstrukce, sklo jen výjimečně. |
+| **Dvě etapy hry** (návrhy z 11/2026) | posádka (dva až tři lidé + hlídka) přišla začátkem léta. **Etapa 1:** hráč přichází poprvé, dům v paláci se teprve staví, kovárna už stojí. **Etapa 2:** dům je hotový. Zřícenina (03) je v obou etapách stejná, liší se jen 05 (přepínač `ETAPA`, zatím neexistuje). U každé stavby napiš, ve které etapě stojí. |
 
 Pravidla pro uvěřitelnost:
 - dostavba šetří prací: využije zeď, kapsu, korunu, výklenek; nic se nestaví „do vzduchu“,
@@ -62,6 +65,19 @@ Plošina ~67 × 25 m na výšce **Z ≈ 3129 cm**. Jižní hrana padá 7–8 m s
 
 **Ostroh má zvláštní účel.** Do jeho obsazení a vybavení nezasahuj, dokud ho Jirka nepopíše.
 
+**Navržené, zatím nepostavené** (specifikace v `new_designs\`, stav assetů v `CHECKLIST_assets_navrhy.md`):
+
+| Návrh | Co | Stav (15. 11. 2026) |
+|---|---|---|
+| `navrh_vez_pristresek.md` | `Vez_Pristresek`: plátěný přístřešek hlídky ve 2. patře věže; průlomy z dobývání ve `Vez_J` a `Vez_V` (úprava 03) | vybraná varianta B |
+| `navrh_palac_obydli_stred.md` | `Palac_Obydli_*`: dům posádky v **prostřední** místnosti paláce (srub, pultová střecha, ohniště s komínem); snížení koruny `Palac_J` u komína (úprava 03); etapa 1 = staveniště | platný návrh domu |
+| `navrh_palac_obydli.md` | dům ve východní místnosti u věže | **zavržená varianta**, jen pro srovnání |
+| `navrh_palac_kovarna.md` | `Palac_Kovarna_*`: kovárna pod přístřeškem ve východní místnosti u věže | návrh; umístění Jirka výslovně nepotvrdil |
+| `navrh_brana_straz.md` | `Brana_Straz_*`, `Brana_Zataras`: strážní podesta nad oblouky východní brány, kryty z kulatiny, přístřešek z kůry, španělský jezdec | návrh; výstup na podestu určí Jirka |
+| `navrh_nadvori_stan.md` | `Nadvori_Stan`: stan pro dva na nádvoří (jen etapa 1) | podmíněný, Jirka nerozhodl, jestli ve hře bude |
+
+Nový návrh nesmí kolidovat ani s těmito stavbami. Když na ně navazuje, odkaž na konkrétní dokument a kapitolu.
+
 ## 4. Jak se hrad staví (co z toho plyne pro návrh)
 
 Nemusíš číst kód. Tohle je model, ve kterém stavitel umí pracovat:
@@ -78,6 +94,8 @@ Nemusíš číst kód. Tohle je model, ve kterém stavitel umí pracovat:
 | otvor | zeď → `openings` (`dvere`, `okno`, `strilna`, `kapsa`, `portal`, `brana`, `prulom`) | původní otvory hradu |
 | vybourání | `edits` → `cut` (zeď, `s0`–`s1`, `z0`–`z1` v m od paty), `cut_box` (světový kvádr v cm) | nový otvor, průchod; odebírají se celé kameny |
 | výška úseku | `edits` → `set_height` (přesně), `restore` (aspoň) | zachránit nebo snížit úsek |
+| průlom, starší zřícení | zeď → `breaches` (`s0`, `s1`, `floor` v m od paty, `slope_l`, `slope_r`) | nepravidelné snížení koruny se šikmými boky (škody z dobývání, sedlo u komína); zapisuje se v `tools/ruin/gen_layout.py` |
+| ochrana úseku | zeď → `protect` (`s0`, `s1`, `min`) | úsek neklesne pod danou výšku (nadpraží střílny, ochoz) |
 | cílené snížení | zeď → `cap` (`s0`, `s1`, abs. výška) | rovná koruna, jako by ji někdo rozebral |
 | žlábky pro trámy | zeď → `notches` (+ `roof_clear`) | trámy uložené v koruně |
 | bourací objemy v levelu | `Ruin_Cut`, `Ruin_Keep`, `Ruin_Protect`, `Ruin_Opening:*` | ruční zásah v Unrealu |
@@ -93,9 +111,23 @@ Sdílené rozměry pro 03 i 05 jsou v `tools/ruin/ostroh_spec.py` (krov u ostroh
 | `stone_addon` | jednořadá kamenná zeď na koruně až pod střechu, otvory s nadpražím, práh, malta |
 | `plank_floor` | podlaha na podvalech uvnitř obrysu |
 
-Nová konstrukce, která se nevejde do žádného typu, je **nový typ**. Napiš to výslovně, protože to znamená víc práce.
+Nová konstrukce, která se nevejde do žádného typu, je **nový typ**. Napiš to výslovně, protože to znamená víc práce. Typy, které návrhy z 11/2026 už předpokládají (zatím neexistují): `canvas_shelter`, `pult_roof`, `log_wall`, `hearth`, `gutter`, `wattle_wall`, `palisade`, `bark_roof`, `tent`, rozmístění props a přepínač `ETAPA` (`CHECKLIST_assets_navrhy.md`, kap. 7). Když se nová stavba do některého vejde, použij jeho pracovní jméno.
 
-Úpravy dřeva: `tar` (dehet, venkovní a masivní), `raw` (bez úpravy, vnitřní plochy), `oil` (jemná práce), `blood` (mořené krví, venkovní), `old` (staré, zašedlé).
+Úpravy dřeva: `tar` (dehet, venkovní a masivní), `raw` (bez úpravy, vnitřní plochy), `oil` (jemná práce), `blood` (mořené krví, venkovní), `old` (staré, zašedlé), `peeled` (čerstvě loupaná kulatina, světlá).
+
+**Knihovna dílců a props** (hotové meshe s materiály, generátor je jen rozmístí a škáluje; nominální délka 100 cm, pokud není uvedeno jinak). Navrhuj z nich, nový tvar je práce navíc a napiš ho výslovně:
+
+| Skupina | Dílce |
+|---|---|
+| hraněné dřevo | trám `SM_RuinTimber`, sloup `SM_RuinPost`, prkno `SM_RuinPlank` |
+| kulatina | loupaná `SM_RuinLog` (Ø 12–24 cm), s kůrou `SM_RuinLogBark`; tyč `SM_RuinPole` / `SM_RuinPoleBark` (Ø 5–10 cm); kůl se špičkou `SM_RuinStake` (s kůrou), `SM_RuinStakeSmall` (loupaný, špičky na obou koncích); hlava rozsochy `SM_RuinForkHead` (nasadí se na kůl); žlab z půlkmene `SM_RuinGutter` / `SM_RuinGutterBark` |
+| kůra, proutí, hlína | pás kůry 160 × 70 cm `SM_RuinBarkStrip`; dílec proutěné stěny s mazaninou 100 × 100 × 8 cm `SM_RuinWattlePanel`; dymník `SM_RuinSmokeHood`; komín 60 × 60 cm `SM_RuinChimney` |
+| lano a plátno | článek lana `SM_RuinRope`, ovázání křížení tyčí `SM_RuinLashing`; plátno na míru (prověšená plocha mezi tyčemi, oboustranný materiál `MI_RuinCanvas`) |
+| kovárna | špalek `SM_RuinStump`, kovadlina `SM_RuinAnvil`, měchy s rámem a výfučnou `SM_RuinBellows`, kalicí sud `SM_RuinBarrel`, šlapací brus `SM_RuinGrindstoneTreadle` s třínohou stoličkou `SM_RuinStool`, ponk se svěrákem `SM_RuinWorkbench`, kleště, kladivo, sekáč, hřebovnice, truhlík na uhlí s volným víkem `SM_RuinCoalBox` + `SM_RuinCoalBoxLid`, hranice polen `SM_RuinWoodpile`, železné pruty `SM_RuinIronBars`, koš `SM_RuinBasket` |
+| obydlí | lůžko `SM_RuinBed` / `SM_RuinBedFolded`, stůl `SM_RuinTable`, truhla `SM_RuinChest`, police `SM_RuinShelf`, dveře 1,0 × 2,2 m `SM_RuinDoor`, okenice 60 × 60 cm `SM_RuinShutter`, žebřík 4,5 m `SM_RuinLadder` |
+| tesařské nářadí | sekera, širočina, dvoumužná pila, kladivo na hřebíky, palice |
+
+Materiály navíc ke dřevu a kameni: kůra, čela kulatiny, lano, plátno, proutí, mazanina, výplň spár srubu, železo (s rzí a bez), kůže, pískovec, dřevěné uhlí, sláma, houně. **Chybí:** saze, udusaná hlína, třísky na zemi, oheň a kouř (VFX), tesařské kozy, hromady materiálu staveniště, plachta stanu.
 
 Samostatné actory (`loose`) jsou kusy, které Jirka doladí ručně a uloží přes capture (práh). Navrhni je tam, kde výšku nebo polohu nejde přesně spočítat.
 
@@ -105,7 +137,8 @@ Samostatné actory (`loose`) jsou kusy, které Jirka doladí ručně a uloží p
 2. **Rozpětí a průřezy** (orientačně, jako u stávajících staveb):
    - trám 22 × 24 cm do ~5–6 m, delší s podporou (sloup, příčka, vzpěra),
    - stropní trámy 26 × 28 cm po ~0,8–1 m, prkna 4,5–5 cm,
-   - sloup 25–28 cm, příčka nebo průvlak 30 × 32 cm.
+   - sloup 25–28 cm, příčka nebo průvlak 30 × 32 cm;
+   - kulatina: **nosné a trvalé dřevo loupané** (srub, trámy podesty, krokve), **provizorní a nezpracované s kůrou** (přístřešky, palisáda, zábradlí, hromady). U každého prvku z kulatiny napiš průměr a jestli je s kůrou.
 3. **Střecha:**
    - prkna po spádu s lištami fungují už od ~10–15°;
    - šindel chce víc (orientačně 25° a víc), došky ještě víc (45° a víc);
@@ -126,14 +159,17 @@ Samostatné actory (`loose`) jsou kusy, které Jirka doladí ručně a uloží p
 
 ## 6. Podklady ke čtení
 
-Cesty jsou relativně ke složce `GameDesign\Claude outputs\Lapikus`.
+Cesty jsou relativně k hlavní složce `skvt_projekt\PrototypeDesigns\Lapikus` (kopie dokumentů je v `GameDesign\Claude outputs\Lapikus`).
 
 - `03_ruin\Zricenina_03_ruin_stav.md`: **aktuální stav a poslední rozhodnutí** (platí přednostně).
 - `03_ruin\blocks\README_bloky.md`: jak je zeď složená, úpravy v datech (kap. 4), bourací objemy (kap. 5), části hradu.
 - `05_constructions\README_constructions.md`: všechny dostavby, jejich parametry a z čeho jsou.
 - `03_ruin\README_ruin.md`: předloha, půdorys, rozpad, hratelnost.
+- `KNOWHOW_hrad.md`: společná pravidla, souřadnice a konvence, padlá rozhodnutí a co je nerozhodnuté.
 - `AGENT_GameDesign_hrad.md`: jak píše zadání game designer.
-- `..\navrh_palac_posadka.md`: návrh bydlení posádky v paláci (zatím nepostavený).
+- `new_designs\navrh_*.md` a `*.png`: hotové specifikace dalších staveb (přehled v kap. 3). Ber je jako vzor rozsahu a podrobnosti.
+- `CHECKLIST_assets_navrhy.md`: které assety, typy staveb a úpravy 03 návrhy potřebují a co z toho je hotové.
+- `05_constructions\Knihovna_meshe_nahled.png`, `Kulatina_meshe_nahled.png`, `Props_kovarna_nahled.png`: jak vypadají hotové dílce a props.
 - Náhledy: `05_constructions\Stavby_*_nahled.png`, `03_ruin\*.png`, `03_ruin\blocks\*_nahled.png`.
 - **Data** (jen číst, pro přesné rozměry):
   - `03_ruin\blocks\ruin_layout.json`: zdi (body v UE cm, tloušťka, `H0`, otvory s `s` v m podél zdi, `cap`, `notches`, `edits`);
@@ -167,6 +203,8 @@ Ke každému návrhu napiš, co má stavitel zkontrolovat. Nástroje už existuj
   - úprava dřeva po částech (tar/raw/oil/blood/old)
 - Úpravy 03 (zřícenina): ne / ano - co (cut, cap, notches, set_height...), zeď, s, z; kterou část přestavět
 - Dostavba 05: typ (existující / nový), název stavby, klíčové parametry do constructions.json
+- Dílce a props: které hotové z knihovny (kap. 4, jména SM_Ruin*), které tvary jsou nové
+- Etapa: stojí v etapě 1, 2, nebo v obou; co se mezi etapami liší
 - Sdílené rozměry: kde budou (např. nová konstanta v ostroh_spec.py nebo nový *_spec.py)
 - Ruční doladění: co bude samostatný actor (loose)
 - Vazby a kolize: s čím sousedí, co se nesmí bít, pořadí stavění (03 -> 05, která stavba dřív)
@@ -183,3 +221,4 @@ Ke každému návrhu napiš, co má stavitel zkontrolovat. Nástroje už existuj
 - **Jména zdí, staveb a parametrů** piš přesně jako v datech (`ZBudova_V`, `Ostroh_Krov`, `cap`, `notches`).
 - **Ruční úpravy** (`manual_edits.json`, `constructions_edits.json`) se nikdy nepřepisují. Návrh s nimi musí počítat.
 - **Jazyk:** česky, stručně, v bodech. U tvrzení, které nevychází z podkladů, napiš „předpoklad“.
+- **Kam se ukládá:** specifikaci píšeš jako text. Do `new_designs\navrh_<část>_<stavba>.md` ji uloží stavitel nebo Jirka, v hlavičce se stavem (návrh / vybraná varianta / postaveno) a datem.

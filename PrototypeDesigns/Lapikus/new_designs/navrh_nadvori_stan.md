@@ -1,6 +1,11 @@
 # Návrh: Nadvori_Stan – zabydlený vojenský stan pro dva na nádvoří
 
-Specifikace od architekta pro stavitele (šablona `AGENT_Architekt_hrad.md`, kap. 8). Stav: **podmíněný návrh, nepostaveno.** Jirka zatím nerozhodl, jestli stan ve hře bude (14. 11. 2026). Náčrt není, jen popis slovy v kap. 10.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **podmíněný návrh, nepostaveno.** Jirka zatím nerozhodl, jestli stan ve hře bude (14. 11. 2026). Náčrt není, jen popis slovy v kap. 10.
+
+**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md` (položky ⛺):
+- **Rozhodnutí pořád chybí.** Stan se drží v seznamu s nízkou prioritou.
+- **Hotové dílce:** tyče s kůrou `SM_RuinPoleBark` (stojky, hřeben, krokvičky), kolíky `SM_RuinStakeSmall`, vidlice `SM_RuinForkHead`, pásy kůry `SM_RuinBarkStrip`, lano `SM_RuinRope`, špalek `SM_RuinStump`, materiál plátna `MI_RuinCanvas`.
+- **Chybí:** plachta stanu do A, lůžka z klád a tyčí, výplň lůžek, ranec a truhlička, typy staveb `tent` a `bark_roof`, přepínač `ETAPA`.
 
 **Proč je to otevřené:** posádka má k dispozici věž. Letní bouřku jde přečkat i v jejím chladnějším spodním patře, takže stan nemusí být potřeba. Tento dokument je připravený pro případ, že se stan použije.
 

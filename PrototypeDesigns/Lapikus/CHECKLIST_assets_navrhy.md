@@ -1,6 +1,6 @@
 # Checklist: assety a podklady pro nové návrhy (11/2026)
 
-Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `Designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 2, zapracované odpovědi Jirky (14. 11. 2026). Nic zatím není hotové, čeká na prioritizaci.**
+Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `new_designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 2, zapracované odpovědi Jirky (14. 11. 2026). Nic zatím není hotové, čeká na prioritizaci.**
 
 ## 0. Zdroje a rozhodnutí
 
@@ -76,7 +76,7 @@ Stejný princip jako `SM_RuinTimber`: nominální délka 100 cm, délka a prům�
 | ☑ | 🆕 `SM_RuinGutterBark_A–B` | vydlabaný půlkmen, kůra zvenku | Ø 20 cm, délka po 100 cm | žlaby a svody |
 | ☐ | ❓ zářez srubu (nároží) | kulatiny se v nárožích křižují: řešit průnikem (bez meshe), nebo mesh se zářezem | – | srub obydlí |
 
-- ☑ Napojení (14. 11. 2026): `ROUND_MESHES`, `ROUND_SHAPES`, `SLOT_MI` v `zrlib/config.py`, `Stone.shape` + `Stone.bark`, sloty materiálů v `zrlib/ue_assets.apply_materials`. Ukázka `tools/meshes/Ukazka_Kulatina.py`, náhled `05_constructions/Kulatina_meshe_nahled.png`. **Neověřeno v UE.**
+- ☑ Napojení (14. 11. 2026): `ROUND_MESHES`, `ROUND_SHAPES`, `SLOT_MI` v `zrlib/config.py`, `Stone.shape` + `Stone.bark`, sloty materiálů v `zrlib/ue_assets.apply_materials`. Ukázka `tools/meshes/Ukazka_Meshe.py` (dřív `Ukazka_Kulatina.py`), náhled `05_constructions/Kulatina_meshe_nahled.png`. **Neověřeno v UE.**
 - Rozhodnuto při stavbě: rozsocha je samostatná hlava (`SM_RuinForkHead`), ne celý kůl, aby se vidlice nenatahovala s délkou. Sloty jsou tři (`Wood`, `EndGrain`, `Bark`), odloupnutá místa jsou slot `Wood`.
 
 ---

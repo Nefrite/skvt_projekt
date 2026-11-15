@@ -3,7 +3,9 @@
 Prototyp lokace pro kurz *Game design pro začátečníky* (skvt.cz): zřícenina hradu na ostrohu v meandru potoka, zarostlá smíšeným lesem.
 Inspirace: zřícenina **Lapikus** nad Plenkovickým potokem (screenshot z mapy se sklonem terénu).
 
-Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká padla rozhodnutí, co je hotové a jak podklady znovu vygenerovat.
+Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká padla rozhodnutí, co je hotové a jak podklady znovu vygenerovat. Stav: 15. 11. 2026.
+
+**Kam dál:** pravidla, konvence, ověřené pasti a rozhodnutí kolem hradu jsou v `KNOWHOW_hrad.md`. Aktuální stav zříceniny je v `03_ruin\Zricenina_03_ruin_stav.md`.
 
 ---
 
@@ -17,15 +19,18 @@ Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká pa
 | Player Start, procházení | ✅ návod, nastaveno | `01_terrain/README_terrain.md` kap. 4 |
 | Řeka (Water Body River) | ✅ vložena a odladěna | `02_river/README_river_mud.md` |
 | Štěrk / bahno v korytě (maska) | ⏸ odloženo, podklady hotové | `02_river/README_river_mud.md` kap. 2 |
-| Les (PCG) | 📝 plán + zóny + spliny, čeká na stažení stromů | `03_forest/README_forest.md` |
-| Hrad (blockout, ruina) | ☐ nezačato | – |
+| Les (PCG) | 📝 plán + zóny + spliny, čeká na stažení stromů | `04_forest/README_forest.md`, `04_forest/README_assets_stromy.md` |
+| Zřícenina hradu (03) | ✅ postavená v UE skriptem z jednotlivých kamenů (stav ~1650): 18 zdí, asi 23 000 bloků, tři části (`Obvod`, `Palac`, `Ostroh`) | `03_ruin/Zricenina_03_ruin_stav.md`, `03_ruin/blocks/README_bloky.md` |
+| Dostavby „druhého zabydlení“ (05) | ✅ dřevo ve věži, krov, kamenná dostavba a podlaha u ostrohu, suť s fyzikou | `05_constructions/README_constructions.md` |
+| Knihovna meshí a props | ✅ 111 meshí v UE (kameny, hraněné dřevo, kulatina, kůra, proutí, lano, plátno, props kovárny a obydlí) s vlastními texturami a materiály | `05_constructions/README_constructions.md`, `CHECKLIST_assets_navrhy.md` |
+| Další stavby (věž, palác, brána, nádvoří) | 📝 specifikace hotové, nepostaveno; chybí nové typy staveb v 05 a úpravy 03 | `new_designs/navrh_*.md`, `CHECKLIST_assets_navrhy.md` |
 
 ### Další kroky (doporučené pořadí)
 
-1. **Les:** rozhodnout, jak řešit velikost stromů v gitu (LFS / `.gitignore`), stáhnout Quixel Megaplants, zapnout PCG, vložit spliny zón a postavit `PCG_Forest` (checklist v `03_forest`).
+1. **Les:** rozhodnout, jak řešit velikost stromů v gitu (LFS / `.gitignore`), stáhnout Quixel Megaplants, zapnout PCG, vložit spliny zón a postavit `PCG_Forest` (checklist v `04_forest\README_forest.md`).
 2. **Koryto:** štěrk a bahno v materiálu (`02_river` kap. 2), případně stezka z `T_ForestZones_505.png` (kanál B).
-3. **Hrad:** blockout z `LevelPrototyping` kostek na plošině (Z ≈ 3130), boolean v Modeling módu, materiály kamene, sutě `SM_Rock`.
-4. **Atmosféra:** Exponential Height Fog, nízké slunce, `P_Ambient_Dust`.
+3. **Hrad:** stavby z návrhů v `new_designs` podle priorit v `CHECKLIST_assets_navrhy.md` (kovárna a dům v paláci, přístřešek na věži, stráž na bráně). Potřebují nové typy staveb v 05 (`pult_roof`, `log_wall`, `hearth`…), rozmístění props a přepínač etap.
+4. **Atmosféra:** Exponential Height Fog, nízké slunce, `P_Ambient_Dust`; oheň a kouř pro kovárnu a ohniště.
 
 ---
 
@@ -38,6 +43,8 @@ Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká pa
 | Engine | Unreal Engine **5.8** |
 | Mapa | `Content/Skvt/LapikusPrototypeMap` (výchozí mapa projektu zůstává `SkvtProjectMap`) |
 | Materiál terénu | `Content/Skvt/Lapikus/M_Lanscape_Forest_Auto` (pozor: v názvu překlep *Lanscape*) |
+| Assety hradu | `Content/Skvt/Lapikus/Ruin`: `Stones`, `Wood`, `Wattle`, `Textile`, `Props` (meshe `SM_Ruin*`), `Textures`, `Materials`. Všechno generuje a importuje skript, ručně se sem nic nepřidává. |
+| Actory hradu v levelu | tagy `Zricenina_Ruin` (zřícenina) a `Zricenina_Stavby` (dostavby), složky Outlineru `Stavby/...`. Level je celý generovaný, ruční úpravy se ukládají přes capture. |
 | GameMode | `BP_SkvtGameMode` (World Settings → GameMode Override) |
 | Pluginy | **Water**, **Python Editor Script Plugin**; pro les navíc **PCG** |
 
@@ -45,7 +52,7 @@ Pluginy zatím nejsou zapsané v `skvt_projekt.uproject`. Po zapnutí zkontroluj
 
 **Git:**
 
-- Repo nemá Git LFS, GitHub odmítne soubor > 100 MB. Týká se hlavně stažených stromů (viz `03_forest` kap. 3).
+- Repo nemá Git LFS, GitHub odmítne soubor > 100 MB. Týká se hlavně stažených stromů (viz `04_forest\README_forest.md` kap. 3 a `README_assets_stromy.md`).
 - `.gitignore` ignoruje `SourceArt/**/*.png`. Pokud se podklady přesunou do repa, použij jinou složku, např. `LevelSource/Zricenina/`.
 
 ---
@@ -82,22 +89,37 @@ Pluginy zatím nejsou zapsané v `skvt_projekt.uproject`. Po zapnutí zkontroluj
 | Les přes PCG, zóny jako spliny s tagy | Automatické pokrytí; tvar zón jde dolaďovat tahem bodů |
 | Quixel Megaplants (buk, javor, osika, líska, olše) | Zdarma, evropské druhy, Nanite foliage; kosodřevina v nich chybí |
 | Hrad: obrys podle náčrtu, končí u řeky | Původní obdélník zasahoval za řeku na protější břeh |
+| Hrad procedurálně z kamenů (Python v UE), ne blockout z kostek | Zeď jde rozpadnout, vybourat a upravit v datech; ruční zásahy se ukládají přes capture |
+| Zřícenina (03) a dostavby (05) oddělené | Dostavby jdou ladit bez přegenerování hradu |
+
+Rozhodnutí kolem hradu (props, kulatina, dům v prostřední místnosti paláce, způsob importu meshí, dva celkové buildy) jsou s daty v `KNOWHOW_hrad.md`, kap. 7.
 
 ---
 
 ## 5. Struktura složky
 
 ```
-Claude outputs\Lapikus\
+skvt_projekt\PrototypeDesigns\Lapikus\
 ├─ README_PROJEKT.md        ← tento dokument
 ├─ README.txt               ← rychlý rozcestník
+├─ KNOWHOW_hrad.md          společné know-how: pravidla, konvence, pasti, rozhodnutí
+├─ AGENT_*.md               instrukce pro agenty (architekt, game design, stavitel)
+├─ CHECKLIST_assets_navrhy.md   co návrhy potřebují (assety, typy staveb, úpravy 03) a co je hotové
+├─ build_normal.py          UE: celý hrad (03) + všechny stavby (05), aditivně
+├─ build_fullscope.py       UE: oprava – smaže generované actory a meshe a vše postaví znovu
 ├─ 01_terrain\              heightmapa 505, náhled sklonu, návod importu a materiálu
 ├─ 02_river\                body a skript řeky, maska koryta, návod
-├─ 03_forest\               plán lesa, zóny, spliny, maska zón, náčrt
-├─ meshes\                 OBJ knihovních meshí podle kategorie (stone, wood); nejsou v gitu, generuje tools\meshes\gen_meshes.py
-├─ textures\               procedurální textury (kůra, čela); nejsou v gitu, generuje tools\textures\gen_textures.py
-└─ tools\                   skripty pro přegenerování všech podkladů (meshe: tools\meshes\gen_meshes.py)
+├─ 03_ruin\                 zřícenina: plán, stav, data; blocks\ = generátor z kamenů (build_ruin_blocks.py, casti\*.py)
+├─ 04_forest\               plán lesa, zóny, spliny, maska zón, náčrt, olše u řeky, assety stromů
+├─ 05_constructions\        dostavby: build_constructions.py, stavby\*.py, data, náhledy
+├─ new_designs\             návrhy dalších staveb (specifikace architekta + náčrty)
+├─ zrlib\                   sdílená knihovna skriptů 03 + 05 (config.py = vzhled a verze, pipeline.py = spouštění)
+├─ meshes\                  OBJ knihovních meshí podle kategorie (stone, wood, wattle, textile, props); nejsou v gitu, generuje tools\meshes\gen_meshes.py
+├─ textures\                procedurální textury; nejsou v gitu, generuje tools\textures\gen_textures.py
+└─ tools\                   generátory (terén, řeka, zóny, ruin\, constructions\, meshes\, textures\) a kontroly (checks\)
 ```
+
+`GameDesign\Claude outputs\Lapikus` drží kopie dokumentů a starší kopie skriptů; nové soubory se tam nepřidávají.
 
 Starší mezivýstupy (pro historii, není třeba je používat):
 
@@ -120,7 +142,21 @@ Všechno je deterministické: stejné skripty dají bit po bitu stejné soubory.
 | 2. Ořez 505 | `python 2_derive_505.py crop <dir>` | `Zricenina_heightmap_505_50cm.png`, `Zricenina_preview_orez.png` |
 | 3. Body řeky | `python 2_derive_505.py river <dir>` | `Zricenina_505_body_reky.csv`, `river_points.txt` (vložit do `POINTS` v `import_river_spline.py`) |
 | 4. Maska koryta | `python 2_derive_505.py mask <dir>` | `T_RiverMask_505.png` |
-| 5. Zóny lesa | `python 2_derive_505.py zones <dir> 03_forest\nacrt_zony.png` | `Zricenina_les_plan.png`, `T_ForestZones_505.png`, `Zricenina_les_zony.csv`, `zone_points.json` (vložit do `ZONES` v `import_zone_splines.py`) |
+| 5. Zóny lesa | `python 2_derive_505.py zones <dir> 04_forest\nacrt_zony.png` | `Zricenina_les_plan.png`, `T_ForestZones_505.png`, `Zricenina_les_zony.csv`, `zone_points.json` (vložit do `ZONES` v `import_zone_splines.py`) |
+
+**Hrad** (z kořene prototypu, podrobně `AGENT_Stavitel_hrad.md` kap. 4–6):
+
+| Krok | Příkaz | Výstup |
+|---|---|---|
+| Data zříceniny | `python tools/ruin/gen_layout.py 03_ruin/ruin_layout_draft.json 01_terrain/Zricenina_heightmap_505_50cm.png 03_ruin/blocks/ruin_layout.json` | `ruin_layout.json` (jen při změně zříceniny nebo sdíleného specu) |
+| Data dostaveb | `python tools/constructions/gen_constructions.py 03_ruin/ruin_layout_draft.json 05_constructions/constructions.json` | `constructions.json` |
+| Meshe | `python tools/meshes/gen_meshes.py` | `meshes/<kategorie>/*.obj` |
+| Textury | `python tools/textures/gen_textures.py` | `textures/*.png` |
+| Kontroly bez UE | `python tools/checks/run_checks.py` | otvory, kameny bez podpory, průniky u ostrohu |
+| Stavba v UE | **Tools → Execute Python Script →** `build_normal.py` (nebo jen část: `03_ruin/blocks/casti/*.py`, `05_constructions/stavby/*.py`) | actory v levelu; chybějící meshe a textury se doimportují |
+| Oprava v UE | `build_fullscope.py` | smaže generované actory a meshe a postaví vše znovu (při poškozených assetech) |
+
+Ruční úpravy v levelu se ukládají stejným skriptem s `MODE = "capture"`, vždy před dalším generováním. `manual_edits.json` a `constructions_edits.json` se nepřepisují.
 
 **Co kde měnit:**
 
@@ -148,3 +184,4 @@ Po změně terénu je potřeba přegenerovat i kroky 2–5 a heightmapu v UE zno
   - uzel **Cosine → Period** (ladění ve stupních)
   - uzly PCG pro uzavřené spliny jako plochu
 - Plavání postavy ve vodě (Water plugin + Character Movement).
+- Hrad: nerozhodnuté body (stan na nádvoří, umístění kovárny, výstup na podestu brány, přepínání etap, cisterna) jsou v `CHECKLIST_assets_navrhy.md` kap. 9 a `KNOWHOW_hrad.md` kap. 7.

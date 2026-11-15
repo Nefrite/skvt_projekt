@@ -1,6 +1,12 @@
 # Návrh: Palac_Obydli – obytná stavba posádky v prostřední místnosti paláce
 
-Specifikace od architekta pro stavitele (šablona `Lapikus\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno.** Je to kopie návrhu `navrh_palac_obydli.md` (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: `navrh_palac_obydli_stred.png` (hotová stavba) a `navrh_palac_obydli_stred_etapa1.png` (rozestavěný stav). Jsou to schémata, ne přesné modely.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno.** Je to kopie návrhu `navrh_palac_obydli.md` (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: `navrh_palac_obydli_stred.png` (hotová stavba) a `navrh_palac_obydli_stred_etapa1.png` (rozestavěný stav). Jsou to schémata, ne přesné modely.
+
+**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`. **Tohle je platný návrh domu**, varianta ve východní místnosti je zavržená.
+- **Hotové dílce stavby:** loupaná kulatina `SM_RuinLog` (srub), trámy, sloupy a prkna (`SM_RuinTimber`, `SM_RuinPost`, `SM_RuinPlank`), žlab `SM_RuinGutter` / `SM_RuinGutterBark` s vidlicí `SM_RuinForkHead`, dymník `SM_RuinSmokeHood`, komín `SM_RuinChimney`. Materiály: loupané dřevo (`peeled`), výplň spár srubu `MI_RuinChinking`, mazanina, proutí.
+- **Hotové vybavení (kap. 4.8):** lůžko `SM_RuinBed` / `SM_RuinBedFolded`, stůl `SM_RuinTable`, truhla `SM_RuinChest`, police `SM_RuinShelf`, ponk `SM_RuinWorkbench` (menší škálováním), hranice dřeva `SM_RuinWoodpile`, dveře `SM_RuinDoor`, okenice `SM_RuinShutter` (0,5 × 0,5 m škálováním), žebřík `SM_RuinLadder`.
+- **Hotové pro staveniště (kap. 9.2):** žebřík, koš `SM_RuinBasket`, tesařské nářadí (sekera, širočina, dvoumužná pila, kladivo, palice).
+- **Chybí:** typy staveb `pult_roof`, `log_wall`, `hearth`, `gutter`, rozšíření `stone_addon` o tloušťku, strop s výměnou, rozmístění props, přepínač `ETAPA`, `tools/ruin/palac_spec.py`, úprava 03 (kap. 3). Ze staveniště tesařské kozy, rozpracovaná kulatina, hromady materiálu, loupák, třísky na zemi. Dále zářez srubu v nárožích, saze, udusaná hlína, oheň a kouř.
 
 **Proč prostřední místnost (Jirka, 14. 11. 2026):** součástí osídlení bude provizorní kovárna a u věže má komín špatný tah. Prostřední místnost je 11 m od věže, jižní zeď je tu rovnoměrnější a vstupem je zachovaný portál.
 
