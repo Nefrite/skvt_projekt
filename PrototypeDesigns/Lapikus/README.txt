@@ -2,7 +2,7 @@ Zricenina v meandru - orez 505 px (252 x 252 m, 0,5 m/px)
 
 README_PROJEKT.md - stav projektu, rozhodnuti, souradnice, jak navazat a pregenerovat
 KNOWHOW_hrad.md   - hrad: pravidla, konvence, overene pasti a rozhodnuti na jednom miste
-AGENT_*.md        - instrukce pro agenty (architekt, game design, stavitel)
+AGENT_*.md        - instrukce pro agenty (architekt, game design, stavitel, furnisher)
 CHECKLIST_assets_navrhy.md - co navrhy potrebuji a co je hotove
 
 01_terrain\  - heightmapa, import landscapu, Player Start, materialu M_Landscape_Forest_Auto

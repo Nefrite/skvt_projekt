@@ -22,7 +22,6 @@ Zricenina zustava ve 03: zdi, otvory, kapsy pro tramy, kamenna dlazba. Dostavby 
 Pouziti v UE: Tools -> Execute Python Script ->
   - stavby/<Stavba>.py      jen jedna stavba (Vez_Patra.py, Ostroh_Krov.py, Ostroh_Dostavba.py, Ostroh_Podlaha.py,
                             Palac_Kovarna_Pristresek.py, Palac_Kovarna_Vyhen.py, Palac_Kovarna_Stena.py, Palac_Kovarna_Okap.py,
-                            Palac_Kovarna_Vybaveni.py,
                             Palac_Obydli_Kamen.py,
                             Palac_Obydli_Ohniste.py, Palac_Obydli_Krov.py, Palac_Obydli_Srub.py, Sut.py) - ostatni se nesmazou ani neprestavi
   - build_constructions.py  vsechny stavby najednou

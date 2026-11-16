@@ -1,9 +1,10 @@
-"""build_normal.py - postavi cely hrad (03_ruin) a vsechny stavby (05_constructions) v jednom behu. Aditivni build.
+"""build_normal.py - postavi cely hrad (03_ruin) vsechny stavby (05_constructions) a vybaveni (06_furnishing) v jednom behu. Aditivni build.
 Unreal: Tools -> Execute Python Script -> build_normal.py
 
 Assety jen doplnuje: naimportuje chybejici nebo zastarale meshe a textury (verze v zrlib/config.py), chybejici
 materialy vytvori, existujici necha (i s rucnim ladenim). Actory zriceniny a staveb smaze a postavi znovu podle dat
-(ruin_layout.json, constructions.json) a ulozenych rucnich uprav (manual_edits.json, constructions_edits.json).
+(ruin_layout.json, constructions.json, furnishing.json) a ulozenych rucnich uprav (manual_edits.json,
+constructions_edits.json; polohy vybaveni z levelu jsou primo ve furnishing.json).
 Totez co 03_ruin/blocks/build_ruin_blocks.py a po nem 05_constructions/build_constructions.py; jen cast hradu nebo
 jednu stavbu stavi 03_ruin/blocks/casti/*.py a 05_constructions/stavby/*.py.
 Kdyz jsou assety poskozene (NaN v bounds, InverseFast v logu, naruby, prazdne nahledy), pouzij build_fullscope.py.

@@ -3,6 +3,7 @@ tagy, materialy, zaoblene kameny, drevo, fyzika volnych kamenu. Uprav tady (driv
 
 RUIN_TAG = "Zricenina_Ruin"                      # tag actoru zriceniny 03_ruin
 CONSTR_TAG = "Zricenina_Stavby"                  # tag actoru staveb 05_constructions
+FURN_TAG = "Zricenina_Vybaveni"                  # tag actoru vybaveni 06_furnishing (prenosne props)
 # etapy stavby (05): kazdy dilec stavby s etapami patri do jedne sady; actor sady ma tag STAGE_TAG + jmeno sady.
 # Prepnuti ve hre = zobrazit / skryt (i kolizi) actory podle tagu: etapa 1 = base + site, etapa 2 = base + final.
 STAGE_TAG = "stage:"

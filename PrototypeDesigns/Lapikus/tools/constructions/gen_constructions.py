@@ -3,7 +3,8 @@ Dodatecne stavby "druheho zabydleni" zriceniny:
   - tower_floors: drevene vestavby ve vezi (tramy, prkna, pruvlak, schody, podesta); rozmery veze sdili se zriceninou
     pres tools/ruin/tower_spec.py
   - ostroh: krov u ostrohu (ostroh_spec.py, sdileny s 03), kamenna dostavba obytne casti a prkenna podlaha
-  - palac: kovarna ve vychodni mistnosti (palac_spec.py): pristresek s pultovou strechou a krytinou, vyhen, stena z prouti, okap, vybaveni
+  - palac: kovarna ve vychodni mistnosti (palac_spec.py): pristresek s pultovou strechou a krytinou, vyhen, stena z prouti, okap, kul u dreva
+    (prenosne vybaveni kovarny je v 06_furnishing: tools/furnishing/gen_furnishing.py)
   - nastaveni volne suti
 
 python gen_constructions.py <ruin_layout_draft.json> <vystup constructions.json> [<03_ruin/blocks/ruin_layout.json>]
@@ -16,7 +17,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "ruin"))
 sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..")))          # zrlib
 from tower_spec import VEZ_F, VEZ_ST, spec as tower_spec
 from ostroh_spec import spec as ostroh_spec
-from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_vybaveni, obydli as obydli_spec
+from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_kul, obydli as obydli_spec
 from brana_spec import straz as straz_spec
 from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, project_s, point_at
 
@@ -309,11 +310,10 @@ def palac(LAY):
         finish=dict(gutter="raw", forks="raw", barrel="raw"))
     Pw = lambda s, n: [round(F["origin"][0] + (F["s"][0] * s + F["n"][0] * n) * 100, 1), round(F["origin"][1] + (F["s"][1] * s + F["n"][1] * n) * 100, 1)]
     s0, s1, n0, n1 = F["s_tower"] - 9.4, F["s_tower"] + 0.05, F["n_in"] - 0.05, F["n_north"] + 0.05
-    vybaveni = dict(
-        name="Palac_Kovarna_Vybaveni", type="props", folder="Stavby/Palac/Kovarna_Vybaveni", origin=F["origin"], u=F["s"], v=F["n"],
-        roof="Palac_Kovarna_Pristresek",                             # lano paky mechu visi z krokve
-        items=kovarna_vybaveni(LAY["walls"]),                        # samostatne actory (rucni doladeni pres capture)
-        clear_poly=[Pw(s0, n0), Pw(s1, n0), Pw(s1, n1), Pw(s0, n1)])   # sut v cele vychodni mistnosti uklizena
+    kul = dict(
+        name="Palac_Kovarna_Kul", type="props", folder="Stavby/Palac", origin=F["origin"], u=F["s"], v=F["n"],
+        items=kovarna_kul(LAY["walls"]))                             # pevny kul u hranice dreva (hranice je vybaveni 06)
+    pristresek["clear_poly"] = [Pw(s0, n0), Pw(s1, n0), Pw(s1, n1), Pw(s0, n1)]   # sut v cele vychodni mistnosti uklizena
     # --- dum posadky v prostredni mistnosti (navrh_palac_obydli_stred.md), zatim kamenne casti; etapy = sady actoru (stage)
     D = obydli_spec(LAY["walls"]); rect = lambda p: dict(a=list(p["s"]), c=list(p["n"]), top=p["top"])
     P = lambda s, n: [round(F["origin"][0] + (F["s"][0] * s + F["n"][0] * n) * 100, 1), round(F["origin"][1] + (F["s"][1] * s + F["n"][1] * n) * 100, 1)]
@@ -363,7 +363,7 @@ def palac(LAY):
         roof="Palac_Obydli_Krov", stage="base",
         lap=LG["lap"], half_w=LG["half_w"], jit=LG["jit"], walls=LG["walls"], gables=LG["gables"],
         finish=dict(logs="raw", gables="raw"))
-    return [pristresek, krov], [vyhen, stena, okap, vybaveni, kamen, ohniste, srub]
+    return [pristresek, krov], [vyhen, stena, okap, kul, kamen, ohniste, srub]
 
 
 def brana(LAY):

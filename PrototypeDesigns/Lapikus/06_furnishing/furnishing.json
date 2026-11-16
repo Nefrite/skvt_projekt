@@ -1,0 +1,363 @@
+{
+ "version": 2,
+ "units": "UE cm (pozice), m (rozmery v ramu skupiny)",
+ "note": "Vybaveni (prenosne props). Stavby jsou v 05_constructions/constructions.json. Polohy z levelu zapisuje capture primo sem (captured / removed / manual), generator je pri slouceni zachova.",
+ "groups": [
+  {
+   "name": "Palac_Kovarna_Vybaveni",
+   "type": "props",
+   "folder": "Vybaveni/Palac/Kovarna",
+   "origin": [
+    -2350,
+    -50
+   ],
+   "u": [
+    0.97586,
+    -0.21842
+   ],
+   "v": [
+    -0.21842,
+    -0.97586
+   ],
+   "roof": "Palac_Kovarna_Pristresek",
+   "items": [
+    {
+     "id": "Spalek",
+     "shape": "stump",
+     "a": 28.0,
+     "c": 1.4,
+     "z": 0.0,
+     "scale": [
+      1.0,
+      1.0,
+      1.0856531049250535
+     ]
+    },
+    {
+     "id": "Kovadlina",
+     "shape": "anvil",
+     "a": 28.0,
+     "c": 1.465,
+     "z": 0.507,
+     "x": [
+      0,
+      1
+     ]
+    },
+    {
+     "id": "KaliciSud",
+     "shape": "barrel",
+     "a": 28.3,
+     "c": 2.6,
+     "z": 0.0
+    },
+    {
+     "id": "Spalek2",
+     "shape": "stump",
+     "a": 27.35,
+     "c": 1.75,
+     "z": 0.0,
+     "scale": [
+      0.7,
+      0.7,
+      1.177730192719486
+     ]
+    },
+    {
+     "id": "Hrebovnice",
+     "shape": "nail_header",
+     "a": 27.35,
+     "c": 1.75,
+     "z": 0.55,
+     "x": [
+      0.6,
+      0.8
+     ]
+    },
+    {
+     "id": "Mechy",
+     "shape": "bellows",
+     "a": 30.0,
+     "c": 3.052,
+     "z": 0.0,
+     "x": [
+      0,
+      -1
+     ]
+    },
+    {
+     "id": "Paka",
+     "shape": "round",
+     "d": 0.06,
+     "p0": [
+      30.0,
+      3.95,
+      1.75
+     ],
+     "p1": [
+      28.55,
+      2.2,
+      1.6
+     ]
+    },
+    {
+     "id": "Paka_Lano",
+     "shape": "rope",
+     "cat": "rope",
+     "d": 0.015,
+     "p0": [
+      28.964,
+      2.7,
+      1.643
+     ],
+     "p1": [
+      28.964,
+      2.7,
+      "rafter"
+     ]
+    },
+    {
+     "id": "Mechy_Lano",
+     "shape": "rope",
+     "cat": "rope",
+     "d": 0.015,
+     "p0": [
+      30.0,
+      4.03,
+      1.37
+     ],
+     "p1": [
+      30.0,
+      3.95,
+      1.75
+     ]
+    },
+    {
+     "id": "Brus",
+     "shape": "grindstone_treadle",
+     "a": 27.6,
+     "c": 5.47,
+     "z": 0.0,
+     "x": [
+      -1,
+      0
+     ]
+    },
+    {
+     "id": "Stolicka",
+     "shape": "stool",
+     "a": 27.3,
+     "c": 6.2,
+     "z": 0.0
+    },
+    {
+     "id": "Ponk",
+     "shape": "workbench",
+     "a": 26.484,
+     "c": 3.7,
+     "z": 0.0,
+     "x": [
+      0,
+      -1
+     ]
+    },
+    {
+     "id": "Truhlik",
+     "shape": "coal_box",
+     "a": 26.45,
+     "c": 1.4,
+     "z": 0.0
+    },
+    {
+     "id": "Truhlik_Viko",
+     "shape": "coal_box_lid",
+     "a": 26.45,
+     "c": 1.8,
+     "z": 0.8
+    },
+    {
+     "id": "Kos",
+     "shape": "basket",
+     "a": 26.45,
+     "c": 6.0,
+     "z": 0.0
+    },
+    {
+     "id": "Lista",
+     "cat": "wood",
+     "a": 27.1,
+     "c": 0.7475,
+     "zc": 1.5,
+     "size": [
+      180.0,
+      10.0,
+      2.5
+     ],
+     "roll": 90.0
+    },
+    {
+     "id": "Kolik0",
+     "shape": "round",
+     "d": 0.03,
+     "p0": [
+      26.45,
+      0.77,
+      1.5
+     ],
+     "p1": [
+      26.45,
+      0.65,
+      1.5
+     ]
+    },
+    {
+     "id": "Kolik1",
+     "shape": "round",
+     "d": 0.03,
+     "p0": [
+      27.75,
+      0.77,
+      1.5
+     ],
+     "p1": [
+      27.75,
+      0.65,
+      1.5
+     ]
+    },
+    {
+     "id": "Naradi0",
+     "shape": "tongs",
+     "a": 26.35,
+     "c": 0.779,
+     "zc": 1.249,
+     "x": [
+      0,
+      1
+     ],
+     "pitch": 90.0
+    },
+    {
+     "id": "Naradi1",
+     "shape": "tongs",
+     "a": 26.55,
+     "c": 0.779,
+     "zc": 1.249,
+     "x": [
+      0,
+      1
+     ],
+     "pitch": 90.0
+    },
+    {
+     "id": "Naradi2",
+     "shape": "hammer",
+     "a": 26.9,
+     "c": 0.786,
+     "zc": 1.322,
+     "x": [
+      0,
+      -1
+     ],
+     "roll": -90.0
+    },
+    {
+     "id": "Naradi3",
+     "shape": "hammer",
+     "a": 27.2,
+     "c": 0.786,
+     "zc": 1.322,
+     "x": [
+      0,
+      -1
+     ],
+     "roll": -90.0
+    },
+    {
+     "id": "Naradi4",
+     "shape": "chisel",
+     "a": 27.55,
+     "c": 0.779,
+     "zc": 1.397,
+     "x": [
+      0,
+      1
+     ],
+     "pitch": 90.0
+    },
+    {
+     "id": "Naradi5",
+     "shape": "chisel",
+     "a": 27.75,
+     "c": 0.779,
+     "zc": 1.397,
+     "x": [
+      0,
+      1
+     ],
+     "pitch": 90.0
+    },
+    {
+     "id": "Pruty",
+     "shape": "iron_bars",
+     "a": 27.15,
+     "c": 0.879,
+     "zc": 0.518,
+     "x": [
+      0,
+      -1
+     ],
+     "pitch": 75.0
+    },
+    {
+     "id": "Drevo0",
+     "shape": "woodpile",
+     "a": 25.33,
+     "c": 2.95,
+     "z": 0.0,
+     "x": [
+      0,
+      1
+     ],
+     "scale": [
+      0.7214,
+      1.0,
+      1.0
+     ]
+    },
+    {
+     "id": "Drevo1",
+     "shape": "woodpile",
+     "a": 25.33,
+     "c": 4.33,
+     "z": 0.0,
+     "x": [
+      0,
+      1
+     ],
+     "scale": [
+      0.7214,
+      1.0,
+      0.92
+     ]
+    },
+    {
+     "id": "Drevo2",
+     "shape": "woodpile",
+     "a": 25.33,
+     "c": 5.71,
+     "z": 0.0,
+     "x": [
+      0,
+      1
+     ],
+     "scale": [
+      0.7214,
+      1.0,
+      0.97
+     ]
+    }
+   ]
+  }
+ ]
+}

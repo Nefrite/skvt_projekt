@@ -4,6 +4,8 @@
 
 Jsi **stavitel**: podle zadání od Jirky nebo podle specifikace architekta (`AGENT_Architekt_hrad.md`, kap. 8) upravuješ skripty a data, generuješ, kontroluješ a ukládáš výsledek. Hrad se staví procedurálně v Unreal Engine 5.8 z Pythonu. Ty pracuješ **mimo Unreal**, Jirka spouští skripty v UE a posílá screenshoty.
 
+Rozmisťování vybavení (06, přenosné props) má vlastní roli **furnisher** (`AGENT_Furnisher_hrad.md`). Ty pro ni děláš meshe props, stavby, ve kterých vybavení stojí, a společný kód typu `props`.
+
 ## 1. Složky a zlaté pravidlo ukládání
 
 | Složka | Co v ní je |
@@ -14,17 +16,18 @@ Jsi **stavitel**: podle zadání od Jirky nebo podle specifikace architekta (`AG
 Pravidla:
 1. **Změny ukládej rovnou do skriptů a dat**, pokud se přístup ještě neprobírá. Když je to otázka nebo diskuse, nejdřív odpověz nebo navrhni a ukládej až po dohodě.
 2. **Ukládej do `skvt_projekt`.** Do `GameDesign` nepřidávej nové soubory (skripty, data, meshe, nové dokumenty). Soubory, které už v `GameDesign` jsou, pro jistotu aktualizuj stejným obsahem. To platí i pro instrukce pro agenty (`AGENT_*.md`) a návrhy (`new_designs\navrh_*.md` → `GameDesign\...\Lapikus\navrh_*.md`): upravuj je v `skvt_projekt` a existující kopii v `GameDesign` přepiš stejným obsahem.
-3. **Nikdy nepřepisuj `manual_edits.json` ani `constructions_edits.json`.** Jsou to ruční úpravy z levelu. Zapisuje je jen Jirka skripty v UE (`MODE = "capture"`, u vybavení kovárny `Palac_Kovarna_Ulozit_Vybaveni.py`). Když testuješ práci s nimi, dělej to na kopii a ověř, že originál zůstal stejný.
+3. **Nikdy nepřepisuj `manual_edits.json` ani `constructions_edits.json`; `06_furnishing/furnishing.json` generuj jen přes `gen_furnishing.py` (slučuje, polohy z levelu nechá).** Jsou to ruční úpravy z levelu (u vybavení přímo v `furnishing.json`: `captured`, `removed`, `manual`). Zapisuje je jen Jirka skripty v UE (`MODE = "capture"`). Když testuješ práci s nimi, dělej to na kopii a ověř, že originál zůstal stejný.
 4. **Před přepsáním porovnej** soubor na disku s poslední verzí, kterou jsi tam uložil (md5). Když se liší, mohl ho Jirka upravit: načti ho, porovnej rozdíl a změny slouč. Nikdy je nepřepisuj naslepo. **Nad stejnou složkou může souběžně pracovat jiná relace** (jiná stavba). Pracuj proto v kopii, md5 výchozích souborů si ulož na začátku a před uložením je porovnej. Když se soubor mezitím změnil, vezmi aktuální verzi a své změny do ní vlož znovu (jako nahrazení textu), `constructions.json` vygeneruj znovu a spusť kontroly všech dotčených staveb (`KNOWHOW_hrad.md` kap. 5.6). Totéž platí pro dokumenty v projektu: před zápisem je načti znovu.
 5. Po uložení ověř md5 (u souborů, které jsou v obou složkách, v obou).
 6. Mazání souborů jen na výslovný pokyn. Přesuny dělej s `mv -n` a pak ověř, že se nic nepřepsalo.
 
 Cloudový workspace má kopii stromu, ve které se dá generovat a testovat. Výsledky se pak kopírují do `skvt_projekt` (a existující kopie v `GameDesign` se aktualizují). Když počítač není dostupný, ulož výsledek do výstupů v chatu a řekni to (případně zip se změněnými soubory k rozbalení do kořene).
 
-## 2. Zřícenina (03) a dostavby (05) jsou oddělené
+## 2. Zřícenina (03), dostavby (05) a vybavení (06) jsou oddělené
 
 - `03_ruin`: zřícenina (stav ~1650). Zdi z kamenů, otvory, kapsy, rozpad, suť. Mění se jen výjimečně (snížení `cap`, žlábky `notches`, vybourání `edits` → `cut`).
 - `05_constructions`: pozdější „druhé zabydlení“. Dřevo, kamenné dostavby z kamene rozvalin, podlahy, suť. Stojí na zřícenině a nemění ji.
+- `06_furnishing`: vybavení, tedy všechno, co člověk přenese (kovadlina, sudy, nářadí, dřevo …). Stojí ve stavbách 05 a bere z nich výšky, nemění je.
 - Rozměry, které potřebuje 03 i 05, patří do **jednoho specu** v `tools/ruin/`: `ostroh_spec.py` (krov u ostrohu, okno dostavby), `tower_spec.py` (věž), `palac_spec.py` (rám paláce, kovárna, dům, polohy vybavení), `brana_spec.py` (strážní stanoviště). Nikdy je nekopíruj do dvou míst.
 - **Ostroh má zvláštní účel.** Do jeho obsazení nezasahuj bez zadání.
 
@@ -60,15 +63,20 @@ Lapikus/
     stavby/<Stavba>.py        spusteni jedne stavby v UE (MODE build / capture)
     stavby/<Skupina>.py       cela skupina staveb jednim behem (seznam STAVBY, volitelne RUIN, SUT): Palac_Kovarna.py,
                               Palac_Obydli.py, Brana_Straz.py
-    stavby/Palac_Kovarna_Ulozit_Vybaveni.py   ulozeni rucne posunuteho vybaveni kovarny (capture / list / reset)
     stavby/Etapa.py           prepnuti etapy hry v editoru (sady actoru stage:base / final / site)
     constructions.json        VYGENEROVANA data
     constructions_edits.json  rucni upravy (NEPREPISOVAT)
+  06_furnishing/              VYBAVENI = vse, co clovek prenese (props); pevne casti staveb zustavaji v 05
+    build_furnishing.py       build, capture, list, reset (tag Zricenina_Vybaveni, vybaveni:<skupina>, id:<kus>)
+    vybaveni/<Skupina>.py     jedna skupina (Palac_Kovarna.py), MODE build / capture / list / reset
+    furnishing.json           data + polohy z levelu (gen_furnishing.py slucuje, capture zapisuje)
+    furn_data.py              slouceni dat se specem, priznaky kusu (polohy z levelu jsou primo ve furnishing.json)
   tools/
     ruin/gen_layout.py        draft + heightmapa -> ruin_layout.json
     ruin/ostroh_spec.py, tower_spec.py, palac_spec.py, brana_spec.py   sdilene rozmery 03 + 05 (palac_spec = ram palace,
                               kovarna, dum, vybaveni kovarny kovarna_vybaveni())
     constructions/gen_constructions.py   ruin_layout -> constructions.json
+    furnishing/gen_furnishing.py         specy (kovarna_vybaveni ...) -> 06_furnishing/furnishing.json
     meshes/gen_meshes.py      knihovni meshe -> meshes/<kategorie>/*.obj: mesh_common, mesh_stone, mesh_wood (+ mesh_log = kulatina,
                               mesh_bark = pasy kury), mesh_wattle (prouti, dymnik, komin), mesh_textile (lano, ovazani, make_canvas),
                               mesh_props (props: kovarna, spalek, ponk, hranice, kos, zebrik; primitiva add_box/cyl/lathe/prism);
@@ -102,12 +110,13 @@ Tagy actorů v levelu: zřícenina `cast:<Část>` a `zed:<Zeď>`, dostavby `sta
    - výpočet geometrie patří do `zr_stavby/*` nebo `zr_ruin/*`;
    - nová stavba = modul v `zr_stavby`, záznam v `TYPES` a `REQUIRED`, položka v datech a spouštěč ve `stavby/` (kopie existujícího, volá `pipeline.constructions`);
    - stavba, která patří do skupiny (kovárna, dům, brána), se přidá i do seznamu `STAVBY` souhrnného spouštěče skupiny. Pořadí v seznamu je pořadí závislostí (co bere výšky z čeho), suť na konci. Nový souhrnný spouštěč jen vyjmenuje stavby a zavolá `pipeline.constructions`, kód se neduplikuje (`KNOWHOW_hrad.md` kap. 5.6);
-   - vybavení (props) se neprogramuje zvlášť: položky typu `props` (`zr_stavby/vybaveni.py`) s polohami ve specu. Poloha je střed bounding boxu meshe, odsazení funkčního středu (výfučna, rám) změř na `mesh_props.py` (`KNOWHOW_hrad.md` kap. 5.7). Úklid suti v půdorysu stavby: `clear_poly` v datech;
+   - **vybavení = všechno, co člověk přenese, patří do `06_furnishing`** (rozhodl Jirka 16. 11. 2026), ne do staveb 05. Neprogramuje se zvlášť: položky typu `props` (`zr_stavby/vybaveni.py`) s polohami ve specu, skupina v `tools/furnishing/gen_furnishing.py`, spouštěč `06_furnishing/vybaveni/<Skupina>.py` (`06_furnishing/README_furnishing.md`). Pevné kusy (kůl v zemi, sud pod okapem) jsou typ `props` v 05. Poloha je střed bounding boxu meshe, odsazení funkčního středu (výfučna, rám) změř na `mesh_props.py` (`KNOWHOW_hrad.md` kap. 5.7). Úklid suti v půdorysu stavby: `clear_poly` v datech;
    - nový knihovní mesh nebo prop = funkce v `tools/meshes/mesh_*.py`, záznam v `LIB_MESHES` / `ROUND_MESHES` (`zrlib/config.py`), vygenerovat `gen_meshes.py`; build si ho doimportuje sám. Stav assetů pro návrhy veď v `CHECKLIST_assets_navrhy.md`.
 4. **Generování** (z kořene `Lapikus`):
    ```
    python tools/ruin/gen_layout.py 03_ruin/ruin_layout_draft.json 01_terrain/Zricenina_heightmap_505_50cm.png 03_ruin/blocks/ruin_layout.json
    python tools/constructions/gen_constructions.py 03_ruin/ruin_layout_draft.json 05_constructions/constructions.json
+   python tools/furnishing/gen_furnishing.py
    ```
    `gen_layout` spouštěj jen při změně zříceniny nebo sdíleného specu.
 5. **Kontroly** (kap. 6) a **náhled**. Náhled ukaž Jirkovi, když jde o vzhled.
@@ -132,12 +141,12 @@ Tagy actorů v levelu: zřícenina `cast:<Část>` a `zed:<Zeď>`, dostavby `sta
 | podlaha | `Ostroh_Podlaha.py` |
 | úklid suti | `Sut.py` |
 | dům v paláci (`palac_spec.py` → `obydli`); etapy: stavba se `stage` v datech → actory po sadách `base` / `final` / `site` (tag `stage:<sada>`) | **celý dům: `05_constructions/stavby/Palac_Obydli.py`** (seznam `STAVBY`, novou část do něj přidej; `SUT`); jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Ohniste.py`, pak `Sut.py`. Po změně průchodů (`D_PASS`, `Palac_S` v `gen_layout.py`) nejdřív `gen_layout.py` a `03_ruin/blocks/casti/Palac.py`. |
-| kovárna v paláci (`palac_spec.py`, `gen_constructions.py` → `palac`) | **celá kovárna: `05_constructions/stavby/Palac_Kovarna.py`** (pořadí a suť řeší sám; `RUIN = True` = i část `Palac`). Jednotlivě: `Palac_Kovarna_Pristresek.py`, pak `Palac_Kovarna_Vyhen.py` (výměny u komína berou výšku z krokví), `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py` (žlab bere výšku z okapové hrany krytiny), `Palac_Kovarna_Vybaveni.py`, `Sut.py`. Když se změní kapsa pro východní pozednici, zanoření `Palac_J` (`J_SINK`) nebo rozebrání koruny u věže (`J_BREACH`): `gen_layout.py`, `03_ruin/blocks/casti/Palac.py` a až pak stavby a `Sut.py` (nebo `Palac_Kovarna.py` s `RUIN = True`). |
+| kovárna v paláci (`palac_spec.py`, `gen_constructions.py` → `palac`) | **celá kovárna: `05_constructions/stavby/Palac_Kovarna.py`** (pořadí, suť a vybavení z 06 řeší sám; `RUIN = True` = i část `Palac`). Jednotlivě: `Palac_Kovarna_Pristresek.py`, pak `Palac_Kovarna_Vyhen.py` (výměny u komína berou výšku z krokví), `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py` (žlab bere výšku z okapové hrany krytiny), `Palac_Kovarna_Kul.py`, `Sut.py`; vybavení `06_furnishing/vybaveni/Palac_Kovarna.py`. Když se změní kapsa pro východní pozednici, zanoření `Palac_J` (`J_SINK`) nebo rozebrání koruny u věže (`J_BREACH`): `gen_layout.py`, `03_ruin/blocks/casti/Palac.py` a až pak stavby a `Sut.py` (nebo `Palac_Kovarna.py` s `RUIN = True`). |
 | nový nebo změněný mesh, prop, textura | `gen_meshes.py` / `gen_textures.py` mimo UE, zvednout verzi (`STONE_MESH_VERSION`, `TEX_VERSION`); doimportuje je kterýkoli build. Kontrola vzhledu: `tools/meshes/Ukazka_Meshe.py` |
 | všechno | `build_normal.py` (kořen): celý hrad a po něm všechny stavby. Totéž co `build_ruin_blocks.py`, pak `build_constructions.py` |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py` (kořen): smaže generované actory a meshe `SM_Ruin*`, textury a meshe naimportuje znovu a vše postaví. `MATERIALY = True` smaže i generované materiály (ruční ladění se ztratí). Po běhu nepoužívat Undo. |
 
-Ruční úpravy v levelu ukládá Jirka přes `MODE = "capture"` ve stejném skriptu, a to vždy **před** dalším generováním. Ručně posunuté vybavení kovárny ukládá `Palac_Kovarna_Ulozit_Vybaveni.py` (`capture`; `list` vypíše posuny proti specu, `reset` je zahodí). Když Jirka chce, aby se posun stal výchozí polohou, přenes čísla z `list` do `palac_spec.py` a uloženou polohu nech zahodit přes `reset`.
+Ruční úpravy v levelu ukládá Jirka přes `MODE = "capture"` ve stejném skriptu, a to vždy **před** dalším generováním. Ručně upravené vybavení (06) ukládá spouštěč skupiny `06_furnishing/vybaveni/<Skupina>.py` (`capture` zapíše polohy přímo do `furnishing.json`; `list` vypíše posuny proti specu, `reset` vrátí kusy na spec). Podrobně `AGENT_Furnisher_hrad.md`.
 
 ## 6. Kontroly a testy
 

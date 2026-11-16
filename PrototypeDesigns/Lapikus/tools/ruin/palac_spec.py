@@ -77,7 +77,7 @@ K_GUTTER = dict(s=24.8, n=(0.72, 6.8), d=0.20,                           # osa, 
                 forks=(1.7, 4.0, 6.3), post_d=0.12, sink=0.4)            # rozsochy: polohy n (rovnomerne), prumer kulu, v zemi; jizni 1 m od
                                                                          # Palac_J (pruchod k vyklenku strilny s = 25), zlab k zdi volne presahuje
 K_BARREL = (24.8, 6.8)           # sud na destovou vodu pod severnim koncem zlabu (SM_RuinBarrel, samostatny actor)
-# vybaveni (krok 4, typ props): polohy v ramu palace (m), vsechno samostatne actory (rucni doladeni pres capture)
+# vybaveni (krok 4, 06_furnishing, typ props): polohy v ramu palace (m), samostatne actory (rucni doladeni pres capture)
 K_QUENCH = (28.3, 2.6)           # kalici sud mezi kovadlinou a vyhni (16. 11. 2026 dal od vyhne)
 K_GRIND = (27.6, 5.4)            # stred ramu slapaciho brusu (ram podel s); slapadlo a sedatko k severu (otevrena strana, svetlo);
                                  # o 0,2 m severneji nez v navrhu -> mezi brusem a kalicim sudem pruchod 1,2 m k ponku
@@ -310,8 +310,14 @@ if __name__ == "__main__":
     print(json.dumps(kovarna(json.load(open(p))["walls"]), indent=1))
 
 
+def kovarna_kul(walls):
+    """pevny kul zatluceny do zeme na zacatku hranice dreva (05, typ props) -> [dilec]; hranice sama je vybaveni (06)"""
+    W = K_WOOD; n0 = round(kovarna(walls)["frame"]["n_in"] + W["stake_gap"], 3)
+    return [dict(id="Kul", shape="stake", d=W["stake_d"], bark=True, p0=(W["s"], n0, W["stake_h"]), p1=(W["s"], n0, -0.4))]
+
+
 def kovarna_vybaveni(walls):
-    """vybaveni kovarny (typ props, zr_stavby/vybaveni.py) -> seznam dilcu v ramu palace (m); rozmery meshu = jmenovite
+    """prenosne vybaveni kovarny (06_furnishing, typ props, zr_stavby/vybaveni.py) -> seznam kusu v ramu palace (m); rozmery meshu = jmenovite
     (LIB_MESHES), odsazeni stredu bounding boxu od funkcniho stredu propu zmereno na meshich (mesh_props.py)"""
     K = kovarna(walls); n_in = K["frame"]["n_in"]; it = []
     # kovadlina na spalku (vrch 0,75 m), kalici sud, hrebovnice na mensim spalku
@@ -354,7 +360,6 @@ def kovarna_vybaveni(walls):
                    x=(0, -1), pitch=ang))
     # drevo pod presahem: kul a hranice az k okraji strechy
     W = K_WOOD; n0 = round(n_in + W["stake_gap"], 3); m0 = n0 + W["stake_d"] / 2 + 0.01; seg = (W["n1"] - m0) / W["parts"]
-    it.append(dict(id="Kul", shape="stake", d=W["stake_d"], bark=True, p0=(W["s"], n0, W["stake_h"]), p1=(W["s"], n0, -0.4)))
     for k in range(W["parts"]):
         it.append(dict(id="Drevo%d" % k, shape="woodpile", a=W["s"], c=round(m0 + seg * (k + 0.5), 3), z=0.0, x=(0, 1),
                        scale=(round(seg * 100 / 191.3, 4), 1.0, W["h"][k])))

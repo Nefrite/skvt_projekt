@@ -5,7 +5,7 @@ Inspirace: zřícenina **Lapikus** nad Plenkovickým potokem (screenshot z mapy 
 
 Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká padla rozhodnutí, co je hotové a jak podklady znovu vygenerovat. Stav: 15. 11. 2026.
 
-**Kam dál:** pravidla, konvence, ověřené pasti a rozhodnutí kolem hradu jsou v `KNOWHOW_hrad.md`. Aktuální stav zříceniny je v `03_ruin\Zricenina_03_ruin_stav.md`.
+**Kam dál:** pravidla, konvence, ověřené pasti a rozhodnutí kolem hradu jsou v `KNOWHOW_hrad.md`. Aktuální stav zříceniny je v `03_ruin\Zricenina_03_ruin_stav.md`. Přehled vybavení (06) je v `FURNISHING.md`.
 
 ---
 
@@ -103,7 +103,7 @@ skvt_projekt\PrototypeDesigns\Lapikus\
 ├─ README_PROJEKT.md        ← tento dokument
 ├─ README.txt               ← rychlý rozcestník
 ├─ KNOWHOW_hrad.md          společné know-how: pravidla, konvence, pasti, rozhodnutí
-├─ AGENT_*.md               instrukce pro agenty (architekt, game design, stavitel)
+├─ AGENT_*.md               instrukce pro agenty (architekt, game design, stavitel, furnisher = vybavení)
 ├─ CHECKLIST_assets_navrhy.md   co návrhy potřebují (assety, typy staveb, úpravy 03) a co je hotové
 ├─ build_normal.py          UE: celý hrad (03) + všechny stavby (05), aditivně
 ├─ build_fullscope.py       UE: oprava – smaže generované actory a meshe a vše postaví znovu
@@ -112,6 +112,7 @@ skvt_projekt\PrototypeDesigns\Lapikus\
 ├─ 03_ruin\                 zřícenina: plán, stav, data; blocks\ = generátor z kamenů (build_ruin_blocks.py, casti\*.py)
 ├─ 04_forest\               plán lesa, zóny, spliny, maska zón, náčrt, olše u řeky, assety stromů
 ├─ 05_constructions\        dostavby: build_constructions.py, stavby\*.py, data, náhledy
+├─ 06_furnishing\           vybavení (přenosné props): build_furnishing.py, vybaveni\*.py, data
 ├─ new_designs\             návrhy dalších staveb (specifikace architekta + náčrty)
 ├─ zrlib\                   sdílená knihovna skriptů 03 + 05 (config.py = vzhled a verze, pipeline.py = spouštění)
 ├─ meshes\                  OBJ knihovních meshí podle kategorie (stone, wood, wattle, textile, props); nejsou v gitu, generuje tools\meshes\gen_meshes.py
@@ -150,10 +151,11 @@ Všechno je deterministické: stejné skripty dají bit po bitu stejné soubory.
 |---|---|---|
 | Data zříceniny | `python tools/ruin/gen_layout.py 03_ruin/ruin_layout_draft.json 01_terrain/Zricenina_heightmap_505_50cm.png 03_ruin/blocks/ruin_layout.json` | `ruin_layout.json` (jen při změně zříceniny nebo sdíleného specu) |
 | Data dostaveb | `python tools/constructions/gen_constructions.py 03_ruin/ruin_layout_draft.json 05_constructions/constructions.json` | `constructions.json` |
+| Data vybavení | `python tools/furnishing/gen_furnishing.py` | `06_furnishing/furnishing.json` |
 | Meshe | `python tools/meshes/gen_meshes.py` | `meshes/<kategorie>/*.obj` |
 | Textury | `python tools/textures/gen_textures.py` | `textures/*.png` |
 | Kontroly bez UE | `python tools/checks/run_checks.py` | otvory, kameny bez podpory, průniky u ostrohu |
-| Stavba v UE | **Tools → Execute Python Script →** `build_normal.py` (nebo jen část: `03_ruin/blocks/casti/*.py`, `05_constructions/stavby/*.py`) | actory v levelu; chybějící meshe a textury se doimportují |
+| Stavba v UE | **Tools → Execute Python Script →** `build_normal.py` (nebo jen část: `03_ruin/blocks/casti/*.py`, `05_constructions/stavby/*.py`, `06_furnishing/vybaveni/*.py`) | actory v levelu; chybějící meshe a textury se doimportují |
 | Oprava v UE | `build_fullscope.py` | smaže generované actory a meshe a postaví vše znovu (při poškozených assetech) |
 
 Ruční úpravy v levelu se ukládají stejným skriptem s `MODE = "capture"`, vždy před dalším generováním. `manual_edits.json` a `constructions_edits.json` se nepřepisují.

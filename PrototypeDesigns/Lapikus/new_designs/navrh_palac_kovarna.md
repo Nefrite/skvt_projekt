@@ -20,10 +20,10 @@ Všechno „hotovo“ znamená: je ve skriptech a datech a prošlo kontrolami mi
 | Žhavé uhlí, saze, oheň a kouř | – | ⏸ odloženo | rozhodnuto 15. 11. 2026 |
 | Západní stěna z proutí (kap. 4.2) | `Palac_Kovarna_Stena` | ✅ hotovo | typ `wattle_wall` (`zr_stavby/stena.py`), dílce mezi sloupy, kůly na spojích |
 | Žlab, vidlice, sud na vodu (kap. 4.5) | `Palac_Kovarna_Okap` | ✅ hotovo | typ `gutter` (`zr_stavby/okap.py`), 3 rozsochy, sud = samostatný actor |
-| Měchy, páka (kap. 4.3) | `Palac_Kovarna_Vybaveni` | ✅ hotovo | výfučna v otvoru boční zídky; páka Ø 6 cm na laně z krokve n = 2,7, s měchy spojená lanem |
-| Kovadlina, sud, brus, ponk, nářadí, truhlík, železo (kap. 4.4) | `Palac_Kovarna_Vybaveni` | ✅ hotovo | typ `props` (`zr_stavby/vybaveni.py`), samostatné actory; nářadí na liště na jižní zdi |
-| Hranice dřeva pod přesahem (kap. 4.4) | `Palac_Kovarna_Vybaveni` | ✅ hotovo | od kůlu 1,5 m od `Palac_J` k severnímu okraji střechy (Jirka 16. 11. 2026) |
-| Úklid suti ve východní místnosti (kap. 5) | `Sut` | ✅ hotovo | `clear_poly` u `Palac_Kovarna_Vybaveni` (celá místnost) |
+| Měchy, páka (kap. 4.3) | 06 `Palac_Kovarna_Vybaveni` | ✅ hotovo | výfučna v otvoru boční zídky; páka Ø 6 cm na laně z krokve n = 2,7, s měchy spojená lanem |
+| Kovadlina, sud, brus, ponk, nářadí, truhlík, železo (kap. 4.4) | 06 `Palac_Kovarna_Vybaveni` | ✅ hotovo | `06_furnishing` (přenosné vybavení, od 16. 11. 2026), typ `props`, samostatné actory; nářadí na liště na jižní zdi |
+| Hranice dřeva pod přesahem (kap. 4.4) | 06 `Palac_Kovarna_Vybaveni`, kůl 05 `Palac_Kovarna_Kul` | ✅ hotovo | od kůlu 1,5 m od `Palac_J` k severnímu okraji střechy (Jirka 16. 11. 2026) |
+| Úklid suti ve východní místnosti (kap. 5) | `Sut` | ✅ hotovo | `clear_poly` u `Palac_Kovarna_Pristresek` (celá místnost) |
 | Podlaha z udusané hlíny (kap. 4.4) | – | ⏸ odloženo | chybí materiál |
 | Sdílené rozměry (kap. 5) | `tools/ruin/palac_spec.py` | ✅ hotovo | rám paláce, kovárna, úpravy 03 |
 | Kontroly a náhled (kap. 7) | `run_checks.py --only palac`, `preview3d.py kovarna` | ✅ hotovo | pokrytí krytinou, lemování, stěna, žlab a sud, vybavení (průniky, výfučna v otvoru, vzdálenosti, průchody, dřevo pod přesahem, suť) |
@@ -151,7 +151,7 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 - Komín je 0,4 m od líce `Palac_J`. Její koruna je u něj rozebraná na 4,0–4,8 m (kap. 3), komín ji v okruhu 1,5 m přesahuje aspoň o 0,3 m; dál na západ (s = 28,5–29,3) je 5,2 m.
 - Stěna věže a `Palac_J` za výhní jsou kamenné, bez úpravy. Dymník (n = 0,75–1,95) je 5 cm od líce `Palac_J`.
 
-### 4.4 Vybavení (`Palac_Kovarna_Vybaveni`, samostatné actory)
+### 4.4 Vybavení (`06_furnishing`, skupina `Palac_Kovarna_Vybaveni`, samostatné actory)
 
 | Prvek | Rozměr | Poloha (s; n) |
 |---|---|---|
@@ -192,12 +192,14 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 | `Palac_Kovarna_Vyhen` | `hearth` (`ohniste.py`, i pro `Palac_Obydli_Ohniste`) | výheň, zídka, dymník, komín, výměny a závěsné tyče |
 | `Palac_Kovarna_Stena` | `wattle_wall` (`stena.py`) | západní stěna z proutí a hlíny, kůly |
 | `Palac_Kovarna_Okap` | `gutter` (`okap.py`, i pro `Palac_Obydli_Okap`) | žlab, rozsochy, sud (samostatný actor) |
-| `Palac_Kovarna_Vybaveni` | `props` (`vybaveni.py`) | všechno vybavení a dřevo jako samostatné actory; `clear_poly` = úklid suti v celé místnosti |
+| `Palac_Kovarna_Kul` | `props` (`vybaveni.py`) | pevný kůl u hranice dřeva |
+
+**Vybavení** (`06_furnishing`, skupina `Palac_Kovarna_Vybaveni`, typ `props`): všechno přenosné (kap. 4.4) jako samostatné actory. Úklid suti v celé místnosti: `clear_poly` u `Palac_Kovarna_Pristresek`.
 
 - **Spouštění v UE:** celá kovárna `05_constructions/stavby/Palac_Kovarna.py` (přepínače `KRYTINA`, `RUIN` = i část zříceniny `Palac`, `SUT`), jednotlivé stavby `Palac_Kovarna_<Část>.py`.
 - **Složka:** `Stavby/Palac`, vybavení `Stavby/Palac/Kovarna_Vybaveni`.
 - **Sdílené rozměry:** `tools/ruin/palac_spec.py` (společně s domem); čte ho 03 (`gen_layout.py`: zanoření `Palac_J`, kapsa, rozebraná koruna) i 05 (`gen_constructions.py` → `palac`). Polohy vybavení: `palac_spec.kovarna_vybaveni()`.
-- **Vybavení nejsou generované dílce.** Jsou to vlastní props ve stylu hradu (rozhodl Jirka 14. 11. 2026), generátor je jen rozmístí. Ruční doladění se ukládá přes `MODE = "capture"`.
+- **Vybavení nejsou generované dílce.** Jsou to vlastní props ve stylu hradu (rozhodl Jirka 14. 11. 2026), generátor je jen rozmístí. Jsou v `06_furnishing` (od 16. 11. 2026, vše přenosné odděleně od staveb). Ruční doladění se ukládá skriptem `06_furnishing/vybaveni/Palac_Kovarna.py` (`capture`, výpis `list`, zahození `reset`).
 
 ## 6. Vazby, kolize, pořadí
 
@@ -206,7 +208,7 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 - **Výheň** (s od 29,75) nezasahuje do výklenku střílny s = 29 (ten končí v s = 29,65).
 - **Západní linie** (s = 25,85) je 0,2 m východně od výklenku střílny s = 25; výklenek je přístupný ze dvorku podél `Palac_J` (volno 1 m k rozsoše, 1,45 m ke dřevu).
 - **Sud pod žlabem** stojí u severozápadního rohu přístřešku, mimo cestu ode dveří.
-- **Pořadí stavby:** 03 část `Palac` (zanoření `Palac_J`, kapsa) → `Palac_Kovarna_Pristresek` → `Palac_Kovarna_Vyhen` (výměny berou výšku z krokví) → `Palac_Kovarna_Stena`, `Palac_Kovarna_Okap` (žlab bere výšku z krytiny), `Palac_Kovarna_Vybaveni` (lano páky bere výšku z krokve) → `Sut`. Totéž dělá `Palac_Kovarna.py`.
+- **Pořadí stavby:** 03 část `Palac` (zanoření `Palac_J`, kapsa) → `Palac_Kovarna_Pristresek` → `Palac_Kovarna_Vyhen` (výměny berou výšku z krokví) → `Palac_Kovarna_Stena`, `Palac_Kovarna_Okap` (žlab bere výšku z krytiny), `Palac_Kovarna_Kul` → `Sut` → vybavení 06 (lano páky bere výšku z krokve). Totéž dělá `Palac_Kovarna.py`.
 
 ## 7. Ověření
 

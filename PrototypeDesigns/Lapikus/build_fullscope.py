@@ -1,13 +1,13 @@
-"""build_fullscope.py - oprava: smaze vsechno generovane a postavi znovu cely hrad (03_ruin) i stavby (05_constructions).
+"""build_fullscope.py - oprava: smaze vsechno generovane a postavi znovu cely hrad (03_ruin) i stavby (05_constructions) a vybaveni (06_furnishing).
 Unreal: Tools -> Execute Python Script -> build_fullscope.py     (trva nekolik minut: import vsech meshi)
 
 Oproti build_normal.py navic na zacatku:
-  - smaze vsechny generovane actory (tagy Zricenina_Ruin, Zricenina_Stavby, ukazky Ukazka_Meshe),
+  - smaze vsechny generovane actory (tagy Zricenina_Ruin, Zricenina_Stavby, Zricenina_Vybaveni, ukazky Ukazka_Meshe),
   - smaze knihovni meshe SM_Ruin* (Ruin/Stones, Wood, Wattle, Textile, Props) a docasne slozky importu a testu,
   - textury naimportuje znovu a meshe vytvori jako nove assety (bez priznaku bDoFastBuild, viz zrlib/ue_assets.py),
   - s MATERIALY = True smaze i generovane materialy (M_Ruin*, MI_Ruin*, PM_Ruin*) a build je vytvori znovu
     s vychozim vzhledem z zrlib/config.py - rucni ladeni v nich se ztrati.
-Rucni upravy levelu ulozene pres capture (manual_edits.json, constructions_edits.json) zustavaji a plati.
+Rucni upravy levelu ulozene pres capture (manual_edits.json, constructions_edits.json, furnishing.json) zustavaji a plati.
 Co nesmaze: landscape, reku, les, objemy Ruin_* (Trigger Boxy) a nic mimo slozku Ruin.
 Po behu nepouzivej Undo (Ctrl+Z): vratilo by actory s odkazy na smazane meshe.
 Logika: zrlib/pipeline.py (build_all), zrlib/ue_assets.py (repair_assets)."""

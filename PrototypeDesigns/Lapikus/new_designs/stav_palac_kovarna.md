@@ -20,10 +20,10 @@ Všechno „hotovo“ znamená: je ve skriptech a datech a prošlo kontrolami mi
 | Žhavé uhlí, saze, oheň a kouř | – | ⏸ odloženo | rozhodnuto 15. 11. 2026 |
 | Západní stěna z proutí (kap. 4.2) | `Palac_Kovarna_Stena` | ✅ hotovo | typ `wattle_wall` (`zr_stavby/stena.py`), dílce mezi sloupy, kůly na spojích |
 | Žlab, vidlice, sud na vodu (kap. 4.5) | `Palac_Kovarna_Okap` | ✅ hotovo | typ `gutter` (`zr_stavby/okap.py`), 3 rozsochy, sud = samostatný actor |
-| Měchy, páka (kap. 4.3) | `Palac_Kovarna_Vybaveni` | ✅ hotovo | výfučna v otvoru boční zídky; páka Ø 6 cm na laně z krokve n = 2,7, s měchy spojená lanem |
-| Kovadlina, sud, brus, ponk, nářadí, truhlík, železo (kap. 4.4) | `Palac_Kovarna_Vybaveni` | ✅ hotovo | typ `props` (`zr_stavby/vybaveni.py`), samostatné actory; nářadí na liště na jižní zdi |
-| Hranice dřeva pod přesahem (kap. 4.4) | `Palac_Kovarna_Vybaveni` | ✅ hotovo | od kůlu 1,5 m od `Palac_J` k severnímu okraji střechy (Jirka 16. 11. 2026) |
-| Úklid suti ve východní místnosti (kap. 5) | `Sut` | ✅ hotovo | `clear_poly` u `Palac_Kovarna_Vybaveni` (celá místnost) |
+| Měchy, páka (kap. 4.3) | 06 `Palac_Kovarna_Vybaveni` | ✅ hotovo | výfučna v otvoru boční zídky; páka Ø 6 cm na laně z krokve n = 2,7, s měchy spojená lanem |
+| Kovadlina, sud, brus, ponk, nářadí, truhlík, železo (kap. 4.4) | 06 `Palac_Kovarna_Vybaveni` | ✅ hotovo | `06_furnishing` (přenosné vybavení, od 16. 11. 2026), typ `props`, samostatné actory; nářadí na liště na jižní zdi |
+| Hranice dřeva pod přesahem (kap. 4.4) | 06 `Palac_Kovarna_Vybaveni`, kůl 05 `Palac_Kovarna_Kul` | ✅ hotovo | od kůlu 1,5 m od `Palac_J` k severnímu okraji střechy (Jirka 16. 11. 2026) |
+| Úklid suti ve východní místnosti (kap. 5) | `Sut` | ✅ hotovo | `clear_poly` u `Palac_Kovarna_Pristresek` (celá místnost) |
 | Podlaha z udusané hlíny (kap. 4.4) | – | ⏸ odloženo | chybí materiál |
 | Sdílené rozměry (kap. 5) | `tools/ruin/palac_spec.py` | ✅ hotovo | rám paláce, kovárna, úpravy 03 |
 | Kontroly a náhled (kap. 7) | `run_checks.py --only palac`, `preview3d.py kovarna` | ✅ hotovo | pokrytí krytinou, lemování, stěna, žlab a sud, vybavení (průniky, výfučna v otvoru, vzdálenosti, průchody, dřevo pod přesahem, suť) |
@@ -55,14 +55,16 @@ Všechno „hotovo“ znamená: je ve skriptech a datech a prošlo kontrolami mi
 
 ## Co spustit v UE (pořadí)
 
-**Celá kovárna jedním skriptem:** `05_constructions/stavby/Palac_Kovarna.py`. Postaví přístřešek, výheň, stěnu, okap a vybavení v tomto pořadí a nakonec suť (`SUT = True`). S `RUIN = True` napřed přestaví i část zříceniny `Palac` (jen po změně `J_*` nebo kapsy v `palac_spec.py`). `MODE = "capture"` uloží ruční úpravy všech částí kovárny.
+**Celá kovárna jedním skriptem:** `05_constructions/stavby/Palac_Kovarna.py`. Postaví přístřešek, výheň, stěnu, okap a kůl v tomto pořadí, pak suť (`SUT = True`) a nakonec vybavení z `06_furnishing` (`VYBAVENI = True`). S `RUIN = True` napřed přestaví i část zříceniny `Palac` (jen po změně `J_*` nebo kapsy v `palac_spec.py`). `MODE = "capture"` uloží ruční úpravy všech částí kovárny i vybavení.
 
-Jednotlivě (stejné pořadí): `Palac_Kovarna_Pristresek.py` (`KRYTINA = True`), `Palac_Kovarna_Vyhen.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py`, `Palac_Kovarna_Vybaveni.py`, `Sut.py`.
+Jednotlivě (stejné pořadí): `Palac_Kovarna_Pristresek.py` (`KRYTINA = True`), `Palac_Kovarna_Vyhen.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py`, `Palac_Kovarna_Kul.py`, `Sut.py`; vybavení `06_furnishing/vybaveni/Palac_Kovarna.py`.
+
+**Vybavení (06_furnishing, od 16. 11. 2026 oddělené od staveb):** `06_furnishing/vybaveni/Palac_Kovarna.py`. Ruční doladění: posuň, otoč, zvětši nebo zkopíruj props v levelu a spusť ho s `MODE = "capture"` (zapíše se přímo do `06_furnishing/furnishing.json`, přežije další generování); `list` vypíše posuny proti specu, `reset` vrátí kusy na spec.
 
 Nové meshe nejsou (props, dílce stěny, žlab, rozsochy a sud už v projektu jsou).
 
 ## Další kroky
 
-1. Ověřit v UE krytinu s prostupem komína, lemování, stěnu z proutí, okap se sudem a vybavení; ruční doladění props uložit přes `MODE = "capture"` v `Palac_Kovarna_Vybaveni.py`.
+1. Ověřit v UE krytinu s prostupem komína, lemování, stěnu z proutí, okap se sudem a vybavení; ruční doladění props uložit přes `06_furnishing/vybaveni/Palac_Kovarna.py` (`MODE = "capture"`).
 2. Odloženo: žhavé uhlí, saze, oheň a kouř, udusaná hlína.
 3. Před stavbou domu přepočítat koruny `Palac_J` v `navrh_palac_obydli_stred.md` (zeď je o 0,31 m níž).

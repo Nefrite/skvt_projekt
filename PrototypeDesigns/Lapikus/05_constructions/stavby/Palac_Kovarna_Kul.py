@@ -1,8 +1,8 @@
-"""Palac_Kovarna_Vybaveni.py - postavi jen tuto stavbu (vybaveni kovarny: kovadlina, mechy, brus, ponk, naradi, truhlik, drevo; samostatne actory, rucni doladeni pres capture).
-Unreal: Tools -> Execute Python Script -> 05_constructions/stavby/Palac_Kovarna_Vybaveni.py
+"""Palac_Kovarna_Kul.py - postavi jen tuto stavbu (pevny kul zatluceny do zeme u hranice dreva; hranice sama je vybaveni 06).
+Unreal: Tools -> Execute Python Script -> 05_constructions/stavby/Palac_Kovarna_Kul.py
 Ostatni stavby se nesmazou ani neprestavi. Logika je ve spolecnem ../build_constructions.py (spousti ho zrlib/pipeline.py), data v ../constructions.json."""
 MODE = "build"                # "build" = postavit, "capture" = ulozit rucni upravy jen teto stavby
-STAVBA = ["Palac_Kovarna_Vybaveni"]
+STAVBA = ["Palac_Kovarna_Kul"]
 
 import os, sys
 _root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))

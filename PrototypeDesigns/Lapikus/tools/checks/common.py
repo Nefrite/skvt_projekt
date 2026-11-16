@@ -5,6 +5,7 @@ import importlib.util, json, math, os, sys
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 RUIN_DIR = os.path.join(ROOT, "03_ruin", "blocks")
 CONSTR_DIR = os.path.join(ROOT, "05_constructions")
+FURN_DIR = os.path.join(ROOT, "06_furnishing")
 
 
 def _load(path, name, flag):
@@ -28,8 +29,13 @@ def constructions():
     return _load(os.path.join(CONSTR_DIR, "build_constructions.py"), "build_constructions", "_constr_import_only")
 
 
+def furnishing():
+    """modul build_furnishing (06) jako knihovna"""
+    return _load(os.path.join(FURN_DIR, "build_furnishing.py"), "build_furnishing", "_furn_import_only")
+
+
 def state(layout_path=None, with_constructions=True):
-    """-> dict(R, layout, terr, walls (kameny zriceniny), P, BC, data, groups (stavby 05))"""
+    """-> dict(R, layout, terr, walls (kameny zriceniny), P, BC, data, groups (stavby 05), BF, furn_data, furn (vybaveni 06))"""
     R = ruin(layout_path)
     lay = R.cached_level_terrain(R.load_layout()); rm, mv = R.load_manual()
     walls, P = R.compute_blocks(lay, rm, mv, None, detached=R.load_detached())
@@ -41,6 +47,8 @@ def state(layout_path=None, with_constructions=True):
         data = BC.load_data()
         groups, _ = BC.compute(R5, data, *BC.load_edits())
         out.update(BC=BC, data=data, groups=groups)
+        BF = furnishing(); fd = BF.load_data()
+        out.update(BF=BF, furn_data=fd, furn=BF.compute(R5, fd))
     return out
 
 

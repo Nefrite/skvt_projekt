@@ -253,15 +253,17 @@ def check_palac(S):
         bad = [p.id for p in posts if p.z - p.sx / 2 > S["terr"].z(p.x, p.y) - 10]
         rep("rozsochy (%d) nesou zlab, kuly %d cm v zemi" % (len(forks), od.get("sink", 0.4) * 100), len(forks) == len(od.get("forks", [])) and not bad)
     # vybaveni (Palac_Kovarna_Vybaveni, typ props): pruniky, mechy v otvoru zidky, vzdalenosti, pruchody, sut v mistnosti
-    vg = groups.get("Palac_Kovarna_Vybaveni"); vd = next((a for a in S["data"].get("addons", []) if a["name"] == "Palac_Kovarna_Vybaveni"), None)
-    if vg and vd:
-        V = vg["stones"] + vg["loose"]; by_ = {s.id.split("|")[-1]: s for s in V}
+    # vybaveni je v 06_furnishing (prenosne kusy), kul u dreva v 05 (Palac_Kovarna_Kul)
+    vg = S.get("furn", {}).get("Palac_Kovarna_Vybaveni"); kg = groups.get("Palac_Kovarna_Kul")
+    if vg:
+        V = vg["loose"]; by_ = {s.id.split("|")[-1]: s for s in V}
+        kul = (kg["stones"] + kg["loose"]) if kg else []; by_.update({s.id.split("|")[-1]: s for s in kul})
         sn = lambda s: (((s.x - fr["origin"][0]) * fr["u"][0] + (s.y - fr["origin"][1]) * fr["u"][1]) / 100,
                         ((s.x - fr["origin"][0]) * fr["v"][0] + (s.y - fr["origin"][1]) * fr["v"][1]) / 100)
         pegs = [s for s in V if s.id.split("|")[-1].startswith("Kolik")]
         c = common.collisions([s for s in V if s not in pegs], ruin, 1.0)
         rep("vybaveni x zricenina: pruniku %d %s (koliky listy jsou ve sparach zdi)" % (len(c), c[:3] if c else ""), not c)
-        others = st + (sg_["stones"] if sg_ else []) + (og["stones"] + og["loose"] if og else []) + (hs if hg else [])
+        others = st + (sg_["stones"] if sg_ else []) + (og["stones"] + og["loose"] if og else []) + (hs if hg else []) + kul
         # zamerne dotyky: mechy (kvadr) s bocni zidkou (vyfucna v otvoru), lano paky kolem krokve
         skip = lambda a, b: (a.shape == "bellows" and "|Z|" in b.id) or (a.shape == "rope" and b in rafters)
         c = common.collisions(V, others, 1.0, skip=skip)
@@ -299,7 +301,7 @@ def check_palac(S):
         under = all(min(q[0] for q in [sn(type("p", (), dict(x=x, y=y))) for x, y in common.footprint(w)]) > a_e for w in wood)
         free = min(sn(type("p", (), dict(x=x, y=y)))[1] for w in wood + [by_["Kul"]] for x, y in common.footprint(w)) - fr["plan"]["c"][0]
         rep("drevo pod presahem strechy (%d hranice), od Palac_J volno %.2f m" % (len(wood), free), under and free >= 1.4)
-        poly = [tuple(q) for q in vd.get("clear_poly", [])]
+        poly = [tuple(q) for q in fr.get("clear_poly", [])]
         sut = [s for n_, gg in groups.items() if n_.endswith("_Sut") for s in gg["loose"] if poly and BC.inside_poly(poly, s.x, s.y)]
         rep("sut ve vychodni mistnosti uklizena (zbyva %d kamenu)" % len(sut), not sut)
     return ok

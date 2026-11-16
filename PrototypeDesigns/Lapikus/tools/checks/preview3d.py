@@ -87,6 +87,7 @@ def kovarna_scene(S):
     P = lambda s, n, z: ((O[0] + (U[0] * s + V[0] * n) * 100) / 100, (O[1] + (U[1] * s + V[1] * n) * 100) / 100, z)
     ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if 18 < sn(s.x, s.y)[0] < 35 and -3 < sn(s.x, s.y)[1] < 13]
     new = [s for n, g in S["groups"].items() if n.startswith("Palac_Kovarna") for s in g.get("stones", []) + g.get("loose", [])]
+    new += [s for n, g in S.get("furn", {}).items() if n.startswith("Palac_Kovarna") for s in g.get("loose", [])]   # vybaveni (06)
     z0 = S["terr"].z(*[c * 100 for c in P(*fr["ref"], 0)[:2]])
     col = dict(COL, wood=(0.66, 0.54, 0.38), face=(0.60, 0.55, 0.48), daub=(0.72, 0.60, 0.42), charcoal=(0.10, 0.10, 0.11))   # nove drevo svetlejsi, kamen vyhne tmavsi nez zricenina
     bx = stone_boxes(ruin, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0) + \
