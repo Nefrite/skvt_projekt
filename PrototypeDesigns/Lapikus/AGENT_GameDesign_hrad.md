@@ -135,7 +135,6 @@ Do kódu (`*.py`, `zrlib`) nahlížet nemusíš. Když přesto potřebuješ zjis
 - **Etapy:** jak se ve hře přepnou (dvě verze levelu, skrytí a zobrazení sad actorů)? Stojí podesta brány už v etapě 1?
 - **Spaní v etapě 1:** kde spí ti, kdo nejsou na hlídce (stan na nádvoří, nebo 1. patro věže)? Od toho závisí, jestli bude `Nadvori_Stan`.
 - **Žebříky** (staveniště, půda domu): použitelné pro postavu, nebo jen kulisa?
-- **Okno věže nad střechou kovárny** (0,6 m nad krytinou): cesta postavy z věže na střechu?
 - **Brána:** výstup na podestu; dá se brána obejít zřícenou jižní stranou východně od `Hradba_V`?
 - **Suť pod `Vez_V`:** víc suti z průlomu by bylo uvěřitelné, ale zúží průchod mezi věží a `Hradba_V`.
 - **Staveniště:** rozmístění hromad (kulatina, krokve, prkna, kámen) tak, aby cesta portál → vchod → světnice zůstala volná 1,2 m.

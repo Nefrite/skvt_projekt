@@ -178,7 +178,8 @@ def check_palac(S):
         cov = abs(hd["a"] - pit["a"]) + pit["w"] / 2 <= hd["size"][0] / 2 and abs(hd["c"] - pit["c"]) + pit["w"] / 2 <= hd["size"][1] / 2
         rep("dymnik (spodni okraj %.1f m) kryje cele ohniste" % hd["bottom"], cov)
         d_an = math.hypot(a_s - ad["table"]["a"][0], 0) - 0.25                              # hrana stolu -> okraj spalku O 0,5 m
-        rep("kovadlina %.2f m pred vyhni (0,9-1,1)" % d_an, 0.9 <= d_an <= 1.1)
+        g0, g1 = getattr(palac_spec, "K_ANVIL_GAP", (0.9, 1.1))
+        rep("kovadlina %.2f m pred vyhni (%.1f-%.1f)" % (d_an, g0, g1), g0 <= d_an <= g1)
     # krytina (late, prkna, listy, lemovani): pokryti pudorysu strechy mimo prostup komina, lemovani na krytine
     cover = [s for s in st if "|R|" in s.id]
     if fr.get("roof"):
@@ -251,6 +252,56 @@ def check_palac(S):
         forks = [s for s in os_ if s.shape == "fork"]; posts = [s for s in os_ if "|P" in s.id]
         bad = [p.id for p in posts if p.z - p.sx / 2 > S["terr"].z(p.x, p.y) - 10]
         rep("rozsochy (%d) nesou zlab, kuly %d cm v zemi" % (len(forks), od.get("sink", 0.4) * 100), len(forks) == len(od.get("forks", [])) and not bad)
+    # vybaveni (Palac_Kovarna_Vybaveni, typ props): pruniky, mechy v otvoru zidky, vzdalenosti, pruchody, sut v mistnosti
+    vg = groups.get("Palac_Kovarna_Vybaveni"); vd = next((a for a in S["data"].get("addons", []) if a["name"] == "Palac_Kovarna_Vybaveni"), None)
+    if vg and vd:
+        V = vg["stones"] + vg["loose"]; by_ = {s.id.split("|")[-1]: s for s in V}
+        sn = lambda s: (((s.x - fr["origin"][0]) * fr["u"][0] + (s.y - fr["origin"][1]) * fr["u"][1]) / 100,
+                        ((s.x - fr["origin"][0]) * fr["v"][0] + (s.y - fr["origin"][1]) * fr["v"][1]) / 100)
+        pegs = [s for s in V if s.id.split("|")[-1].startswith("Kolik")]
+        c = common.collisions([s for s in V if s not in pegs], ruin, 1.0)
+        rep("vybaveni x zricenina: pruniku %d %s (koliky listy jsou ve sparach zdi)" % (len(c), c[:3] if c else ""), not c)
+        others = st + (sg_["stones"] if sg_ else []) + (og["stones"] + og["loose"] if og else []) + (hs if hg else [])
+        # zamerne dotyky: mechy (kvadr) s bocni zidkou (vyfucna v otvoru), lano paky kolem krokve
+        skip = lambda a, b: (a.shape == "bellows" and "|Z|" in b.id) or (a.shape == "rope" and b in rafters)
+        c = common.collisions(V, others, 1.0, skip=skip)
+        rep("vybaveni x stavby kovarny: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        pairs = {("Kovadlina", "Spalek"), ("Hrebovnice", "Spalek2"), ("Truhlik", "Truhlik_Viko"), ("Lista", "Kolik0"), ("Lista", "Kolik1"),
+                 ("Mechy", "Mechy_Lano"), ("Mechy_Lano", "Paka"), ("Paka", "Paka_Lano")}
+        pairs = {tuple(sorted(p_)) for p_ in pairs}
+        c = [x for x in common.collisions(V, V, 1.0) if tuple(sorted((x[1].split("|")[-1], x[2].split("|")[-1]))) not in pairs
+             and x[1] < x[2]]
+        rep("vybaveni mezi sebou (mimo zamerne ulozeni): pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        # vyfucna mechu v otvoru bocni zidky: spicka 105 cm od stredu kvadru po ose X, ve vysce 0,91 m
+        me = by_["Mechy"]; ya = math.radians(me.yaw); tx, ty = me.x + math.cos(ya) * 105, me.y + math.sin(ya) * 105
+        O_ = fr["origin"]; ta = ((tx - O_[0]) * fr["u"][0] + (ty - O_[1]) * fr["u"][1]) / 100; tc = ((tx - O_[0]) * fr["v"][0] + (ty - O_[1]) * fr["v"][1]) / 100
+        zw = next(w for w in ad["walls"]) if hg and ad else None
+        if zw:
+            ho = zw["hole"]; tz = (me.z - me.sz / 2 - S["terr"].z(tx, ty)) / 100 + 0.91
+            ok_ = abs(ta - ho["a"]) < ho["w"] / 2 - 0.02 and zw["c"][0] < tc < zw["c"][1] and ho["z"][0] + 0.02 < tz < ho["z"][1] - 0.02
+            rep("vyfucna mechu v otvoru bocni zidky (s %.2f, n %.2f, z %.2f m)" % (ta, tc, tz), ok_)
+        an, sk = sn(by_["Kovadlina"]), sn(by_["KaliciSud"]); tb = ad["table"] if ad else None
+        if tb:
+            fx = (min(max(sk[0], tb["a"][0]), tb["a"][1]), min(max(sk[1], tb["c"][0]), tb["c"][1]))
+            d1 = math.hypot(sk[0] - an[0], sk[1] - an[1]); d2 = math.hypot(sk[0] - fx[0], sk[1] - fx[1])
+            qm = getattr(palac_spec, "K_QUENCH_MAX", 1.5)
+            rep("kalici sud %.2f m od kovadliny a %.2f m od vyhne (<= %.1f)" % (d1, d2, qm), d1 <= qm and d2 <= qm)
+        # pruchody (pudorysy kvadru): od severu mezi brusem a mechy, k ponku mezi kalicim sudem a brusem
+        def gap(A, B):
+            ba = [sn(type("p", (), dict(x=q[0], y=q[1]))) for q in common.footprint(A)]; bb = [sn(type("p", (), dict(x=q[0], y=q[1]))) for q in common.footprint(B)]
+            ra = (min(q[0] for q in ba), max(q[0] for q in ba), min(q[1] for q in ba), max(q[1] for q in ba))
+            rb = (min(q[0] for q in bb), max(q[0] for q in bb), min(q[1] for q in bb), max(q[1] for q in bb))
+            dx = max(rb[0] - ra[1], ra[0] - rb[1], 0); dy = max(rb[2] - ra[3], ra[2] - rb[3], 0); return math.hypot(dx, dy)
+        g1, g2 = gap(by_["Brus"], by_["Mechy"]), gap(by_["KaliciSud"], by_["Brus"])
+        rep("pruchod od severu brus - mechy %.2f m, k ponku sud - brus %.2f m (>= 1,2)" % (g1, g2), g1 >= 1.2 and g2 >= 1.2)
+        # drevo pod presahem strechy, pruchod podel Palac_J ke strilne s = 25
+        wood = [s for s in V if s.shape == "woodpile"]; a_e = G["a_lo"] + G["sg"] * fr["roof"].get("eave_over", 0.10)
+        under = all(min(q[0] for q in [sn(type("p", (), dict(x=x, y=y))) for x, y in common.footprint(w)]) > a_e for w in wood)
+        free = min(sn(type("p", (), dict(x=x, y=y)))[1] for w in wood + [by_["Kul"]] for x, y in common.footprint(w)) - fr["plan"]["c"][0]
+        rep("drevo pod presahem strechy (%d hranice), od Palac_J volno %.2f m" % (len(wood), free), under and free >= 1.4)
+        poly = [tuple(q) for q in vd.get("clear_poly", [])]
+        sut = [s for n_, gg in groups.items() if n_.endswith("_Sut") for s in gg["loose"] if poly and BC.inside_poly(poly, s.x, s.y)]
+        rep("sut ve vychodni mistnosti uklizena (zbyva %d kamenu)" % len(sut), not sut)
     return ok
 
 

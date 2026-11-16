@@ -99,7 +99,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Palác – kovárna ve východní místnosti (11/2026)
 
-- **Návrh:** `new_designs/navrh_palac_kovarna.md`. V kap. 0 je přehled, co je hotové a co zbývá. Staví se po krocích: úprava 03 a přístřešek bez krytiny → výheň → krytina → stěna z proutí a okap → vybavení a úklid suti. Hotové jsou první čtyři kroky, zbývá vybavení a úklid suti.
+- **Návrh:** `new_designs/navrh_palac_kovarna.md`. V kap. 0 je přehled, co je hotové a co zbývá. Staví se po krocích: úprava 03 a přístřešek bez krytiny → výheň → krytina → stěna z proutí a okap → vybavení a úklid suti. Hotové jsou všechny kroky (16. 11. 2026).
 - **Úprava zříceniny (03, část `Palac`, 15. 11. 2026):**
   - celá `Palac_J` je zanořená o jednu řadu kamene do země (`z_offset` −0,31 m): posunutá po ose Z jako celek i se střílnami a výklenky, počet řad se nemění;
   - u věže je koruna `Palac_J` rozebraná (`breaches` s = 29,6–33, `floor` 6,1): vychází 5,2 m v s = 28,5–29,3 a 4,0–4,8 m dál k věži, komín kovárny (5,5 m) ji přesahuje;
@@ -108,9 +108,9 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - obojí je v `tools/ruin/palac_spec.py` → `ruin_edits`, do `ruin_layout.json` to zapisuje `gen_layout.py`;
   - **koruny `Palac_J` v návrhu domu (`navrh_palac_obydli_stred.md`) jsou tím o 0,31 m výš než skutečnost.**
 - **Přístřešek (15. 11. 2026):** 05 `Palac_Kovarna_Pristresek` (typ `pult_roof`, `05_constructions/zr_stavby/pult.py`) v koutě mezi `Palac_J` a věží:
-  - východní pozednice 20 × 20 cm s vrchem ve 4,24 m (spodek na spáře řad zdi): jižní konec 0,3 m v kapse `Palac_J`, severní na sloupu (s = 30,55; n = 5,3). V koutě sloup není,
-  - 3 sloupy 18 × 18 cm na západě (s = 25,85; n = 0,9 / 3,1 / 5,3) s pozednicí ve 2,5 m,
-  - 6 krokví z loupané kulatiny Ø 16 cm, sklon 20,3° k západu, přesah 0,9 m (pod ním bude zvenku u západní stěny hranice dřeva),
+  - východní pozednice 20 × 20 cm s vrchem ve 4,24 m (spodek na spáře řad zdi): jižní konec 0,3 m v kapse `Palac_J`, dál na sloupech u věže (s = 30,55; n = 4,4 a 6,2). V koutě sloup není,
+  - 3 sloupy 18 × 18 cm na západě (s = 25,85; n = 0,9 / 3,55 / 6,2) s pozednicí ve 2,5 m,
+  - 7 krokví z loupané kulatiny Ø 16 cm (n = 0,9–6,3, rozšíření o řadu krokví k severu (Jirka 16. 11. 2026)), sklon 20,3° k západu, přesah 0,9 m (pod ním bude zvenku u západní stěny hranice dřeva),
   - pod každým sloupem patní kámen jako samostatný actor (dá se doladit a uložit přes capture),
   - krytina (večer 15. 11. 2026): latě, prkna po spádu s lištami přes spáry, prostup komína s mezerou 3 cm, okapová hrana s = 24,85; od líce `Palac_J` 3,5 cm (kameny koruny v s = 27–29 leží v úrovni střechy a vystupují z líce), lemování prknem na stojato u věže a podél `Palac_J`,
   - všechno dřevo bez úpravy (`raw`).
@@ -121,11 +121,12 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - dymník 1,4 × 1,2 m se spodním okrajem 1,8 m, visí na 4 závěsných tyčích z výměn mezi krokvemi n = 0,9 a 1,8,
   - komín 0,5 × 0,5 m, střed s = 30,0; n = 1,35, vrch 5,5 m. Rozebranou korunu `Palac_J` přesahuje o 0,3–1,5 m.
 - **Stěna a okap (15. 11. 2026, večer):**
-  - 05 `Palac_Kovarna_Stena` (typ `wattle_wall`, `zr_stavby/stena.py`): proutí s hlínou v s = 25,85; n = 0,7–5,4, výška 2,1 m, dílce mezi sloupy, kůly na spojích,
-  - 05 `Palac_Kovarna_Okap` (typ `gutter`, `zr_stavby/okap.py`): loupaný žlab Ø 20 cm v s = 24,8; n = 0,72–5,9 se spádem 1,5 % k severu na třech rozsochách, sud na vodu pod jeho koncem (samostatný actor), svod se nedělá.
+  - 05 `Palac_Kovarna_Stena` (typ `wattle_wall`, `zr_stavby/stena.py`): proutí s hlínou v s = 25,85; n = 0,7–6,3, výška 2,1 m, dílce mezi sloupy, kůly na spojích,
+  - 05 `Palac_Kovarna_Okap` (typ `gutter`, `zr_stavby/okap.py`): loupaný žlab Ø 20 cm v s = 24,8; n = 0,72–6,8 se spádem 2,5 % k severu na třech rozsochách (n = 1,7 / 4,0 / 6,3; jižní 1 m od líce `Palac_J`, průchod ke střílně), sud na vodu pod jeho koncem (samostatný actor), svod se nedělá.
 - **Rozměry:** `tools/ruin/palac_spec.py` (rám paláce `s` / `n`, konstanty `K_*`, `J_SINK`, `J_BREACH`), data generuje `gen_layout.py` (03) a `tools/constructions/gen_constructions.py` → `palac` (05).
-- **Spuštění v UE:** `03_ruin/blocks/casti/Palac.py`, pak `05_constructions/stavby/Palac_Kovarna_Pristresek.py`, `Palac_Kovarna_Vyhen.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py` a `Sut.py`. Úprava 03, kostra a výheň ověřené v UE (Jirka 15. 11. 2026); krytina, stěna a okap jen mimo UE (`run_checks.py`, náhled `05_constructions/Stavby_palac_kovarna_nahled.png`).
-- **Zbývá:** rozmístění vybavení, úklid suti (suť teď leží i pod výhní).
+- **Spuštění v UE:** celá kovárna `05_constructions/stavby/Palac_Kovarna.py` (s `RUIN = True` i část zříceniny `Palac`, se `SUT = True` i suť), jednotlivě `Palac_Kovarna_Pristresek.py`, `_Vyhen`, `_Stena`, `_Okap`, `_Vybaveni` a `Sut.py`. Úprava 03, kostra a výheň ověřené v UE (Jirka 15. 11. 2026); krytina, stěna, okap a vybavení jen mimo UE (`run_checks.py`, náhled `05_constructions/Stavby_palac_kovarna_nahled.png`).
+- **Vybavení (16. 11. 2026):** 05 `Palac_Kovarna_Vybaveni` (typ `props`, `zr_stavby/vybaveni.py`), samostatné actory: kovadlina na špalku (1,5 m před výhní), kalicí sud, hřebovnice na špalku, měchy s výfučnou v otvoru zídky a pákou na laně z krokve, šlapací brus se stoličkou, ponk, truhlík s uhlím a volným víkem, koš, lišta s nářadím a železné pruty u jižní zdi, zvenku pod přesahem kůl 1,5 m od `Palac_J` a hranice dřeva k okraji střechy. Suť v celé východní místnosti uklizená (`clear_poly`).
+- **Zbývá:** ověření kroků 2–4 v UE; odloženo žhavé uhlí, oheň a kouř, udusaná hlína.
 
 ## Palác – dům posádky v prostřední místnosti (11/2026)
 

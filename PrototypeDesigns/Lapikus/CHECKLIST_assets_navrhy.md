@@ -162,7 +162,7 @@ tools/meshes/
 - žádné ostré „CAD“ hrany, všechno trochu nakřivo a ošoupané;
 - každý prop je samostatný actor (`loose`), pivot na zemi.
 
-### 6.1 Kovárna (`Palac_Kovarna_Vybaveni`) – stojí už v etapě 1
+### 6.1 Kovárna (`Palac_Kovarna_Vybaveni`) – stojí už v etapě 1; **rozmístěno 16. 11. 2026** (typ `props`, neověřeno v UE)
 
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
@@ -263,7 +263,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ☐ | `plank_floor` | ♻ beze změny | `Palac_Obydli_Podlaha` |
 | ◐ | etapy: sady actorů `base` / `final` / `site` s tagem `stage:<sada>` (místo přepínače `ETAPA`) | 🆕 | **Hotovo 16. 11. 2026:** sady v `zrlib/config.py`, `Stone.stage`, build po sadách. Staveniště (`Palac_Obydli_Stavenisko`) a ⛺ stan ještě ne. |
 | ☑ | `stone_fill` (srovnání koruny zdi kamenem v plné tloušťce, zazdění otvoru, podezdívky) | 🆕 místo rozšíření `stone_addon` | `Palac_Obydli_Kamen` (16. 11. 2026, neověřeno v UE) |
-| ☐ | rozmístění props (`loose`, seznam poloh z návrhů) | 🆕 | vybavení kovárny, domu, staveniště, stanu ⛺ |
+| ◐ | rozmístění props (`loose`, seznam poloh z návrhů) | 🆕 | vybavení kovárny, domu, staveniště, stanu ⛺. **Hotovo 16. 11. 2026:** typ `props` (`zr_stavby/vybaveni.py`), rozmístěná kovárna (`Palac_Kovarna_Vybaveni`). |
 
 **Sdílené specy:**
 - ☐ `tools/ruin/tower_spec.py`: rozšířit o průlomy a přístřešek;

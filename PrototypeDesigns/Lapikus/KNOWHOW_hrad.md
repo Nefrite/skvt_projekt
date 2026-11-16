@@ -8,7 +8,7 @@ Společný dokument pro všechny tři agenty (`AGENT_Architekt_hrad.md`, `AGENT_
 - když se poznatek změní, bod přepiš, nepřidávej druhý;
 - pasti a rozhodnutí se zapisují **jen sem**, agentní dokumenty na ně odkazují.
 
-Stav: 15. 11. 2026.
+Stav: 16. 11. 2026.
 
 ---
 
@@ -57,6 +57,7 @@ Stav: 15. 11. 2026.
 |---|---|
 | změna jedné části zříceniny | `03_ruin/blocks/casti/<Obvod/Palac/Ostroh>.py`, pak dostavby, které na ní stojí |
 | změna jedné stavby | `05_constructions/stavby/<Stavba>.py` |
+| celá kovárna v paláci | `05_constructions/stavby/Palac_Kovarna.py` (všechny části v pořadí + suť; `RUIN = True` i část `Palac`) |
 | všechno | `build_normal.py`: hrad, pak stavby; assety jen doplňuje |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py`: smaže generované actory a meshe a postaví vše znovu; po běhu nepoužívat Undo |
 | kontrola vzhledu meshí a props | `tools/meshes/Ukazka_Meshe.py` |
@@ -110,6 +111,14 @@ Podrobná tabulka podle druhu změny je v `AGENT_Stavitel_hrad.md`, kap. 5. Spol
 ### 5.6 Kód
 
 - **Kód:** komentáře a identifikátory bez diakritiky (UE Python konzole), dokumentace (`*.md`) česky s diakritikou.
+- **Souhrnný spouštěč skupiny staveb** (např. `Palac_Kovarna.py`) jen vyjmenuje stavby a zavolá `pipeline.constructions(seznam)`, ne spouštěče jednotlivých staveb: jeden běh, jedno načtení knihovny, nic se neduplikuje. Pořadí v seznamu je pořadí závislostí (výšky z krokví a krytiny), suť naposled.
+- **Víc relací nad stejnou složkou (15.–16. 11. 2026):** souběžně pracovala jiná relace (dům v paláci) a měnila sdílené soubory (`build_constructions.py`, `gen_constructions.py`, `palac_spec.py`, `run_checks.py`, `preview3d.py`). Pracuj v kopii, před uložením porovnej md5 souborů na disku s výchozí kopií; když se liší, vezmi aktuální verzi a své změny do ní znovu vlož (úpravy jako nahrazení textu, ne přepsání celého souboru), přegeneruj data a spusť kontroly všech dotčených staveb. `constructions.json` se vždy generuje znovu, neslučuje se.
+
+### 5.7 Rozmístění props (typ `props`, 16. 11. 2026)
+
+- **Poloha propu = střed jeho bounding boxu**, ne funkční střed. Meshe z `mesh_props.py` jsou normalizované na bounding box (pivot uprostřed), takže například výfučna měchů je 105 cm od středu, rám brusu 7 cm a deska ponku 8,4 cm mimo střed. Odsazení zjisti z funkce propu (surové vrcholy) a zapiš ho do specu (`palac_spec.kovarna_vybaveni`).
+- **Natočení:** zadává se směr lokální osy X v rámu stavby; lokální Y je X otočená v UE o +90°. V rámu paláce (levotočivý vůči `s`, `n`) je pro X = +s osa Y = −n, pro X = −n osa Y = −s. Svisle zavěšené nářadí: `pitch` 90 (X nahoru), kladivo `roll` −90 (Y dolů, hlava nahoře); `roll` se do UE posílá obráceně (kap. 5.1), ve specu piš hodnotu výpočtu.
+- **Kontroly kvádrem jsou hrubé:** bounding box propu (měchy, sudy) koliduje i tam, kde skutečný tvar ne. Záměrné dotyky (výfučna v otvoru, lano kolem krokve, kolíky ve spárách) vyjmi jmenovitě a zkontroluj zvlášť přesným bodem (špička výfučny v otvoru).
 
 ## 6. Jak hledat příčinu chyby
 
@@ -147,6 +156,8 @@ Postup, který se osvědčil u poškozených bounds (15. 11. 2026):
 | 15. 11. 2026 | krytina `pult_roof` má vlastní kód (stejná skladba jako u ostrohu): latě přes celou šířku, prkna od okrajů prostupu komína ven; okapová hrana 10 cm za konci krokví nad osou žlabu; výšku žlabu bere `gutter` z krytiny střechy | krokve jsou rovnoběžné, dělení na klínová pole krovu u ostrohu tu nemá smysl; žlab se posune se střechou |
 | 16. 11. 2026 | **dům posádky se staví po etapách** podle `navrh_palac_obydli_stred.md` kap. 0: tři sady actorů s anglickými jmény, přepnutí v Blueprintu podle tagu; dřevo surové v obou etapách (dehtování možná později); ohniště má v etapě 1 celý kamenný základ, studené; dveře a okenice otevřené; žebříky jen kulisa; sklep se neřeší; ladí se nejdřív hotový stav | hráč domem jen prochází, etapy dávají dojem času |
 | 16. 11. 2026 | úprava 03 u komína domu a dozdívka koruny `Palac_J` odpadají | po zanoření zdi o 0,31 m je koruna u komína 4,4–4,8 m a všude nad krytinou |
+| 16. 11. 2026 | vybavení staveb = typ `props` (samostatné actory, polohy ve specu), suť se uklízí `clear_poly` stavby; celá kovárna má souhrnný spouštěč `Palac_Kovarna.py` | ruční doladění přes capture, žádný duplicitní kód |
+| 16. 11. 2026 | kovárna rozšířená o řadu krokví k severu (střecha do n = 6,6), sloup u věže i v n = 4,4; kovadlina 1,5 m před výhní; okno věže nad střechou je jen světlík (neprůchozí) | málo místa na vybavení; kovadlina a kalicí sud byly příliš blízko výhni |
 | 15. 11. 2026 | typy `pult_roof`, `hearth`, `gutter` se píšou obecně (i pro dům); `ETAPA`, saze, udusaná hlína, žhavé uhlí a VFX ohně se s kovárnou nedělají | kovárna stojí v obou etapách; okno věže nad střechou se neřeší |
 
 **Nerozhodnuto** (neber jako dané): jestli bude stan na nádvoří, přiřazení kůra / loupané u jednotlivých staveb, výstup na podestu brány, poloha cisterny. Aktuální seznam: `CHECKLIST_assets_navrhy.md` kap. 9 a `AGENT_GameDesign_hrad.md` kap. 6.
