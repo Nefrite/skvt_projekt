@@ -829,19 +829,20 @@
    ],
    "openings": [
     {
-     "kind": "dvere",
-     "s": 4.5,
-     "w": 1.1,
-     "sill": 0,
-     "h": 2.4
-    },
-    {
      "kind": "portal",
-     "s": 16,
+     "s": 4.5,
      "w": 1.6,
      "sill": 0,
      "h": 3.0,
      "protect": true
+    },
+    {
+     "kind": "prulom",
+     "s": 16,
+     "w": 1.8,
+     "sill": 0,
+     "h": 2.2,
+     "ragged": 0.4
     },
     {
      "kind": "dvere",
@@ -867,8 +868,8 @@
    ],
    "protect": [
     {
-     "s0": 14,
-     "s1": 18,
+     "s0": 2.5,
+     "s1": 6.5,
      "min": 4.2
     }
    ],
@@ -945,6 +946,15 @@
      "w": 1.0,
      "sill": 0,
      "h": 2.2
+    },
+    {
+     "kind": "prulom",
+     "s": 7.7,
+     "w": 1.6,
+     "sill": 0,
+     "h": 2.2,
+     "ragged": 0.35,
+     "_": "pruchod ze zaprazi domu ke kovarne (palac_spec.py)"
     }
    ],
    "rubble": "both"

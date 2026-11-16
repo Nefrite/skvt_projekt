@@ -12,6 +12,7 @@ Stavi zvlast od zriceniny (03_ruin/blocks/build_ruin_blocks.py), takze se da lad
   - steny z prouti a hliny (addons, typ wattle_wall): dilce mezi sloupy, kuly na spojich
   - okapy (addons, typ gutter): vydlabany zlab na rozsochach pod okapem, sud na destovou vodu (samostatny actor)
   - vybaveni (addons, typ props): hotove props rozmistene jako samostatne actory (rucni doladeni pres capture)
+  - sruby (addons, typ log_wall): steny z loupane kulatiny v radach, otvory, prkenne stity pod pultovou strechu
   - etapy: stavba se "stage" v datech stavi actory po sadach (base / final / site) s tagem stage:<sada> (zrlib/config.py)
   - prah dveri v dostavbe: samostatny actor (soucast Ostroh_Dostavba), vyska se doladi rucne a ulozi pres capture
   - volna sut na zemi u zdi (samostatne actory, lze posouvat a mazat); v obyvane casti u ostrohu uklizena
@@ -22,7 +23,7 @@ Pouziti v UE: Tools -> Execute Python Script ->
                             Palac_Kovarna_Pristresek.py, Palac_Kovarna_Vyhen.py, Palac_Kovarna_Stena.py, Palac_Kovarna_Okap.py,
                             Palac_Kovarna_Vybaveni.py,
                             Palac_Obydli_Kamen.py,
-                            Palac_Obydli_Ohniste.py, Sut.py) - ostatni se nesmazou ani neprestavi
+                            Palac_Obydli_Ohniste.py, Palac_Obydli_Krov.py, Palac_Obydli_Srub.py, Sut.py) - ostatni se nesmazou ani neprestavi
   - build_constructions.py  vsechny stavby najednou
   - ../build_normal.py      cely hrad (03) + vsechny stavby; ../build_fullscope.py = oprava (smaze generovane actory a meshe, vse znovu)
   - MODE = "build"   postavit (smaze jen sve actory s tagem Zricenina_Stavby)
@@ -39,7 +40,7 @@ Kod (od 11/2026):
   zr_stavby/               typy staveb: vez (drevo ve vezi), krov (krov u ostrohu + spolecna geometrie),
                            dostavba (kamenna dostavba), podlaha (prkenna podlaha), pult (pultova strecha na sloupech),
                            ohniste (ohniste / vyhen s dymnikem a kominem), zdivo (zdivo z kamene rozvalin),
-                           stena (stena z prouti), okap (zlab, rozsochy, sud), vybaveni (props)
+                           stena (stena z prouti), okap (zlab, rozsochy, sud), vybaveni (props), srub (srubove steny, stity)
   ../zrlib/                sdilena knihovna s 03 (config = materialy, drevo, fyzika; geom, stones, ue_assets, ue_actors)
 Nova stavba: modul v zr_stavby s funkci build, zaznam v TYPES (+ REQUIRED), polozka v constructions.json,
 kopie launcheru ve stavby/ se jmenem stavby.
@@ -64,7 +65,7 @@ _boot()
 from zrlib.config import CONSTR_TAG, CUBE_MESH, STAGE_TAG, STAGES
 from zrlib.geom import inside_poly
 from zrlib import pipeline, ue_assets, ue_actors, validate
-from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap, vybaveni
+from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap, vybaveni, srub
 from zr_stavby.krov import ostroh_geom, roof_under, build_fan_roof, _pt          # noqa: F401  (pro nastroje)
 from zr_stavby.dostavba import build_stone_addon, addon_polygon                 # noqa: F401
 from zr_stavby.podlaha import build_plank_floor                                 # noqa: F401
@@ -94,6 +95,7 @@ TYPES = {
     "wattle_wall": lambda s, c: stena.build_wattle_wall(s, c["terr"]),
     "gutter":      lambda s, c: okap.build_gutter(s, c["terr"], c["data"].get("frames", []), c["geom"]),
     "props":       lambda s, c: vybaveni.build_props(s, c["terr"], c["data"].get("frames", []), c["geom"]),
+    "log_wall":    lambda s, c: srub.build_log_wall(s, c["terr"], c["data"].get("frames", []), c["geom"]),
 }
 # povinne klice dat (kontrola se srozumitelnou chybou misto KeyError uprostred vypoctu)
 REQUIRED = {
@@ -107,6 +109,7 @@ REQUIRED = {
     "wattle_wall": ["name", "origin", "u", "v", "a", "c", "h", "t"],
     "gutter":      ["name", "origin", "u", "v", "roof", "a", "c", "d"],
     "props":       ["name", "origin", "u", "v", "items"],
+    "log_wall":    ["name", "origin", "u", "v", "ref", "walls"],
 }
 SECTIONS = (("floors", "tower_floor"), ("frames", None), ("addons", None))   # sekce constructions.json a vychozi typ
 
@@ -195,7 +198,7 @@ def _rubble(R, data, rb, walls, P, terr, removed):
 # ------------------------------------------------------------------ Unreal
 CNAME = {"wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej", "wood_blood": "Drevo_Krev",
          "wood_old": "Drevo_Stare", "wood_peeled": "Drevo_Loupane", "floor": "Podlaha", "face": "Kamen", "core": "Malta", "frame": "Kvadr",
-         "daub": "Mazanina", "charcoal": "Uhli"}
+         "daub": "Mazanina", "charcoal": "Uhli", "iron": "Zelezo"}
 
 
 def build_in_unreal():

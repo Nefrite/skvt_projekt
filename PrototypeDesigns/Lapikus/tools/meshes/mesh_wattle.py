@@ -5,6 +5,8 @@ SM_RuinWattlePanel_A..C: dilec proutene steny omazane hlinou 100 x 100 cm (X sir
 SM_RuinSmokeHood_A..B: dymnik: zuzujici se kos z prouti vymazany hlinou, dole 140 x 120, nahore 50 x 50, vyska 100 cm,
     otevreny dole i nahore, stena 5 cm. Skaluje se na rozmer dymniku.
 SM_RuinChimney_A..B: komin z prouti a hliny 60 x 60 cm, vyska 100 cm (skaluje se na vysku), stena 6 cm, mirne se zuzuje.
+SM_RuinOvenDome_A..B: hlinena klenba pece (plne teleso, nize sklenuta valena klenba): X sirka 140 (rozpeti), Y hloubka 100,
+    Z vyska 40 cm; dole otevrena (lezi na zdech pece), cela vymazana hlinou. Skaluje se na rozmer pece.
 Sloty: Daub (mazanina, vetsina povrchu), Wattle (mista, kde hlina opadala a je videt vyplet; zapustena o 1,5-2 cm).
 UV v metrech (textury: dlazdice 0,5 m, pruty vyspletu vodorovne podel U).
 """
@@ -17,6 +19,7 @@ NOMINAL = {
     "SM_RuinWattlePanel": (100.0, 8.0, 100.0),
     "SM_RuinSmokeHood":   (140.0, 120.0, 100.0),
     "SM_RuinChimney":     (60.0, 60.0, 100.0),
+    "SM_RuinOvenDome":    (140.0, 100.0, 40.0),
 }
 SLOTS = ("Daub", "Wattle")
 DAUB, WATTLE = 0, 1
@@ -128,6 +131,44 @@ def make_tube(seed, bw, bd, tw, td, H, T, n_per=64, n_h=24, holes=0.10, round_r=
     return M
 
 
+def make_dome(seed, Wd=140.0, D=100.0, H=40.0, n_u=36, n_v=20, holes=0.03):
+    """klenba pece: profil napric X = stlaceny oblouk se svislymi boky (superelipsa), tazeny podel Y; cela (predni a zadni)
+    jsou rovna. Povrch nerovny jako rukou nanesena hlina, misty odhaleny vyplet kostry."""
+    W1 = waves(seed + 1, 10, 12, 45); W2 = waves(seed + 2, 12, 2, 6); Wh = waves(seed + 3, 8, 15, 40)
+    t = np.linspace(0, math.pi, n_u + 1); e = 0.62
+    px = -Wd / 2 * np.sign(np.cos(t)) * np.abs(np.cos(t)) ** e; pz = H * np.abs(np.sin(t)) ** e
+    nx = np.gradient(pz); nz = -np.gradient(px); nl = np.hypot(nx, nz); nx, nz = -nx / nl, -nz / nl
+    if nz[n_u // 2] < 0: nx, nz = -nx, -nz
+    ys = np.linspace(-D / 2, D / 2, n_v + 1)
+    X, Y = np.meshgrid(px, ys, indexing="ij"); Z = np.meshgrid(pz, ys, indexing="ij")[0]
+    q = np.stack([X.ravel(), Y.ravel(), Z.ravel()], 1)
+    th = np.quantile(noise(q * 0.8, Wh), 1 - holes)
+    d, hole = _daub_disp(q, W1, W2, Wh, th, amp=1.0, recess=1.5)
+    fade = np.clip(np.minimum(np.minimum(Y - ys[0], ys[-1] - Y), Z) / 5.0, 0, 1)        # okraje rovne (dosedaji na zdi a cela)
+    d = d.reshape(X.shape) * fade; hole = hole.reshape(X.shape) & (fade > 0.6)
+    NX = np.repeat(nx[:, None], n_v + 1, 1); NZ = np.repeat(nz[:, None], n_v + 1, 1)
+    A = np.stack([X + NX * d, Y, Z + NZ * d], -1)
+    arc = np.concatenate([[0], np.cumsum(np.hypot(np.diff(px), np.diff(pz)))]) / 100
+    M = _M()
+    i0 = M.verts(A, np.stack(np.meshgrid(arc, (ys - ys[0]) / 100, indexing="ij"), -1), 0)
+    M.quad_grid(i0, n_u, n_v, lambda a, b: WATTLE if (hole[a, b] and hole[a + 1, b] and hole[a, b + 1] and hole[a + 1, b + 1]) else DAUB)
+    for j, g in ((0, 2), (n_v, 3)):                                     # cela: od oblouku dolu na zakladnu
+        top = A[:, j]; base = np.stack([px, np.full(n_u + 1, ys[j]), np.zeros(n_u + 1)], 1)
+        R = np.stack([top, base], 1)
+        uv = np.stack([np.stack([px / 100 + 1, top[:, 2] / 100], 1), np.stack([px / 100 + 1, np.zeros(n_u + 1)], 1)], 1)
+        i0 = M.verts(R, uv, g)
+        M.quad_grid(i0, n_u, 1, lambda a, b: DAUB)
+    return M
+
+
+def _orient_convex(P, F):
+    """vypukle teleso: normaly ploch ven od stredu"""
+    c0 = (P.min(0) + P.max(0)) / 2; c0[2] = P[:, 2].min()
+    fn = np.cross(P[F[:, 1]] - P[F[:, 0]], P[F[:, 2]] - P[F[:, 0]]); c = P[F].mean(1) - c0
+    F = F.copy(); flip = (fn * c).sum(1) < 0; F[flip] = F[flip][:, ::-1]
+    return F
+
+
 def _orient(P, F, G, outward_groups):
     """otoci plochy tak, aby normaly vnejsi plochy smerovaly od osy Z, vnitrni k ose (okraje nechava)"""
     fn = np.cross(P[F[:, 1]] - P[F[:, 0]], P[F[:, 2]] - P[F[:, 0]]); c = P[F].mean(1)
@@ -174,4 +215,6 @@ def build(out):
         _write(out, "SM_RuinSmokeHood_" + v, P, UV, G, _orient_tube(P, F, G, 100), S, "dymnik z prouti a hliny", made)
         P, UV, G, F, S = make_tube(19000 + vi * 73, 60, 60, 54, 54, 100, 6.0, n_per=40, n_h=20, round_r=5.0).arrays()
         _write(out, "SM_RuinChimney_" + v, P, UV, G, _orient_tube(P, F, G, 100), S, "komin z prouti a hliny", made)
+        P, UV, G, F, S = make_dome(19500 + vi * 79).arrays()
+        _write(out, "SM_RuinOvenDome_" + v, P, UV, G, _orient_convex(P, F), S, "hlinena klenba pece", made)
     return made

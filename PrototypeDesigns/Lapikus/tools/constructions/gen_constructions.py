@@ -327,15 +327,42 @@ def palac(LAY):
                dict(id="P", **rect(D["sill_p"]), gaps=[["c", D["sill_p"]["door"][0], D["sill_p"]["door"][1]]])],   # podezdivka pricky, dvere
         stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), course=(LAY["params"]["COURSE_MIN"], LAY["params"]["COURSE_MAX"]),
                    joint=LAY["params"]["JOINT"], row=0.42, sink=0.10),
+        mortar=0.06,                                                 # vyspraveni stare zdi: maltove jadro v ose od zeme az pod vrch (neprosvita)
         clear_poly=[P(ps0, pn0), P(ps1, pn0), P(ps1, pn1), P(ps0, pn1)])       # sut v dome a na zaprazi uklizena
-    H = D["hearth"]; hc = [round(sum(H["s"]) / 2, 3), round(sum(H["n"]) / 2, 3)]
+    H = D["hearth"]
     ohniste = dict(
         name="Palac_Obydli_Ohniste", type="hearth", folder="Stavby/Palac/Obydli", origin=F["origin"], u=F["s"], v=F["n"],
-        stage="base", stage_top="final",                             # kamenny zaklad v etape 1, dymnik a komin az v etape 2
-        table=dict(a=list(H["s"]), c=list(H["n"]), h=H["h"], course=H["course"]),
-        daub=H["daub"], pit=dict(a=hc[0], c=hc[1], w=H["pit"], d=0.02),               # studene ohniste uprostred zakladu
-        stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), joint=LAY["params"]["JOINT"]))   # dymnik a komin prijdou s krovem (roof)
-    return [pristresek], [vyhen, stena, okap, vybaveni, kamen, ohniste]
+        roof="Palac_Obydli_Krov",                                    # vysky od terenu strechy
+        stage="base", stage_top="final",                             # sokl, zdi pece a klenba v etape 1; dymnik, komin, sopouch a zelezo v etape 2
+        table=dict(a=list(H["s"]), c=list(H["n"]), h=H["h"], course=H["course"]),      # kamenny sokl pece s nistejí
+        daub=H["daub"],                                              # hlineny maz na soklu (nistej)
+        walls=H["walls"], dome=H["dome"], boxes=H["boxes"], props=H["props"], flue=H["flue"],          # zdi pece s ustim, klenba, zelezo, sopouch
+        hood=H["hood"], chimney=H["chimney"],                        # dymnik nad ustim a nistejí, komin mezi krokvemi
+        stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), joint=LAY["params"]["JOINT"]))
+    # krov domu bez krytiny: pultova strecha se spadem k severu na trech podporach (pozednice na sloupech u Palac_J, stredni
+    # vaznice na spalcich na stenach, vrchni tram severni srubove steny). Sady etap: nad svetnici base, nad sini final.
+    RO = D["roof"]; PL = RO["plate"]; PU = RO["purlin"]; RA = RO["rafter"]; (r0, r1) = RO["span"]; BL = RO["brace_laths"]
+    krov = dict(
+        name="Palac_Obydli_Krov", type="pult_roof", folder="Stavby/Palac/Obydli", origin=F["origin"], u=F["s"], v=F["n"],
+        axis="v", ref=ref, stage="base",                             # spad po ose n; co nema vlastni sadu (sloupy, patni kameny), stoji v etape 1
+        supports=[dict(id="VH", at=PL["n"], span=[r0, r1], top=PL["top"], sec=list(PL["sec"]), posts=list(PL["posts"]), post=PL["post"],
+                       pieces=[dict(span=[r0, PL["joint"]], stage="final"), dict(span=[PL["joint"], r1], stage="base")]),   # spoj nad strednim sloupem
+                  dict(id="VS", at=PU["n"], span=[r0, r1], top=PU["top"], sec=list(PU["sec"]),
+                       pieces=[dict(span=[r0, PU["joint"]], stage="final"), dict(span=[PU["joint"], r1], stage="base")],   # spoj nad prickou
+                       stubs=[dict(c=q["c"], base=D["log"]["walls"][0]["z"][-1], w=PU["stub"], stage=q["stage"]) for q in PU["stubs"]]),
+                  dict(id="VN", at=RO["north"]["n"], span=list(RO["north"]["span"]), top=RO["north"]["top"], sec=[0.22, 0.22],
+                       virtual=True)],                               # vrchni tram severni steny srubu (Palac_Obydli_Srub)
+        rafters=dict(sec=list(RA["sec"]), pos=list(RA["pos"]), a0=RA["n"][0], a1=RA["n"][1], seat=RA["seat"], stages=list(RA["stages"])),
+        pads=dict(RO["pad"]),
+        pre_laths=dict(rows=list(BL["n"]), span=list(BL["s"]), lath=list(BL["lath"]), stage="base"),   # zavetrovani rozestavene strechy
+        finish=dict(posts="raw", plates="raw", rafters="raw", roof_laths="raw"))
+    LG = D["log"]
+    srub = dict(
+        name="Palac_Obydli_Srub", type="log_wall", folder="Stavby/Palac/Obydli", origin=F["origin"], u=F["s"], v=F["n"], ref=ref,
+        roof="Palac_Obydli_Krov", stage="base",
+        lap=LG["lap"], half_w=LG["half_w"], jit=LG["jit"], walls=LG["walls"], gables=LG["gables"],
+        finish=dict(logs="raw", gables="raw"))
+    return [pristresek, krov], [vyhen, stena, okap, vybaveni, kamen, ohniste, srub]
 
 
 if __name__ == "__main__":

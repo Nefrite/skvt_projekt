@@ -36,7 +36,7 @@ Nádvoří je pruh mezi severní zdí paláce (vnější líc n = 10,2) a severn
 - Vnitřní líc hradby je obrácený k jihu.
 - Nádvoří je v místě stanu široké asi 6,9 m.
 - Vstup do věže (průlom ve `Vez_S`) je v s = 35, n = 11, tedy 11 m východně.
-- Portál paláce je v s = 15,2–16,8.
+- Vstup do prostřední místnosti paláce je hrubý průchod v s = 15,1–16,9 (portál je od 16. 11. 2026 v západní místnosti, s = 3,7–5,3).
 - V okolí leží v datech jeden kámen suti (s = 23,2; n = 17,9).
 - Cisterna je jen v návrhu dat (střed s = 25,2; n = 11,8; průměr 3 m) a její poloha je otevřená.
 
@@ -101,7 +101,7 @@ Stan stojí u paty severní hradby v nejvyšším úseku (s = 21,5–23,9), hře
 ## 6. Vazby, kolize, pořadí
 
 - **Staveniště domu:** hromada krokví a prken leží podle `navrh_palac_obydli_stred.md` před severní zdí paláce (n = 10,5–12,3). Mezi ní a stanem zůstává průchod 2,3 m.
-- **Cesta brána → portál** vede tímto průchodem. Musí zůstat volná v šířce aspoň 1,2 m.
+- **Cesta brána → vstup do paláce (průchod v s = 16)** vede tímto průchodem. Musí zůstat volná v šířce aspoň 1,2 m.
 - **Cisterna:** stan je mimo její obrys z návrhu dat. Až bude poloha určená, zkontrolovat.
 - **Šňůry a kolíky** nesmí zasahovat do průchodu. Na jižní straně končí nejdál v n = 14,1.
 - **Pořadí:** nezávisí na jiných stavbách.

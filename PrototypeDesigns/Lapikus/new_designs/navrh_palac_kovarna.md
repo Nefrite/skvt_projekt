@@ -202,7 +202,7 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 ## 6. Vazby, kolize, pořadí
 
 - **Odstup od domu:** výheň je 8,3 m od východního štítu domu, západní okraj přístřešku (okap) 3,55 m. Podmínka z návrhu domu (výheň aspoň 6 m) je splněná.
-- **Dvorek před kovárnou** je mezi střechou (n = 6,6) a `Palac_S` (n = 8,8) široký 2,2 m. **Vstup:** původními dveřmi paláce (s = 26,45–27,55) na dvorek a odtud otevřenou severní stranou.
+- **Dvorek před kovárnou** je mezi střechou (n = 6,6) a `Palac_S` (n = 8,8) široký 2,2 m. **Vstup:** původními dveřmi paláce (s = 26,45–27,55) na dvorek a odtud otevřenou severní stranou. Od 16. 11. 2026 i ze zápraží domu hrubým průchodem v `Palac_pricka_2` (n = 6,9–8,5; `navrh_palac_obydli_stred.md` kap. 0.2a), který ústí na západní konec dvorku (s = 21,4).
 - **Výheň** (s od 29,75) nezasahuje do výklenku střílny s = 29 (ten končí v s = 29,65).
 - **Západní linie** (s = 25,85) je 0,2 m východně od výklenku střílny s = 25; výklenek je přístupný ze dvorku podél `Palac_J` (volno 1 m k rozsoše, 1,45 m ke dřevu).
 - **Sud pod žlabem** stojí u severozápadního rohu přístřešku, mimo cestu ode dveří.

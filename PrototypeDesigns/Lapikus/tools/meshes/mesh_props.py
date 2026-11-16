@@ -716,6 +716,17 @@ def box_lid(seed):
     return M
 
 
+def oven_door(seed):
+    """poklop usti pece (dobove provizorium z kovarny): kovany plech 46 x 42 cm, tl. 1,2 cm, v rovine XZ; na strane -Y
+    drevena rukojet ("chnapka", da se chytit i horka) podel X na dvou kovanych trnech"""
+    M = PM(); r = np.random.default_rng(seed)
+    add_box(M, (0, 0, 0), (46, 1.2, 42), IRON, sub=5, rough=0.12, round_=0.25, seed=seed)
+    for x in (-7.0, 7.0):                                                      # trny rukojeti (roznytovane v plechu)
+        add_cyl(M, (x, 0.3, 4.0), (x, -6.0, 4.0), 0.7, 0.6, IRON, n=10, rings=1)
+    add_cyl(M, (-10.5, -6.0, 4.0 + r.uniform(-0.2, 0.2)), (10.5, -6.0, 4.0), 1.8, 1.7, WOOD, cap_slot=END, n=14, rings=2, rough=0.08, seed=seed + 3)
+    return M
+
+
 def woodpile(seed, W=190.0, H=140.0, D=60.0):
     """hranice stipanych polen: delka polen podel Y (hloubka 60), rady podel X do vysky H; ctvrtiny a pulky kmene
     (kura na oblouku, cela na koncich)"""
@@ -808,6 +819,7 @@ PROPS = [  # (jmeno, funkce, varianty, popis)
     ("SM_RuinShelf", shelf, "A", "police"),
     ("SM_RuinDoor", door, "A", "dvere"),
     ("SM_RuinShutter", shutter, "A", "okenice"),
+    ("SM_RuinOvenDoor", oven_door, "A", "poklop usti pece s drevenou rukojeti"),
 ]
 NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizuje. Stejna cisla v LIB_MESHES (zrlib/config.py)
     "SM_RuinStump": (53.6, 49.7, 46.7),
@@ -840,6 +852,7 @@ NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizu
     "SM_RuinShelf": (100.2, 27.7, 89.6),
     "SM_RuinDoor": (101.8, 9.3, 219.3),
     "SM_RuinShutter": (61.4, 8.4, 59.2),
+    "SM_RuinOvenDoor": (45.9, 8.6, 41.9),
 }
 
 

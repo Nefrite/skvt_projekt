@@ -180,7 +180,7 @@ Otvory mají **opracované kamenné ostění** (šambrány, nadpraží, parapety
 | Místo | Stav |
 |---|---|
 | Palác nad útesem | okna 1. patra s **celým ostěním** |
-| Palác do nádvoří | dveře jako **široké mezery**, portál s vylámanými spodními ostěními |
+| Palác do nádvoří | dveře jako **široké mezery**, portál s vylámanými spodními ostěními (od 16. 11. 2026 v západní místnosti; ve střední po něm zůstal hrubý průchod, v `Palac_pricka_2` je průchod ke kovárně) |
 | Věž | vstup v 1. patře s jedním vylámaným ostěním; střílny celé |
 | Hradba | střílny celé |
 | Brána | oblouk stojí, kapsa po mostu a otvory pro řetězy viditelné |

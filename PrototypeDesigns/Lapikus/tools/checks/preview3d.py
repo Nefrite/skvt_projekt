@@ -107,15 +107,19 @@ def obydli_scene(S, stage=2):
     O, U, V = fr["origin"], fr["u"], fr["v"]
     sn = lambda x, y: (((x - O[0]) * U[0] + (y - O[1]) * U[1]) / 100, ((x - O[0]) * V[0] + (y - O[1]) * V[1]) / 100)
     P = lambda s, n, z: ((O[0] + (U[0] * s + V[0] * n) * 100) / 100, (O[1] + (U[1] * s + V[1] * n) * 100) / 100, z)
-    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if 6 < sn(s.x, s.y)[0] < 25.5 and -3 < sn(s.x, s.y)[1] < 13]
+    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if -1.5 < sn(s.x, s.y)[0] < 25.5 and -3 < sn(s.x, s.y)[1] < 13]
     show = ("base", "site") if stage == 1 else ("base", "final")
     new = [s for n, g in S["groups"].items() if n.startswith("Palac_Obydli") for s in g.get("stones", []) + g.get("loose", []) if s.stage in show]
     z0 = S["terr"].z(*[c * 100 for c in P(*fr["ref"], 0)[:2]])
-    col = dict(COL, wood=(0.66, 0.54, 0.38), face=(0.80, 0.68, 0.50), daub=(0.72, 0.60, 0.42), charcoal=(0.10, 0.10, 0.11))   # novy kamen okrove, at je videt
+    col = dict(COL, wood=(0.66, 0.54, 0.38), face=(0.80, 0.68, 0.50), daub=(0.72, 0.60, 0.42), charcoal=(0.10, 0.10, 0.11), iron=(0.25, 0.26, 0.28))   # novy kamen okrove, at je videt
     bx = stone_boxes(ruin, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0) + stone_boxes(new, lambda s: col.get(s.cat, (0.6, 0.6, 0.6)), z0)
-    V_ = [dict(title="od nadvori portalem (etapa %d)" % stage, eye=P(16.6, 11.6, 1.7), target=P(15.0, 4.0, 1.2), fov=62),
-          dict(title="shora od severovychodu", eye=P(27.0, 15.0, 12.0), target=P(15.5, 3.5, 1.0), fov=40),
-          dict(title="ze svetnice k ohnisti a pricce", eye=P(19.8, 5.0, 1.7), target=P(16.3, 1.6, 0.7), fov=68),
+    V_ = [dict(title="od nadvori pruchodem (etapa %d)" % stage, eye=P(16.6, 12.6, 1.7), target=P(15.0, 4.0, 1.2), fov=62),
+          dict(title="shora od severozapadu", eye=P(4.0, 18.0, 11.0), target=P(15.5, 3.5, 2.0), fov=42),
+          dict(title="shora od severovychodu", eye=P(27.0, 17.0, 10.0), target=P(16.0, 3.5, 2.0), fov=42),
+          dict(title="pohled od severu (kolmo)", eye=P(15.75, 30.0, 2.6), target=P(15.75, 6.2, 2.6), ortho=14.0),
+          dict(title="svetnice: od vychodni steny k pricce", eye=P(20.2, 4.9, 1.7), target=P(15.0, 2.6, 2.0), fov=72),
+          dict(title="svetnice: pec od severovychodu", eye=P(19.4, 4.6, 1.7), target=P(16.8, 1.4, 1.2), fov=60),
+          dict(title="ze zaprazi k pruchodu ke kovarne", eye=P(17.0, 7.9, 1.7), target=P(22.5, 7.6, 1.0), fov=68),
           dict(title="pudorys (sever nahore)", eye=P(15.75, 4.4, 40.0), target=P(15.75, 4.6, 0.0), ortho=15.0)]
     return bx, V_
 

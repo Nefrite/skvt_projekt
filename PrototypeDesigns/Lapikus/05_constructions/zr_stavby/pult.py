@@ -8,9 +8,13 @@ Data (constructions.json -> frames, generuje tools/constructions/gen_constructio
   axis      osa ramu, po ktere strecha pada: "u" nebo "v" (pozednice jsou na ni kolme)
   ref       bod (u, v), od jehoz terenu se pocitaji vysky
   supports  podpory krokvi: [dict(id, at (m na ose spadu), span (c0, c1 = rozsah napric), top (vrch, m nad terenem),
-            sec (sirka, vyska m), posts [c ...] (polohy sloupu), post (strana sloupu m))]; sklon urcuje nejvyssi a nejnizsi
+            sec (sirka, vyska m), posts [c ...] (polohy sloupu), post (strana sloupu m))]; sklon urcuje nejvyssi a nejnizsi.
+            Volitelne: pieces [dict(span, stage)] = tram z vice kusu (kazdy muze mit vlastni sadu etapy),
+            stubs [dict(c, base (m nad terenem), w, stage)] = spalek pod tramem stojici na zdi / srubu,
+            virtual = True: podpora patri jine stavbe (napr. vrchni tram srubu), tady se nestavi, jen urcuje sklon
+  pre_laths late polozene na krokvich uz v kostre (zavetrovani): dict(rows [a ...], span (c0, c1), lath (vyska, sirka), stage)
   rafters   krokve: dict(d (prumer kulatiny m) nebo sec (sirka, vyska m), bark, pos [c ...], a0, a1 (od - do na ose spadu),
-            seat (osedlani = zapusteni do pozednic m))
+            seat (osedlani = zapusteni do pozednic m), stages [sada etapy pro kazdou krokev] (volitelne))
   pads      patni kameny pod sloupy (samostatne actory): dict(l, w, h, sink) nebo nic (sloup 10 cm v zemi)
   plan      pudorys strechy: dict(a (a0, a1), c (c0, c1)) v ramu (a = osa u, c = osa v)
   openings  prostupy krytinou: [dict(kind="chimney", a, c (stred), w (strana))]
@@ -60,10 +64,22 @@ def build_pult_roof(fr, P_, walls, terr, cache=None, cover=True):
     G = pult_geom(fr, terr, cache); P = G["P"]; A, C = G["A"], G["C"]; z0 = G["z0"]
     yaw_a = math.degrees(math.atan2(A[1], A[0])); yaw_c = math.degrees(math.atan2(C[1], C[0]))
     pad = fr.get("pads")
+    def staged(st, stage):
+        st.stage = stage; return st
     for k, s in enumerate(fr["supports"]):
+        if s.get("virtual"): continue                  # podpora z jine stavby (vrchni tram srubu): jen urcuje sklon
         sid = s.get("id", "V%d" % k); w, h = s["sec"][0] * 100, s["sec"][1] * 100
-        c0, c1 = s["span"]; x, y = P(s["at"], (c0 + c1) / 2); top = z0 + s["top"] * 100
-        out.append(Stone("%s|%s" % (name, sid), WC("plates"), x, y, top - h / 2, yaw_c, (c1 - c0) * 100, w, h))
+        top = z0 + s["top"] * 100
+        if s.get("pieces"):                            # tram z vice kusu (spoj nad sloupem / stenou), kazdy se svou sadou etapy
+            for j, pc in enumerate(s["pieces"]):
+                c0, c1 = pc["span"]; x, y = P(s["at"], (c0 + c1) / 2)
+                out.append(staged(Stone("%s|%s.%d" % (name, sid, j), WC("plates"), x, y, top - h / 2, yaw_c, (c1 - c0) * 100 - 0.4, w, h), pc.get("stage")))
+        else:
+            c0, c1 = s["span"]; x, y = P(s["at"], (c0 + c1) / 2)
+            out.append(Stone("%s|%s" % (name, sid), WC("plates"), x, y, top - h / 2, yaw_c, (c1 - c0) * 100, w, h))
+        for j, sb in enumerate(s.get("stubs", [])):    # spalek pod tramem na zdi / srubu
+            x, y = P(s["at"], sb["c"]); zb = z0 + sb["base"] * 100; sw = sb.get("w", 0.2) * 100
+            out.append(staged(Stone("%s|%s|S%d" % (name, sid, j), WC("posts"), x, y, (zb + top - h) / 2, yaw_a, sw, sw, top - h - zb), sb.get("stage")))
         ps = s.get("post", 0.2) * 100
         for j, c in enumerate(s.get("posts", [])):
             px, py = P(s["at"], c); zg = terr.z(px, py)
@@ -74,12 +90,21 @@ def build_pult_roof(fr, P_, walls, terr, cache=None, cover=True):
             else: zb = zg - 10
             out.append(Stone("%s|%s|P%d" % (name, sid, j), WC("posts"), px, py, (zb + top - h) / 2, yaw_a, ps, ps, top - h - zb))
     rf = fr["rafters"]; ang = G["ang"]; rnd = "d" in rf
-    for g in G["geo"]:
+    r_st = rf.get("stages")
+    for gi, g in enumerate(G["geo"]):
         a1 = g["a1"]; mx, my = g["S"][0] + g["D"][0] * a1 / 2, g["S"][1] + g["D"][1] * a1 / 2
         zc = (g["bottom"](0) + g["bottom"](a1)) / 2 + G["vert"] / 2
         yaw = math.degrees(math.atan2(-g["D"][1], -g["D"][0]))        # osa X dilce od okapu (nize) nahoru -> pitch kladny
-        out.append(Stone("%s|%s" % (name, g["id"]), WC("rafters"), mx, my, zc, yaw, a1 / math.cos(ang), G["rw"], G["rh"],
-                         pitch=math.degrees(ang), shape="round" if rnd else None, bark=bool(rf.get("bark"))))
+        out.append(staged(Stone("%s|%s" % (name, g["id"]), WC("rafters"), mx, my, zc, yaw, a1 / math.cos(ang), G["rw"], G["rh"],
+                                pitch=math.degrees(ang), shape="round" if rnd else None, bark=bool(rf.get("bark"))), r_st[gi] if r_st else None))
+    pl = fr.get("pre_laths")
+    if pl:                                             # late na krokvich uz v kostre (zavetrovani rozestavene strechy)
+        lh, lw = pl.get("lath", (0.05, 0.06)); c0, c1 = pl["span"]; k_ = 100.0 / math.cos(ang)
+        ysg = 1.0 if (-C[1] * -A[0] * G["sg"] + C[0] * -A[1] * G["sg"]) > 0 else -1.0
+        for j, a in enumerate(pl["rows"]):
+            x, y = P(a, (c0 + c1) / 2)
+            out.append(staged(Stone("%s|Z%d" % (name, j), WC("roof_laths"), x, y, G["under"](a) + G["vert"] + lh * k_ / 2, yaw_c,
+                                    (c1 - c0) * 100, lw * 100, lh * 100, roll=ysg * math.degrees(ang)), pl.get("stage")))
     if cover and fr.get("roof"): out += _pult_cover(fr, G, WC)
     return out
 

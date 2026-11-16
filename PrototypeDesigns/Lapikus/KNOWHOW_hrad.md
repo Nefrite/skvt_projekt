@@ -57,6 +57,7 @@ Stav: 16. 11. 2026.
 |---|---|
 | změna jedné části zříceniny | `03_ruin/blocks/casti/<Obvod/Palac/Ostroh>.py`, pak dostavby, které na ní stojí |
 | změna jedné stavby | `05_constructions/stavby/<Stavba>.py` |
+| celý dům posádky v paláci | `05_constructions/stavby/Palac_Obydli.py` (všechny hotové části v pořadí + suť; staví všechny sady etap) |
 | celá kovárna v paláci | `05_constructions/stavby/Palac_Kovarna.py` (všechny části v pořadí + suť; `RUIN = True` i část `Palac`) |
 | všechno | `build_normal.py`: hrad, pak stavby; assety jen doplňuje |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py`: smaže generované actory a meshe a postaví vše znovu; po běhu nepoužívat Undo |
@@ -155,6 +156,10 @@ Postup, který se osvědčil u poškozených bounds (15. 11. 2026):
 | 15. 11. 2026 | kovárna: krokve přesahují západní stěnu o 0,9 m, hranice dřeva je zvenku pod přesahem; dymník visí na závěsných tyčích z výměn mezi krokvemi | dřevo má být kryté a nezabírat místo v kovárně; nic nevisí ve vzduchu |
 | 15. 11. 2026 | krytina `pult_roof` má vlastní kód (stejná skladba jako u ostrohu): latě přes celou šířku, prkna od okrajů prostupu komína ven; okapová hrana 10 cm za konci krokví nad osou žlabu; výšku žlabu bere `gutter` z krytiny střechy | krokve jsou rovnoběžné, dělení na klínová pole krovu u ostrohu tu nemá smysl; žlab se posune se střechou |
 | 16. 11. 2026 | **dům posádky se staví po etapách** podle `navrh_palac_obydli_stred.md` kap. 0: tři sady actorů s anglickými jmény, přepnutí v Blueprintu podle tagu; dřevo surové v obou etapách (dehtování možná později); ohniště má v etapě 1 celý kamenný základ, studené; dveře a okenice otevřené; žebříky jen kulisa; sklep se neřeší; ladí se nejdřív hotový stav | hráč domem jen prochází, etapy dávají dojem času |
+| 16. 11. 2026 | nové zdivo na staré zdi (`stone_fill`) má maltové jádro v ose od země až pod vrch, i přes zříceninu pod ním | posádka by starou zeď vyspravila; zdí neprosvítá (stejně jako u `Ostroh_Dostavba`) |
+| 16. 11. 2026 | srub (`log_wall`): křížící stěny mají řady posunuté o půl řady (začínají a končí půltrámem), kulatina je o 1,2 cm tlustší než řada | nároží vypadá jako skutečný srub a zdí neprosvítá bez výplně spár |
+| 16. 11. 2026 | návrh domu měl sloup v ose příčky a komín v krokvi; před stavbou dřeva vždy porovnat polohy sloupů, krokví a komína s podezdívkami a mezi sebou | kolize se v textu návrhu nepozná, ukáže ji až výpočet |
+| 16. 11. 2026 | portál paláce je v západní (prázdné) místnosti, ve střední ho posádka rozebrala (hrubý průchod v `Palac_S` s = 16); `Palac_pricka_2` má severně od domu hrubý průchod ke kovárně | kámen šel na podezdívky domu; ze zápraží se dá projít ke kovárně |
 | 16. 11. 2026 | úprava 03 u komína domu a dozdívka koruny `Palac_J` odpadají | po zanoření zdi o 0,31 m je koruna u komína 4,4–4,8 m a všude nad krytinou |
 | 16. 11. 2026 | vybavení staveb = typ `props` (samostatné actory, polohy ve specu), suť se uklízí `clear_poly` stavby; celá kovárna má souhrnný spouštěč `Palac_Kovarna.py` | ruční doladění přes capture, žádný duplicitní kód |
 | 16. 11. 2026 | kovárna rozšířená o řadu krokví k severu (střecha do n = 6,6), sloup u věže i v n = 4,4; kovadlina 1,5 m před výhní; okno věže nad střechou je jen světlík (neprůchozí) | málo místa na vybavení; kovadlina a kalicí sud byly příliš blízko výhni |

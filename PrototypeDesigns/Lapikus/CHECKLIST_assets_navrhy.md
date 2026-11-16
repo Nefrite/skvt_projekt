@@ -250,9 +250,9 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ☐ | Typ (pracovně) | Nový / rozšíření | Stavby |
 |---|---|---|---|
 | ☐ | `canvas_shelter` | 🆕 | `Vez_Pristresek` |
-| ☑ | `pult_roof` (krytina stejné skladby jako `fan_roof`, vlastní kód) | 🆕 | `Palac_Obydli_Krov`, `Palac_Kovarna_Pristresek`. **Hotovo 15. 11. 2026:** sloupy na patních kamenech, pozednice, krokve (`zr_stavby/pult.py`), krytina s prostupem komína (latě, prkna, lišty) a lemování na stojato. Kostra ověřená v UE, krytina zatím ne. Pro dům chybí vaznice / víc podpor ověřit na datech domu. |
-| ☐ | `log_wall` (srub, otvory, prkenné štíty) | 🆕 | `Palac_Obydli_Srub` |
-| ◐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen`. **Hotovo 15. 11. 2026:** `zr_stavby/ohniste.py`, postavená `Palac_Kovarna_Vyhen` (stůl, maz, ohniště, zídka s otvorem pro výfučnu, dymník na závěsných tyčích, komín, výměny). Chybí žhavé uhlí, saze, oheň. Ověřeno v UE (15. 11. 2026). |
+| ☑ | `pult_roof` (krytina stejné skladby jako `fan_roof`, vlastní kód) | 🆕 | `Palac_Obydli_Krov`, `Palac_Kovarna_Pristresek`. **Hotovo 15. 11. 2026:** sloupy na patních kamenech, pozednice, krokve (`zr_stavby/pult.py`), krytina s prostupem komína (latě, prkna, lišty) a lemování na stojato. Kostra ověřená v UE, krytina zatím ne. Pro dům (16. 11. 2026): dělené trámy se sadami etap, špalky pod vaznicí, podpora z jiné stavby, latě v kostře; `Palac_Obydli_Krov` bez krytiny, neověřeno v UE. |
+| ☑ | `log_wall` (srub, otvory, prkenné štíty) | 🆕 | `Palac_Obydli_Srub`. **Hotovo 16. 11. 2026:** `zr_stavby/srub.py`, řady se sadami etap, půltrámy pro střídání v nároží, štíty. Neověřeno v UE. |
+| ◐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen`. **Hotovo 15. 11. 2026:** `zr_stavby/ohniste.py`, postavená `Palac_Kovarna_Vyhen` (stůl, maz, ohniště, zídka s otvorem pro výfučnu, dymník na závěsných tyčích, komín, výměny). Chybí žhavé uhlí, saze, oheň. Ověřeno v UE (15. 11. 2026). **16. 11. 2026:** pec s nístějí pro dům (`dome` s novým meshem `SM_RuinOvenDome`, `boxes`, `flue`, zídky na stole; poklop ústí `SM_RuinOvenDoor` a plotna jako samostatné actory), neověřeno v UE. |
 | ◐ | `gutter` (žlab, vidlice, svod) | 🆕 | `Palac_Obydli_Okap`, `Palac_Kovarna_Okap`. **Hotovo 15. 11. 2026:** `zr_stavby/okap.py`: žlab pod okapovou hranou `pult_roof` se spádem, rozsochy (hlava `SM_RuinForkHead` na kůlu), sud jako samostatný actor; postavený `Palac_Kovarna_Okap`. Svod (pro dům) chybí. Neověřeno v UE. |
 | ☑ | `wattle_wall` | 🆕 | `Palac_Kovarna_Stena`. **Hotovo 15. 11. 2026:** `zr_stavby/stena.py`: dílce `SM_RuinWattlePanel` mezi sloupy (spodní pás mezi patními kameny), kůly na spojích. Neověřeno v UE. |
 | ☐ | `palisade` (kůly, ráhna, průzory) | 🆕 | `Brana_Straz_Kryty` |
@@ -280,7 +280,9 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ☐ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou | 3.2 |
 | ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | `navrh_palac_obydli_stred.md` kap. 0.2 |
 | ☑ | `Palac_J` | celá zeď zanořená o jednu řadu do země (`z_offset` −0,31), rozebraná koruna u věže (`breaches` s = 29,6–33, komín kovárny ji přesahuje) a `kapsa` pro východní pozednici kovárny v s = 30,55 (15. 11. 2026, neověřeno v UE) | `navrh_palac_kovarna.md` kap. 3, `palac_spec.py` |
-| ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Palac_J` se po přestavbě změní | – |
+| ☑ | `Palac_S` | portál přesunutý do západní místnosti (s = 4,5, `protect` s = 2,5–6,5), ve střední místnosti hrubý průchod (`prulom` s = 16, 1,8 m) (16. 11. 2026, neověřeno v UE) | `navrh_palac_obydli_stred.md` kap. 0.2a, `gen_layout.py` |
+| ☑ | `Palac_pricka_2` | hrubý průchod ze zápraží domu ke kovárně (`prulom` n = 6,9–8,5) (16. 11. 2026, neověřeno v UE) | `navrh_palac_obydli_stred.md` kap. 0.2a, `palac_spec.py` → `D_PASS` |
+| ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Palac_J`, `Palac_S`, `Palac_pricka_2` se po přestavbě změní | – |
 
 ---
 

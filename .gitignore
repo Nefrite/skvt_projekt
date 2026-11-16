@@ -76,3 +76,4 @@ DerivedDataCache/*
 __pycache__/
 # vygenerovane procedurni textury (tools/textures/gen_textures.py), OBJ uz ignoruje *.obj
 /PrototypeDesigns/Lapikus/textures/
+/PrototypeDesigns/Lapikus/_to_delete

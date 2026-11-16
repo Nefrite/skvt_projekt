@@ -318,7 +318,8 @@ def check_obydli(S):
     O, U, V = ad["origin"], ad["u"], ad["v"]; P = lambda a, c: (O[0] + (U[0] * a + V[0] * c) * 100, O[1] + (U[1] * a + V[1] * c) * 100)
     z0 = S["terr"].z(*P(*ad["ref"]))
     ruin = [s for w in walls.values() for s in w["stones"] + w.get("loose", [])]
-    new = g["stones"] + g["loose"]; hg = groups.get("Palac_Obydli_Ohniste", {}); hearth = hg.get("stones", []) + hg.get("loose", [])
+    allst = g["stones"] + g["loose"]; new = [s for s in allst if s.cat != "core"]; mortar = [s for s in allst if s.cat == "core"]
+    hg = groups.get("Palac_Obydli_Ohniste", {}); hearth = hg.get("stones", []) + hg.get("loose", [])
     c = common.collisions(new + hearth, ruin, 1.5)
     rep("nove zdivo a ohniste x zricenina: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
     c = common.collisions(new, new, 1.0) + common.collisions(hearth, new, 1.0)
@@ -345,7 +346,107 @@ def check_obydli(S):
         rep("cast %s: vrch %.2f m na %.1f %% delky (nejniz %.2f), nove zdivo nejvys %.2f%s" % (
             pt["id"], pt["top"], 100.0 * n_ok / max(n_all, 1), worst, over, ", pruchod volny" if gaps else ""),
             n_ok / max(n_all, 1) >= 0.97 and over <= pt["top"] + 0.005 and free)
-    for gname in ("Palac_Obydli_Kamen", "Palac_Obydli_Ohniste"):
+    # maltove jadro: zdi neprosvita (bod v ose zdi je v malte nebo v kameni, ktery osu protina) a malta neni videt
+    # (u kazdeho rohu kusu malty je ve stejne vysce kamen teto zdi: malta je v kameni, ve spare nebo v dutine mezi lici)
+    if ad.get("mortar"):
+        mb = [(frame_box(s, O, U, V), (s.z + s.sz / 2 - z0) / 100, (s.z - s.sz / 2 - z0) / 100) for s in mortar]
+        solid = boxes
+        for pt in ad["parts"]:
+            (a0, a1), (c0, c1) = pt["a"], pt["c"]; along_a = (a1 - a0) >= (c1 - c0)
+            p0, p1 = (a0, a1) if along_a else (c0, c1); qm = ((c0 + c1) if along_a else (a0 + a1)) / 2
+            gaps = [(g_[1], g_[2]) for g_ in pt.get("gaps", [])]
+            n_all = n_hole = 0
+            for i in range(int((p1 - p0 - 0.1) / 0.05)):
+                p = p0 + 0.075 + i * 0.05
+                if any(g0 - 0.05 <= p <= g1 + 0.05 for g0, g1 in gaps): continue
+                a, c_ = (p, qm) if along_a else (qm, p)
+                for kz in range(1, int(pt["top"] / 0.05) - 1):
+                    z = kz * 0.05; n_all += 1
+                    hit = any(b[0] <= a <= b[1] and b[2] <= c_ <= b[3] and lo <= z <= t for (b, t, lo) in mb) or \
+                          any(b[0] <= a <= b[1] and b[2] + 0.02 <= c_ <= b[3] - 0.02 and lo <= z <= t for (b, t, lo) in solid)
+                    n_hole += not hit
+            rep("cast %s: zdi neprosvita, v ose pokryto %.1f %% (der %d z %d bodu)" % (pt["id"], 100 - 100.0 * n_hole / max(n_all, 1), n_hole, n_all),
+                n_hole / max(n_all, 1) <= 0.01)
+        bad = 0
+        for (b, t, lo) in mb:
+            for a in (b[0] + 0.01, b[1] - 0.01):
+                for z in (lo + 0.01, t - 0.01):
+                    c_ = (b[2] + b[3]) / 2
+                    if not any(sb[0] - 0.3 <= a <= sb[1] + 0.3 and sb[2] - 0.3 <= c_ <= sb[3] + 0.3 and slo - 0.12 <= z <= st + 0.12 for (sb, st, slo) in solid): bad += 1   # vedle je kamen zdi
+        rep("malta (%d kusu) lezi uvnitr zdi (kamen, spara, dutina mezi lici): rohu mimo %d" % (len(mb), bad), bad == 0)
+    # --- krov (bez krytiny) a srub: sklon, podpory krokvi podle sad etap, sloupy, pruniky, otvory, neprosvita
+    fr = next((f for f in S["data"].get("frames", []) if f["name"] == "Palac_Obydli_Krov"), None)
+    lw = next((a for a in S["data"].get("addons", []) if a["name"] == "Palac_Obydli_Srub"), None)
+    if fr and lw:
+        kg, sg_ = groups["Palac_Obydli_Krov"], groups["Palac_Obydli_Srub"]
+        kr = kg["stones"] + kg["loose"]; sr = sg_["stones"] + sg_["loose"]
+        fb = lambda s: frame_box(s, O, U, V); zr = lambda s: ((s.z - s.sz / 2 - z0) / 100, (s.z + s.sz / 2 - z0) / 100)
+        sup = sorted(fr["supports"], key=lambda q: -q["top"]); hi, lo_ = sup[0], sup[-1]
+        deg = math.degrees(math.atan((hi["top"] - lo_["top"]) / abs(lo_["at"] - hi["at"])))
+        rep("krov: sklon %.1f st. (16 +- 1)" % deg, 15 <= deg <= 17)
+        rf = fr["rafters"]; nb = sum(q == "base" for q in rf["stages"])
+        okst = lambda need, have: have == "base" or need == "final"          # zakladni dilec smi lezet jen na zakladnim
+        topn = len(lw["walls"][0]["z"]) - 2; bad = []
+        for i, (c_, stg) in enumerate(zip(rf["pos"], rf["stages"])):
+            hv = [s for s in kr if "|VH." in s.id and fb(s)[0] <= c_ <= fb(s)[1] and okst(stg, s.stage)]
+            sv = [s for s in kr if "|VS." in s.id and fb(s)[0] <= c_ <= fb(s)[1] and okst(stg, s.stage)]
+            nv = [s for s in sr if "|N|" in s.id and int(s.id.split("|")[-1].split(".")[1]) == topn and fb(s)[0] <= c_ <= fb(s)[1] and okst(stg, s.stage)]
+            if not (hv and sv and nv): bad.append(i)
+        rep("krov: %d krokvi (%d v etape 1), kazda na 3 podporach sve etapy; bez podpory %s" % (len(rf["pos"]), nb, bad), not bad and nb >= 6)
+        bad = []
+        for s in kr:
+            if "|VH." in s.id:
+                b = fb(s); n_ = sum(1 for p in kr if "|VH|P" in p.id and b[0] - 0.01 <= (fb(p)[0] + fb(p)[1]) / 2 <= b[1] + 0.01)
+                if n_ < 2: bad.append(s.id)
+            if "|VS." in s.id:
+                b = fb(s); st_ = [p for p in kr if "|VS|S" in p.id and b[0] - 0.11 <= (fb(p)[0] + fb(p)[1]) / 2 <= b[1] + 0.11 and okst(s.stage, p.stage)]
+                if len(st_) < 2: bad.append(s.id)
+        rep("krov: kazdy kus pozednice na 2+ sloupech, kazdy kus vaznice na 2 spalcich sve etapy %s" % bad, not bad)
+        bad = []
+        for p in kr:
+            if "|VS|S" not in p.id: continue
+            b = fb(p); a_, cc = (b[0] + b[1]) / 2, (b[2] + b[3]) / 2
+            under = [s for s in sr if fb(s)[0] <= a_ <= fb(s)[1] and fb(s)[2] <= cc <= fb(s)[3] and abs(zr(s)[1] - zr(p)[0]) < 0.02 and okst(p.stage, s.stage)]
+            if not under: bad.append(p.id)
+        rep("krov: spalky vaznice stoji na vrchni rade srubu sve etapy %s" % bad, not bad)
+        niches = [(13.35, 14.65), (18.35, 19.65)]; hb = [fb(s) for s in hearth]
+        posts = [fb(p) for p in kr if "|VH|P" in p.id or "|VH|K" in p.id]
+        bad = [b for b in posts if any(b[0] < n1 and b[1] > n0 for n0, n1 in niches) or any(b[0] < h[1] and b[1] > h[0] and b[2] < h[3] and b[3] > h[2] for h in hb)]
+        rep("krov: sloupy a patni kameny mimo vyklenky strilen a ohniste", not bad)
+        wood = kr + sr
+        c = common.collisions(wood, ruin + new + hearth, 1.5)
+        rep("drevo x zricenina, nove zdivo, ohniste: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        c = [q for q in common.collisions([s for s in kr if "|B" not in s.id and "|Z" not in s.id], [s for s in sr if "|G" not in s.id], 1.0)]
+        rep("sloupy, pozednice, vaznice x srub: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        c = common.collisions([s for s in sr if "|G" in s.id], kr, 0.5)
+        rep("prkenne stity x krov: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        allb = [(fb(s), zr(s)) for s in wood + new]
+        blocked = lambda a0, a1, c0, c1, z0_, z1_: [1 for (b, (zl, zh)) in allb if b[0] < a1 and b[1] > a0 and b[2] < c1 and b[3] > c0 and zl < z1_ and zh > z0_]
+        dn, dp = lw["walls"][0]["openings"][0], lw["walls"][1]["openings"][0]
+        hN = min(z for z in lw["walls"][0]["z"] if z >= dn["z"][1] - 0.12); hP = min(z for z in lw["walls"][1]["z"] if z >= dp["z"][1] - 0.12)
+        freeN = not blocked(dn["span"][0] + 0.01, dn["span"][1] - 0.01, lw["walls"][0]["at"] - 0.4, lw["walls"][0]["at"] + 0.4, 0.05, hN - 0.02)
+        freeP = not blocked(lw["walls"][1]["at"] - 0.4, lw["walls"][1]["at"] + 0.4, dp["span"][0] + 0.01, dp["span"][1] - 0.01, 0.05, hP - 0.02)
+        rep("vchod %.1f x %.2f m a dvere v pricce %.1f x %.2f m volne" % (dn["span"][1] - dn["span"][0], hN, dp["span"][1] - dp["span"][0], hP),
+            freeN and freeP and hN >= 2.2 and hP >= 2.1)
+        from zr_stavby.srub import row_pieces
+        holes = n_all = 0
+        for w in lw["walls"]:
+            logs = [(fb(s), zr(s)) for s in sr if "|%s|" % w["id"] in s.id]
+            for seg in w["segs"]:
+                for k in range(seg["rows"][0], seg["rows"][1] + 1):
+                    for (p0, p1) in row_pieces(w, seg, k):
+                        for i in range(int((p1 - p0 - 0.1) / 0.1) + 1):
+                            p = p0 + 0.05 + i * 0.1
+                            for z in (w["z"][k] + 0.002, (w["z"][k] + w["z"][k + 1]) / 2, w["z"][k + 1] - 0.002):
+                                a_, cc = (p, w["at"]) if w["dir"] == "a" else (w["at"], p); n_all += 1
+                                holes += not any(b[0] <= a_ <= b[1] and b[2] <= cc <= b[3] and zl <= z <= zh for (b, (zl, zh)) in logs)
+        rep("srub: steny souvisle od podezdivky po vrch mimo otvory (der %d z %d bodu)" % (holes, n_all), holes == 0)
+        wb = max([zr(s)[1] for s in sr if "|N|" in s.id and s.stage == "base" and fb(s)[1] <= lw["walls"][1]["at"] + 0.01] + [0])
+        rep("etapa 1: srub sine do %.2f m, svetnice v plne vysce, stity az v etape 2" % wb,
+            wb < 1.25 and all(s.stage == "final" for s in sr if "|G" in s.id) and all(s.stage == "base" for s in sr if "|P|" in s.id or "|E|" in s.id))
+        pu = next(q for q in fr["supports"] if q["id"] == "VS")
+        rep("svetla vyska pod stredni vaznici %.2f m (>= 2.7)" % (pu["top"] - pu["sec"][1]), pu["top"] - pu["sec"][1] >= 2.7)
+    for gname in ("Palac_Obydli_Kamen", "Palac_Obydli_Ohniste", "Palac_Obydli_Krov", "Palac_Obydli_Srub"):
         st = groups.get(gname, {}).get("stones", []) + groups.get(gname, {}).get("loose", [])
         sets = sorted(set(str(s.stage) for s in st))
         rep("%s: sady etap %s" % (gname, ", ".join(sets)), st and all(s.stage in ("base", "final", "site") for s in st))

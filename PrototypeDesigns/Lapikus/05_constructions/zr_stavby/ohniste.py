@@ -6,7 +6,15 @@ Data (constructions.json -> addons, generuje tools/constructions/gen_constructio
   roof             jmeno strechy (typ pult_roof): od jejiho terenu se pocitaji vysky, mezi jeji krokve jdou vymeny
   table            kamenny stul: dict(a (a0, a1), c (c0, c1), h, course (vyska rady))
   daub             tloustka hlineneho mazu na stole (m); pit = ohniste: dict(a, c, w, d (zapusteni pod maz))
-  walls            bocni zidky: [dict(id, a (a0, a1), c (c0, c1), h, course, hole = dict(a, w, z (z0, z1)) otvor pro vyfucnu)]
+  walls            bocni zidky: [dict(id, a (a0, a1), c (c0, c1), h, course, hole = dict(a, w, z (z0, z1)) otvor pro vyfucnu,
+                   base = spodek m nad terenem (bez nej stoji na zemi; zdi pece a zidky pod plotnou stoji na stole))]
+  dome             hlinena klenba pece (mesh SM_RuinOvenDome): dict(a (a0, a1), c (c0, c1), z (spodek, vrch m))
+  boxes            jednoduche kvadry: [dict(id, cat (iron / charcoal / daub ...), a (a0, a1), c (c0, c1), z (z0, z1), top = True:
+                   patri do sady stage_top)] - zelezny pas nad ustim, poklop, plotna, tmavy vnitrek pece, uhli pod plotnou
+  props            hotove meshe jako samostatne actory (rucni doladeni pres capture): [dict(id, shape (LIB_SHAPES), cat,
+                   a, c (stred bounding boxu), zc (stred m nad terenem), size (cm), top)] - poklop usti pece;
+                   kvadr v boxes s loose = True je taky samostatny actor (plotna)
+  flue             sopouch (hlineny kourovod z klenby do dymniku, mesh komina): dict(a, c, w, z (spodek, vrch m))
   hood             dymnik: dict(a, c (stred), size (podel a, podel c), bottom (spodni okraj), h)
   chimney          komin: dict(a, c (stred), w, top (vrch))
   trimmers         vymeny mezi krokvemi po obou stranach komina: dict(d (prumer), gap (od komina))
@@ -66,7 +74,26 @@ def build_hearth(ad, terr, frames, cache=None):
     # kamenny stul a bocni zidky
     out += _block(name, "T", P, yaw_a, zg, ta, tc, tb["h"], tb.get("course", 0.25), st, rng)
     for w in ad.get("walls", []):
-        out += _block(name, w.get("id", "Z"), P, yaw_a, zg, w["a"], w["c"], w["h"], w.get("course", 0.3), st, rng, w.get("hole"))
+        out += _block(name, w.get("id", "Z"), P, yaw_a, zg + w.get("base", 0.0) * 100, w["a"], w["c"], w["h"], w.get("course", 0.3), st, rng, w.get("hole"))
+    top_ids = set()
+    dm = ad.get("dome")
+    if dm:                                                         # hlinena klenba pece na jejich zdech
+        (a0, a1), (c0, c1), (zb, zt) = dm["a"], dm["c"], dm["z"]; x, y = P((a0 + a1) / 2, (c0 + c1) / 2)
+        out.append(Stone("%s|K" % name, "daub", x, y, zg + (zb + zt) * 50, yaw_a, (a1 - a0) * 100, (c1 - c0) * 100, (zt - zb) * 100, shape="oven_dome"))
+    for b in ad.get("boxes", []):
+        (a0, a1), (c0, c1), (zb, zt) = b["a"], b["c"], b["z"]; x, y = P((a0 + a1) / 2, (c0 + c1) / 2)
+        out.append(Stone("%s|%s" % (name, b["id"]), b.get("cat", "iron"), x, y, zg + (zb + zt) * 50, yaw_a, (a1 - a0) * 100, (c1 - c0) * 100, (zt - zb) * 100))
+        if b.get("loose"): out[-1].loose = True
+        if b.get("top"): top_ids.add(out[-1].id)
+    for q in ad.get("props", []):
+        x, y = P(q["a"], q["c"]); sx, sy, sz = q["size"]
+        s_ = Stone("%s|%s" % (name, q["id"]), q.get("cat", "wood"), x, y, zg + q["zc"] * 100, yaw_a + q.get("yaw", 0.0), sx, sy, sz, shape=q["shape"])
+        s_.loose = True; out.append(s_)
+        if q.get("top"): top_ids.add(s_.id)
+    fl = ad.get("flue")
+    if fl:                                                         # sopouch: tah z pece primo do dymniku / komina
+        x, y = P(fl["a"], fl["c"]); zb, zt = fl["z"]
+        out.append(Stone("%s|S" % name, "daub", x, y, zg + (zb + zt) * 50, yaw_a, fl["w"] * 100, fl["w"] * 100, (zt - zb) * 100, shape="chimney"))
     # hlineny maz na stole kolem ohniste, v ohnisti drevene uhli
     dt = ad.get("daub", 0.04) * 100; pit = ad.get("pit"); top = zg + tb["h"] * 100
     def slab(tag, cat, a0, a1, c0, c1, zc, t):
@@ -117,5 +144,5 @@ def build_hearth(ad, terr, frames, cache=None):
     top_stage = ad.get("stage_top")                                 # dymnik, komin a jejich zaveseni v jine sade etapy nez kamenny zaklad
     if top_stage:
         for s in out:
-            if s.shape in ("smoke_hood", "chimney") or s.id.split("|")[-1][0] in "XH": s.stage = top_stage
+            if s.shape in ("smoke_hood", "chimney") or s.id.split("|")[-1][0] in "XH" or s.id in top_ids: s.stage = top_stage
     return out

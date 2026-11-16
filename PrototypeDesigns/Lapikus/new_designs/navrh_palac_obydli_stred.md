@@ -1,6 +1,6 @@
 # Návrh: Palac_Obydli – obytná stavba posádky v prostřední místnosti paláce
 
-Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno.** Je to kopie návrhu `navrh_palac_obydli.md` (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: `navrh_palac_obydli_stred.png` (hotová stavba) a `navrh_palac_obydli_stred_etapa1.png` (rozestavěný stav). Jsou to schémata, ne přesné modely.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **staví se po krocích** (16. 11. 2026): plán po etapách a stav je v kap. 0, která platí přednostně; kamenné části jsou ve skriptech. Je to kopie návrhu `navrh_palac_obydli.md` (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: `navrh_palac_obydli_stred.png` (hotová stavba) a `navrh_palac_obydli_stred_etapa1.png` (rozestavěný stav). Jsou to schémata, ne přesné modely.
 
 **Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`. **Tohle je platný návrh domu**, varianta ve východní místnosti je zavržená.
 - **Hotové dílce stavby:** loupaná kulatina `SM_RuinLog` (srub), trámy, sloupy a prkna (`SM_RuinTimber`, `SM_RuinPost`, `SM_RuinPlank`), žlab `SM_RuinGutter` / `SM_RuinGutterBark` s vidlicí `SM_RuinForkHead`, dymník `SM_RuinSmokeHood`, komín `SM_RuinChimney`. Materiály: loupané dřevo (`peeled`), výplň spár srubu `MI_RuinChinking`, mazanina, proutí.
@@ -8,7 +8,167 @@ Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, 
 - **Hotové pro staveniště (kap. 9.2):** žebřík, koš `SM_RuinBasket`, tesařské nářadí (sekera, širočina, dvoumužná pila, kladivo, palice).
 - **Chybí:** typy staveb `pult_roof`, `log_wall`, `hearth`, `gutter`, rozšíření `stone_addon` o tloušťku, strop s výměnou, rozmístění props, přepínač `ETAPA`, `tools/ruin/palac_spec.py`, úprava 03 (kap. 3). Ze staveniště tesařské kozy, rozpracovaná kulatina, hromady materiálu, loupák, třísky na zemi. Dále zářez srubu v nárožích, saze, udusaná hlína, oheň a kouř.
 
-**Proč prostřední místnost (Jirka, 14. 11. 2026):** součástí osídlení bude provizorní kovárna a u věže má komín špatný tah. Prostřední místnost je 11 m od věže, jižní zeď je tu rovnoměrnější a vstupem je zachovaný portál.
+**Proč prostřední místnost (Jirka, 14. 11. 2026):** součástí osídlení bude provizorní kovárna a u věže má komín špatný tah. Prostřední místnost je 11 m od věže, jižní zeď je tu rovnoměrnější. Vstupem byl původně portál; od 16. 11. 2026 je portál v západní místnosti a sem se vchází hrubým průchodem po něm (kap. 0.2a).
+
+## 0. Plán stavby po etapách (16. 11. 2026, platí přednostně před kap. 3–9)
+
+Dohodnuto s Jirkou 15.–16. 11. 2026. Kde se tato kapitola liší od starších kapitol níž, platí tato. Co zbývá dodělat a na co si dát pozor, je v předávacím dokumentu `new_designs/predani_palac_obydli_stavitel.md`.
+
+### 0.1 Zásady
+
+- **Jedna stavba, tři sady actorů.** Dům se počítá jednou jako hotový. Každý dílec patří do jedné sady a actory sady mají tag:
+
+| Sada | Tag actoru | Etapa 1 | Etapa 2 | Obsah |
+|---|---|---|---|---|
+| základ | `stage:base` | vidět | vidět | co stojí už v etapě 1 a zůstává |
+| dostavba | `stage:final` | skrytá | vidět | co se dodělá |
+| staveniště | `stage:site` | vidět | skryté | nářadí, žebřík, kozy, vzpěry, hromady materiálu, ležící trámy |
+
+- **Co je v etapě 1 postavené, v etapě 2 se neskrývá** a je to tentýž dílec na tomtéž místě. Skrývá se jen staveniště.
+- **Přepnutí ve hře** = zobrazit a skrýt actory podle tagu (i kolizi). Dělá si ho Jirka v Blueprintu. Sady a tag jsou v `zrlib/config.py` (`STAGES`, `STAGE_TAG`), v datech stavby klíč `stage`.
+- **Hráč domem jen prochází**, úkol se stavbou nesouvisí. Etapy mají dát dojem času.
+- **Ladí se nejdřív hotový stav** (základ + dostavba), staveniště a kontrola etapy 1 až nakonec.
+- **Dřevo je surové (`raw`) v obou etapách**, krov i krytina. Dehtování může přijít jako pozdější třetí stav. Srub je loupaná kulatina se stejným materiálem v obou etapách.
+- **Dveře a okenice** jsou v etapě 2 otevřené (kulisa, než se rozhýbou). **Žebříky** nejsou pro postavu použitelné (chybí animace); půda bude mít vlastní žebřík, staveništní zmizí.
+- **Sklep** se neřeší. Jestli přijde, podřídí se stavbě.
+
+### 0.2 Výchozí stav po úpravě `Palac_J` (změřeno z dat 16. 11. 2026)
+
+Celá `Palac_J` je zanořená o 0,31 m (`navrh_palac_kovarna.md` kap. 3). V prostřední místnosti z toho plyne:
+
+| s (m) | Koruna `Palac_J`, vnitřní líc (m nad terénem) |
+|---|---|
+| 10–11,5 | 5,5–5,7 |
+| 12–12,5 | 4,8 |
+| 13–14 | 5,2–5,5 |
+| 14,5–15,5 | 4,4–4,8 |
+| 16–20 | 4,8 (v s = 17 jen 4,4) |
+| 20,5–21,5 | 5,5–6,0 |
+
+- **Úprava 03 u komína (kap. 3) odpadá.** Koruna je u komína (s = 15,5–18,5) 4,4–4,8 m, tedy tam, kam ji mělo dostat plánované snížení. Komín 5,3 m ji přesahuje o 0,5–0,9 m.
+- **Dozdívka koruny `Palac_J` pod střechu (kap. 4.3) odpadá.** Vnitřní líc je v celé délce domu nejníž 4,43 m, krytina u zdi končí ve 4,3 m. Zůstává jen lemování.
+- **Výklenky střílen** s = 14 a 19 mají dno 0,24 m a vrch 2,39 m nad zemí (dřív 0,55–2,7 m). Jako police stačí.
+- Příčky: `Palac_pricka_1` má korunu 1,05–1,39 m, `Palac_pricka_2` 1,09 m, dveře obou až k zemi (n = 4,25–5,25).
+
+### 0.2a Úpravy zříceniny kolem domu (03, Jirka 16. 11. 2026)
+
+Přestavět část `Palac`. Zapsáno v `tools/ruin/gen_layout.py` (zeď `Palac_S`) a `tools/ruin/palac_spec.py` (`D_PASS` → `ruin_edits`).
+
+- **Vstupní oblouk (portál) je přesunutý do západní, prázdné místnosti:** `Palac_S` má portál 1,6 × 3,0 m v s = 4,5 (místo dveří), zeď kolem něj drží do 4,2 m (`protect` s = 2,5–6,5).
+- **Ve střední místnosti posádka oblouk rozebrala na stavbu.** V `Palac_S` zůstal hrubý průchod až k zemi (`prulom` s = 16, šířka 1,8 m, vylámané okraje) v nízké zdi 1,1–1,4 m. Starší kapitoly jsou na to přepsané (průchod s = 15,1–16,9). Dům je teď z nádvoří vidět přes nízkou zeď.
+- **Průchod ke kovárně:** `Palac_pricka_2` je severně od domu rozebraná na kámen pro podezdívky. Hrubý průchod až k zemi v n = 6,9–8,5 (šířka 1,6 m, vylámané okraje); u rohu domu a u `Palac_S` zůstaly zbytky zdi, takže je vidět, že tu zeď byla. Ze zápraží se jím jde na dvorek kovárny.
+- Ostatní kameny obou zdí se nezměnily, jen u dveří do východní místnosti (`Palac_S`, s = 27) je vylámané ostění o kousek širší.
+
+### 0.3 Rozdělení po stavbách
+
+| Stavba | Typ | Základ (`base`) | Dostavba (`final`) | Stav |
+|---|---|---|---|---|
+| `Palac_Obydli_Kamen` | `stone_fill` (nový) | srovnání obou příček na 1,4 m včetně zazdění jejich dveří; podezdívky severní stěny a příčky 0,45 × 0,45 m | nic | ✅ ve skriptech (16. 11. 2026) |
+| `Palac_Obydli_Ohniste` | `hearth` | pec s nístějí (kap. 0.5b): sokl, zdi pece, klenba, zídky plotny | sopouch, dymník, komín, železo (plotna, pás, poklop) | ✅ ve skriptech (16. 11. 2026); zavěšení dymníku se stropem |
+| `Palac_Obydli_Krov` | `pult_roof` (3 podpory, hraněné krokve) | 5 sloupů; východní kus horní pozednice (s = 15,3–21,4) a střední vaznice (příčka → východní stěna); 6 krokví nad světnicí (s = 16,26–21,3); 2 řady latí nad světnicí | západní kusy pozednice a vaznice; 6 krokví nad síní; ostatní latě, krytina, lemování u `Palac_J` | ◐ kostra ve skriptech (16. 11. 2026), krytina chybí |
+| `Palac_Obydli_Srub` | `log_wall` (nový) | světnice: severní stěna s = 15,75–21,4 a příčka v plné výšce 2,5 m s prázdnými otvory, srub na východní stěně (5 řad); síň: 3 řady severní stěny s mezerou pro vchod | zbylých 6 řad severní stěny síně, srub na západní stěně, prkenné štíty | ✅ ve skriptech (16. 11. 2026) |
+| `Palac_Obydli_Strop` | nový nebo rozšíření `tower_floor` | nic | trámky, výměna u komína, prkna | ⬜ |
+| `Palac_Obydli_Podlaha` | `plank_floor` | nic | podlaha světnice | ⬜ |
+| `Palac_Obydli_Okap` | `gutter` | nic | žlab se spádem k západu (od kovárny), rozsochy, sud pod západním koncem; svod se nedělá (Jirka 16. 11. 2026) | ⬜ |
+| `Palac_Obydli_Vybaveni` | rozmístění props | nic | dveře a okenice (otevřené), lůžka, stůl, truhly, police, ponk, dřevo, žebřík na půdu | ⬜ |
+| `Palac_Obydli_Stavenisko` | rozmístění props, vše `site` | – | – | ⬜ až nakonec |
+
+- **Staveniště (`site`)**: dočasné vzpěry západních sloupů, žebřík, kozy s rozpracovanou kulatinou, západní kus pozednice na zemi, hromady kamene, hlíny, kulatiny, krokví a prken, nářadí, třísky. Zásoba materiálu se „spotřebuje“, proto mizí celá.
+- **Stavební logika etapy 1** (od západu k východu, východ je dál): krokve nad světnicí leží na třech podporách, které už stojí (pozednice na 3 sloupech, vaznice na příčce a východní stěně, severní stěna). Západní sloupy stojí bez pozednice, proto mají vzpěry. Základ ohniště je hotový dřív než podlaha. Nic se nestaví dřív, než má na čem ležet.
+
+### 0.4 Pořadí stavění (ladí se hotový stav)
+
+1. ✅ Sady etap v build skriptu, `palac_spec.py` → `obydli`, `Palac_Obydli_Kamen`, základ `Palac_Obydli_Ohniste`.
+2. ✅ `Palac_Obydli_Krov` bez krytiny (rozšíření `pult_roof`: dělené pozednice, vaznice uložená na stěnách).
+3. ✅ `Palac_Obydli_Srub` se štíty a otvory (`log_wall`).
+4. Krytina a lemování s prostupem komína, strop se zavěšením dymníku, podlaha, okap. (Pec s dymníkem a komínem už stojí, kap. 0.5b.)
+5. Vybavení (dveře, okenice, nábytek).
+6. Staveniště a kontrola etapy 1 (trasa hráče, vzpěry, nic nevisí ve vzduchu).
+
+### 0.5 Co je postavené (krok 1)
+
+- **Srovnání příček** (`W`, `E`): s = 10,1–10,9 a 20,6–21,4; n = 0,72–6,43; vrch 1,4 m. Kámen z rozvalin ve dvou řadách přes tloušťku 0,8 m, spodek kopíruje korunu zříceniny, v místě dveří příček stojí zdivo od země.
+- **Podezdívka severní stěny** (`N`): osa n = 6,2; s = 10,9–20,6; 0,45 × 0,45 m; vchod s = 13,8–14,8 volný.
+- **Podezdívka příčky** (`P`): osa s = 15,75; n = 0,72–5,98; dveře n = 3,3–4,3 volné.
+- **Základ ohniště**: s = 16,2–17,6; n = 0,72–2,1; výška 0,5 m ve 2 řadách, maz 4 cm, uprostřed studené ohniště 0,5 × 0,5 m.
+- **Suť** v domě a na zápraží je uklizená (`clear_poly`).
+- **Vyspravení staré zdi maltou** (Jirka 16. 11. 2026, jako u `Ostroh_Dostavba`): v ose obou příček i podezdívek je maltové jádro 6 cm (`mortar`, materiál `MI_RuinCore`) od země až 2 cm pod vrch. Prochází novým zdivem i starou příčkou pod ním; kde staré zdi chybí jádro, vyplní dutinu mezi líci. Zdí tak neprosvítá. Ve dveřích a ve větší díře skrz zeď malta není.
+- Rozměry: `tools/ruin/palac_spec.py` (`D_*`, `obydli`). Kontrola: `run_checks.py --only obydli`. Náhled: `preview3d.py obydli <out.png> [--stage 1|2]`, `05_constructions/Stavby_palac_obydli_nahled.png`.
+- V UE: celý dům `05_constructions/stavby/Palac_Obydli.py` (seznam hotových částí v pořadí, se `SUT = True` i suť); jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, pak `Sut.py`. Navázání kamene potvrzené v UE (Jirka 16. 11. 2026), ostatní neověřeno.
+
+### 0.5a Větší světnice (Jirka 16. 11. 2026, platí přednostně před čísly níž i v kap. 4)
+
+- **Příčka je posunutá na s = 14,85** (dřív 15,75), tedy na západní stranu středního sloupu krovu (s = 15,3). Sloup teď stojí ve světnici 23 cm od příčky.
+- **Světnice** má uvnitř s = 14,97–20,6 (5,63 m, dřív 4,7 m), **síň** s = 10,9–14,73 (3,83 m).
+- **Vchod** je posunutý na s = 13,4–14,4 (dřív 13,8–14,8), od podezdívky příčky 0,22 m. Od průchodu v `Palac_S` je teď asi 2 m šikmo vlevo.
+- **Okénko světnice** je v s = 17,5–18,1 (dřív 18,5–19,1): uprostřed stěny světnice a mezi krokvemi 17,26 a 18,27.
+- S příčkou se posunula její podezdívka, spoj a špalek střední vaznice a prkenný štít nad ní. Spoj horní pozednice zůstává nad sloupem (s = 15,3). Ohniště, komín a krokve se nemění.
+- Podezdívka příčky končí u `Palac_J` těsně u výklenku střílny síně (s = 13,35–14,65), kulatina je od něj 8 cm.
+- Sady etap se dělí dál podle krokví (s ≥ 16 je `base`); doladí se se staveništěm.
+
+### 0.5b Pec s nístějí místo otevřeného ohniště (Jirka 16. 11. 2026, nahrazuje kap. 4.6 a základ ohniště z kap. 0.5)
+
+Zabydlení je dlouhodobé a má být pro posádku pohodlné. Styl: dobové provizorium, železo z vlastní kovárny na míru. Stavba `Palac_Obydli_Ohniste` (typ `hearth`), rozměry `palac_spec.py` → `D_OVEN`, `D_CHIMNEY`.
+
+| Část | Rozměr a poloha | Sada |
+|---|---|---|
+| kamenný sokl | 1,6 × 1,6 × 0,6 m; s = 15,96–17,56; n = 0,72–2,32; nahoře hliněný maz 4 cm | `base` |
+| pec (vzadu u `Palac_J`) | 1,4 × 1,0 m; kamenné zdi 22 cm do 1,0 m, čelo s ústím 0,4 × 0,36 m k severu | `base` |
+| hliněná klenba | nízká valená klenba 1,4 × 1,0 m, vrch 1,34 m (nový mesh `SM_RuinOvenDome`) | `base` |
+| nístěj (vpředu) | 1,6 × 0,6 m ve výšce 0,64 m | `base` |
+| plotna | železná 0,58 × 0,44 m na dvou kamenných zídkách 22 cm, na východní straně nístěje (vrch 0,87 m), pod ní uhlí; **samostatný actor** | zídky `base`, plotna `final` |
+| kovaný pás nad ústím | 0,7 m, v čele pece | `final` |
+| poklop ústí | plech 46 × 42 cm s dřevěnou rukojetí na dvou trnech (mesh `SM_RuinOvenDoor`), opřený o čelo pece západně od ústí; **samostatný actor**, dá se ručně doladit a uložit přes capture | `final` |
+| sopouch | hliněný kouřovod 0,28 m z klenby za čelem pece (n = 1,56) do dymníku | `final` |
+| dymník | 1,6 × 1,1 m, spodní okraj 1,8 m, výška 0,8 m; nad ústím a nístějí (střed n = 1,7) | `final` |
+| komín | 0,5 × 0,5 m, střed s = 16,76; n = 1,7; vrch 5,3 m | `final` |
+
+- **Tah:** pec táhne sopouchem přímo do dymníku a komína, dymník sbírá kouř z plotny a z ústí při přikládání. Poklop se nasazuje po vyhoření.
+- **Osa pece je s = 16,76**, uprostřed mezi krokvemi 16,26 a 17,26 (komín 16 cm od obou). Střed mezi sloupy 15,3 a 18,0 je 16,65; od patních kamenů zbývá 0,48 m na západě a 0,26 m na východě.
+- **Zatím chybí:** zavěšení dymníku (přijde se stropem: výměna v trámcích stropu, otvor asi 1,7 × 1,2 m), prostup komína krytinou (s krytinou), žhavé uhlí a oheň.
+
+### 0.6 Co je postavené (kroky 2 a 3: krov bez krytiny a srub, 16. 11. 2026)
+
+Všechno je ve skriptech a prošlo kontrolami mimo Unreal, v UE zatím nic z toho neběželo. Náhledy: `05_constructions/Stavby_palac_obydli_nahled.png` (etapa 2) a `Stavby_palac_obydli_nahled_etapa1.png` (etapa 1).
+
+**Krov `Palac_Obydli_Krov`** (typ `pult_roof`, spád 16,0° k severu, všechno dřevo `raw`):
+
+| Dílec | Rozměr a poloha | Sada |
+|---|---|---|
+| 5 sloupů 20 × 20 cm na patních kamenech | n = 0,85; s = 11,1 / 13,0 / 15,3 / 18,0 / 20,4; výška 3,73 m | `base` |
+| horní pozednice 20 × 20 cm, vrch 4,03 m | západní kus s = 10,1–15,3, východní 15,3–21,4 (spoj nad středním sloupem) | západní `final`, východní `base` |
+| střední vaznice 20 × 24 cm, vrch 3,02 m, n = 4,4 | západní kus s = 10,1–14,85, východní 14,85–21,4 (spoj nad příčkou) | západní `final`, východní `base` |
+| 3 špalky 20 × 20 × 28 cm pod vaznicí | na vrchní řadě srubu západní stěny, příčky a východní stěny | západní `final`, ostatní `base` |
+| 12 krokví 18 × 22 cm, délka 6,2 m | s = 10,2 až 21,3 po 1,01 m; n = 0,8–6,8 (přesah 0,6 m za severní stěnu), osedlání 3 cm | 6 nad světnicí `base`, 6 nad síní `final` |
+| 2 řady latí (zavětrování) | n = 2,6 a 5,3; s = 16,17–21,4 | `base` |
+
+**Srub `Palac_Obydli_Srub`** (typ `log_wall`, loupaná kulatina, `raw`):
+
+| Stěna | Řady | Sada |
+|---|---|---|
+| severní, světnice (s = 14,85–21,45) | 9 řad od podezdívky do 2,5 m (4 řady po 24 cm do 1,4 m, 5 řad po 22 cm) | `base` |
+| severní, síň (s = 10,05–14,85) | spodní 3 řady (vrch 1,16 m) s mezerou pro vchod | `base` |
+| severní, síň | zbylých 6 řad | `final` |
+| příčka (s = 14,85; n = 0,74–6,5) | 9 řad, první a poslední je půltrám | `base` |
+| východní (na srovnané příčce, 1,4–2,5 m) | 4 řady kulatiny mezi dvěma půltrámy | `base` |
+| západní | stejně | `final` |
+| prkenné štíty (západní, východní, nad příčkou) | svislá prkna 20–28 cm od vrchu srubu pod vrch krokví, výřezy pro pozednici a vaznici | `final` |
+
+- **Nároží jako u skutečného srubu:** boční stěny a příčka začínají a končí půltrámem (hraněný, 11 cm), jejich řady jsou proto o půl řady posunuté proti severní stěně. V nárožích se kulatiny střídají a zhlaví přesahují 0,3 m (náhodně ± 5 cm).
+- **Zdí neprosvítá:** kulatina je o 1,2 cm tlustší než řada (překryv jako v drážce). Výplň spár mechem a hlínou se proto nestaví.
+- **Otvory jsou zarovnané na řady:** vchod 1,0 × 2,28 m, dveře v příčce 1,0 × 2,17 m, okénko světnice 0,6 × 0,66 m (parapet 1,4 m), okénko síně 0,5 × 0,44 m (parapet 1,4 m). Zárubně, dveře a okenice přijdou s vybavením.
+
+**Odchylky od kap. 4 (důvod):**
+
+- střední sloup v s = 15,3 místo 15,6, spoj pozednice je nad ním; příčka je od 16. 11. 2026 západně od něj (kap. 0.5a);
+- pozednice je dlouhá jako vaznice (s = 10,1–21,4 místo 10,9–20,6), aby na ní ležely i štítové krokve;
+- vaznice leží na špalcích 28 cm (srub končí ve 2,5 m, spodek vaznice je ve 2,78 m);
+- krokve začínají v n = 0,8 místo 0,75 (kameny líce `Palac_J` vystupují až o 5 cm);
+- komín je v s = 16,76 (v 16,9 by zasáhl do krokve s = 17,26); stojí s pecí (kap. 0.5b), prostup krytinou přijde s krytinou;
+- dveře v příčce mají světlou výšku 2,17 m místo 2,2 m (zarovnání na řady);
+- štíty končí rovně pod vrchem krokví, u příčky zůstává pod krytinou stupňovitá mezera do 7 cm.
+
+**Okap (rozhodnutí Jirky 16. 11. 2026, staví se v kroku 4):** žlab má spád k západu, od kovárny. Sud stojí pod jeho západním koncem, svod přes zápraží se nedělá. Cesta ze zápraží ke kovárně tak zůstává volná. Kap. 4.7 a poznámka o svodu v kap. 6 tím neplatí.
 
 ## 1. Zadání
 
@@ -34,7 +194,7 @@ Prostřední místnost má uvnitř 9,7 × 8,1 m (s = 10,9–20,6, n = 0,7–8,8)
 | Strana | Zeď | Tloušťka | Koruna | Otvory |
 |---|---|---|---|---|
 | jih | `Palac_J` | 1,4 m | s 10–11,5: 5,8–6,0; s 12–14: 5,1–5,8; s 14,5–15: 4,3–5,1; s 15,5: vnitřní líc 3,9, jinak 4,7–5,1; s 16–20: 5,1 (vnitřní líc v s = 17 jen 4,3); s 20,5–21,5: 5,5–6,4 | střílny s výklenkem v s = 14 a 19 (výklenek 0,55–2,7 m, uvnitř 1,3 m široký) |
-| sever | `Palac_S` | 1,4 m | s 11–13: 1,1–1,6; s 14–18: 3,9–4,3; s 19–21: 1,1–1,3 | portál s = 15,2–16,8, výška 3,0 m, s obloukem |
+| sever | `Palac_S` | 1,4 m | po úpravě 16. 11. 2026: s 11–14: 1,1–1,6; s 17–21: 1,1–1,4 (dřív s 14–18: 3,9–4,3 kolem portálu) | hrubý průchod s = 15,1–16,9 až k zemi, vylámané okraje (dřív portál s obloukem; ten je teď v západní místnosti, s = 4,5) |
 | západ | `Palac_pricka_1` (osa s = 10,5) | 0,8 m | 1,0–1,4 | dveře n = 4,25–5,25 (až k zemi) |
 | východ | `Palac_pricka_2` (osa s = 21,0) | 0,8 m | 0,8–1,4 | dveře n = 4,25–5,25 (až k zemi) |
 
@@ -68,7 +228,7 @@ Koruna `Palac_J` (m nad terénem):
 
 ## 4. Cílová struktura
 
-Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě boční stěny stojí na příčkách), n = 0,7–6,3. Uvnitř 52 m². Mezi domem a severní zdí paláce zůstává zápraží 2,3 m, na které se vchází portálem.
+Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě boční stěny stojí na příčkách), n = 0,7–6,3. Uvnitř 52 m². Mezi domem a severní zdí paláce zůstává zápraží 2,3 m, na které se vchází průchodem v `Palac_S` (s = 16). Ze zápraží vede na východ průchod v `Palac_pricka_2` (n = 6,9–8,5) na dvorek kovárny.
 
 ### 4.1 Krov (pultová střecha, spád k severu)
 
@@ -117,7 +277,7 @@ Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě bo
 
 | Otvor | Kde | Rozměr | Poznámka |
 |---|---|---|---|
-| Vchod | severní stěna, s = 13,8–14,8 | 1,0 × 2,2 m | do síně; od portálu 1,5 m šikmo vlevo |
+| Vchod | severní stěna, s = 13,8–14,8 | 1,0 × 2,2 m | do síně; od průchodu v `Palac_S` 1,5 m šikmo vlevo |
 | Dveře do světnice | příčka, n = 3,3–4,3 | 1,0 × 2,2 m | |
 | Okénko světnice | severní stěna, s = 18,5–19,1 | 0,6 × 0,6 m, parapet 1,3 m | okenice, bez skla; proti nízké části `Palac_S` |
 | Okénko síně | severní stěna, s = 11,8–12,3 | 0,5 × 0,5 m, parapet 1,3 m | okenice |
@@ -175,8 +335,8 @@ Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě bo
 
 - Sloupy u jižní zdi nesmí stát ve výklencích střílen (s = 13,35–14,65 a 18,35–19,65).
 - Ohniště nesmí zasahovat do výklenku střílny s = 19 (mezera 0,75 m).
-- Svod kříží zápraží na východním konci (s = 20,0), mimo cestu od portálu (s = 16) ke vchodu (s = 14,3).
-- **Kovárna ve východní místnosti:** výheň má být až u věže, aspoň 6 m od východního štítu domu (dehtovaná střecha). Dveře v `Palac_pricka_2` jsou zazděné, mezi domem a kovárnou není průchod.
+- Svod kříží zápraží na východním konci (s = 20,0), mimo cestu od průchodu v `Palac_S` (s = 16) ke vchodu (s = 14,3). Pozor: kříží cestu ze zápraží ke kovárně (průchod v `Palac_pricka_2`, n = 6,9–8,5); svod je potřeba vést nad hlavou nebo jinudy.
+- **Kovárna ve východní místnosti:** výheň má být až u věže, aspoň 6 m od východního štítu domu (dehtovaná střecha). Dveře v `Palac_pricka_2` jsou zazděné, z domu samotného se ke kovárně neprojde. Ze zápraží ale vede hrubý průchod v `Palac_pricka_2` (n = 6,9–8,5) na dvorek kovárny (kap. 0.2a).
 - **Pořadí:** 03 `Palac` → `Palac_Obydli_Kamen` → `Palac_Obydli_Krov` (bez krytiny) → `Palac_Obydli_Srub` → krytina → `Palac_Obydli_Strop`, `Palac_Obydli_Podlaha`, `Palac_Obydli_Ohniste`, `Palac_Obydli_Okap`. Dozdívka koruny `Palac_J` bere výšku z krovu, stejně jako u ostrohu.
 
 ## 7. Ověření
@@ -191,9 +351,9 @@ Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě bo
 - Sklon střechy je 16° ± 1°.
 - Vchod i dveře do světnice mají volný průchod 1,0 × 2,2 m, práh nejvýš 45 cm.
 - Světlá výška ve světnici je aspoň 2,3 m, v síni pod střední vaznicí aspoň 2,7 m.
-- Zápraží má volnou šířku aspoň 2,0 m, portál zůstává průchozí.
+- Zápraží má volnou šířku aspoň 2,0 m, průchod v `Palac_S` i průchod ke kovárně zůstávají volné v šířce aspoň 1,2 m.
 - Žlab má spád k východu a svod končí za vnějším lícem `Palac_S`.
-- Náhled: `tools/checks/preview3d.py` (zvenku od nádvoří portálem, zevnitř ze světnice a ze síně).
+- Náhled: `tools/checks/preview3d.py` (zvenku od nádvoří průchodem, ze zápraží k průchodu ke kovárně, půdorys; `preview3d.py obydli`).
 
 ## 8. Rozdíly proti návrhu ve východní místnosti
 
@@ -207,7 +367,7 @@ Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě bo
 | Dozdívka koruny `Palac_J` | s = 25,5–29, až 0,4 m | jen vnitřní líc u komína, do 0,45 m |
 | Lemování střechy | jižní zeď a věž | jen jižní zeď |
 | Sloupy uvnitř místností | jeden v síni | žádný |
-| Vstup | původní dveře | portál |
+| Vstup | původní dveře | původně portál, od 16. 11. 2026 hrubý průchod po rozebraném portálu |
 | Střecha | 66 m², 11 krokví | 75 m², 12 krokví |
 | Okno věže nad střechou | ano (možná cesta postavy) | netýká se |
 
@@ -248,18 +408,18 @@ Nová stavba `Palac_Obydli_Stavenisko`, v etapě 2 se nestaví.
 | Hromada kamene | asi 1 m³ | ve světnici u základu ohniště |
 | Hlína a mech na spáry | hromada a koš | v síni |
 | Třísky a kůra | plošně | na zápraží a kolem koz |
-| Kulatina na srub | 11 ks Ø 22 cm × 5,7 m, ve dvou vrstvách | na nádvoří před severní zdí paláce, západně od portálu |
-| Krokve a západní kus vaznice | 6 ks 6,3 m + 1 ks 5,7 m | na nádvoří před severní zdí paláce, východně od portálu |
+| Kulatina na srub | 11 ks Ø 22 cm × 5,7 m, ve dvou vrstvách | na nádvoří před severní zdí paláce, západně od průchodu (s = 16) |
+| Krokve a západní kus vaznice | 6 ks 6,3 m + 1 ks 5,7 m | na nádvoří před severní zdí paláce, východně od průchodu (s = 16) |
 | Prkna na krytinu | první hromada, asi 20 ks | na nádvoří u krokví |
 
-- Polohy hromad jsou doporučené, přesné rozmístění určí game designer. Podmínka: cesta portál → vchod → dveře do světnice zůstává volná v šířce aspoň 1,2 m.
+- Polohy hromad jsou doporučené, přesné rozmístění určí game designer. Podmínka: cesta průchod v `Palac_S` → vchod → dveře do světnice a cesta po zápraží ke kovárně zůstávají volné v šířce aspoň 1,2 m.
 - Hromady a nářadí mají být samostatné actory (`loose`), aby se daly doladit ručně.
 
 ### 9.3 Pohyb hráče
 
-- **Trasa:** nádvoří → portál → zápraží → mezera pro vchod → síň → otvor v příčce → světnice. Všude po terénu, bez prahů.
+- **Trasa:** nádvoří → průchod v `Palac_S` → zápraží → mezera pro vchod → síň → otvor v příčce → světnice. Všude po terénu, bez prahů. Druhá trasa: zápraží → průchod v `Palac_pricka_2` → dvorek kovárny.
 - **Nízký srub síně (1,13 m) se nedá přejít,** dovnitř se jde jen mezerou pro vchod.
-- **Srovnané příčky (1,4 m) jsou bez průchodu.** Do západní a východní místnosti se z domu nedá projít.
+- **Srovnané příčky (1,4 m) jsou bez průchodu.** Do západní a východní místnosti se z domu nedá projít; ke kovárně se jde ze zápraží průchodem v `Palac_pricka_2`.
 - **Dočasné vzpěry** u západních sloupů zužují síň u jižní zdi. Střed síně musí zůstat volný.
 
 ### 9.4 Pro stavitele
@@ -292,7 +452,7 @@ Nová stavba `Palac_Obydli_Stavenisko`, v etapě 2 se nestaví.
 
 ## 11. Náčrt slovy
 
-- **Půdorys:** obdélník 11,3 × 5,6 m u jižní zdi prostřední místnosti. Jižní stranu tvoří `Palac_J`, obě boční stěny stojí na příčkách, severní je nový srub. Srubová příčka v s = 15,75 dělí dům na světnici (východ) a síň (západ). Ohniště je ve světnici u jižní zdi hned za příčkou. Vchod je v severní stěně do síně, šikmo proti portálu. Před domem zápraží 2,3 m.
+- **Půdorys:** obdélník 11,3 × 5,6 m u jižní zdi prostřední místnosti. Jižní stranu tvoří `Palac_J`, obě boční stěny stojí na příčkách, severní je nový srub. Srubová příčka v s = 15,75 dělí dům na světnici (východ) a síň (západ). Ohniště je ve světnici u jižní zdi hned za příčkou. Vchod je v severní stěně do síně, šikmo proti průchodu v `Palac_S`. Před domem zápraží 2,3 m, z něj na východ průchod ke kovárně.
 - **Řez jih–sever:** u jižní zdi sloup s pozednicí (vrch 4,03 m), krokve klesají 16° přes střední vaznici (vrch 3,02 m ve n = 4,4) na srubovou stěnu (vrch 2,50 m ve n = 6,2) a přesahují ji o 0,5 m. U jižní zdi stoupá komín do 5,3 m, zeď je vedle něj snížená na 4,3–4,7 m. Ve světnici strop se spodkem trámků 2,3 m, nad ním půda.
 - **Boční stěna:** dole stará příčka srovnaná kamenem na 1,4 m, nad ní pět řad kulatiny do 2,5 m, nad tím trojúhelník svislých prken pod střechu.
-- **Pohled od nádvoří:** portálem je vidět srubová stěna s dveřmi, nad nízkými částmi zdi paláce vykukuje tmavá prkenná střecha stoupající k jižní zdi a nad ní komín.
+- **Pohled od nádvoří:** přes nízkou zeď a průchodem je vidět srubová stěna s dveřmi, nad zdí paláce vykukuje tmavá prkenná střecha stoupající k jižní zdi a nad ní komín.

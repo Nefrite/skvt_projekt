@@ -122,9 +122,11 @@ wall("Palac_J", "Ruin/Palac", [P[0], P[1]], 13.0, 1.4, 0.12, seed=30, corners=[1
      breaches=[dict(s0=16.5, s1=20.5, floor=6.0)], rubble="out")
 wall("Palac_S", "Ruin/Palac", [P[3], P[2]], 13.0, 1.4, 0.6, seed=31, corners=[10.5, 21],
      access_points=[4.5, 16, 27],
-     openings=[op("dvere", 4.5, 1.1, 0, 2.4), op("portal", 16, 1.6, 0, 3.0, protect=True), op("dvere", 27, 1.1, 0, 2.4)]
+     # vstupni oblouk (portal) je v zapadni (prazdne) mistnosti; ve stredni mistnosti ho posadka rozebrala na stavbu domu,
+     # zustal hruby pruchod v nizke zdi (Jirka 16. 11. 2026; driv portal v s = 16 a dvere v s = 4.5)
+     openings=[op("portal", 4.5, 1.6, 0, 3.0, protect=True), op("prulom", 16, 1.8, 0, 2.2, ragged=0.4), op("dvere", 27, 1.1, 0, 2.4)]
               + [op("okno", s, 1.2, 5.6, 2.2) for s in (8.5, 23.5)],
-     protect=[dict(s0=14, s1=18, min=4.2)], rubble="in")
+     protect=[dict(s0=2.5, s1=6.5, min=4.2)], rubble="in")
 wall("Palac_Z", "Ruin/Palac", [P[3], P[0]], 13.0, 1.4, 0.5, seed=32, rubble="in")
 for i, f in enumerate((10.5 / 32, 21 / 32)):
     wall(f"Palac_pricka_{i+1}", "Ruin/Palac", [lerp(P[0], P[1], f), lerp(P[3], P[2], f)], 13.0, 0.8, 0.92, seed=40 + i,

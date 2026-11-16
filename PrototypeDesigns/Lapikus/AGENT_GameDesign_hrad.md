@@ -48,7 +48,7 @@ Světové strany se poznají z názvů zdí: `_S` sever, `_J` jih, `_V` východ,
 | **Obvodová hradba** | `Hradba_Z_S` (západ + sever, 93 m, střílny), `Hradba_V` (východ) | 5–7 m, u brány nižší, průlom na severu, suťová rampa v SZ rohu na ochoz. U ostrohu je cíleně snížená (asi 3,3 m, i kus za krajní trámy) a má žlábky pro trámy krovu. |
 | **Brána** | `Brana_V`, `Brana_S`, `Brana_J`, `Brana_Jih` | gotický oblouk stojí, vrata pryč, most přes příkop zřícený (pilíře, trámy) |
 | **Věž** | `Vez_J`, `Vez_V`, `Vez_S`, `Vez_Z` (11 × 11 m, zdi 2,5 m) | vysoká (strana do nádvoří nižší), vstup v 1. patře, střílny s výklenky, kapsy po trámech, kamenná dlažba v přízemí |
-| **Palác** | `Palac_J` (jižní nad útesem, střílny a okna), `Palac_S` (k nádvoří, dveře, portál), `Palac_Z`, `Palac_pricka_1`, `Palac_pricka_2` | J 8–11 m, S 4–8 m, příčky 4–7 m, sklep pod západní částí (zatím jen v návrhu dat). Tři místnosti: západní (nad sklepem), **prostřední** (navržený dům posádky, vstup portálem) a **východní** u věže (navržená kovárna). Nic z toho zatím nestojí (kap. 4). |
+| **Palác** | `Palac_J` (jižní nad útesem, střílny a okna), `Palac_S` (k nádvoří: portál do západní místnosti, hrubý průchod do prostřední, dveře do východní), `Palac_Z`, `Palac_pricka_1`, `Palac_pricka_2` | J 8–11 m, S 4–8 m, příčky 4–7 m, sklep pod západní částí (zatím jen v návrhu dat). Tři místnosti: západní (nad sklepem), **prostřední** (dům posádky, staví se; vstup hrubým průchodem po rozebraném portálu) a **východní** u věže (kovárna, stojí). Ze zápraží domu vede průchod v `Palac_pricka_2` na dvorek kovárny. Portál je od 16. 11. 2026 v západní, prázdné místnosti. |
 | **Západní budova u ostrohu** | `ZBudova_V`, `ZBudova_S` | nízká (1,5–4 m), branka ven na špičku ostrohu. Ve `ZBudova_V` je v místě okna dostavby vybouraná původní zeď nad 1,4 m (úprava 03). **Dnes uzavřená obytná místnost** (kap. 4). |
 | Nádvoří | – | cisterna, suťové kužely, náletové dřeviny |
 
@@ -74,7 +74,7 @@ Herní místa z původního plánu: brána (vstup přes příkop po trámu mostu
 | Návrh | Co a kde | Herní význam | Stav (15. 11. 2026) |
 |---|---|---|---|
 | `navrh_vez_pristresek.md` | `Vez_Pristresek`: plátěný přístřešek hlídky ve 2. patře věže. Ve `Vez_V` a `Vez_J` průlomy z dobývání (hrad se dobýval od východu a jihovýchodu). | hlídka, výhled na východ přes nízkou korunu (1,05 m, nedá se přejít), střílna na jih zůstává | vybraná varianta B |
-| `navrh_palac_obydli_stred.md` | `Palac_Obydli`: dům v prostřední místnosti paláce: srub, pultová střecha, světnice s ohništěm a komínem, síň, půda. Před domem zápraží, vchází se portálem. | interiér, příběh posádky; v etapě 1 staveniště, kde hráč přečte postup stavby od západu k východu | platný návrh domu |
+| `navrh_palac_obydli_stred.md` | `Palac_Obydli`: dům v prostřední místnosti paláce: srub, pultová střecha, světnice s ohništěm a komínem, síň, půda. Před domem zápraží, vchází se hrubým průchodem v `Palac_S`; ze zápraží vede průchod ke kovárně. | interiér, příběh posádky; v etapě 1 staveniště, kde hráč přečte postup stavby od západu k východu | platný návrh domu |
 | `navrh_palac_obydli.md` | dům ve východní místnosti u věže | – | **zavržená varianta** (komín u věže má špatný tah), jen pro srovnání |
 | `navrh_palac_kovarna.md` | `Palac_Kovarna`: kovárna pod přístřeškem v koutě východní místnosti u věže: výheň, měchy, kovadlina, šlapací brus, ponk, kalicí sud. Stojí už v etapě 1. | výroba hřebíků pro stavbu, opravy zbraní; okno věže 0,6 m nad střechou | návrh; umístění Jirka výslovně nepotvrdil |
 | `navrh_brana_straz.md` | `Brana_Straz`: strážní podesta nad oblouky východní brány, kryty z kulatiny, přístřešek z kůry; před bránou španělský jezdec | stanoviště stráže, překážka před vstupem | návrh; výstup na podestu určí Jirka |
@@ -137,7 +137,7 @@ Do kódu (`*.py`, `zrlib`) nahlížet nemusíš. Když přesto potřebuješ zjis
 - **Žebříky** (staveniště, půda domu): použitelné pro postavu, nebo jen kulisa?
 - **Brána:** výstup na podestu; dá se brána obejít zřícenou jižní stranou východně od `Hradba_V`?
 - **Suť pod `Vez_V`:** víc suti z průlomu by bylo uvěřitelné, ale zúží průchod mezi věží a `Hradba_V`.
-- **Staveniště:** rozmístění hromad (kulatina, krokve, prkna, kámen) tak, aby cesta portál → vchod → světnice zůstala volná 1,2 m.
+- **Staveniště:** rozmístění hromad (kulatina, krokve, prkna, kámen) tak, aby cesta průchod v `Palac_S` → vchod → světnice a cesta po zápraží ke kovárně zůstaly volné 1,2 m.
 - **Hlídka na věži:** ohniště a vybavení ve 2. patře návrh přístřešku neřeší.
 
 **Otevřené náměty** (zatím jen zmíněné, můžeš rozvinout nebo zpochybnit):

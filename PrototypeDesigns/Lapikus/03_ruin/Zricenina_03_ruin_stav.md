@@ -130,15 +130,28 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Palác – dům posádky v prostřední místnosti (11/2026)
 
-- **Návrh a plán po etapách:** `new_designs/navrh_palac_obydli_stred.md`, kap. 0 (platí přednostně před staršími kapitolami).
+- **Návrh a plán po etapách:** `new_designs/navrh_palac_obydli_stred.md`, kap. 0 (platí přednostně před staršími kapitolami). **Předání staviteli** (co zbývá, na co si dát pozor): `new_designs/predani_palac_obydli_stavitel.md`.
 - **Etapy = tři sady actorů** s tagy `stage:base` (stojí už v etapě 1 a zůstává), `stage:final` (dostavba) a `stage:site` (staveniště). Etapa 1 = `base` + `site`, etapa 2 = `base` + `final`. Přepíná se v Blueprintu. Sady: `zrlib/config.py` → `STAGES`.
-- **Zřícenina se kvůli domu nemění.** Plánované snížení koruny `Palac_J` u komína odpadlo, po zanoření zdi je koruna u komína 4,4–4,8 m.
+- **Úpravy zříceniny kolem domu (03, část `Palac`, 16. 11. 2026):**
+  - vstupní oblouk (portál) je přesunutý do západní místnosti: `Palac_S` s = 4,5, zeď kolem něj do 4,2 m;
+  - ve střední místnosti ho posádka rozebrala na stavbu: v `Palac_S` v s = 16 zůstal hrubý průchod 1,8 m až k zemi v nízké zdi;
+  - `Palac_pricka_2` je severně od domu rozebraná: hrubý průchod n = 6,9–8,5 ze zápraží na dvorek kovárny, po stranách zbytky zdi (`D_PASS` v `palac_spec.py`).
+  - Plánované snížení koruny `Palac_J` u komína odpadlo, po zanoření zdi je koruna u komína 4,4–4,8 m.
 - **Krok 1 hotový (16. 11. 2026), sada `base`:**
-  - 05 `Palac_Obydli_Kamen` (typ `stone_fill`, `05_constructions/zr_stavby/zdivo.py`): obě příčky srovnané kamenem na 1,4 m včetně zazděných dveří, podezdívky severní stěny (osa n = 6,2, vchod s = 13,8–14,8) a příčky (osa s = 15,75, dveře n = 3,3–4,3);
-  - 05 `Palac_Obydli_Ohniste` (typ `hearth`): kamenný základ 1,4 × 1,4 × 0,5 m u jižní zdi ve světnici (s = 16,2–17,6), studené ohniště; dymník a komín přijdou s krovem do sady `final`;
+  - 05 `Palac_Obydli_Kamen` (typ `stone_fill`, `05_constructions/zr_stavby/zdivo.py`): obě příčky srovnané kamenem na 1,4 m včetně zazděných dveří, podezdívky severní stěny (osa n = 6,2, vchod s = 13,4–14,4) a příčky (osa s = 14,85, dveře n = 3,3–4,3);
+  - 05 `Palac_Obydli_Ohniste` (typ `hearth`): od 16. 11. 2026 **pec s nístějí** u jižní zdi ve světnici (osa s = 16,76): kamenný sokl 1,6 × 1,6 × 0,6 m, pec 1,4 × 1,0 m s hliněnou klenbou (mesh `SM_RuinOvenDome`) a ústím k severu, nístěj s železnou plotnou na zídkách (sada `base`); sopouch, dymník, komín 0,5 m do 5,3 m a železo (sada `final`); plotna a poklop ústí s dřevěnou rukojetí (mesh `SM_RuinOvenDoor`) jsou samostatné actory;
+  - stará zeď je vyspravená maltou: maltové jádro 6 cm v ose příček a podezdívek od země až pod vrch (i přes zříceninu pod novým zdivem), zdí neprosvítá;
   - suť v domě a na zápraží uklizená.
-- **Spuštění v UE:** `05_constructions/stavby/Palac_Obydli_Kamen.py`, `Palac_Obydli_Ohniste.py`, pak `Sut.py`. Ověřeno jen mimo UE (`run_checks.py --only obydli`, náhled `05_constructions/Stavby_palac_obydli_nahled.png`).
-- **Zbývá:** krov, srub se štíty, krytina, dymník a komín, strop, podlaha, okap, vybavení, staveniště.
+- **Kroky 2 a 3 hotové (16. 11. 2026), krov bez krytiny a srub:**
+  - 05 `Palac_Obydli_Krov` (typ `pult_roof`, spád 16° k severu): 5 sloupů u `Palac_J` (s = 11,1 / 13,0 / 15,3 / 18,0 / 20,4), horní pozednice (vrch 4,03 m) a střední vaznice (vrch 3,02 m, na špalcích na stěnách) ze dvou kusů, 12 hraněných krokví 18 × 22 cm, 2 řady latí nad světnicí;
+  - 05 `Palac_Obydli_Srub` (typ `log_wall`, `05_constructions/zr_stavby/srub.py`): severní stěna (9 řad do 2,5 m), příčka, srub na obou srovnaných příčkách (1,4–2,5 m), prkenné štíty; vchod, dveře v příčce a dvě okénka zarovnané na řady;
+  - sady etap: nad světnicí a kolem ní `base` (stěny v plné výšce, východní kusy pozednice a vaznice, 6 krokví, latě), v síni `base` jen sloupy a spodní 3 řady severní stěny (1,16 m); zbytek `final`;
+  - boční stěny a příčka začínají a končí půltrámem, v nárožích se tak kulatiny střídají se severní stěnou.
+- **Větší světnice (Jirka 16. 11. 2026):** příčka je v s = 14,85 (dřív 15,75), západně od středního sloupu krovu, který tak stojí ve světnici. Světnice má 5,63 m, síň 3,83 m. Vchod je v s = 13,4–14,4, okénko světnice v s = 17,5–18,1 (uprostřed stěny).
+- **Přepnutí etapy v editoru:** `05_constructions/stavby/Etapa.py` (`ETAPA` 1 / 2 / 0), po buildu pustit znovu.
+- **Okap domu:** spád k západu (od kovárny), sud pod západním koncem, svod se nedělá (Jirka 16. 11. 2026). Zatím nepostavený.
+- **Spuštění v UE:** po změně zříceniny nejdřív `03_ruin/blocks/casti/Palac.py`, pak celý dům `05_constructions/stavby/Palac_Obydli.py` (se `SUT = True` i suť), jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py` a `Sut.py`. Navázání kamene potvrzené v UE (Jirka 16. 11. 2026), krov a srub jen mimo UE (`run_checks.py --only obydli`, náhledy `05_constructions/Stavby_palac_obydli_nahled.png` a `Stavby_palac_obydli_nahled_etapa1.png`).
+- **Zbývá:** krytina a lemování (s prostupem komína), strop (se zavěšením dymníku), podlaha, okap, vybavení (dveře, okenice, zárubně), staveniště.
 
 ## Optimalizace do budoucna (zatím není potřeba)
 

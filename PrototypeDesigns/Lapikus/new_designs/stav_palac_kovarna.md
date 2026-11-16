@@ -29,6 +29,10 @@ Všechno „hotovo“ znamená: je ve skriptech a datech a prošlo kontrolami mi
 | Kontroly a náhled (kap. 7) | `run_checks.py --only palac`, `preview3d.py kovarna` | ✅ hotovo | pokrytí krytinou, lemování, stěna, žlab a sud, vybavení (průniky, výfučna v otvoru, vzdálenosti, průchody, dřevo pod přesahem, suť) |
 | Ověření v Unrealu | – | ◐ částečně | úprava 03, kostra přístřešku a výheň ověřené (Jirka 15. 11. 2026, v pořádku); krytina, lemování, stěna, okap a vybavení zatím ne |
 
+## Změna okolí (16. 11. 2026)
+
+- Na dvorek kovárny vede nově i hrubý průchod v `Palac_pricka_2` (n = 6,9–8,5) ze zápraží domu posádky. Data kovárny se tím nezměnila, po přestavbě části `Palac` stačí zkontrolovat vchod z nádvoří (ostění dveří s = 27 je o kousek širší).
+
 ## Odchylky od původního návrhu ze 14. 11. 2026
 
 - výheň v koutě místo u věže dál od zdi;

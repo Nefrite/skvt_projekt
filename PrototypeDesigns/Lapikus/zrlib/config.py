@@ -217,6 +217,7 @@ LIB_MESHES = {
     "SM_RuinWattlePanel":  ((100.0, 8.0, 100.0), "ABC", "wattle", ("daub", "wattle"), "daub"),      # dilec proutene steny XZ
     "SM_RuinSmokeHood":    ((140.0, 120.0, 100.0), "AB", "wattle", ("daub", "wattle"), "daub"),     # dymnik
     "SM_RuinChimney":      ((60.0, 60.0, 100.0), "AB", "wattle", ("daub", "wattle"), "daub"),       # komin
+    "SM_RuinOvenDome":     ((140.0, 100.0, 40.0), "AB", "wattle", ("daub", "wattle"), "daub"),      # hlinena klenba pece
     "SM_RuinRope":         ((100.0, 1.5, 1.5), "AB", "textile", ("rope",), "rope"),                 # clanek lana
     "SM_RuinLashing":      ((7.0, 10.5, 10.5), "AB", "textile", ("rope",), "rope"),                 # ovazani tyce O 8 cm
     "SM_RuinCanvasSample": ((300.0, 221.6, 93.8), "A", "textile", ("canvas",), "canvas"),           # ukazka plachty
@@ -251,9 +252,10 @@ LIB_MESHES = {
     "SM_RuinShelf": ((100.2, 27.7, 89.6), "A", "props", ('wood',), "wood"),   # police
     "SM_RuinDoor": ((101.8, 9.3, 219.3), "A", "props", ('wood', 'iron'), "wood"),   # dvere 1,0 x 2,2
     "SM_RuinShutter": ((61.4, 8.4, 59.2), "A", "props", ('wood', 'endgrain', 'iron'), "wood"),   # okenice 60 x 60 (50 x 50 = skala 0,83)
+    "SM_RuinOvenDoor": ((45.9, 8.6, 41.9), "A", "props", ('wood', 'endgrain', 'iron'), "wood"),   # poklop usti pece: plech v XZ, drevena rukojet na -Y (stred plechu +3.56 cm v Y od stredu)
 }
 LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePanel", "smoke_hood": "SM_RuinSmokeHood",
-              "chimney": "SM_RuinChimney", "rope": "SM_RuinRope", "lashing": "SM_RuinLashing",
+              "chimney": "SM_RuinChimney", "oven_dome": "SM_RuinOvenDome", "rope": "SM_RuinRope", "lashing": "SM_RuinLashing",
               # props
               "stump": "SM_RuinStump",
               "anvil": "SM_RuinAnvil",
@@ -284,12 +286,13 @@ LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePa
               "chest": "SM_RuinChest",
               "shelf": "SM_RuinShelf",
               "door": "SM_RuinDoor",
-              "shutter": "SM_RuinShutter"}
+              "shutter": "SM_RuinShutter",
+              "oven_door": "SM_RuinOvenDoor"}
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2,
                       "SM_RuinLog": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2,       # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark
-                      "SM_RuinBarkStrip": 1, "SM_RuinWattlePanel": 1, "SM_RuinSmokeHood": 1, "SM_RuinChimney": 1,
+                      "SM_RuinBarkStrip": 1, "SM_RuinWattlePanel": 1, "SM_RuinSmokeHood": 1, "SM_RuinChimney": 1, "SM_RuinOvenDome": 1,
                       "SM_RuinRope": 1, "SM_RuinLashing": 1, "SM_RuinCanvasSample": 1,
-                      "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2, "SM_RuinBed": 1, "SM_RuinBedFolded": 1, "SM_RuinTable": 1, "SM_RuinChest": 1, "SM_RuinShelf": 1, "SM_RuinDoor": 1, "SM_RuinShutter": 1}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
+                      "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2, "SM_RuinBed": 1, "SM_RuinBedFolded": 1, "SM_RuinTable": 1, "SM_RuinChest": 1, "SM_RuinShelf": 1, "SM_RuinDoor": 1, "SM_RuinShutter": 1, "SM_RuinOvenDoor": 1}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # zaloha, kdyz chybi textury dreva pro MI_RuinWood
 MAT_WOOD_MI = None                       # vlastni material neosetreneho dreva (cesta); None = MI_RuinWood (vytvori skript)
 # druhy dreva (Stone.cat): "wood" bez upravy (MI_RuinWood), "wood_tar" dehtovane, "wood_oil" morene olejem,

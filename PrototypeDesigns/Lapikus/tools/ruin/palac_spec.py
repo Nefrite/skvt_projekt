@@ -99,14 +99,56 @@ K_WOOD = dict(s=25.33, stake_gap=1.5, stake_d=0.10, stake_h=1.5, n1=6.4, parts=3
 #     (base = stoji uz v etape 1, final = dostavba, site = staveniste; zrlib/config.py STAGES)
 D_PART_W, D_PART_E = "Palac_pricka_1", "Palac_pricka_2"    # pricky, na kterych stoji bocni steny domu
 D_N_NORTH = 6.2                  # osa severni (srubove) steny: n
-D_S_PART = 15.75                 # osa srubove pricky mezi sini a svetnici: s
+D_S_PART = 14.85                 # osa srubove pricky mezi sini a svetnici: s; zapadne od stredniho sloupu krovu (s = 15.3),
+                                 # ktery tak stoji ve svetnici 23 cm od pricky (Jirka 16. 11. 2026: vetsi svetnice; driv 15.75)
 D_FILL_TOP = 1.4                 # srovnani korun pricek kamenem (vcetne zazdeni jejich dveri): vrch m nad terenem
 D_SILL = dict(w=0.45, h=0.45)    # podezdivka severni steny a pricky: sirka, vyska
-D_DOOR_N = (13.8, 14.8)          # vchod v severni stene: s
+D_DOOR_N = (13.4, 14.4)          # vchod v severni stene: s (posunuty s prickou, od jeji podezdivky 0.22 m; driv 13.8-14.8)
 D_DOOR_P = (3.3, 4.3)            # dvere v pricce: n
 D_GAP = 0.02                     # mezera noveho zdiva od lice Palac_J
-D_HEARTH = dict(s=(16.2, 17.6), len_n=1.4, h=0.5, course=0.25, pit=0.5, daub=0.04)   # zaklad ohniste u jizni zdi ve svetnici
-D_CHIMNEY = dict(s=16.9, n=1.6, w=0.6, top=5.3)            # komin (final): stred, strana, vrch
+# pec s nistejí u jizni zdi ve svetnici (Jirka 16. 11. 2026, misto otevreneho ohniste): kamenny sokl, na nem vzadu pec
+# (kamenne zdi, hlinena klenba, usti k severu), vpredu nistej s zeleznou plotnou na zidkach; kour z pece sopouchem do dymniku.
+# Osa s = uprostred mezi krokvemi 16.26 a 17.26 (komin 16 cm od obou); stred mezi sloupy 15.3 a 18.0 je 16.65.
+D_OVEN = dict(s=16.76, w=1.6, len_n=1.6, h=0.6, course=0.3, daub=0.04,          # sokl: osa, sirka, hloubka od Palac_J, vyska
+              body=dict(w=1.4, len_n=1.0, wall_t=0.22, wall_h=0.36, course=0.18, dome_h=0.34),   # pec: zdi na soklu, klenba
+              mouth=dict(w=0.4),                                                # usti (vysoke jako zdi pece), pas a poklop ze zeleza
+              plate=dict(s=(17.0, 17.56), n=(1.84, 2.26), h=0.22, cheek=0.10, t=0.012),   # plotna na vychodni strane nisteje
+              flue=dict(n=1.56, w=0.28),                                        # sopouch z klenby za celem pece
+              hood=dict(n=1.70, size=(1.6, 1.1), bottom=1.8, h=0.8))            # dymnik nad ustim a nistejí; komin v jeho ose
+D_CHIMNEY = dict(s=16.76, n=1.70, w=0.5, top=5.3)          # komin (final): stred, strana, vrch; s = uprostred mezi krokvemi
+                                                           # 16.26 a 17.26 (navrh 16.9 by zasahl do krokve)
+# pruchod ze zaprazi domu na dvorek kovarny (03): posadka rozebrala Palac_pricka_2 severne od domu na kamen pro podezdivky;
+# hruby pruchod az k zemi, po stranach zbytky zdi (je videt, ze tu zed byla)
+D_PASS = dict(n=(6.9, 8.5), h=2.2, ragged=0.35)            # rozsah n (od rohu domu 0.45 m, od Palac_S 0.3 m), vylamane okraje
+
+
+# krov domu (typ pult_roof, osa spadu n: od Palac_J k severu). Tri podpory krokvi: horni pozednice na sloupech u Palac_J,
+# stredni vaznice na spalcich na bocnich stenach a pricce, vrchni trám severni srubove steny (ten patri ke srubu).
+D_ROOF_S = (10.1, 21.4)          # delka pozednice a vaznice (s): pres obe bocni steny, at na nich lezi i stitove krokve
+                                 # (navrh mel pozednici jen 10.9-20.6, stitove krokve by nahore visely)
+D_PLATE = dict(n=0.85, top=4.03, sec=(0.20, 0.20), post=0.20,
+               posts=(11.1, 13.0, 15.3, 18.0, 20.4),       # sloupy (s): mimo vyklenky strilen (13.35-14.65, 18.35-19.65) a ohniste;
+                                                           # stredni v s = 15.3 (navrh 15.6 by stal v podezdivce a srubu pricky)
+               joint=15.3)                                 # spoj dvou kusu nad strednim sloupem; vychodni kus = sada base
+D_PURLIN = dict(n=4.4, sec=(0.20, 0.24), joint=D_S_PART, stub=0.20)   # stredni vaznice: spoj nad prickou, spalky (strana m) na stenach
+D_RAFTER = dict(sec=(0.18, 0.22), count=12, s=(10.2, 21.3), n=(0.80, 6.8), seat=0.03)   # hranene krokve, presah 0.6 m za severni stenu;
+                                 # horni konec 10 cm od lice Palac_J (kameny lice vystupuji az o 5 cm)
+D_STAGE_S = 16.0                 # krokve s s >= teto hodnote (nad svetnici) stoji uz v etape 1 (base), ostatni final
+D_PAD = dict(l=0.26, w=0.36, h=0.14, sink=0.04)            # patni kamen sloupu: l napric (k Palac_J zbyva 2 cm), w podel zdi
+D_BRACE_LATHS = dict(n=(2.6, 5.3), s=(16.17, 21.4), lath=(0.05, 0.06))   # 2 rady lati na krokvich nad svetnici (zavetrovani, base)
+# srub (typ log_wall): loupana kulatina v radach; rady severni steny do 1.4 m (vrch srovnanych pricek) a nad nim stejne
+# jako na bocnich stenach. Bocni steny a pricka zacinaji a konci pultramem (prvni a posledni rada polovicni, hranena):
+# jejich rady jsou tak o pul rady posunute proti severni stene a v narozich se stridaji jako u skutecneho srubu.
+D_LOG = dict(top=2.5, rows_low=4, rows_up=5,               # vrch srubu; rady severni steny pod 1.4 m a nad nim
+             lap=0.012, half_w=0.22,                       # kulatina je o tolik tlustsi nez rada (prekryv = zdi neprosvita); sirka pultramu
+             over=0.30, jit=0.05,                          # presah zhlavi za osu krizici steny, nahodne +-
+             west_base_rows=3)                             # sin: tolik rad severni steny stoji uz v etape 1 (vrch 1.16 m)
+D_WINDOWS = (dict(s=(17.5, 18.1), z=(1.3, 2.0)),           # okenko svetnice (na rady: 1.40-2.06 m); uprostred steny svetnice
+                                                           # (s = 14.97-20.6) a mezi krokvemi 17.26 a 18.27
+             dict(s=(11.8, 12.3), z=(1.3, 1.9)))           # okenko sine (1.40-1.84 m)
+D_DOOR_H = 2.2                   # vyska dveri (rada se vynecha, kdyz ma stred pod touto vyskou): vchod 2.28 m, dvere v pricce 2.17 m
+D_GABLE = dict(t=0.035, board_w=(0.20, 0.28), lap=0.10, gap=0.02)   # prkenne stity: tloustka, sirka prken, prekryti vrchni rady
+                                                           # srubu, mezera od lice srubu
 
 
 def frame(walls):
@@ -160,14 +202,91 @@ def obydli(walls):
                 sill_n=dict(s=(round(sw + tw / 2, 3), round(se - te / 2, 3)), n=(round(D_N_NORTH - hw, 3), round(D_N_NORTH + hw, 3)),
                             top=D_SILL["h"], door=D_DOOR_N),
                 sill_p=dict(s=(round(D_S_PART - hw, 3), round(D_S_PART + hw, 3)), n=(n0, round(D_N_NORTH - hw, 3)), top=D_SILL["h"], door=D_DOOR_P),
-                hearth=dict(s=D_HEARTH["s"], n=(n0, round(F["n_in"] + D_HEARTH["len_n"], 3)), h=D_HEARTH["h"], course=D_HEARTH["course"],
-                            pit=D_HEARTH["pit"], daub=D_HEARTH["daub"]),
-                chimney=dict(D_CHIMNEY),
+                hearth=_obydli_pec(n0),
+                chimney=dict(D_CHIMNEY), **_obydli_drevo(sw, se, n0),
                 plan=dict(s=(round(sw - tw / 2, 3), round(se + te / 2, 3)), n=(F["n_in"], F["n_north"])))    # dum + zaprazi
+
+
+def _obydli_pec(n0):
+    """pec s nistejí (typ hearth) v ramu palace: sokl, zdi pece, klenba, kvadry (zelezo, uhli), sopouch, dymnik, komin"""
+    O = D_OVEN; B = O["body"]; r = lambda v: round(v, 3)
+    s0, s1 = r(O["s"] - O["w"] / 2), r(O["s"] + O["w"] / 2); n1 = r(n0 + O["len_n"])
+    b0, b1 = r(O["s"] - B["w"] / 2), r(O["s"] + B["w"] / 2); bn1 = r(n0 + B["len_n"]); t = B["wall_t"]
+    zb = r(O["h"] + O["daub"]); zw = r(zb + B["wall_h"]); zd = r(zw + B["dome_h"]); mw = O["mouth"]["w"] / 2
+    walls = [dict(id="OW", a=[b0, r(b0 + t)], c=[n0, r(bn1 - t)], h=B["wall_h"], course=B["course"], base=zb),
+             dict(id="OE", a=[r(b1 - t), b1], c=[n0, r(bn1 - t)], h=B["wall_h"], course=B["course"], base=zb),
+             dict(id="OF", a=[b0, b1], c=[r(bn1 - t), bn1], h=B["wall_h"], course=B["course"], base=zb,
+                  hole=dict(a=O["s"], w=O["mouth"]["w"], z=[0.0, B["wall_h"]]))]          # celo pece s ustim
+    PL = O["plate"]; (p0, p1), (q0, q1) = PL["s"], PL["n"]; ck = PL["cheek"]
+    walls += [dict(id="PW", a=[p0, r(p0 + ck)], c=[q0, q1], h=PL["h"], course=PL["h"], base=zb),      # zidky pod plotnou
+              dict(id="PE", a=[r(p1 - ck), p1], c=[q0, q1], h=PL["h"], course=PL["h"], base=zb)]
+    zp = r(zb + PL["h"])
+    boxes = [dict(id="V", cat="charcoal", a=[r(b0 + t), r(b1 - t)], c=[r(n0 + 0.02), r(bn1 - t)], z=[zb, r(zw - 0.02)]),   # tmavy vnitrek pece
+             dict(id="U", cat="charcoal", a=[r(p0 + ck), r(p1 - ck)], c=[r(q0 + 0.03), r(q1 - 0.03)], z=[zb, r(zb + 0.03)]),   # uhli pod plotnou
+             dict(id="I0", cat="iron", top=True, a=[r(O["s"] - mw - 0.15), r(O["s"] + mw + 0.15)], c=[r(bn1 - t), r(bn1 + 0.01)], z=[r(zw - 0.015), zw]),   # pas nad ustim
+             dict(id="I2", cat="iron", top=True, loose=True, a=[r(p0 - 0.01), r(p1 + 0.01)], c=[r(q0 - 0.01), r(q1 + 0.01)], z=[zp, r(zp + PL["t"])])]                    # plotna
+    # poklop usti: samostatny actor (mesh SM_RuinOvenDoor 45,9 x 8,6 x 41,9 cm: plech + drevena rukojet), opreny o celo pece
+    # zapadne od usti, rukojeti do mistnosti; stred plechu je 3,56 cm za stredem bounding boxu (lokalni Y = -n)
+    props = [dict(id="Poklop", shape="oven_door", cat="wood", top=True, a=r((b0 + O["s"] - mw) / 2 - 0.01), c=r(bn1 + 0.012 + 0.0356),
+                  zc=r(zb + 0.2095), size=[45.9, 8.6, 41.9])]
+    H = O["hood"]; C = D_CHIMNEY
+    return dict(s=(s0, s1), n=(n0, n1), h=O["h"], course=O["course"], daub=O["daub"], walls=walls,
+                dome=dict(a=[b0, b1], c=[n0, bn1], z=[zw, zd]), boxes=boxes, props=props,
+                flue=dict(a=O["s"], c=O["flue"]["n"], w=O["flue"]["w"], z=[r(zd - 0.08), r(H["bottom"] + H["h"] * 0.6)]),
+                hood=dict(a=O["s"], c=H["n"], size=list(H["size"]), bottom=H["bottom"], h=H["h"]),
+                chimney=dict(a=C["s"], c=C["n"], w=C["w"], top=C["top"]))
+
+
+def _obydli_drevo(sw, se, n0):
+    """krov a srub domu (m v ramu palace): podpory krokvi, krokve, rady a useky srubovych sten se sadami etap, stity"""
+    slope = (D_PLATE["top"] - D_LOG["top"]) / (D_N_NORTH - D_PLATE["n"])
+    r0, r1 = D_RAFTER["s"]; nr = D_RAFTER["count"]
+    pos = [round(r0 + (r1 - r0) * i / (nr - 1), 3) for i in range(nr)]
+    purlin_top = round(D_PLATE["top"] - slope * (D_PURLIN["n"] - D_PLATE["n"]), 3)
+    # rady: severni stena od podezdivky po 1.4 m a dal po vrch; bocni steny od 1.4 m, pricka od podezdivky (pultramy na krajich)
+    lo = [round(D_SILL["h"] + (D_FILL_TOP - D_SILL["h"]) * i / D_LOG["rows_low"], 4) for i in range(D_LOG["rows_low"])]
+    up = [round(D_FILL_TOP + (D_LOG["top"] - D_FILL_TOP) * i / D_LOG["rows_up"], 4) for i in range(D_LOG["rows_up"] + 1)]
+    z_n = lo + up; h_up = up[1] - up[0]; h_lo = lo[1] - lo[0]
+    z_side = [up[0]] + [round(z + h_up / 2, 4) for z in up[:-1]] + [up[-1]]
+    z_part = [lo[0]] + [round(z + h_lo / 2, 4) for z in lo] + z_side[1:]
+    ov = D_LOG["over"]; nl = D_LOG["rows_low"]; top_n = len(z_n) - 2; wb = D_LOG["west_base_rows"]
+    fw1, fe0 = round(sw + 0.4, 3), round(se - 0.4, 3)          # lice srovnanych pricek uvnitr domu (tloustka 0.8 m)
+    door = lambda span: dict(span=list(span), z=[0.0, D_DOOR_H])
+    walls_ = [
+        dict(id="N", dir="a", at=D_N_NORTH, z=z_n, openings=[door(D_DOOR_N)] + [dict(span=list(w["s"]), z=list(w["z"])) for w in D_WINDOWS],
+             segs=[dict(rows=[0, wb - 1], span=[round(fw1 + 0.03, 3), D_S_PART], stage="base"),              # sin: prvni rady uz v etape 1
+                   dict(rows=[wb, nl - 1], span=[round(fw1 + 0.03, 3), D_S_PART], stage="final"),
+                   dict(rows=[nl, top_n], span=[round(sw - ov - 0.15, 3), D_S_PART], free=[1, 0], stage="final"),   # nad priccou az za narozi
+                   dict(rows=[0, nl - 1], span=[D_S_PART, round(fe0 - 0.03, 3)], stage="base"),              # svetnice: cela vyska v etape 1
+                   dict(rows=[nl, top_n], span=[D_S_PART, round(se + ov + 0.15, 3)], free=[0, 1], stage="base")]),
+        dict(id="P", dir="c", at=D_S_PART, z=z_part, half=[0, len(z_part) - 2], openings=[door(D_DOOR_P)],
+             segs=[dict(rows=[0, len(z_part) - 2], span=[round(n0 + 0.02, 3), round(D_N_NORTH + ov, 3)], free=[0, 1], stage="base")]),
+        dict(id="W", dir="c", at=sw, z=z_side, half=[0, len(z_side) - 2],
+             segs=[dict(rows=[0, len(z_side) - 2], span=[round(n0 + 0.02, 3), round(D_N_NORTH + ov, 3)], free=[0, 1], stage="final")]),
+        dict(id="E", dir="c", at=se, z=z_side, half=[0, len(z_side) - 2],
+             segs=[dict(rows=[0, len(z_side) - 2], span=[round(n0 + 0.02, 3), round(D_N_NORTH + ov, 3)], free=[0, 1], stage="base")])]
+    # prkenne stity nad srubem pod strechu (final): na vnejsim lici bocnich sten, u pricky na strane sine; vyrezy pro pozednici a vaznici
+    g = D_GABLE; off = 0.12 + g["gap"] + g["t"] / 2
+    cut = lambda n, sec, top: dict(c=[round(n - sec[0] / 2 - 0.01, 3), round(n + sec[0] / 2 + 0.01, 3)], z=[round(top - sec[1] - 0.01, 3), round(top + 0.01, 3)])
+    cuts = [cut(D_PLATE["n"], D_PLATE["sec"], D_PLATE["top"]), cut(D_PURLIN["n"], D_PURLIN["sec"], purlin_top)]
+    gables = [dict(id="GW", at=round(sw - off, 3), c=[n0, round(D_N_NORTH + 0.25, 3)]),
+              dict(id="GE", at=round(se + off, 3), c=[n0, round(D_N_NORTH + 0.25, 3)]),
+              dict(id="GP", at=round(D_S_PART - off, 3), c=[n0, round(D_N_NORTH - 0.13, 3)])]
+    for q in gables: q.update(base=round(D_LOG["top"] - g["lap"], 3), t=g["t"], board_w=list(g["board_w"]), cuts=cuts, stage="final")
+    return dict(
+        roof=dict(slope=round(slope, 4), slope_deg=round(math.degrees(math.atan(slope)), 2), span=D_ROOF_S,
+                  plate=dict(D_PLATE), purlin=dict(D_PURLIN, top=purlin_top,
+                                                   stubs=[dict(c=sw, stage="final"), dict(c=D_S_PART, stage="base"), dict(c=se, stage="base")]),
+                  north=dict(n=D_N_NORTH, top=D_LOG["top"], span=(round(sw - ov - 0.1, 3), round(se + ov + 0.1, 3))),
+                  rafter=dict(D_RAFTER, pos=pos, stages=["base" if p >= D_STAGE_S else "final" for p in pos]),
+                  pad=dict(D_PAD), brace_laths=dict(D_BRACE_LATHS)),
+        log=dict(lap=D_LOG["lap"], half_w=D_LOG["half_w"], jit=D_LOG["jit"], walls=walls_, gables=gables),
+        doors=dict(n=D_DOOR_N, p=D_DOOR_P, h=D_DOOR_H), windows=[dict(w) for w in D_WINDOWS])
 
 
 def ruin_edits(walls):
     """upravy zriceniny (03) pro gen_layout.py: {zed: dict(z_offset, breaches, protect, openings)} - doplni se k datum zdi.
+    Palac_pricka_2: hruby pruchod ze zaprazi domu na dvorek kovarny (D_PASS).
     Palac_J: cela zed o J_SINK niz (z_offset), rozebrana koruna u veze, kapsa ve vnitrnim lici pro vychodni pozednici
     kovarny. Vyska kapsy je od terenu na ose zdi (v datech rovina; pozednice se meri od terenu uprostred pristresku);
     z_offset posouva i otvory, proto je parapet kapsy o J_SINK vys."""
@@ -178,7 +297,11 @@ def ruin_edits(walls):
     ed = dict(z_offset=-J_SINK, breaches=[dict(J_BREACH, _="rozebrana koruna u veze: komin kovarny ji presahuje (palac_spec.py)")],
               protect=[dict(J_PROTECT)], openings=[pocket])
     if J_DROP_ROWS: ed["drop_rows"] = J_DROP_ROWS
-    return {WALL_J: ed}
+    # pruchod v Palac_pricka_2 (s zdi = n ramu palace: zed zacina na ose Palac_J)
+    n0, n1 = D_PASS["n"]
+    passage = dict(kind="prulom", s=round((n0 + n1) / 2, 3), w=round(n1 - n0, 3), sill=0, h=D_PASS["h"], ragged=D_PASS["ragged"],
+                   _="pruchod ze zaprazi domu ke kovarne (palac_spec.py)")
+    return {WALL_J: ed, D_PART_E: dict(openings=[passage])}
 
 
 if __name__ == "__main__":
