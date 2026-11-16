@@ -12,10 +12,13 @@ Co nesmaze: landscape, reku, les, objemy Ruin_* (Trigger Boxy) a nic mimo slozku
 Po behu nepouzivej Undo (Ctrl+Z): vratilo by actory s odkazy na smazane meshe.
 Logika: zrlib/pipeline.py (build_all), zrlib/ue_assets.py (repair_assets)."""
 MATERIALY = False             # True = smazat a znovu vytvorit i generovane materialy (rucni ladeni se ztrati)
+VYBAVENI = True               # True = postavit i vybaveni (06_furnishing); False = vybaveni po smazani v levelu chybi
+CAPTURE_VYBAVENI = False      # True = pred smazanim ulozit rucni upravy vybaveni z levelu do furnishing.json
+                              # (jen kdyz se nemenily meshe props; pri poskozenych meshich radsi capture predem zvlast)
 
 import os, sys
 _root = os.path.dirname(os.path.abspath(__file__))
 sys.path[:] = [_root] + [p for p in sys.path if p != _root]
-for _k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_ruin", "zr_stavby")]: del sys.modules[_k]
+for _k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_ruin", "zr_stavby", "furn_data")]: del sys.modules[_k]
 from zrlib import pipeline
-pipeline.build_all(repair=True, reset_materials=MATERIALY)
+pipeline.build_all(repair=True, reset_materials=MATERIALY, vybaveni=VYBAVENI, capture_vybaveni=CAPTURE_VYBAVENI)

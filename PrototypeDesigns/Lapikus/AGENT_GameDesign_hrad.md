@@ -94,7 +94,7 @@ Kulatina je s kůrou (provizorní stavby, nezpracovaný materiál) i loupaná (n
 
 ## 5. Podklady ke čtení
 
-Cesty jsou relativně k hlavní složce `skvt_projekt\PrototypeDesigns\Lapikus` (kopie dokumentů je v `GameDesign\Claude outputs\Lapikus`). Pár starších nákresů je jen v `GameDesign\Claude outputs`.
+Cesty jsou relativně k hlavní složce `skvt_projekt\PrototypeDesigns\Lapikus` (`GameDesign\Claude outputs\Lapikus` je jen archiv starších kopií, neaktualizuje se). Pár starších nákresů je jen v `GameDesign\Claude outputs`.
 
 **Přehled a historie**
 - `KNOWHOW_hrad.md`: společná pravidla, souřadnice a konvence, padlá rozhodnutí a co je nerozhodnuté.

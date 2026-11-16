@@ -33,9 +33,11 @@ Meshe props jsou ve sdílené knihovně (`zrlib/config.py` → `LIB_MESHES`, typ
 | Co | Skript |
 |---|---|
 | jedna skupina vybavení | `06_furnishing/vybaveni/<Skupina>.py` (`MODE` `build` / `capture` / `list` / `reset`) |
+| uložit úpravy skupiny z levelu | `06_furnishing/vybaveni/<Skupina>_Capture.py` (kovárna `Palac_Kovarna_Capture.py`) |
 | všechno vybavení | `06_furnishing/build_furnishing.py` |
+| uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` |
 | stavba včetně svého vybavení | souhrnný spouštěč stavby v 05, např. `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
-| celý hrad | `build_normal.py` (aditivně), `build_fullscope.py` (smaže a postaví vše znovu, i vybavení) |
+| celý hrad | `build_normal.py` (aditivně), `build_fullscope.py` (smaže a postaví vše znovu, i vybavení); přepínače `VYBAVENI` (stavět vybavení) a `CAPTURE_VYBAVENI` (před buildem uložit úpravy z levelu) |
 
 ## 4. Skupiny vybavení
 

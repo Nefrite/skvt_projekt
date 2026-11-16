@@ -39,7 +39,7 @@ Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká pa
 | Co | Kde / hodnota |
 |---|---|
 | Repo | `C:\Users\JDr\GitHub\skvt_projekt`, větev **`lapikus-prototype`** |
-| Hlavní složka prototypu | `skvt_projekt\PrototypeDesigns\Lapikus` (skripty, data, dokumentace). `GameDesign\Claude outputs\Lapikus` drží designové dokumenty (návrhy, instrukce agentů), skripty tam jsou jen starší kopie. |
+| Hlavní složka prototypu | `skvt_projekt\PrototypeDesigns\Lapikus` (skripty, data, dokumentace). `GameDesign\Claude outputs\Lapikus` je archiv starších kopií, neaktualizuje se. |
 | Engine | Unreal Engine **5.8** |
 | Mapa | `Content/Skvt/LapikusPrototypeMap` (výchozí mapa projektu zůstává `SkvtProjectMap`) |
 | Materiál terénu | `Content/Skvt/Lapikus/M_Lanscape_Forest_Auto` (pozor: v názvu překlep *Lanscape*) |
@@ -105,7 +105,7 @@ skvt_projekt\PrototypeDesigns\Lapikus\
 ├─ KNOWHOW_hrad.md          společné know-how: pravidla, konvence, pasti, rozhodnutí
 ├─ AGENT_*.md               instrukce pro agenty (architekt, game design, stavitel, furnisher = vybavení)
 ├─ CHECKLIST_assets_navrhy.md   co návrhy potřebují (assety, typy staveb, úpravy 03) a co je hotové
-├─ build_normal.py          UE: celý hrad (03) + všechny stavby (05), aditivně
+├─ build_normal.py          UE: celý hrad (03) + všechny stavby (05) + vybavení (06), aditivně
 ├─ build_fullscope.py       UE: oprava – smaže generované actory a meshe a vše postaví znovu
 ├─ 01_terrain\              heightmapa 505, náhled sklonu, návod importu a materiálu
 ├─ 02_river\                body a skript řeky, maska koryta, návod
@@ -120,7 +120,7 @@ skvt_projekt\PrototypeDesigns\Lapikus\
 └─ tools\                   generátory (terén, řeka, zóny, ruin\, constructions\, meshes\, textures\) a kontroly (checks\)
 ```
 
-`GameDesign\Claude outputs\Lapikus` drží kopie dokumentů a starší kopie skriptů; nové soubory se tam nepřidávají.
+`GameDesign\Claude outputs\Lapikus` je archiv starších kopií dokumentů a skriptů; neaktualizuje se a nic se tam nepřidává.
 
 Starší mezivýstupy (pro historii, není třeba je používat):
 
@@ -158,7 +158,7 @@ Všechno je deterministické: stejné skripty dají bit po bitu stejné soubory.
 | Stavba v UE | **Tools → Execute Python Script →** `build_normal.py` (nebo jen část: `03_ruin/blocks/casti/*.py`, `05_constructions/stavby/*.py`, `06_furnishing/vybaveni/*.py`) | actory v levelu; chybějící meshe a textury se doimportují |
 | Oprava v UE | `build_fullscope.py` | smaže generované actory a meshe a postaví vše znovu (při poškozených assetech) |
 
-Ruční úpravy v levelu se ukládají stejným skriptem s `MODE = "capture"`, vždy před dalším generováním. `manual_edits.json` a `constructions_edits.json` se nepřepisují.
+Ruční úpravy v levelu se ukládají stejným skriptem s `MODE = "capture"` (vybavení: `06_furnishing/capture_furnishing.py` nebo `vybaveni/<Skupina>_Capture.py`), vždy před dalším generováním. `manual_edits.json` a `constructions_edits.json` se nepřepisují.
 
 **Co kde měnit:**
 

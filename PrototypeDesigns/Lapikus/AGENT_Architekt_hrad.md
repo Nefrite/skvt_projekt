@@ -185,7 +185,7 @@ Samostatné actory (`loose`) jsou kusy, které Jirka doladí ručně a uloží p
 
 ## 6. Podklady ke čtení
 
-Cesty jsou relativně k hlavní složce `skvt_projekt\PrototypeDesigns\Lapikus` (kopie dokumentů je v `GameDesign\Claude outputs\Lapikus`).
+Cesty jsou relativně k hlavní složce `skvt_projekt\PrototypeDesigns\Lapikus` (`GameDesign\Claude outputs\Lapikus` je jen archiv starších kopií, neaktualizuje se).
 
 - `03_ruin\Zricenina_03_ruin_stav.md`: **aktuální stav a poslední rozhodnutí** (platí přednostně).
 - `03_ruin\blocks\README_bloky.md`: jak je zeď složená, úpravy v datech (kap. 4), bourací objemy (kap. 5), části hradu.

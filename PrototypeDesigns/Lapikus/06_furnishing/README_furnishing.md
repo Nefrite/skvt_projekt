@@ -9,6 +9,7 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 | `build_furnishing.py` | build, capture, výpis a vrácení na spec v UE; mimo UE statistika (`python build_furnishing.py`), `list`, `reset [kusy]` |
 | `furn_data.py` | práce s `furnishing.json`: příznaky kusů, sloučení se specem (`merge`), vrácení na spec (`reset`), zápis se zálohou |
 | `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
+| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py` |
 | `furnishing.json` | **jediný zdroj poloh vybavení.** Sestaví ho `tools/furnishing/gen_furnishing.py` ze speců, capture do něj zapisuje polohy z levelu. Předchozí verze vždy v `furnishing.json.bak`. Ručně ho upravovat jde, ale běžná cesta je level + capture. |
 | `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`) |
 | `..\05_constructions\zr_stavby\vybaveni.py` | typ `props` (rozmístění hotových meshí), společný s 05 (tam pro pevné kusy, např. kůl u dřeva) |
@@ -46,9 +47,10 @@ Kontrola: `tools/checks/run_checks.py --only palac` (průniky se zříceninou, s
 |---|---|
 | jen vybavení kovárny | `06_furnishing/vybaveni/Palac_Kovarna.py` |
 | celá kovárna včetně vybavení | `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
-| uložit ruční úpravy | `06_furnishing/vybaveni/Palac_Kovarna.py` s `MODE = "capture"` (nebo `Palac_Kovarna.py` v 05 s `MODE = "capture"`, uloží stavby do `constructions_edits.json` a vybavení do `furnishing.json`) |
+| uložit ruční úpravy | **`06_furnishing/vybaveni/Palac_Kovarna_Capture.py`**; jinak `Palac_Kovarna.py` s `MODE = "capture"`, nebo `Palac_Kovarna.py` v 05 s `MODE = "capture"` (uloží stavby do `constructions_edits.json` a vybavení do `furnishing.json`) |
 | všechno vybavení | `06_furnishing/build_furnishing.py` |
-| celý hrad | `build_normal.py` |
+| uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` (skupiny bez actorů v levelu přeskočí) |
+| celý hrad | `build_normal.py` (`VYBAVENI = True` staví i vybavení; `CAPTURE_VYBAVENI = True` před buildem uloží úpravy z levelu), stejně `build_fullscope.py` |
 
 ## 5. Nová skupina vybavení
 

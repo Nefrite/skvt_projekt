@@ -592,8 +592,8 @@ def stone_transform(unreal, s, mesh, nominal):
     return cm(cm(local, fix), st)
 
 def _unit(unreal, t):
-    loc, rot, _ = unreal.MathLibrary.break_transform(t)
-    return unreal.Transform(location=loc, rotation=rot, scale=unreal.Vector(1, 1, 1))
+    # UE 5.8: MathLibrary.break_transform v Pythonu neni -> vlastnosti Transform (translation, rotation = Quat)
+    return unreal.Transform(location=t.translation, rotation=t.rotation.rotator(), scale=unreal.Vector(1, 1, 1))
 
 def _fix_unit(unreal, s, mesh, nominal):
     """Korekce meshe bez meritka: actor = F * kamen (presne invertovatelne)."""

@@ -4,7 +4,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Pracovní postup
 
-- Úpravy, které Jirka zadá, Claude rovnou ukládá do skriptů a dat v obou složkách (`GameDesign\Claude outputs\Lapikus` a `skvt_projekt\PrototypeDesigns\Lapikus`) a pošle náhled. Napřed se ptá, jen když se teprve řeší, jak něco udělat.
+- Úpravy, které Jirka zadá, Claude rovnou ukládá do skriptů a dat v `skvt_projekt\PrototypeDesigns\Lapikus` a pošle náhled. Napřed se ptá, jen když se teprve řeší, jak něco udělat.
 - `manual_edits.json` Claude nikdy nepřepisuje. Poslední terén z levelu je v `skvt_projekt\...\03_ruin\blocks\terrain_from_level.json`.
 
 ## Jak se teď generuje
@@ -16,7 +16,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - bourací objemy (Trigger Box s tagy `Ruin_*`),
   - `capture_manual_edits()` → `manual_edits.json`,
   - `tools/ruin/export_level_layout.py` → `layout_from_level.json` (posunuté zdi + body `RuinPt_<Zed>_<NN>`).
-- **Kde leží soubory:** `GameDesign/Claude outputs/Lapikus` a kopie v `skvt_projekt/PrototypeDesigns/Lapikus` (`03_ruin`, `tools/ruin`). Odtud se spouští v UE.
+- **Kde leží soubory:** `skvt_projekt/PrototypeDesigns/Lapikus` (`03_ruin`, `tools/ruin`). Odtud se spouští v UE. `GameDesign/Claude outputs/Lapikus` je jen archiv starších kopií.
 
 ## Půdorys v3 (11/2026)
 
@@ -125,7 +125,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - 05 `Palac_Kovarna_Okap` (typ `gutter`, `zr_stavby/okap.py`): loupaný žlab Ø 20 cm v s = 24,8; n = 0,72–6,8 se spádem 2,5 % k severu na třech rozsochách (n = 1,7 / 4,0 / 6,3; jižní 1 m od líce `Palac_J`, průchod ke střílně), sud na vodu pod jeho koncem (samostatný actor), svod se nedělá.
 - **Rozměry:** `tools/ruin/palac_spec.py` (rám paláce `s` / `n`, konstanty `K_*`, `J_SINK`, `J_BREACH`), data generuje `gen_layout.py` (03) a `tools/constructions/gen_constructions.py` → `palac` (05).
 - **Spuštění v UE:** celá kovárna `05_constructions/stavby/Palac_Kovarna.py` (s `RUIN = True` i část zříceniny `Palac`, se `SUT = True` i suť), jednotlivě `Palac_Kovarna_Pristresek.py`, `_Vyhen`, `_Stena`, `_Okap`, `_Kul` a `Sut.py`, vybavení `06_furnishing/vybaveni/Palac_Kovarna.py`. Úprava 03, kostra a výheň ověřené v UE (Jirka 15. 11. 2026); krytina, stěna, okap a vybavení jen mimo UE (`run_checks.py`, náhled `05_constructions/Stavby_palac_kovarna_nahled.png`).
-- **Vybavení (16. 11. 2026, od večera v `06_furnishing`):** skupina `Palac_Kovarna_Vybaveni` (typ `props`), samostatné actory: kovadlina na špalku (1,5 m před výhní), kalicí sud, hřebovnice na špalku, měchy s výfučnou v otvoru zídky a pákou na laně z krokve, šlapací brus se stoličkou, ponk, truhlík s uhlím a volným víkem, koš, lišta s nářadím a železné pruty u jižní zdi, zvenku pod přesahem hranice dřeva od kůlu (kůl je pevný, 05 `Palac_Kovarna_Kul`) k okraji střechy. Suť v celé východní místnosti uklizená (`clear_poly` u přístřešku). Spuštění a ruční posuny: `06_furnishing/vybaveni/Palac_Kovarna.py` (`MODE` `build` / `capture` / `list` / `reset`).
+- **Vybavení (16. 11. 2026, od večera v `06_furnishing`):** skupina `Palac_Kovarna_Vybaveni` (typ `props`), samostatné actory: kovadlina na špalku (1,5 m před výhní), kalicí sud, hřebovnice na špalku, měchy s výfučnou v otvoru zídky a pákou na laně z krokve, šlapací brus se stoličkou, ponk, truhlík s uhlím a volným víkem, koš, lišta s nářadím a železné pruty u jižní zdi, zvenku pod přesahem hranice dřeva od kůlu (kůl je pevný, 05 `Palac_Kovarna_Kul`) k okraji střechy. Suť v celé východní místnosti uklizená (`clear_poly` u přístřešku). Spuštění `06_furnishing/vybaveni/Palac_Kovarna.py`, uložení ručních úprav z levelu `Palac_Kovarna_Capture.py` (zapisuje přímo do `furnishing.json`, ověřeno v UE 17. 11. 2026).
 - **Zbývá:** ověření kroků 2–4 v UE; odloženo žhavé uhlí, oheň a kouř, udusaná hlína.
 
 ## Palác – dům posádky v prostřední místnosti (11/2026)

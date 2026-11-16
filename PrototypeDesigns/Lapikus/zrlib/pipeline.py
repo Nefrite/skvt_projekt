@@ -84,8 +84,11 @@ def clear_level(unreal):
     return sum(ue_actors.destroy_tagged(eas, unreal.Name(t)) for t in (RUIN_TAG, CONSTR_TAG, FURN_TAG) + SHOW_TAGS)
 
 
-def build_all(repair=False, reset_materials=False):
+def build_all(repair=False, reset_materials=False, vybaveni=True, capture_vybaveni=False):
     """Postavi cely hrad (03), vsechny stavby (05) a vybaveni (06) v jednom behu.
+    vybaveni=False: vybaveni (06) se nestavi (zustane v levelu, jak je; fullscope ho ale smaze).
+    capture_vybaveni=True: nejdriv ulozit rucni upravy vybaveni z levelu do furnishing.json (capture), az pak stavet;
+        skupina bez actoru v levelu se preskoci. Jen kdyz se od posledniho buildu nemenily meshe props.
     repair=False (build_normal.py): aditivni - doimportuje jen chybejici nebo zastarale meshe a textury, materialy
         necha, actory zriceniny a staveb postavi znovu podle dat a ulozenych rucnich uprav.
     repair=True (build_fullscope.py): oprava - nejdriv smaze vsechny generovane actory a knihovni meshe (+ docasne
@@ -95,6 +98,7 @@ def build_all(repair=False, reset_materials=False):
     import unreal
     from . import ue_assets
     from .config import MESH_SRC
+    if capture_vybaveni: furnishing(None, "capture")
     if repair:
         n_act = clear_level(unreal)
         rep = ue_assets.repair_assets(unreal, os.path.join(ROOT, MESH_SRC), reset_materials)
@@ -102,6 +106,6 @@ def build_all(repair=False, reset_materials=False):
             n_act, rep["deleted_meshes"], ", %d materialu" % rep["deleted_materials"] if reset_materials else "", rep["meshes"]))
     ruin(None, "build")
     constructions(None, "build")
-    furnishing(None, "build")
-    unreal.log("Build %s hotov: zricenina (03) + stavby (05) + vybaveni (06).%s" % (
-        "fullscope" if repair else "normal", " Undo (Ctrl+Z) po fullscope nepouzivej - vratilo by actory se smazanymi meshi." if repair else ""))
+    if vybaveni: furnishing(None, "build")
+    unreal.log("Build %s hotov: zricenina (03) + stavby (05)%s.%s" % (
+        "fullscope" if repair else "normal", " + vybaveni (06)" if vybaveni else " (vybaveni 06 vynechano)", " Undo (Ctrl+Z) po fullscope nepouzivej - vratilo by actory se smazanymi meshi." if repair else ""))

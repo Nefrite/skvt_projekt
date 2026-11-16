@@ -127,7 +127,7 @@ def loose_pose(unreal, s, cube, meshes, actor):
     m, nom = _resolve(unreal, s, cube, meshes)
     st_t = unreal.MathLibrary.compose_transforms(unreal.MathLibrary.invert_transform(_fix_unit(unreal, s, m, nom)),
                                                  _unit(unreal, actor.get_actor_transform()))
-    loc, rot, _ = unreal.MathLibrary.break_transform(st_t)
+    loc, rot = st_t.translation, st_t.rotation.rotator()                 # UE 5.8: MathLibrary.break_transform v Pythonu neni
     cur = [loc.x, loc.y, loc.z, -rot.roll, rot.pitch, rot.yaw]          # roll zpet do konvence modelu (viz ue_assets.ue_rotator)
     same = all(abs(p - q) < 1.0 for p, q in zip(cur[:3], [s.x, s.y, s.z])) and \
            all(abs(((p - q) + 180) % 360 - 180) < 1.0 for p, q in zip(cur[3:], [s.roll, s.pitch, s.yaw]))

@@ -44,7 +44,8 @@ _boot()
 from zrlib.config import FURN_TAG, CONSTR_TAG, CUBE_MESH
 from zrlib import pipeline, ue_assets, ue_actors, validate
 from zr_stavby import vybaveni
-import furn_data
+import importlib, furn_data
+importlib.reload(furn_data)           # spoustece zahazuji jen zrlib / zr_stavby; po uprave furn_data.py jinak bezi stara verze
 
 # ------------------------------------------------------------------ nastaveni
 MODE = "build"
@@ -221,6 +222,8 @@ def capture_edits():
         name = grp["name"]
         if ONLY and name not in ONLY: continue
         stones = {s.id: s for s in _stones(R, grp, ctx)}
+        if stones and not any(k in level for k in stones):          # skupina neni v levelu postavena: nic neukladat
+            unreal.log_warning("Vybaveni: skupina %s nema v levelu zadny actor - preskocena (nejdriv build)." % name); continue
         for it in list(grp["items"]):
             if it.get("removed"): continue
             sid = "%s|%s" % (name, it["id"]); s = stones.get(sid)

@@ -11,17 +11,17 @@ Rozmisťování vybavení (06, přenosné props) má vlastní roli **furnisher**
 | Složka | Co v ní je |
 |---|---|
 | `C:\Users\JDr\GitHub\skvt_projekt\PrototypeDesigns\Lapikus` | **hlavní složka** (od 14. 11. 2026): skripty, data, meshe, dokumentace, náhledy, **skutečný stav levelu**. Odtud se skripty spouštějí v UE. Od 15. 11. 2026 tu jsou i instrukce pro agenty (`AGENT_*.md` v kořeni) a návrhy (`new_designs\navrh_*`). |
-| `C:\Users\JDr\GitHub\GameDesign\Claude outputs\Lapikus` | kopie: instrukce pro agenty (`AGENT_*.md`), návrhy (`navrh_*` v kořeni), starší kopie skriptů a dat. Nové soubory `zrlib\pipeline.py`, `build_normal.py` a `build_fullscope.py` tu nejsou, takže kopie skriptů 05 a spouštěčů odsud nepoběží. |
+| `C:\Users\JDr\GitHub\GameDesign\Claude outputs\Lapikus` | archiv: starší kopie dokumentů a skriptů. **Neaktualizuje se a nic nového se sem nepřidává** (od 17. 11. 2026). |
 
 Pravidla:
 1. **Změny ukládej rovnou do skriptů a dat**, pokud se přístup ještě neprobírá. Když je to otázka nebo diskuse, nejdřív odpověz nebo navrhni a ukládej až po dohodě.
-2. **Ukládej do `skvt_projekt`.** Do `GameDesign` nepřidávej nové soubory (skripty, data, meshe, nové dokumenty). Soubory, které už v `GameDesign` jsou, pro jistotu aktualizuj stejným obsahem. To platí i pro instrukce pro agenty (`AGENT_*.md`) a návrhy (`new_designs\navrh_*.md` → `GameDesign\...\Lapikus\navrh_*.md`): upravuj je v `skvt_projekt` a existující kopii v `GameDesign` přepiš stejným obsahem.
+2. **Ukládej jen do `skvt_projekt`.** Kopie v `GameDesign` se neaktualizují (archiv).
 3. **Nikdy nepřepisuj `manual_edits.json` ani `constructions_edits.json`; `06_furnishing/furnishing.json` generuj jen přes `gen_furnishing.py` (slučuje, polohy z levelu nechá).** Jsou to ruční úpravy z levelu (u vybavení přímo v `furnishing.json`: `captured`, `removed`, `manual`). Zapisuje je jen Jirka skripty v UE (`MODE = "capture"`). Když testuješ práci s nimi, dělej to na kopii a ověř, že originál zůstal stejný.
 4. **Před přepsáním porovnej** soubor na disku s poslední verzí, kterou jsi tam uložil (md5). Když se liší, mohl ho Jirka upravit: načti ho, porovnej rozdíl a změny slouč. Nikdy je nepřepisuj naslepo. **Nad stejnou složkou může souběžně pracovat jiná relace** (jiná stavba). Pracuj proto v kopii, md5 výchozích souborů si ulož na začátku a před uložením je porovnej. Když se soubor mezitím změnil, vezmi aktuální verzi a své změny do ní vlož znovu (jako nahrazení textu), `constructions.json` vygeneruj znovu a spusť kontroly všech dotčených staveb (`KNOWHOW_hrad.md` kap. 5.6). Totéž platí pro dokumenty v projektu: před zápisem je načti znovu.
-5. Po uložení ověř md5 (u souborů, které jsou v obou složkách, v obou).
+5. Po uložení ověř md5.
 6. Mazání souborů jen na výslovný pokyn. Přesuny dělej s `mv -n` a pak ověř, že se nic nepřepsalo.
 
-Cloudový workspace má kopii stromu, ve které se dá generovat a testovat. Výsledky se pak kopírují do `skvt_projekt` (a existující kopie v `GameDesign` se aktualizují). Když počítač není dostupný, ulož výsledek do výstupů v chatu a řekni to (případně zip se změněnými soubory k rozbalení do kořene).
+Cloudový workspace má kopii stromu, ve které se dá generovat a testovat. Výsledky se pak kopírují do `skvt_projekt`. Když počítač není dostupný, ulož výsledek do výstupů v chatu a řekni to (případně zip se změněnými soubory k rozbalení do kořene).
 
 ## 2. Zřícenina (03), dostavby (05) a vybavení (06) jsou oddělené
 
@@ -125,7 +125,7 @@ Tagy actorů v levelu: zřícenina `cast:<Část>` a `zed:<Zeď>`, dostavby `sta
    - `Zricenina_03_ruin_stav.md`, a ten ulož i do projektu (`claude/Zricenina_03_ruin_stav.md`);
    - u změn, které mění popis hradu, i `AGENT_GameDesign_hrad.md` a `AGENT_Architekt_hrad.md`;
    - po postavení stavby z návrhu uprav stav v hlavičce `new_designs/navrh_*.md` a v `CHECKLIST_assets_navrhy.md`.
-7. **Uložení** podle kap. 1 (`skvt_projekt`, existující kopie v `GameDesign`).
+7. **Uložení** podle kap. 1 (`skvt_projekt`).
 8. **Hlášení Jirkovi:**
    - co se změnilo a proč;
    - co se ověřilo a co ne (v UE jsi nic nespouštěl);
@@ -143,7 +143,7 @@ Tagy actorů v levelu: zřícenina `cast:<Část>` a `zed:<Zeď>`, dostavby `sta
 | dům v paláci (`palac_spec.py` → `obydli`); etapy: stavba se `stage` v datech → actory po sadách `base` / `final` / `site` (tag `stage:<sada>`) | **celý dům: `05_constructions/stavby/Palac_Obydli.py`** (seznam `STAVBY`, novou část do něj přidej; `SUT`); jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Ohniste.py`, pak `Sut.py`. Po změně průchodů (`D_PASS`, `Palac_S` v `gen_layout.py`) nejdřív `gen_layout.py` a `03_ruin/blocks/casti/Palac.py`. |
 | kovárna v paláci (`palac_spec.py`, `gen_constructions.py` → `palac`) | **celá kovárna: `05_constructions/stavby/Palac_Kovarna.py`** (pořadí, suť a vybavení z 06 řeší sám; `RUIN = True` = i část `Palac`). Jednotlivě: `Palac_Kovarna_Pristresek.py`, pak `Palac_Kovarna_Vyhen.py` (výměny u komína berou výšku z krokví), `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py` (žlab bere výšku z okapové hrany krytiny), `Palac_Kovarna_Kul.py`, `Sut.py`; vybavení `06_furnishing/vybaveni/Palac_Kovarna.py`. Když se změní kapsa pro východní pozednici, zanoření `Palac_J` (`J_SINK`) nebo rozebrání koruny u věže (`J_BREACH`): `gen_layout.py`, `03_ruin/blocks/casti/Palac.py` a až pak stavby a `Sut.py` (nebo `Palac_Kovarna.py` s `RUIN = True`). |
 | nový nebo změněný mesh, prop, textura | `gen_meshes.py` / `gen_textures.py` mimo UE, zvednout verzi (`STONE_MESH_VERSION`, `TEX_VERSION`); doimportuje je kterýkoli build. Kontrola vzhledu: `tools/meshes/Ukazka_Meshe.py` |
-| všechno | `build_normal.py` (kořen): celý hrad a po něm všechny stavby. Totéž co `build_ruin_blocks.py`, pak `build_constructions.py` |
+| všechno | `build_normal.py` (kořen): celý hrad, po něm všechny stavby a vybavení (`VYBAVENI`, `CAPTURE_VYBAVENI`). Totéž co `build_ruin_blocks.py`, pak `build_constructions.py` |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py` (kořen): smaže generované actory a meshe `SM_Ruin*`, textury a meshe naimportuje znovu a vše postaví. `MATERIALY = True` smaže i generované materiály (ruční ladění se ztratí). Po běhu nepoužívat Undo. |
 
 Ruční úpravy v levelu ukládá Jirka přes `MODE = "capture"` ve stejném skriptu, a to vždy **před** dalším generováním. Ručně upravené vybavení (06) ukládá spouštěč skupiny `06_furnishing/vybaveni/<Skupina>.py` (`capture` zapíše polohy přímo do `furnishing.json`; `list` vypíše posuny proti specu, `reset` vrátí kusy na spec). Podrobně `AGENT_Furnisher_hrad.md`.

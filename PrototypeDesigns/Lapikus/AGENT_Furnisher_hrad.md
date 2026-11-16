@@ -11,11 +11,11 @@ Stavby (05), zříceninu (03) a knihovní meshe dělá **stavitel** (`AGENT_Stav
 | Složka | Co v ní je |
 |---|---|
 | `C:\Users\JDr\GitHub\skvt_projekt\PrototypeDesigns\Lapikus` | **hlavní složka**: skripty, data, dokumentace, skutečný stav levelu. Vybavení je v `06_furnishing`, specy v `tools/ruin/*_spec.py`, generátor v `tools/furnishing/`. |
-| `C:\Users\JDr\GitHub\GameDesign\Claude outputs\Lapikus` | kopie dokumentů a starší kopie skriptů. **Žádné soubory 06 tu nejsou a nepřidávají se.** |
+| `C:\Users\JDr\GitHub\GameDesign\Claude outputs\Lapikus` | archiv: starší kopie dokumentů a skriptů. **Neaktualizuje se a nic nového se sem nepřidává** (od 17. 11. 2026). |
 
 Pravidla:
 1. **Změny ukládej rovnou do specu a dat**, pokud se přístup ještě neprobírá. Otázka nebo diskuse = nejdřív odpověz nebo navrhni, ukládej až po dohodě.
-2. **Ukládej do `skvt_projekt`.** Do `GameDesign` nepřidávej nové soubory; existující kopie (návrhy `navrh_*.md`, `AGENT_*.md`, `CHECKLIST_assets_navrhy.md`, `README_PROJEKT.md`) přepiš stejným obsahem.
+2. **Ukládej jen do `skvt_projekt`.** Kopie v `GameDesign` se neaktualizují (archiv).
 3. **`06_furnishing/furnishing.json` je jediný zdroj poloh vybavení** a obsahuje i Jirkovy ruční úpravy z levelu (kap. 4). Generuj ho **jen přes `tools/furnishing/gen_furnishing.py`** (slučuje, polohy z levelu nechá). Nikdy ho nepřepisuj vlastním skriptem a nemaž z něj kusy s příznakem `captured`, `removed` nebo `manual` bez Jirkova souhlasu. `manual_edits.json` (03) a `constructions_edits.json` (05) nepřepisuj vůbec.
 4. **Před zápisem porovnej md5.** Na začátku si ulož md5 souborů, které budeš měnit (hlavně `furnishing.json`, `palac_spec.py` a jiné specy, `gen_furnishing.py`, `run_checks.py`). Jirka mezitím může v UE spustit capture (zapisuje do `furnishing.json`) a souběžně může pracovat jiná relace (`KNOWHOW_hrad.md` kap. 5.6). Když se soubor změnil, vezmi aktuální verzi, své změny do ní vlož znovu (nahrazením textu, ne přepsáním celého souboru) a data vygeneruj znovu.
 5. Po uložení ověř md5 a spusť kontroly (kap. 7).
@@ -87,7 +87,7 @@ Polohové klíče (`furn_data.POSE_KEYS`): `a`, `c`, `z`, `zc`, `x`, `pitch`, `r
    - **Natočení:** `x` = směr lokální osy X v rámu; lokální Y je X otočená v UE o +90°. V rámu paláce (levotočivý vůči `s`, `n`): X = +s → Y = −n, X = −n → Y = −s. Svisle zavěšené nářadí `pitch` 90, kladivo `roll` −90; ve specu piš hodnotu výpočtu, `roll` se do UE obrací sám (kap. 5.1 KNOWHOW).
    - Kus u zdi nech od líce aspoň 3,5 cm (líc vystupuje 1–3 cm, `KNOWHOW_hrad.md` kap. 5.5).
 4. **Skupina v generátoru:** záznam v `tools/furnishing/gen_furnishing.py` (`name` `<Stavba>_Vybaveni`, `folder` `Vybaveni/<Cast>/<Mistnost>`, rám ze specu, `roof`, když něco visí z krokví). Vygeneruj: `python tools/furnishing/gen_furnishing.py`.
-5. **Spouštěč:** `06_furnishing/vybaveni/<Skupina>.py` jako kopie `Palac_Kovarna.py`, jiný seznam `SKUPINY` a popis. Když má stavba souhrnný spouštěč v 05 (`Palac_Obydli.py`, `Brana_Straz.py`), přidej do něj `VYBAVENI` podle `05_constructions/stavby/Palac_Kovarna.py` (vybavení se staví až po stavbách, bere z nich výšky).
+5. **Spouštěče:** `06_furnishing/vybaveni/<Skupina>.py` jako kopie `Palac_Kovarna.py` a ukládací `<Skupina>_Capture.py` jako kopie `Palac_Kovarna_Capture.py`, jiný seznam `SKUPINY` a popis. Když má stavba souhrnný spouštěč v 05 (`Palac_Obydli.py`, `Brana_Straz.py`), přidej do něj `VYBAVENI` podle `05_constructions/stavby/Palac_Kovarna.py` (vybavení se staví až po stavbách, bere z nich výšky).
 6. **Kontroly** (kap. 7): průniky se zříceninou, se stavbami a mezi sebou, průchody, funkční vzdálenosti, kusy na zemi nebo na čem stojí. Záměrné dotyky vyjmi jmenovitě a ověř přesným bodem.
 7. **Náhled** `preview3d.py` (props jsou jen kvádry); když jde o vzhled, ukaž ho Jirkovi.
 8. **Dokumentace** (kap. 9) a hlášení (kap. 8).
@@ -108,9 +108,10 @@ Polohové klíče (`furn_data.POSE_KEYS`): `a`, `c`, `z`, `zc`, `x`, `pitch`, `r
 | jedna skupina vybavení | `06_furnishing/vybaveni/<Skupina>.py` (`MODE = "build"`) |
 | stavba včetně svého vybavení | souhrnný spouštěč stavby v 05, např. `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
 | všechno vybavení | `06_furnishing/build_furnishing.py` |
-| celý hrad | `build_normal.py` (aditivně); `build_fullscope.py` jen při poškozených assetech |
+| uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` (skupiny bez actorů v levelu přeskočí) |
+| celý hrad | `build_normal.py` (aditivně); `build_fullscope.py` jen při poškozených assetech. Oba mají `VYBAVENI` (stavět vybavení) a `CAPTURE_VYBAVENI` (před buildem uložit úpravy z levelu, jen když se neměnily meshe props) |
 | nový mesh propu (od stavitele) | kterýkoli build ho doimportuje; vzhled `tools/meshes/Ukazka_Meshe.py` |
-| uložit ruční úpravy | spouštěč skupiny s `MODE = "capture"`: posun, otočení, Scale, smazání, kopie (Alt+tah) → přímo do `furnishing.json` (záloha `.bak`) |
+| uložit ruční úpravy | `06_furnishing/vybaveni/<Skupina>_Capture.py` (kovárna `Palac_Kovarna_Capture.py`) nebo spouštěč skupiny s `MODE = "capture"`: posun, otočení, Scale, smazání, kopie (Alt+tah) → přímo do `furnishing.json` (záloha `.bak`) |
 | přehled úprav | `MODE = "list"` (nebo mimo UE `python 06_furnishing/build_furnishing.py list`) |
 | vrátit na spec | `MODE = "reset"`, `ITEMS = ["Kus", ...]` (i s kopiemi), pak znovu `build` |
 
@@ -150,8 +151,7 @@ Obecné pasti jsou v **`KNOWHOW_hrad.md`** (kap. 5, nové tam zapisuj). Pro vyba
   - `FURNISHING.md` (tabulka skupin, stav, kandidáti);
   - `06_furnishing/README_furnishing.md` (skupina: kusy, polohy, kontroly, spouštěč);
   - `CHECKLIST_assets_navrhy.md` kap. 6 (meshe props: hotové / chybí) a stav v hlavičce `new_designs/navrh_*.md`;
-  - `KNOWHOW_hrad.md`: nová past nebo rozhodnutí (jeden bod s datem);
-  - kopie existujících dokumentů v `GameDesign` (kap. 1).
+  - `KNOWHOW_hrad.md`: nová past nebo rozhodnutí (jeden bod s datem).
 - Požadavky na stavitele (nový mesh, úprava stavby, etapy pro vybavení) zapiš do `CHECKLIST_assets_navrhy.md` a uveď v hlášení.
 - **Hlášení Jirkovi:**
   - výsledek (skupina, počet kusů, co se změnilo a proč);
