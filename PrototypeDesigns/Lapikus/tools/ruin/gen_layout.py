@@ -215,6 +215,12 @@ for name, ed in palac_ruin_edits(walls).items():
     for w in walls:
         if w["name"] == name:
             for key, val in ed.items(): w[key] = (list(w.get(key, [])) + val) if isinstance(val, list) else val   # kapsa az za puvodni otvory
+# --- strazni stanoviste nad branami: kapsy pro tramy podesty v Brana_V (rozmery sdili tools/ruin/brana_spec.py s 05)
+from brana_spec import ruin_edits as brana_ruin_edits
+for name, ed in brana_ruin_edits(walls).items():
+    for w in walls:
+        if w["name"] == name:
+            for key, val in ed.items(): w[key] = (list(w.get(key, [])) + val) if isinstance(val, list) else val
 out = dict(version=1, units="UE cm (pozice), m (s, vysky)", plateau_z_cm=D["plateau_z_cm"],
            params=dict(WEATHER=0.9, ROBBING=4.75, REACH=8.0, ACCESS_BOOST=0.3, ACCESS_RADIUS=6.0,
                        FRAME_REACH=2.5, CORNER_STRENGTH=0.2, COLUMN=0.5, COURSE=0.3, RUBBLE_FACTOR=0.25, SEED=1,

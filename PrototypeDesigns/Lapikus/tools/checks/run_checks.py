@@ -453,17 +453,120 @@ def check_obydli(S):
     return ok
 
 
+def check_brana(S):
+    """strazni stanoviste nad branami (Brana_Straz_*): tramy v kapsach Brana_V a na vyrovnane korune Brana_J, podesta, zabradli;
+    kriteria z new_designs/navrh_brana_straz.md, vysky absolutne (tools/ruin/brana_spec.py)"""
+    groups, walls = S["groups"], S["walls"]
+    ad = next((a for a in S["data"].get("addons", []) if a["name"] == "Brana_Straz_Podesta"), None)
+    if not ad or "Brana_Straz_Podesta" not in groups: print("brana: Brana_Straz_Podesta neni v datech"); return False
+    ok = True
+    def rep(txt, good):
+        nonlocal ok
+        print("brana: %-70s %s" % (txt, "OK" if good else "CHYBA")); ok &= bool(good)
+    sys.path.insert(0, os.path.join(common.ROOT, "05_constructions")); from zr_stavby.zdivo import frame_box
+    from zr_stavby.podesta import deck_top
+    sys.path.insert(0, os.path.join(common.ROOT, "tools", "ruin")); import brana_spec
+    F = brana_spec.frame(S["layout"]["walls"]); O, U, V = ad["origin"], ad["u"], ad["v"]; fb = lambda s: frame_box(s, O, U, V)
+    ruin = [s for n, w in walls.items() if n.startswith("Brana") or n.startswith("Hradba_V") for s in w["stones"] + w.get("loose", [])]
+    pg = groups["Brana_Straz_Podesta"]; pod = pg["stones"] + pg["loose"]
+    kg = groups.get("Brana_Straz_Kamen", {}); kam = kg.get("stones", []) + kg.get("loose", [])
+    beams = [s for s in pod if "|B" in s.id]; planks = [s for s in pod if "|P" in s.id]; rails = [s for s in pod if "|Z" in s.id]
+    z = ad["z"]; zt = deck_top(ad)
+    c = common.collisions(pod + kam, ruin, 1.5)
+    rep("podesta a vyrovnani x zricenina: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+    onwall = [s for s in beams if fb(s)[1] < F["face_v"]]                 # tram lezici na korune Brana_S (nesaha do Brana_V)
+    pocket = [s for s in beams if s not in onwall]
+    bad = [s.id for s in pocket if fb(s)[1] < F["face_v"] + 0.25 or fb(s)[1] > F["face_v"] + 0.38]
+    rep("tramy: %d v kapsach Brana_V (ulozeni 0.25-0.38 m), %d na korune Brana_S %s" % (len(pocket), len(onwall), bad),
+        not bad and len(beams) == len(ad["beams"]["pos"]))
+    sl = [(fb(k), k.z + k.sz / 2) for k in kam if "|S|" in k.id] + [(fb(k), k.z + k.sz / 2) for k in walls["Brana_S"]["stones"]]
+    gapw = []
+    for s in onwall:
+        b = fb(s); cc = (b[2] + b[3]) / 2; n_ = m_ = 0
+        for i in range(int((b[1] - b[0]) / 0.2)):
+            a_ = b[0] + 0.1 + i * 0.2; n_ += 1
+            m_ += any(q[0] - 0.03 <= a_ <= q[1] + 0.03 and q[2] - 0.05 <= cc <= q[3] + 0.05 and z - 4 <= t <= z + 2 for (q, t) in sl)
+        if m_ < n_ * 0.8: gapw.append((s.id, m_, n_))
+    rep("tram na korune Brana_S lezi na kameni na 80+ %% delky %s" % gapw, not gapw)
+    # nad a pod kapsou je kamen vnitrniho lice Brana_V (tram nelezi ve vzduchu ani v dire po celou vysku zdi)
+    face = [(fb(s), s.z - s.sz / 2, s.z + s.sz / 2) for s in walls["Brana_V"]["stones"] + [k for k in kam if "|V|" in k.id]
+            if s.cat in ("face", "frame", "crown") and fb(s)[0] < F["face_v"] + 0.3]
+    bad = []
+    for s in pocket:
+        cc = (fb(s)[2] + fb(s)[3]) / 2
+        under = max([t for (b, lo, t) in face if b[2] - 0.05 <= cc <= b[3] + 0.05 and t <= z + 2] + [0])
+        if z - under > 4: bad.append((s.id, round(z - under)))
+    rep("pod kazdym tramem je v Brana_V kamen lice nebo podlozeni (mezera cm) %s" % bad, not bad)
+    lv = [(fb(s), s.z + s.sz / 2) for s in kam] + [(fb(s), s.z + s.sz / 2) for s in walls["Brana_J"]["stones"]]
+    bad = []
+    for s in beams:
+        cc = (fb(s)[2] + fb(s)[3]) / 2
+        tops = [t for (b, t) in lv if b[2] - 0.03 <= cc <= b[3] + 0.03 and b[1] > 0.2 and b[0] < 0.65 and t <= z + 2]
+        if not tops or z - max(tops) > 4: bad.append((s.id, round(z - max(tops)) if tops else None))
+    rep("zapadni konec kazdeho tramu lezi na vyrovnane korune Brana_J (mezera cm) %s" % bad, not bad)
+    tops = [s.z + s.sz / 2 for s in planks]
+    rep("podlaha vodorovna, vrch Z %.0f (prken %d)" % (zt, len(planks)), tops and max(abs(t - zt) for t in tops) < 0.5)
+    (a0, a1), (c0, c1) = ad["planks"]["a"], ad["planks"]["c"]; miss = n_all = 0
+    pb = [fb(s) for s in planks]
+    for i in range(int((a1 - a0) / 0.1)):
+        for j in range(int((c1 - c0 - 0.1) / 0.2)):
+            a_, c_ = a0 + 0.05 + i * 0.1, c0 + 0.1 + j * 0.2; n_all += 1
+            miss += not any(b[0] - 0.012 <= a_ <= b[1] + 0.012 and b[2] - 0.012 <= c_ <= b[3] + 0.012 for b in pb)   # spary do 2,4 cm nevadi
+    rep("prkna pokryvaji podestu %.1f x %.1f m (mezer %d z %d bodu)" % (a1 - a0, c1 - c0, miss, n_all), miss <= n_all * 0.005)
+    low = [s.id for s in pod + kam if "|Z" not in s.id and s.z - s.sz / 2 < brana_spec.B_LEVEL["bottom"] - 1]
+    rep("prujezd pod podestou volny (nic pod Z %.0f)" % brana_spec.B_LEVEL["bottom"], not low)
+    arch = max(s.z + s.sz / 2 for n in ("Brana_V", "Brana_J") for s in walls[n]["stones"] if s.cat == "frame")
+    rep("spodek tramu Z %.0f je nad oblouky bran (vrch Z %.0f)" % (z, arch), z > arch + 1.5)
+    rl = ad.get("rail"); posts = [s for s in rails if "|S" in s.id]
+    if ad.get("rails"):
+        rep("zabradli: %d sloupku, vrch %.2f m nad podlahou, sada %s" % (len(posts), rl["h"], sorted(set(str(s.stage) for s in rails))),
+            posts and all(abs(s.z + s.sx / 2 - (zt + rl["h"] * 100)) < 3 for s in posts) and all(s.stage == "final" for s in rails))
+    else: rep("zabradli do hradu se nestavi (v datech zadne)", not rails)
+    # kryty z kulatiny: kuly stoji na kameni koruny, mezery, vrch, pruzory
+    kd = next((a for a in S["data"].get("addons", []) if a["name"] == "Brana_Straz_Kryty"), None)
+    if kd:
+        kr = groups["Brana_Straz_Kryty"]["stones"] + groups["Brana_Straz_Kryty"]["loose"]
+        for ln in kd["lines"]:
+            st = sorted([s for s in kr if "|%s|K" % ln["id"] in s.id], key=lambda s: fb(s)[2] if ln["p0"][0] == ln["p1"][0] else fb(s)[0])
+            along = (lambda s: (fb(s)[2], fb(s)[3])) if ln["p0"][0] == ln["p1"][0] else (lambda s: (fb(s)[0], fb(s)[1]))
+            rb = [(fb(s), s.z + s.sz / 2) for n in ln["on"] for s in walls[n]["stones"]]
+            hang = []; fl = ln.get("floor")
+            for s in st:
+                b = fb(s); a_, c_ = (b[0] + b[1]) / 2, (b[2] + b[3]) / 2; foot = s.z - s.sx / 2
+                tops = [t for (q, t) in rb if q[0] - 0.08 <= a_ <= q[1] + 0.08 and q[2] - 0.08 <= c_ <= q[3] + 0.08] + ([fl] if fl is not None else [])
+                if not tops or foot > max(tops) + 1: hang.append(s.id)
+            gaps = [round(along(st[i + 1])[0] - along(st[i])[1], 3) for i in range(len(st) - 1)]
+            big = [g_ for g_ in gaps if g_ > 0.03]
+            full = [s for s in st if s.shape == "stake"]; slit = [s for s in st if s.shape != "stake"]
+            hts = [(s.z + s.sx / 2 - zt) / 100 for s in full]; want = (ln["top"] - zt) / 100
+            rep("kryt %s: %d kulu, vsechny stoji na kameni koruny nebo na podlaze %s" % (ln["id"], len(st), hang[:3]), st and not hang)
+            rep("kryt %s: vrch %.2f-%.2f m nad podlahou (ma byt %.2f), pruzoru %d (rovne seriznute), mezer nad 3 cm %d" % (
+                ln["id"], min(hts), max(hts), want, len(slit), len(big)),
+                abs(min(hts) - want) < 0.07 and abs(max(hts) - want) < 0.07 and len(slit) == len(ln.get("slits", [])) and not big)
+            rl_ = [s for s in kr if "|%s|R" % ln["id"] in s.id]
+            sb = min([q["bottom"] for q in ln.get("slits", [])] + [9e9])
+            c = common.collisions(rl_, ruin + pod, 2.0)
+            rep("kryt %s: rahna (%d) pod pruzory a mimo kameny a podestu %s" % (ln["id"], len(rl_), c[:2] if c else ""),
+                rl_ and not c and all(s.z + s.sz / 2 < sb - 1 for s in rl_))
+            rep("kryt %s: sada %s" % (ln["id"], sorted(set(str(s.stage) for s in st))), all(s.stage == ln.get("stage") for s in st))
+    for gname in ("Brana_Straz_Kamen", "Brana_Straz_Podesta"):
+        st = groups.get(gname, {}).get("stones", []) + groups.get(gname, {}).get("loose", [])
+        rep("%s: sady etap %s" % (gname, ", ".join(sorted(set(str(s.stage) for s in st)))), st and all(s.stage in ("base", "final", "site") for s in st))
+    return ok
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--layout"); ap.add_argument("--only")
     a = ap.parse_args()
-    only = a.only.split(",") if a.only else ["openings", "floating", "ostroh", "palac", "obydli"]
-    S = common.state(a.layout, with_constructions=bool({"ostroh", "palac", "obydli"} & set(only)))
+    only = a.only.split(",") if a.only else ["openings", "floating", "ostroh", "palac", "obydli", "brana"]
+    S = common.state(a.layout, with_constructions=bool({"ostroh", "palac", "obydli", "brana"} & set(only)))
     res = {}
     if "openings" in only: res["openings"] = check_openings(S)
     if "floating" in only: res["floating"] = check_floating(S)
     if "ostroh" in only: res["ostroh"] = check_ostroh(S)
     if "palac" in only: res["palac"] = check_palac(S)
     if "obydli" in only: res["obydli"] = check_obydli(S)
+    if "brana" in only: res["brana"] = check_brana(S)
     print("\nSOUHRN: " + ", ".join("%s %s" % (k, "OK" if v else "CHYBA") for k, v in res.items()))
     sys.exit(0 if all(res.values()) else 1)
 

@@ -16,12 +16,17 @@ def apply_plinth(wd):
 
 def apply_ref_z(wd, terr):
     """ref_z (absolutni cm, napr. podlaha veze): vysky otvoru (sill, splay floor/top) jsou zadane od ni,
-    ne od paty zdi -> prevedou se na vysky od mistni paty."""
+    ne od paty zdi -> prevedou se na vysky od mistni paty.
+    Otvor s z_abs (absolutni Z spodku v cm, napr. kapsa pro tram podesty nad branou): parapet se dopocita od mistni paty
+    vcetne z_offset zdi, nezavisle na ref_z a podstavbe."""
     ref = wd.get("ref_z")
-    if ref is None: return wd
+    if ref is None and not any("z_abs" in o for o in wd.get("openings", [])): return wd
     ops = []
     for o in wd.get("openings", []):
         zb = terr.z(*_pt_on(wd["points"], o["s"]))
+        if "z_abs" in o:
+            ops.append(dict(o, sill=(o["z_abs"] - zb) / 100 - wd.get("z_offset", 0.0))); continue
+        if ref is None: ops.append(o); continue
         o = dict(o, sill=(ref + o["sill"] * 100 - zb) / 100)
         if o.get("splay"):
             sp = o["splay"]; o["splay"] = dict(sp, floor=(ref + sp["floor"] * 100 - zb) / 100, top=(ref + sp["top"] * 100 - zb) / 100)

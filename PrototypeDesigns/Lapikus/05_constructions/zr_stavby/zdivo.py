@@ -5,7 +5,7 @@ pod nim (po 5 cm podel zdi: nejvyssi kamen zriceniny, kameny se v miste skoku de
 Data (constructions.json -> addons, generuje tools/constructions/gen_constructions.py z tools/ruin/palac_spec.py):
   origin, u, v   ram stavby (UE cm, jednotkove vektory), rozmery v m: a = podel u, c = podel v
   ref            bod (a, c), od jehoz terenu se pocitaji vysky
-  parts          [dict(id, a (a0, a1), c (c0, c1), top (vrch m nad terenem), gaps [(osa "a" / "c", od, do)] = mezery (dvere))]
+  parts          [dict(id, a (a0, a1), c (c0, c1), top (vrch m nad terenem) nebo top_abs (vrch absolutne, UE cm), bottom_abs (nejnizsi spodek absolutne: nad otvorem ve zdi), gaps [(osa "a" / "c", od, do)] = mezery (dvere))]
   stone          dict(len (min, max), course (min, max), joint, row (sirka jednoho kamene pres tloustku), sink (zapusteni do zeme))
   mortar         tloustka maltoveho jadra (m) v ose zdi: vyspraveni stare zdi - jadro jde od zeme az pod vrch pres nove
                  zdivo i pres zriceninu pod nim (jen uvnitr kamenu a ve sparach do 6 cm), takze zdi neprosvita
@@ -100,7 +100,8 @@ def build_stone_fill(ad, walls, terr):
         if x < p1: segs.append((x, p1))
         nq = max(1, int(round((q1 - q0) / roww))); qw = (q1 - q0) / nq
         zg = min(terr.z(*P(*( (p, (q0 + q1) / 2) if along_a else ((q0 + q1) / 2, p) ))) for p in (p0, (p0 + p1) / 2, p1))
-        zb = zg - sink * 100; ztop = z0 + pt["top"] * 100
+        zb = zg - sink * 100; ztop = pt["top_abs"] if "top_abs" in pt else z0 + pt["top"] * 100   # top_abs = absolutni Z (cm)
+        if "bottom_abs" in pt: zb = max(zb, pt["bottom_abs"])          # zdivo az od teto vysky (vyrovnani koruny nad otvorem, ne jeho zazdeni)
         rows = []; z = zb
         while z < ztop - 1:
             h = rng.uniform(cmin, cmax) * 100

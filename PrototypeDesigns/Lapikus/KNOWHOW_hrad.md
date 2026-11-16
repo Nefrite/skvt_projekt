@@ -62,7 +62,7 @@ Stav: 16. 11. 2026.
 | všechno | `build_normal.py`: hrad, pak stavby; assety jen doplňuje |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py`: smaže generované actory a meshe a postaví vše znovu; po běhu nepoužívat Undo |
 | kontrola vzhledu meshí a props | `tools/meshes/Ukazka_Meshe.py` |
-| uložení ručních úprav | stejný skript s `MODE = "capture"` |
+| uložení ručních úprav | stejný skript s `MODE = "capture"`; vybavení kovárny `Palac_Kovarna_Ulozit_Vybaveni.py` (i výpis `list` a zahození `reset`) |
 
 Podrobná tabulka podle druhu změny je v `AGENT_Stavitel_hrad.md`, kap. 5. Společná logika spouštění je v `zrlib/pipeline.py`.
 
@@ -158,6 +158,8 @@ Postup, který se osvědčil u poškozených bounds (15. 11. 2026):
 | 16. 11. 2026 | **dům posádky se staví po etapách** podle `navrh_palac_obydli_stred.md` kap. 0: tři sady actorů s anglickými jmény, přepnutí v Blueprintu podle tagu; dřevo surové v obou etapách (dehtování možná později); ohniště má v etapě 1 celý kamenný základ, studené; dveře a okenice otevřené; žebříky jen kulisa; sklep se neřeší; ladí se nejdřív hotový stav | hráč domem jen prochází, etapy dávají dojem času |
 | 16. 11. 2026 | nové zdivo na staré zdi (`stone_fill`) má maltové jádro v ose od země až pod vrch, i přes zříceninu pod ním | posádka by starou zeď vyspravila; zdí neprosvítá (stejně jako u `Ostroh_Dostavba`) |
 | 16. 11. 2026 | srub (`log_wall`): křížící stěny mají řady posunuté o půl řady (začínají a končí půltrámem), kulatina je o 1,2 cm tlustší než řada | nároží vypadá jako skutečný srub a zdí neprosvítá bez výplně spár |
+| 16. 11. 2026 | zkušební `ruin_layout.json` mimo `03_ruin/blocks` se počítá bez terénu z levelu (`terrain_from_level.json` leží vedle skutečného souboru): výšky zdí vyjdou až o 2 m jinak. Před stavbou na koruně zdi změř skutečné výšky ze stavu s terénem z levelu a návrh s nimi porovnej | návrh strážní podesty počítal s korunou `Brana_V` o 1,6–2 m níž, než je |
+| 16. 11. 2026 | stavby na zdech s různou patou (brána) mají výšky absolutně v UE cm: otvor 03 s `z_abs`, `stone_fill` s `top_abs` / `bottom_abs`, typ `platform` | terén v průjezdu je šikmý a `Brana_V` má podstavbu a `z_offset` |
 | 16. 11. 2026 | návrh domu měl sloup v ose příčky a komín v krokvi; před stavbou dřeva vždy porovnat polohy sloupů, krokví a komína s podezdívkami a mezi sebou | kolize se v textu návrhu nepozná, ukáže ji až výpočet |
 | 16. 11. 2026 | portál paláce je v západní (prázdné) místnosti, ve střední ho posádka rozebrala (hrubý průchod v `Palac_S` s = 16); `Palac_pricka_2` má severně od domu hrubý průchod ke kovárně | kámen šel na podezdívky domu; ze zápraží se dá projít ke kovárně |
 | 16. 11. 2026 | úprava 03 u komína domu a dozdívka koruny `Palac_J` odpadají | po zanoření zdi o 0,31 m je koruna u komína 4,4–4,8 m a všude nad krytinou |

@@ -1658,6 +1658,33 @@
      "w": 0.2,
      "sill": 4.6,
      "h": 1.0
+    },
+    {
+     "kind": "kapsa",
+     "s": 5.299,
+     "w": 0.32,
+     "sill": 0.0,
+     "h": 0.33,
+     "z_abs": 3552.0,
+     "_": "tram strazni podesty (brana_spec.py)"
+    },
+    {
+     "kind": "kapsa",
+     "s": 3.449,
+     "w": 0.32,
+     "sill": 0.0,
+     "h": 0.33,
+     "z_abs": 3552.0,
+     "_": "tram strazni podesty (brana_spec.py)"
+    },
+    {
+     "kind": "kapsa",
+     "s": 1.599,
+     "w": 0.32,
+     "sill": 0.0,
+     "h": 0.33,
+     "z_abs": 3552.0,
+     "_": "tram strazni podesty (brana_spec.py)"
     }
    ],
    "protect": [
@@ -1682,7 +1709,14 @@
     "kapsa_most",
     "retezy"
    ],
-   "rubble": "out"
+   "rubble": "out",
+   "cap": [
+    {
+     "s0": 5.849,
+     "s1": 8.099,
+     "z": 3618.0
+    }
+   ]
   },
   {
    "name": "Brana_S",

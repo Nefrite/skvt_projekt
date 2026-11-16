@@ -17,6 +17,7 @@ sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..")))          # 
 from tower_spec import VEZ_F, VEZ_ST, spec as tower_spec
 from ostroh_spec import spec as ostroh_spec
 from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_vybaveni, obydli as obydli_spec
+from brana_spec import straz as straz_spec
 from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, project_s, point_at
 
 # --- uzavreni obytne casti u ostrohu (05, zricenina se nemeni): jednoradove kamenne dostavby na korunach zdi az pod strechu
@@ -365,12 +366,39 @@ def palac(LAY):
     return [pristresek, krov], [vyhen, stena, okap, vybaveni, kamen, ohniste, srub]
 
 
+def brana(LAY):
+    """strazni stanoviste nad branami (ram brany: u podel Brana_S k vychodu, d k jihu; rozmery v brana_spec.py, vysky absolutne
+    v UE cm) -> addons. Etapy: podesta stoji uz v etape 1 (base), zabradli az v etape 2 (final)."""
+    B = straz_spec(LAY["walls"]); F = B["frame"]; base = dict(folder="Stavby/Brana", origin=F["origin"], u=F["u"], v=F["d"])
+    LV = B["level"]
+    kamen = dict(name="Brana_Straz_Kamen", type="stone_fill", stage="base", **base,
+                 ref=[round(sum(LV["u"]) / 2, 3), round(sum(LV["d"]) / 2, 3)],
+                 parts=[dict(id="J", a=list(LV["u"]), c=list(LV["d"]), top_abs=B["beam_z"], bottom_abs=LV["bottom"]),
+                        dict(id="S", a=list(B["level_s"]["u"]), c=list(B["level_s"]["d"]), top_abs=B["beam_z"], bottom_abs=B["level_s"]["bottom"]),   # pod tramem na Brana_S
+                        dict(id="V", a=list(B["level_v"]["u"]), c=list(B["level_v"]["d"]), top_abs=B["beam_z"], bottom_abs=B["level_v"]["bottom"])],   # podlozeni tramu v lici Brana_V     # vyrovnani koruny Brana_J pod tramy
+                 stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), course=(LAY["params"]["COURSE_MIN"], LAY["params"]["COURSE_MAX"]),
+                            joint=LAY["params"]["JOINT"], row=0.45, sink=0.0))
+    BM = B["beam"]; DK = B["deck"]; RL = B["rail"]
+    podesta = dict(name="Brana_Straz_Podesta", type="platform", stage="base", **base, z=B["beam_z"],
+                   beams=dict(d=BM["d"], pos=[BM["wall"]["d"]] + list(BM["pos"]), a=list(BM["u"]), bark=False,       # loupana kulatina: vychod v kapsach Brana_V
+                              spans=[list(BM["wall"]["u"])] + [None] * len(BM["pos"])),                 # prvni tram lezi na korune Brana_S
+                   planks=dict(t=DK["t"], w=list(DK["w"]), gap=DK["gap"], a=list(DK["u"]), c=list(DK["d"])),
+                   rail=dict(h=RL["h"], post_d=RL["post_d"], post_step=RL["post_step"], rail_d=RL["rail_d"], levels=list(RL["levels"]),
+                             stage="final"),
+                   rails=B["rails"], finish=dict(beams="raw", planks="raw", rails="raw"))   # rails prazdne: zabradli do hradu se nestavi
+    kryty = dict(name="Brana_Straz_Kryty", type="palisade", stage="base", **base,
+                 lines=B["covers"],                                           # vychodni (base), severni a jizni (final)
+                 finish=dict(stakes="raw", rails="raw"))
+    return [kamen, podesta, kryty]
+
+
 if __name__ == "__main__":
     D = json.load(open(sys.argv[1]))
     LAY = json.load(open(sys.argv[3] if len(sys.argv) > 3 else os.path.join(HERE, "..", "..", "03_ruin", "blocks", "ruin_layout.json")))
     floors = tower_floors(D)
     frames, addons = ostroh(LAY)
     p_frames, p_addons = palac(LAY); frames += p_frames; addons += p_addons
+    addons += brana(LAY)
     out = dict(version=1, units="UE cm (pozice), m (rozmery v ramu veze)",
                note="Drevene vestavby a sut. Zricenina (zdi, kapsy, dlazba) je v 03_ruin/blocks/ruin_layout.json.",
                rubble=dict(enabled=True, folder="Stavby/Sut"),

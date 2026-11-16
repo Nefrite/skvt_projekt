@@ -9,7 +9,7 @@ Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro n
 | `navrh_vez_pristresek.md` | vybraná varianta B, průlomy `Vez_J` + `Vez_V` | 1 i 2 |
 | `navrh_palac_obydli_stred.md` (+ `_etapa1.png`) | dům v prostřední místnosti; **staví se** (16. 11. 2026: plán po etapách v kap. 0, kamenné části hotové) | 1 = rozestavěno, 2 = hotovo |
 | `navrh_palac_kovarna.md` | vybraný návrh, **staví se** (15. 11. 2026: úprava 03, kostra přístřešku a výheň v koutě hotové; přehled v kap. 0 návrhu) | 1 i 2 |
-| `navrh_brana_straz.md` | návrh | otevřené |
+| `navrh_brana_straz.md` | rozestavěno (podesta 16. 11. 2026, kap. 0) | otevřené |
 | `navrh_nadvori_stan.md` | **možná bude**, v seznamu se drží | jen 1 |
 
 **Rozhodnuto (Jirka, 14. 11. 2026):**
@@ -255,7 +255,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ◐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen`. **Hotovo 15. 11. 2026:** `zr_stavby/ohniste.py`, postavená `Palac_Kovarna_Vyhen` (stůl, maz, ohniště, zídka s otvorem pro výfučnu, dymník na závěsných tyčích, komín, výměny). Chybí žhavé uhlí, saze, oheň. Ověřeno v UE (15. 11. 2026). **16. 11. 2026:** pec s nístějí pro dům (`dome` s novým meshem `SM_RuinOvenDome`, `boxes`, `flue`, zídky na stole; poklop ústí `SM_RuinOvenDoor` a plotna jako samostatné actory), neověřeno v UE. |
 | ◐ | `gutter` (žlab, vidlice, svod) | 🆕 | `Palac_Obydli_Okap`, `Palac_Kovarna_Okap`. **Hotovo 15. 11. 2026:** `zr_stavby/okap.py`: žlab pod okapovou hranou `pult_roof` se spádem, rozsochy (hlava `SM_RuinForkHead` na kůlu), sud jako samostatný actor; postavený `Palac_Kovarna_Okap`. Svod (pro dům) chybí. Neověřeno v UE. |
 | ☑ | `wattle_wall` | 🆕 | `Palac_Kovarna_Stena`. **Hotovo 15. 11. 2026:** `zr_stavby/stena.py`: dílce `SM_RuinWattlePanel` mezi sloupy (spodní pás mezi patními kameny), kůly na spojích. Neověřeno v UE. |
-| ☐ | `palisade` (kůly, ráhna, průzory) | 🆕 | `Brana_Straz_Kryty` |
+| ◐ | `palisade` (kůly, ráhna, průzory) | 🆕 | `Brana_Straz_Kryty`. **16. 11. 2026:** `zr_stavby/kryty.py`, postavené všechny tři kryty (východní `base`, severní a jižní `final`). |
 | ☐ | `bark_roof` | 🆕 | `Brana_Straz_Pristresek`, ⛺ `Nadvori_Stan_Striska` |
 | ☐ | `tent` | ⛺ 🆕 | `Nadvori_Stan` |
 | ☐ | strop s výměnou / trámy na koruně | ♻ rozšíření `tower_floor` | `Palac_Obydli_Strop`, `Brana_Straz_Podesta` |
@@ -268,7 +268,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 **Sdílené specy:**
 - ☐ `tools/ruin/tower_spec.py`: rozšířit o průlomy a přístřešek;
 - ◐ 🆕 `palac_spec.py`: dům, kovárna a `ETAPA`. Hotový rám paláce a přístřešek kovárny (15. 11. 2026); dům a `ETAPA` ne;
-- ☐ 🆕 `brana_spec.py`.
+- ☑ 🆕 `brana_spec.py` (16. 11. 2026: rám brány, podesta, kapsy v `Brana_V`).
 
 ---
 

@@ -80,7 +80,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Otevřené / další kroky
 
-- Provizorní hlídková konstrukce na `Brana_S` (05_constructions).
+- Provizorní hlídková konstrukce nad branami: rozestavěno, viz kapitola „Brána – strážní stanoviště“.
 - Most nebo rampa k 1. bráně, zbytky mostního pilíře v příkopu.
 - Náhledy na skutečném terénu: po buildu poslat `terrain_from_level.json`.
 - Nárožní kvádry na zlomech lomené hradby (prosvítá jádro).
@@ -125,7 +125,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - 05 `Palac_Kovarna_Okap` (typ `gutter`, `zr_stavby/okap.py`): loupaný žlab Ø 20 cm v s = 24,8; n = 0,72–6,8 se spádem 2,5 % k severu na třech rozsochách (n = 1,7 / 4,0 / 6,3; jižní 1 m od líce `Palac_J`, průchod ke střílně), sud na vodu pod jeho koncem (samostatný actor), svod se nedělá.
 - **Rozměry:** `tools/ruin/palac_spec.py` (rám paláce `s` / `n`, konstanty `K_*`, `J_SINK`, `J_BREACH`), data generuje `gen_layout.py` (03) a `tools/constructions/gen_constructions.py` → `palac` (05).
 - **Spuštění v UE:** celá kovárna `05_constructions/stavby/Palac_Kovarna.py` (s `RUIN = True` i část zříceniny `Palac`, se `SUT = True` i suť), jednotlivě `Palac_Kovarna_Pristresek.py`, `_Vyhen`, `_Stena`, `_Okap`, `_Vybaveni` a `Sut.py`. Úprava 03, kostra a výheň ověřené v UE (Jirka 15. 11. 2026); krytina, stěna, okap a vybavení jen mimo UE (`run_checks.py`, náhled `05_constructions/Stavby_palac_kovarna_nahled.png`).
-- **Vybavení (16. 11. 2026):** 05 `Palac_Kovarna_Vybaveni` (typ `props`, `zr_stavby/vybaveni.py`), samostatné actory: kovadlina na špalku (1,5 m před výhní), kalicí sud, hřebovnice na špalku, měchy s výfučnou v otvoru zídky a pákou na laně z krokve, šlapací brus se stoličkou, ponk, truhlík s uhlím a volným víkem, koš, lišta s nářadím a železné pruty u jižní zdi, zvenku pod přesahem kůl 1,5 m od `Palac_J` a hranice dřeva k okraji střechy. Suť v celé východní místnosti uklizená (`clear_poly`).
+- **Vybavení (16. 11. 2026):** 05 `Palac_Kovarna_Vybaveni` (typ `props`, `zr_stavby/vybaveni.py`), samostatné actory: kovadlina na špalku (1,5 m před výhní), kalicí sud, hřebovnice na špalku, měchy s výfučnou v otvoru zídky a pákou na laně z krokve, šlapací brus se stoličkou, ponk, truhlík s uhlím a volným víkem, koš, lišta s nářadím a železné pruty u jižní zdi, zvenku pod přesahem kůl 1,5 m od `Palac_J` a hranice dřeva k okraji střechy. Suť v celé východní místnosti uklizená (`clear_poly`). Ručně posunuté props ukládá `Palac_Kovarna_Ulozit_Vybaveni.py` (`capture`, `list`, `reset`).
 - **Zbývá:** ověření kroků 2–4 v UE; odloženo žhavé uhlí, oheň a kouř, udusaná hlína.
 
 ## Palác – dům posádky v prostřední místnosti (11/2026)
@@ -152,6 +152,15 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Okap domu:** spád k západu (od kovárny), sud pod západním koncem, svod se nedělá (Jirka 16. 11. 2026). Zatím nepostavený.
 - **Spuštění v UE:** po změně zříceniny nejdřív `03_ruin/blocks/casti/Palac.py`, pak celý dům `05_constructions/stavby/Palac_Obydli.py` (se `SUT = True` i suť), jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py` a `Sut.py`. Navázání kamene potvrzené v UE (Jirka 16. 11. 2026), krov a srub jen mimo UE (`run_checks.py --only obydli`, náhledy `05_constructions/Stavby_palac_obydli_nahled.png` a `Stavby_palac_obydli_nahled_etapa1.png`).
 - **Zbývá:** krytina a lemování (s prostupem komína), strop (se zavěšením dymníku), podlaha, okap, vybavení (dveře, okenice, zárubně), staveniště.
+
+## Brána – strážní stanoviště nad oblouky (11/2026)
+
+- **Návrh a stav:** `new_designs/navrh_brana_straz.md`, kap. 0 (platí přednostně). Rozměry `tools/ruin/brana_spec.py`, výšky absolutně v UE cm.
+- **Úprava zříceniny (03, část `Obvod`, 16. 11. 2026):** 3 kapsy pro trámy podesty ve vnitřním líci `Brana_V` (spodek Z 3552, řada nad obloukem brány; otvor s klíčem `z_abs` = absolutní výška spodku, `zr_ruin/prep.py`) a rozebrané SV nároží `Brana_V` (`cap`: v d < 0,75 jen řady pod Z 3618), aby kryt z kulatiny šel přes nároží. Ostatní zdi se nezměnily.
+- **Krok 1 hotový (16. 11. 2026):** 05 `Brana_Straz_Kamen` (vyrovnání koruny `Brana_J` na Z 3552, podložení trámů v líci `Brana_V`) a 05 `Brana_Straz_Podesta` (typ `platform`, `05_constructions/zr_stavby/podesta.py`): 3 trámy Ø 24 cm v kapsách a čtvrtý na vyrovnané koruně `Brana_S`, prkna od severního krytu (d = −0,55) po d = 5,25, vrch podlahy Z 3581. Zábradlí směrem do hradu se nestaví (bude tam výlez). Sada `base`.
+- **Krok 2 hotový (16. 11. 2026):** 05 `Brana_Straz_Kryty` (typ `palisade`, `05_constructions/zr_stavby/kryty.py`): východní kryt z 30 kůlů s kůrou na koruně `Brana_V`, vrch 1,8 m nad podlahou, 3 průzory s rovně seříznutým kůlem, sada `base`; severní kryt po celé délce u vnější hrany `Brana_S` (vrch 1,25 m, 3 průzory) a jižní kryt na okraji podesty ve východních dvou třetinách (vrch 1,8 m, 2 průzory), oba sada `final`. Ráhna zevnitř u spodu a těsně pod průzory, kůly zapuštěné 25 cm do koruny.
+- **Spuštění v UE:** `05_constructions/stavby/Brana_Straz.py` s `RUIN = True` (přestaví `Obvod` kvůli kapsám), jednotlivě `Brana_Straz_Kamen.py`, `Brana_Straz_Podesta.py`, `Brana_Straz_Kryty.py`. Ověřeno jen mimo UE (`run_checks.py --only brana`, náhledy `05_constructions/Stavby_brana_straz_nahled.png` a `Stavby_brana_straz_nahled_etapa1.png`). Podestu a východní kryt viděl Jirka v UE 16. 11. 2026, úpravy po jeho připomínkách ne.
+- **Zbývá:** přístřešek z kůry, zátaras, staveniště, výstup na podestu.
 
 ## Optimalizace do budoucna (zatím není potřeba)
 
