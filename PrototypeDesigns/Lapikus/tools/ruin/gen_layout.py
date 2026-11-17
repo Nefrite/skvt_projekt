@@ -162,7 +162,7 @@ wall("Vez_S", "Ruin/Vez", [T[2], T[3]], 24.0, 2.5, 0.3, seed=52, mid=0.95, **vez
               + [op("kapsa", DOOR_S + d, 0.3, VEZ_ST - VEZ_C, VEZ_C, outer=True) for d in (-TS["PORCH_BEAM_DS"], TS["PORCH_BEAM_DS"])]          # tramy podesty (05_constructions)
               + [
                op("prulom", 8.0, 1.6, 0, 7 * VEZ_C, ragged=0.35)],     # puvodni vstup v 1. patre; pozdeji vybourany pruchod z ulicky
-     breaches=[dict(s0=3.5, s1=7.5, floor=12)], rubble="in")
+     rubble="in")                       # skody z dobyvani (breaches, protect): tower_spec.ruin_edits (pokles k SV rohu misto tvaru U)
 wall("Vez_Z", "Ruin/Vez", [T[3], T[0]], 24.0, 2.5, 0.25, seed=53, mid=0.94, **vez_kw,
      openings=kapsy(lambda v: LT - v) + [okno(5.5, n) for n in (1, 2)],
      protect=[dict(s0=4.0, s1=7.0, min=11.6)], rubble="in")                                # zed nad oknem 2. patra zustane   # chranena strana: hradni okna pro svetlo
@@ -218,6 +218,13 @@ for name, ed in palac_ruin_edits(walls).items():
 # --- strazni stanoviste nad branami: kapsy pro tramy podesty v Brana_V (rozmery sdili tools/ruin/brana_spec.py s 05)
 from brana_spec import ruin_edits as brana_ruin_edits
 for name, ed in brana_ruin_edits(walls).items():
+    for w in walls:
+        if w["name"] == name:
+            for key, val in ed.items(): w[key] = (list(w.get(key, [])) + val) if isinstance(val, list) else val
+# --- vez: skody z dobyvani od vychodu a jihovychodu (prulomy Vez_V a Vez_J, vyssi stred Vez_Z, pokles Vez_S k SV rohu)
+#     rozmery sdili tools/ruin/tower_spec.py s pristreskem hlidky (05 Vez_Pristresek)
+from tower_spec import ruin_edits as tower_ruin_edits
+for name, ed in tower_ruin_edits().items():
     for w in walls:
         if w["name"] == name:
             for key, val in ed.items(): w[key] = (list(w.get(key, [])) + val) if isinstance(val, list) else val

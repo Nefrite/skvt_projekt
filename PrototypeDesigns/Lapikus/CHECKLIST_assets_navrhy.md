@@ -6,7 +6,7 @@ Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro n
 
 | Návrh | Stav | Etapa |
 |---|---|---|
-| `navrh_vez_pristresek.md` | vybraná varianta B, průlomy `Vez_J` + `Vez_V` | 1 i 2 |
+| `navrh_vez_pristresek.md` | **specifikace pro stavitele (17. 11. 2026)**, nepostaveno: varianta B, průlomy `Vez_J` + `Vez_V`, vyšší střed `Vez_Z`, plynulá `Vez_S` | 1 i 2 (sada `base`) |
 | `navrh_palac_obydli_stred.md` (+ `_etapa1.png`) | dům v prostřední místnosti; **staví se** (16. 11. 2026: plán po etapách v kap. 0, kamenné části hotové) | 1 = rozestavěno, 2 = hotovo |
 | `navrh_palac_kovarna.md` | vybraný návrh, **staví se** (15. 11. 2026: úprava 03, kostra přístřešku a výheň v koutě hotové; přehled v kap. 0 návrhu) | 1 i 2 |
 | `navrh_brana_straz.md` | rozestavěno (podesta 16. 11. 2026, kap. 0) | otevřené |
@@ -115,8 +115,8 @@ tools/meshes/
 
 | ☐ | Asset | Popis | Druh | Použití |
 |---|---|---|---|---|
-| ◐ | 🆕 plátno přístřešku | prověšená plocha mezi krokvovými tyčemi, oboustranná | na míru | `Vez_Pristresek` (6,2 × 4,7 m). **Generátor hotový:** `mesh_textile.make_canvas` (rohy, polohy tyčí, prověšení) + `write_canvas` → OBJ; ukázka `SM_RuinCanvasSample_A`. Napojení přijde s typem `canvas_shelter`. |
-| ◐ | 🆕 štít plátna | trojúhelník zavěšený na krajní tyči | na míru | `Vez_Pristresek` (nad `Vez_Z`); stejný `make_canvas` (zdegenerovaný čtyřúhelník), se stavbou |
+| ☑ | 🆕 plátno přístřešku | prověšená plocha mezi krokvovými tyčemi, oboustranná | na míru | `Vez_Pristresek` (6,0 × 4,66 m, rohy a `rafters` v návrhu kap. 4.3). **Generátor hotový:** `mesh_textile.make_canvas` (rohy, polohy tyčí, prověšení) + `write_canvas` → OBJ; ukázka `SM_RuinCanvasSample_A`. **Hotovo 17. 11. 2026:** `SM_RuinCanvasVez_A` (`mesh_textile.canvas_vez`, OBJ + `.json` se středem a rozměrem). |
+| ☑ | 🆕 štít plátna | trojúhelník zavěšený na krajní tyči | na míru | `Vez_Pristresek` (nad `Vez_Z`, spodní lem vodorovně v 11,55 m s tyčkou Ø 5 cm; návrh kap. 4.3); stejný `make_canvas` (zdegenerovaný čtyřúhelník); **hotovo 17. 11. 2026:** `SM_RuinCanvasVezGable_A` |
 | ☑ | 🆕 `SM_RuinRope_A–B` | článek lana 100 cm, Ø 1,5 cm, 3 prameny; prověšené lano = řetěz článků podél řetězovky (počítá stavba) | knihovní | bouřková lana věže, vazby hřebene, šňůry stanu ⛺ |
 | ☑ | 🆕 `SM_RuinLashing_A–B` | ovázání na křížení tyčí (zavity kolem tyče Ø 8 cm, škáluje se s tyčí) | knihovní | přivázání krokví, ráhen, vidlic |
 | ☑ | 🆕 `SM_RuinBarkStrip_A–C` | prohnutý pás kůry 160 × 70 cm, hrubá strana nahoru, roztřepené okraje, spodek světlé lýko | knihovní | přístřešek brány, stříška stanu ⛺ |
@@ -249,7 +249,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 
 | ☐ | Typ (pracovně) | Nový / rozšíření | Stavby |
 |---|---|---|---|
-| ☐ | `canvas_shelter` | 🆕 | `Vez_Pristresek` |
+| ☑ | `canvas_shelter` | 🆕 | `Vez_Pristresek` (`zr_stavby/pristresek.py`, hotovo 17. 11. 2026, neověřeno v UE; kontroly `run_checks.py --only vez`) |
 | ☑ | `pult_roof` (krytina stejné skladby jako `fan_roof`, vlastní kód) | 🆕 | `Palac_Obydli_Krov`, `Palac_Kovarna_Pristresek`. **Hotovo 15. 11. 2026:** sloupy na patních kamenech, pozednice, krokve (`zr_stavby/pult.py`), krytina s prostupem komína (latě, prkna, lišty) a lemování na stojato. Kostra ověřená v UE, krytina zatím ne. Pro dům (16. 11. 2026): dělené trámy se sadami etap, špalky pod vaznicí, podpora z jiné stavby, latě v kostře; `Palac_Obydli_Krov` bez krytiny, neověřeno v UE. |
 | ☑ | `log_wall` (srub, otvory, prkenné štíty) | 🆕 | `Palac_Obydli_Srub`. **Hotovo 16. 11. 2026:** `zr_stavby/srub.py`, řady se sadami etap, půltrámy pro střídání v nároží, štíty. Neověřeno v UE. |
 | ◐ | `hearth` (základ, zídka, dymník, komín) | 🆕 | `Palac_Obydli_Ohniste`, `Palac_Kovarna_Vyhen`. **Hotovo 15. 11. 2026:** `zr_stavby/ohniste.py`, postavená `Palac_Kovarna_Vyhen` (stůl, maz, ohniště, zídka s otvorem pro výfučnu, dymník na závěsných tyčích, komín, výměny). Chybí žhavé uhlí, saze, oheň. Ověřeno v UE (15. 11. 2026). **16. 11. 2026:** pec s nístějí pro dům (`dome` s novým meshem `SM_RuinOvenDome`, `boxes`, `flue`, zídky na stole; poklop ústí `SM_RuinOvenDoor` a plotna jako samostatné actory), neověřeno v UE. |
@@ -266,7 +266,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ◐ | rozmístění props (`loose`, seznam poloh z návrhů) | 🆕 | vybavení kovárny, domu, staveniště, stanu ⛺. **Hotovo 16. 11. 2026:** typ `props` (`zr_stavby/vybaveni.py`), vybavení odděleně v `06_furnishing` (`build_furnishing.py`, `furnishing.json` = data i polohy z levelu), rozmístěná kovárna (`Palac_Kovarna_Vybaveni`). |
 
 **Sdílené specy:**
-- ☐ `tools/ruin/tower_spec.py`: rozšířit o průlomy a přístřešek;
+- ☑ `tools/ruin/tower_spec.py`: průlomy (`ruin_edits()`) a přístřešek (`PR`, `pristresek()`), 17. 11. 2026;
 - ◐ 🆕 `palac_spec.py`: dům, kovárna a `ETAPA`. Hotový rám paláce a přístřešek kovárny (15. 11. 2026); dům a `ETAPA` ne;
 - ☑ 🆕 `brana_spec.py` (16. 11. 2026: rám brány, podesta, kapsy v `Brana_V`).
 
@@ -276,13 +276,15 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 
 | ☐ | Zeď | Změna | Zdroj |
 |---|---|---|---|
-| ☐ | `Vez_V` | 2 × `breaches` (hlavní průlom, nejnižší 9,45 m); ❓ `protect` SV rohu | `navrh_vez_pristresek.md` 3.1 |
-| ☐ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou | 3.2 |
+| ☑ | `Vez_V` | 2 × `breaches` (hlavní průlom, nejnižší 9,45 m, severní bok mírný `slope_r` 0,35 až k SV rohu 11,2 m) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | `navrh_vez_pristresek.md` 3.1 |
+| ☑ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.2 |
+| ☑ | `Vez_Z` | 2 × `protect` (s = 7,0–8,2 `min` 12,1; s = 8,2–9,5 `min` 11,8): střed zdi vyšší, jen vedlejší škody (Jirka 17. 11. 2026) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.3 |
+| ☑ | `Vez_S` | zrušit `breaches` s = 3,5–7,5 (tvar U); nový `breaches` (rampa od SV rohu, `power_r` 0,7) + 8 × `protect` po 1,5 m: koruna plynule klesá od SZ rohu k SV rohu (Jirka 17. 11. 2026) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.4 |
 | ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | `navrh_palac_obydli_stred.md` kap. 0.2 |
 | ☑ | `Palac_J` | celá zeď zanořená o jednu řadu do země (`z_offset` −0,31), rozebraná koruna u věže (`breaches` s = 29,6–33, komín kovárny ji přesahuje) a `kapsa` pro východní pozednici kovárny v s = 30,55 (15. 11. 2026, neověřeno v UE) | `navrh_palac_kovarna.md` kap. 3, `palac_spec.py` |
 | ☑ | `Palac_S` | portál přesunutý do západní místnosti (s = 4,5, `protect` s = 2,5–6,5), ve střední místnosti hrubý průchod (`prulom` s = 16, 1,8 m) (16. 11. 2026, neověřeno v UE) | `navrh_palac_obydli_stred.md` kap. 0.2a, `gen_layout.py` |
 | ☑ | `Palac_pricka_2` | hrubý průchod ze zápraží domu ke kovárně (`prulom` n = 6,9–8,5) (16. 11. 2026, neověřeno v UE) | `navrh_palac_obydli_stred.md` kap. 0.2a, `palac_spec.py` → `D_PASS` |
-| ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Palac_J`, `Palac_S`, `Palac_pricka_2` se po přestavbě změní | – |
+| ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Vez_Z`, `Palac_J`, `Palac_S`, `Palac_pricka_2` se po přestavbě změní (17. 11. 2026 prázdný) | – |
 
 ---
 

@@ -144,7 +144,7 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 | Boční zídka | kámen, 0,3 × 1,0 m, výška 1,2 m (5 řad), stojí na zemi | severně od stolu, n = 1,9–2,2; chrání měchy před žárem; otvor pro výfučnu 0,2 m v ose ohniště, ve výšce 0,72–0,96 m |
 | Měchy | `SM_RuinBellows` 2,1 × 0,85 m na rámu ve výšce 0,9 m | podél věže severně od zídky: s = 29,57–30,43; n = 2,0–4,05; výfučna (0,91 m) v otvoru zídky |
 | Páka měchů | loupaná tyč Ø 6 cm, 2,3 m | od madla měchů (s = 30,0; n = 3,95; 1,75 m) ke kovadlině (28,55; 2,2; 1,6 m); visí na laně z krokve n = 2,7, s madlem měchů spojená lanem |
-| Dymník | proutěný koš vymazaný hlínou, 1,4 (podél s) × 1,2 m, spodní okraj 1,8 m, výška 1,0 m | nad výhní, střed v ose komína, východní okraj u stěny věže; visí na 4 závěsných tyčích Ø 5 cm |
+| Dymník | proutěný koš vymazaný hlínou, 1,4 (podél s) × 1,2 m, spodní okraj 1,9 m (17. 11. 2026 zvednuto z 1,8 m, postava se zasekávala), výška 1,0 m | nad výhní, střed v ose komína, východní okraj u stěny věže; visí na 4 závěsných tyčích Ø 5 cm |
 | Výměny | loupaná kulatina Ø 10 cm, 2 ks | mezi krokvemi n = 0,9 a 1,8, 3 cm východně a západně od komína; nesou závěsné tyče dymníku a drží komín |
 | Komín | 0,5 × 0,5 m, proutí s hlínou | nad ohništěm, střed s = 30,0; n = 1,35; prochází střechou mezi krokvemi n = 0,9 a 1,8 (vůle 12 cm) a 20 cm od východní pozednice; vrch 5,5 m (1,1 m nad krytinou na horní hraně prostupu) |
 

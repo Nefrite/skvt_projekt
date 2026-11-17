@@ -186,7 +186,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 - **Stůl** (`table`): kámen z rozvalin, s = 29,75–30,73; n = 0,72–1,9 (2 cm od líce věže i `Palac_J`); výška 0,75 m ve 3 řadách, kameny střídavě podél a napříč. Nahoře hliněný maz 4 cm (`daub`, kostky s materiálem `MI_RuinDaub`).
 - **Ohniště** (`pit`): 0,4 × 0,4 m pod komínem (střed s = 30,0; n = 1,35), dřevěné uhlí 2 cm pod úrovní mazu (`MI_RuinCharcoal`). Žhavé uhlí a oheň zatím nejsou.
 - **Boční zídka** (`walls`): severně od stolu, n = 1,9–2,2, výška 1,2 m v 5 řadách, stojí na zemi. Ve 4. řadě (0,72–0,96 m) je otvor 0,2 m pro výfučnu měchů (`hole`).
-- **Dymník** (`hood`): `SM_RuinSmokeHood` 1,4 × 1,2 × 1,0 m, spodní okraj 1,8 m, střed v ose komína, východní okraj u věže.
+- **Dymník** (`hood`): `SM_RuinSmokeHood` 1,4 × 1,2 × 1,0 m, spodní okraj 1,9 m (17. 11. 2026), střed v ose komína, východní okraj u věže.
 - **Komín** (`chimney`): `SM_RuinChimney` 0,5 × 0,5 m od vrchu dymníku (2,8 m) do 5,5 m, 1,2 m nad krytinou.
 - **Výměny** (`trimmers`): 2 loupané kulatiny Ø 10 cm mezi krokvemi n = 0,9 a 1,8, v úrovni krokví, 3 cm od komína na východ a na západ. Mezi nimi bude otvor v krytině.
 - **Závěsné tyče** (`hangers`): 4 loupané tyče Ø 5 cm z konců výměn k rohům spodního okraje dymníku. Dymník tak nevisí ve vzduchu.
@@ -305,12 +305,20 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 
 - **Materiály:** `MI_RuinRope`, `MI_RuinWattle`, `MI_RuinDaub`, `MI_RuinChinking` (výplň spár srubu, textura mazaniny) na `M_RuinStone`; plátno `MI_RuinCanvas` na novém `M_RuinCloth` (oboustranný). Vzhled v `MAT_LOOK` (`zrlib\config.py`).
 - **Skvrny plachty:** textura plátna (dlaždice 25 cm) je bez skvrn, jinak by se opakovaly. Skvrny a zašednutí dává velká textura `T_RuinCanvasMacro` (dlaždice 4 m), kterou `M_RuinCloth` přimíchá: `MacroAmount` (síla, výchozí 0,6), `MacroTiling` (0,25 = dlaždice 4 m).
-- **Plátno na míru:** `mesh_textile.make_canvas(okap0, okap1, hřeben0, hřeben1, rafters=…, sag=…)` vrátí plachtu prověšenou mezi tyčemi (cm, souřadnice stavby), `write_canvas` ji zapíše jako OBJ. Ukázka `SM_RuinCanvasSample_A` (3 × 2,4 m, 5 tyčí, sklon 22,6°). Napojení do stavby přijde s typem `canvas_shelter`.
+- **Plátno na míru:** `mesh_textile.make_canvas(okap0, okap1, hřeben0, hřeben1, rafters=…, sag=…)` vrátí plachtu prověšenou mezi tyčemi (cm, souřadnice stavby), `write_canvas` ji zapíše jako OBJ. Ukázka `SM_RuinCanvasSample_A` (3 × 2,4 m, 5 tyčí, sklon 22,6°). Stavba ji používá přes `canvas_vez` + `write_fitted` (OBJ vystředěný na bounding box + `<mesh>.json` se středem a rozměrem v osách stavby; typ `canvas_shelter` mesh podle něj posadí).
 - **Vítr:** `M_RuinCloth` posouvá vrcholy podél normály: `WindAmount` (cm, výchozí 0 = staticky), `WindSpeed`, `WindScale`. Zapnout v `MI_RuinCanvas` nebo v `MAT_LOOK["canvas"]`. Úchyty na tyčích se zatím hýbou stejně jako zbytek plachty, proto jen malé hodnoty (1–3 cm).
 
 Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury, 0–1) a `DustAmount` / `DustTint` (zaprášení). U ostatních materiálů jsou na 0, takže se nic nemění. Rozdělení se mění v `constructions.json` → `finish` (výchozí hodnoty jsou v `WOOD_FINISH_DEFAULT` v `zrlib\config.py`). Neošetřené dřevo je `MI_RuinWood`, který vytvoří skript 03. Je to zašlé nelakované dřevo, šedohnědé a matné. Každý trám a prkno má trochu jiný odstín a vršky jsou vybledlé od slunce. Ladí se v `MI_RuinWood` (`TintA`/`TintB`, `Roughness`) nebo v `MAT_LOOK["wood"]` v `zrlib\config.py`. Vlastní materiál nastavíš v `MAT_WOOD_MI` (tamtéž).
 
 ---
+
+### Přístřešek hlídky na věži (`Vez_Pristresek`, typ `canvas_shelter`)
+
+- **Kód:** `zr_stavby/pristresek.py`, data `gen_constructions.py` → `vez_pristresek` z `tools/ruin/tower_spec.py` (`PR`, `pristresek()`); ram věže `u`, `v` (m), výšky `h` v m od `VEZ_F`.
+- **Dílce:** kůly s hlavou rozsochy (hlava zvětšená `fork_k` na průměr kůlu, osa hřebene nad středem hlavy `seat` změřená na OBJ), hřeben z kusů, okapová tyč na podkladních kamenech (výška z postavené koruny, kámen koruny musí pod podkladem zasahovat aspoň 3 cm), krokvové tyče, vzpěry, ovázání (`SM_RuinLashing` zvětšené na průměr tyče), plachta a štít na míru, tyčka v lemu štítu, lana z článků `SM_RuinRope` přes plachtu ke kotevním kamenům, zátěžové kameny.
+- **Plachta na míru:** `python tools/meshes/gen_meshes.py textile` → `meshes/textile/SM_RuinCanvasVez_A.obj` + `.json`, `SM_RuinCanvasVezGable_A.obj` + `.json`. Lokální osy meshe X = u, Y = −v, Z = h (ram věže je v UE levotočivý). Po změně `PR` (polohy, sklon) vždy přegenerovat meshe i `constructions.json` a zvýšit verzi `SM_RuinCanvasVez` v `STONE_MESH_VERSION`.
+- **Ruční doladění:** podkladní, zátěžové a kotevní kameny jsou samostatné actory (`Vez_Pristresek.py`, `MODE = "capture"`).
+- **Kontroly:** `run_checks.py --only vez`, náhled `preview3d.py vez` (plachta jako tenké kvádry).
 
 ## 5. Do budoucna
 

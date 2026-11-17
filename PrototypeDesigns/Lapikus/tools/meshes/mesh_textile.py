@@ -6,6 +6,8 @@ SM_RuinLashing_A..B: ovazani na kriseni / spoji tyci: krizem natocene zavity lan
     sirka 6 cm. Skaluje se podle prumeru tyce.
 SM_RuinCanvasSample_A: ukazka plachty z make_canvas (3 x 2,4 m, 5 krokvovych tyci, sklon 22 st.) - pro kontrolu
     vzhledu a materialu; stavby si generuji plachtu na miru funkci make_canvas (OBJ podle poloh tyci).
+SM_RuinCanvasVez_A, SM_RuinCanvasVezGable_A: plachta a stit pristresku hlidky na vezi na miru (tower_spec.pristresek),
+    OBJ vystredeny + <jmeno>.json se stredem a rozmerem v lokalnich osach stavby (write_fitted).
 Sloty: Rope (lano, ovazani), Canvas (platno; material oboustranny, viz M_RuinCloth).
 """
 import math, os
@@ -150,4 +152,42 @@ def build(out):
                            rafters=(0.05, 0.28, 0.5, 0.72, 0.95), sag=4.0, seed=21000)
     P = P - (P.min(0) + P.max(0)) / 2
     _write(out, "SM_RuinCanvasSample_A", P, UV, F, "Canvas", "ukazka plachty (make_canvas)", made)
+    for name, (P, UV, F) in canvas_vez().items():                      # plachta a stit pristresku na vezi (na miru)
+        write_fitted(out, name, P, UV, F, "plachta pristresku na vezi (tower_spec.pristresek)", made)
     return made
+
+
+# --- tvary na miru pro stavby: OBJ vystredeny na bounding box + <jmeno>.json se stredem a rozmerem v lokalnich osach
+#     stavby (UE cm); stavba podle nej mesh posadi (05 zr_stavby/pristresek.py). Lokalni osy pristresku na vezi:
+#     X = u, Y = -v (ram veze je v UE levotocivy: v = osa X otocena o -90 st.), Z = h od VEZ_F
+def write_fitted(out, name, P, UV, F, desc, made):
+    import json
+    mn, mx = P.min(0), P.max(0); c = (mn + mx) / 2
+    write_obj_slots(os.path.join(out, name + ".obj"), P - c, UV, smooth_normals(P, F, np.zeros(len(P), int)), F, np.zeros(len(F), int),
+                    name, desc, ("Canvas",))
+    with open(os.path.join(out, name + ".json"), "w") as f:
+        json.dump(dict(center=[round(float(q), 3) for q in c], size=[round(float(q), 3) for q in mx - mn]), f)
+    made.append((name, len(P), len(F)))
+
+
+def canvas_vez():
+    """plachta a stit pristresku hlidky na vezi z tools/ruin/tower_spec.pristresek -> {jmeno: (P, UV, F)} v lokalnich osach
+    stavby (X = u, Y = -v, Z = h; cm)"""
+    import json, sys
+    root = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+    sys.path.insert(0, os.path.join(root, "tools", "ruin"))
+    from tower_spec import spec, pristresek
+    with open(os.path.join(root, "03_ruin", "ruin_layout_draft.json"), encoding="utf-8") as f: D = json.load(f)
+    p = pristresek(spec(D["tower"])); cv = p["canvas"]; L = lambda u, v, h: (u * 100, -v * 100, h * 100)
+    (u0, u1), (v0, v1) = cv["u"], cv["v"]; ch = p["canvas_h"]
+    raf = [(u - u0) / (u1 - u0) for u in p["rafters"]["u"]]
+    out = {"SM_RuinCanvasVez_A": make_canvas(L(u0, v0, ch(v0)), L(u1, v0, ch(v0)), L(u0, v1, ch(v1)), L(u1, v1, ch(v1)),
+                                            rafters=raf, sag=cv["sag"] * 100, seed=cv["seed"])}
+    # stit: svisly trojuhelnik v rovine u = g["u"]; make_canvas v rovine (v, h), "prevesi" = vyduti podel u (dovnitr veze)
+    g = p["gable"]; (gv0, gv1) = g["v"]; top = lambda v: p["rafter_axis"](v) - p["rafters"]["d"] / 2      # spodek krajni krokve
+    P, UV, F = make_canvas((gv0 * 100, g["bottom"] * 100, 0), (gv1 * 100, g["bottom"] * 100, 0),
+                           (gv0 * 100, max(top(gv0), g["bottom"] + 0.005) * 100, 0), (gv1 * 100, top(gv1) * 100, 0),
+                           sag=g["bulge"] * 100, seed=g["seed"], wrinkle=0.15)
+    P = np.stack([g["u"] * 100 - P[:, 2], -P[:, 0], P[:, 1]], 1)                       # (v, h, vyduti) -> (u, -v, h)
+    out["SM_RuinCanvasVezGable_A"] = (P, UV, F)
+    return out

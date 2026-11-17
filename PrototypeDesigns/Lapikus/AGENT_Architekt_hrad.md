@@ -77,7 +77,7 @@ Plošina ~67 × 25 m na výšce **Z ≈ 3129 cm**. Jižní hrana padá 7–8 m s
 
 | Návrh | Co | Stav (15. 11. 2026) |
 |---|---|---|
-| `navrh_vez_pristresek.md` | `Vez_Pristresek`: plátěný přístřešek hlídky ve 2. patře věže; průlomy z dobývání ve `Vez_J` a `Vez_V` (úprava 03) | vybraná varianta B |
+| `navrh_vez_pristresek.md` | `Vez_Pristresek`: plátěný přístřešek hlídky ve 2. patře věže; průlomy z dobývání ve `Vez_J` a `Vez_V`, vyšší střed `Vez_Z` (úprava 03) | **specifikace pro stavitele** (17. 11. 2026), nepostaveno; náhledy `navrh_vez_pristresek_3d*.png` |
 | `navrh_palac_obydli_stred.md` | `Palac_Obydli_*`: dům posádky v **prostřední** místnosti paláce (srub, pultová střecha, pec s nístějí); plán po etapách v kap. 0 | **staví se** (16. 11. 2026): kámen, krov bez krytiny, pec a srub hotové; zbývá krytina, strop, podlaha, okap, vybavení a staveniště (`predani_palac_obydli_stavitel.md`) |
 | `navrh_palac_obydli.md` | dům ve východní místnosti u věže | **zavržená varianta**, jen pro srovnání |
 | `navrh_palac_kovarna.md` | `Palac_Kovarna_*`: kovárna pod přístřeškem ve východní místnosti u věže | **postavená** (16. 11. 2026, kroky 2–4 neověřené v UE); odloženo žhavé uhlí, oheň, udusaná hlína |

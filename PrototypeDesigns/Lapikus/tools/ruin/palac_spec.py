@@ -50,7 +50,7 @@ K_FORGE = dict(len_s=1.0, len_n=1.2, h=0.75, course=0.25,         # stul: delka 
                pit=0.4, daub=0.04)                              # ohniste (strana m), hlineny maz na stole
 K_FORGE_WALL = dict(t=0.3, h=1.2, course=0.225,                   # bocni zidka severne od stolu (chrani mechy pred zarem): tloustka, vyska; stoji na zemi
                     hole=dict(w=0.2, z=(0.75, 0.975)))          # otvor pro vyfucnu v ose ohniste
-K_HOOD = dict(size=(1.4, 1.2), bottom=1.8, h=1.0)               # dymnik: podel s (az k vezi) x podel n, spodni okraj, vyska
+K_HOOD = dict(size=(1.4, 1.2), bottom=1.9, h=1.0)               # dymnik: podel s (az k vezi) x podel n, spodni okraj (1.9: Jirka 17. 11. 2026, postava se zasekavala), vyska
 K_TRIMMER = dict(d=0.10, gap=0.03)                              # vymeny mezi krokvemi u komina: prumer, mezera od komina
 K_HANGER = dict(d=0.05)                                         # zavesne tyce dymniku
 K_ANVIL = (28.0, 1.4)            # kovadlina na spalku (16. 11. 2026 o 0,5 m dal od vyhne: byla prilis blizko)

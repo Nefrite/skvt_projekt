@@ -14,6 +14,8 @@ Stavi zvlast od zriceniny (03_ruin/blocks/build_ruin_blocks.py), takze se da lad
   - vybaveni (addons, typ props): hotove props rozmistene jako samostatne actory (rucni doladeni pres capture)
   - sruby (addons, typ log_wall): steny z loupane kulatiny v radach, otvory, prkenne stity pod pultovou strechu
   - podesty (addons, typ platform): tramy z kulatiny v kapsach / na korune zdi, prkna, zabradli (strazni stanoviste nad branami)
+  - platenne pristresky (addons, typ canvas_shelter): kuly s rozsochou, hreben, okapova tyc, krokvove tyce, plachta a stit
+    na miru, lana, ovazani, kameny (pristresek hlidky na vezi)
   - etapy: stavba se "stage" v datech stavi actory po sadach (base / final / site) s tagem stage:<sada> (zrlib/config.py)
   - prah dveri v dostavbe: samostatny actor (soucast Ostroh_Dostavba), vyska se doladi rucne a ulozi pres capture
   - volna sut na zemi u zdi (samostatne actory, lze posouvat a mazat); v obyvane casti u ostrohu uklizena
@@ -41,7 +43,8 @@ Kod (od 11/2026):
                            dostavba (kamenna dostavba), podlaha (prkenna podlaha), pult (pultova strecha na sloupech),
                            ohniste (ohniste / vyhen s dymnikem a kominem), zdivo (zdivo z kamene rozvalin),
                            stena (stena z prouti), okap (zlab, rozsochy, sud), vybaveni (props), srub (srubove steny, stity),
-                           podesta (tramy, prkna, zabradli), kryty (kryt z kulatiny na korune zdi)
+                           podesta (tramy, prkna, zabradli), kryty (kryt z kulatiny na korune zdi),
+                           pristresek (platenny pristresek na kulatine)
   ../zrlib/                sdilena knihovna s 03 (config = materialy, drevo, fyzika; geom, stones, ue_assets, ue_actors)
 Nova stavba: modul v zr_stavby s funkci build, zaznam v TYPES (+ REQUIRED), polozka v constructions.json,
 kopie launcheru ve stavby/ se jmenem stavby.
@@ -66,7 +69,7 @@ _boot()
 from zrlib.config import CONSTR_TAG, CUBE_MESH, STAGE_TAG, STAGES
 from zrlib.geom import inside_poly
 from zrlib import pipeline, ue_assets, ue_actors, validate
-from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap, vybaveni, srub, podesta, kryty
+from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap, vybaveni, srub, podesta, kryty, pristresek
 from zr_stavby.krov import ostroh_geom, roof_under, build_fan_roof, _pt          # noqa: F401  (pro nastroje)
 from zr_stavby.dostavba import build_stone_addon, addon_polygon                 # noqa: F401
 from zr_stavby.podlaha import build_plank_floor                                 # noqa: F401
@@ -99,6 +102,7 @@ TYPES = {
     "log_wall":    lambda s, c: srub.build_log_wall(s, c["terr"], c["data"].get("frames", []), c["geom"]),
     "platform":    lambda s, c: podesta.build_platform(s, c["terr"]),
     "palisade":    lambda s, c: kryty.build_palisade(s, c["walls"], c["terr"]),
+    "canvas_shelter": lambda s, c: pristresek.build_canvas_shelter(s, c["walls"], c["terr"]),
 }
 # povinne klice dat (kontrola se srozumitelnou chybou misto KeyError uprostred vypoctu)
 REQUIRED = {
@@ -115,6 +119,7 @@ REQUIRED = {
     "log_wall":    ["name", "origin", "u", "v", "ref", "walls"],
     "platform":    ["name", "origin", "u", "v", "z", "beams", "planks"],
     "palisade":    ["name", "origin", "u", "v", "lines"],
+    "canvas_shelter": ["name", "origin", "u", "v", "z_ref", "floor_top", "posts", "ridge", "eave", "rafters", "canvas", "gable"],
 }
 SECTIONS = (("floors", "tower_floor"), ("frames", None), ("addons", None))   # sekce constructions.json a vychozi typ
 

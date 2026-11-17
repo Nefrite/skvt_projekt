@@ -1,5 +1,5 @@
 """run_checks.py - kontroly zriceniny a staveb bez Unrealu (stejny stav jako v UE: teren z levelu, rucni upravy).
-python run_checks.py [--layout <ruin_layout.json>] [--only openings,floating,ostroh,palac,obydli]
+python run_checks.py [--layout <ruin_layout.json>] [--only openings,floating,ostroh,palac,obydli,brana,vez]
 
   openings  zadny blok lice / jadra ve svetlosti otvoru (kolize: 0)
   floating  kameny zdi bez podpory (pod nimi nic, nejsou na osteni / nadprazi)
@@ -557,11 +557,141 @@ def check_brana(S):
     return ok
 
 
+def check_vez(S):
+    """platenny pristresek hlidky ve 2. patre veze (Vez_Pristresek, typ canvas_shelter): ulozeni kulatiny, kameny na korune,
+    vule nad korunou, sklon, svetla vyska, pruhled strilnou, pruchody; kriteria z new_designs/navrh_vez_pristresek.md kap. 8"""
+    groups, walls = S["groups"], S["walls"]
+    ad = next((a for a in S["data"].get("addons", []) if a["name"] == "Vez_Pristresek"), None)
+    if not ad or "Vez_Pristresek" not in groups: print("vez: Vez_Pristresek neni v datech"); return False
+    ok = True
+    def rep(txt, good):
+        nonlocal ok
+        print("vez: %-78s %s" % (txt, "OK" if good else "CHYBA")); ok &= bool(good)
+    sys.path.insert(0, os.path.join(common.ROOT, "05_constructions")); from zr_stavby.zdivo import frame_box
+    O, U, V = ad["origin"], ad["u"], ad["v"]; Z0 = ad["z_ref"]; fb = lambda s: frame_box(s, O, U, V)
+    H = lambda z: (z - Z0) / 100
+    g = groups["Vez_Pristresek"]; st = g["stones"] + g["loose"]; part = lambda k: [s for s in st if s.id.split("|")[1].startswith(k)]
+    ruin = [s for n in ("Vez_J", "Vez_V", "Vez_S", "Vez_Z") for s in walls[n]["stones"] + walls[n].get("loose", [])]
+    pat = groups["Vez_Patra"]["stones"] + groups["Vez_Patra"]["loose"]
+    hz = lambda s: s.sz / 2 * abs(math.cos(math.radians(s.pitch))) + s.sx / 2 * abs(math.sin(math.radians(s.pitch)))
+    RB = [(fb(s), H(s.z + hz(s))) for s in ruin]
+    RB = [(b, z) for (b, z) in RB if b[1] > 0.5 and b[0] < 8.5 and b[3] > -1.0 and b[2] < 5.5 and z > 8.0]   # koruna pod pristreskem
+    wood = [s for s in st if s.cat.startswith("wood")]; stones_ = [s for s in st if s.cat == "face"]
+    ropes = [s for s in st if s.shape == "rope"]; canvas = [s for s in st if s.cat == "canvas"]
+    ft = ad["floor_top"]
+    c = common.collisions(wood + stones_, ruin, 1.0)
+    rep("drevo a kameny x zricenina veze: pruniku nad 1 cm %d %s" % (len(c), c[:3] if c else ""), not c)
+    feet = lambda a, b: (a.pitch > 60 or "|V" in a.id) and "|P" in b.id                  # paty kulu a vzper na prknech
+    c = common.collisions(wood, pat, 1.0, skip=feet)
+    rep("drevo x Vez_Patra (mimo pat na prknech): pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+    c = common.collisions(ropes, ruin + pat + wood, 1.0)
+    rep("lana x zricenina, Vez_Patra a drevo: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+    # kuly a paty vzper nad stropnim tramem
+    BV = groups and next(f for f in S["data"]["floors"] if f["name"] == "Vez_Patra")["beams"]["v"]
+    posts = part("K"); braces = part("V")
+    pv = [(s.id, round((fb(s)[2] + fb(s)[3]) / 2, 3)) for s in posts]
+    bv = []
+    for s in braces:
+        b = fb(s); bv.append((s.id, round(b[3] - ad["braces"]["d"] / 2, 3)))
+    bad = [(i, v) for i, v in pv + bv if min(abs(v - q) for q in BV) > 0.13]
+    rep("kuly (%d) a paty vzper (%d) nad stropnim tramem (|v - tram| <= 0,13) %s" % (len(posts), len(braces), bad), not bad and posts and braces)
+    low = [s.id for s in posts + braces if abs(H(s.z - (s.sx / 2) * math.sin(math.radians(s.pitch)) - ad["braces"]["d"] * 0) - ft) > 0.08 and s in posts]
+    rep("paty kulu na prknech (vrch %.2f m)" % ft, not low)
+    # hreben ve vidlicich, krokve na hrebeni a okapove tyci
+    ridge = part("R"); eave = part("E"); raf = part("T"); heads = part("H")
+    r_axis = ad["ridge"]["top"] - ad["ridge"]["d"] / 2
+    rep("hreben: %d kusy, vrch %.2f m, %d hlav rozsochy" % (len(ridge), max(H(s.z) for s in ridge) + ad["ridge"]["d"] / 2, len(heads)),
+        len(ridge) == len(ad["ridge"]["pieces"]) and all(abs(H(s.z) - r_axis) < 0.005 for s in ridge) and len(heads) == len(posts))
+    # podkladni kameny: okapova tyc na nich, vrch = spodek tyce, ne ve vzduchu
+    pads = part("P"); ev = ad["eave"]; e_bot = ev["bottom"]
+    tops = {}
+    for s in pads:
+        k_ = s.id.split("|")[1][:2].rstrip("ab"); tops.setdefault(k_, []).append(s)
+    under = []; high = []; onrod = 0
+    for k_, ss in tops.items():
+        topz = max(H(s.z + s.sz / 2) for s in ss); bot = min(ss, key=lambda s: s.z); b = fb(bot)
+        cr = [z for (q, z) in RB if min(q[1], b[1]) - max(q[0], b[0]) >= 0.03 and min(q[3], b[3]) - max(q[2], b[2]) >= 0.03]
+        gap = H(bot.z - bot.sz / 2) - max(cr) if cr else 9
+        if abs(gap) > 0.02: under.append((k_, round(gap, 3)))
+        hh = sum(s.sz for s in ss) / 100
+        if hh > ad["pads"].get("max_h", 0.6): high.append((k_, round(hh, 2)))
+        onrod += abs(topz - e_bot) < 0.005
+    rep("okapova tyc lezi na %d podkladech (>= 4), vyska podkladu %s m" % (onrod, ", ".join("%.2f" % (sum(s.sz for s in v) / 100) for v in tops.values())),
+        onrod >= 4 and not high)
+    rep("podkladni kameny lezi na korune (kamen pod nimi zasahuje >= 3 cm; mezera nad 2 cm %s)" % under, not under)
+    # vule nad korunou: krokve a platno
+    def crown_at(u, v, r=0.03):
+        t = [z for (q, z) in RB if q[0] - r <= u <= q[1] + r and q[2] - r <= v <= q[3] + r]
+        return max(t) if t else None
+    rf = ad["rafters"]; sl = ad["slope"]; e_top = ev["bottom"] + ev["d"]
+    ax = lambda v: e_top + rf["d"] / 2 + sl * (v - ev["v"])
+    gaps = []
+    for u in rf["u"]:
+        for i in range(int((rf["v"][1] - rf["v"][0]) / 0.02) + 1):
+            v = rf["v"][0] + i * 0.02
+            for du in (-rf["d"] / 2, 0, rf["d"] / 2):
+                cz = crown_at(u + du, v, 0.0)
+                if cz is not None: gaps.append((ax(v) - rf["d"] / 2 - cz, u, round(v, 2)))
+    mg = min(gaps); cvd = ad["canvas"]
+    ch = lambda v: e_top + rf["d"] + cvd["lift"] + sl * (v - ev["v"]) - cvd["sag"]
+    cg = []
+    for i in range(int((cvd["u"][1] - cvd["u"][0]) / 0.05) + 1):
+        for j in range(int((cvd["v"][1] - cvd["v"][0]) / 0.05) + 1):
+            u, v = cvd["u"][0] + i * 0.05, cvd["v"][0] + j * 0.05; cz = crown_at(u, v, 0.0)
+            if cz is not None: cg.append((ch(v) - cz, round(u, 2), round(v, 2)))
+    mc = min(cg)
+    rep("vule nad korunou: krokve %.0f cm (u %.2f, v %.2f), platno (s prevesem %.0f cm) %.0f cm (u %.2f, v %.2f) (>= 5)" % (
+        mg[0] * 100, mg[1], mg[2], cvd["sag"] * 100, mc[0] * 100, mc[1], mc[2]), mg[0] >= 0.05 and mc[0] >= 0.05)
+    rep("sklon platna %.1f st. (>= 22)" % math.degrees(math.atan(sl)), math.degrees(math.atan(sl)) >= 22)
+    rep("svetla vyska pod okapovou tyci %.2f m (>= 2,6)" % (e_bot - ft), e_bot - ft >= 2.6)
+    # pokryti: plachta (mesh na miru) v pudorysu u 1,30-7,30, v 1,25-4,68
+    cs = next(s for s in canvas if "|C" in s.id); b = fb(cs)
+    a0, a1, c0, c1 = 1.30, 7.30, 1.25, ad["ridge"]["v"]
+    cov = max(0, min(b[1], a1) - max(b[0], a0)) * max(0, min(b[3], c1) - max(b[2], c0)) / ((a1 - a0) * (c1 - c0))
+    rep("plachta pokryva %.1f %% pudorysu u %.2f-%.2f, v %.2f-%.2f (>= 95)" % (cov * 100, a0, a1, c0, c1), cov >= 0.95)
+    # pruhled strilnou Vez_J ve 2. patre: u = 5,5; h 9,45-10,5 od vnitrniho lice ven
+    def inside(s, p):
+        (c_, R, e) = common.obb(s); d = [p[i] - c_[i] for i in range(3)]
+        return all(abs(sum(d[i] * R[k][i] for i in range(3))) <= e[k] for k in range(3))
+    Wp = lambda u, v, h: (O[0] + (U[0] * u + V[0] * v) * 100, O[1] + (U[1] * u + V[1] * v) * 100, Z0 + h * 100)
+    hit = set()
+    for hh in (9.45, 9.8, 10.15, 10.5):
+        for i in range(31):
+            v = 3.0 - i * 0.1; p = Wp(5.5, v, hh)
+            hit |= {s.id for s in st if s.cat != "canvas" and inside(s, p)}
+    rep("pruhled strilnou Vez_J (u 5,5; h 9,45-10,5; v 3,0 az -0,0) nekrizi nic %s" % sorted(hit), not hit)
+    # pruchody
+    pu = sorted((fb(s)[0], fb(s)[1]) for s in posts); bu = sorted((fb(s)[0], fb(s)[1]) for s in braces)
+    inner_v = TSI = next(f for f in S["data"]["floors"] if f["name"] == "Vez_Patra")["inner"]
+    p1 = pu[2][0] - pu[1][1]; p2 = inner_v[1] - pu[2][1]; p3 = bu[1][0] - bu[0][1]
+    hatch = next(f for f in S["data"]["floors"] if f["name"] == "Vez_Patra")["hatches"]["2"]
+    rep("pruchody: prostredni-vychodni kul %.2f, vychodni kul-Vez_V %.2f, mezi vzperami %.2f m (>= 1,2); pata vzpery k otvoru schodu %.2f m" % (
+        p1, p2, p3, hatch[0] - bu[1][1]), min(p1, p2, p3) >= 1.2 and bu[1][1] < hatch[0])
+    # stit: od lice Vez_Z, horni okraj na krajni krokvi
+    gs = next(s for s in canvas if "|G" in s.id); gb = fb(gs)
+    top_ok = abs(H(gs.z + gs.sz / 2) - (ax(ad["gable"]["v"][1]) - rf["d"] / 2)) < 0.02
+    rep("stit %.0f cm od vnitrniho lice Vez_Z (>= 5), horni okraj na spodku krajni krokve %s" % ((gb[0] - inner_v[0]) * 100, "ano" if top_ok else "ne"),
+        gb[0] - inner_v[0] >= 0.05 and top_ok)
+    # ovazani krokvi pod platnem (platno lezi pres ne), kotevni kameny lan na korune
+    ch0 = lambda v: e_top + rf["d"] + cvd["lift"] + sl * (v - ev["v"])
+    lsh = [s for s in st if s.shape == "lashing" and s.id.split("|")[1][:2] in ("LT", "LE")]
+    over = [(s.id, round((H(s.z) + s.sz / 200 - ch0((fb(s)[2] + fb(s)[3]) / 2)) * 100, 1)) for s in lsh]
+    over = [o for o in over if o[1] > 0]
+    rep("ovazani krokvi (%d) pod platnem (vycniva nad platno %s)" % (len(lsh), over), lsh and not over)
+    anc = part("A"); bad = []
+    for s in anc:
+        b = fb(s); cr = [z for (q, z) in RB if min(q[1], b[1]) - max(q[0], b[0]) >= 0.03 and min(q[3], b[3]) - max(q[2], b[2]) >= 0.03]
+        if not cr or abs(H(s.z - s.sz / 2) - max(cr)) > 0.02: bad.append(s.id)
+    rep("kotevni kameny lan (%d) lezi na korune Vez_J %s, lan %d" % (len(anc), bad, len(ad["ropes"])), len(anc) == len(ad["ropes"]) and not bad)
+    rep("sady etap: %s" % sorted(set(str(s.stage) for s in st)), all(s.stage == "base" for s in st))
+    return ok
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--layout"); ap.add_argument("--only")
     a = ap.parse_args()
-    only = a.only.split(",") if a.only else ["openings", "floating", "ostroh", "palac", "obydli", "brana"]
-    S = common.state(a.layout, with_constructions=bool({"ostroh", "palac", "obydli", "brana"} & set(only)))
+    only = a.only.split(",") if a.only else ["openings", "floating", "ostroh", "palac", "obydli", "brana", "vez"]
+    S = common.state(a.layout, with_constructions=bool({"ostroh", "palac", "obydli", "brana", "vez"} & set(only)))
     res = {}
     if "openings" in only: res["openings"] = check_openings(S)
     if "floating" in only: res["floating"] = check_floating(S)
@@ -569,6 +699,7 @@ def main():
     if "palac" in only: res["palac"] = check_palac(S)
     if "obydli" in only: res["obydli"] = check_obydli(S)
     if "brana" in only: res["brana"] = check_brana(S)
+    if "vez" in only: res["vez"] = check_vez(S)
     print("\nSOUHRN: " + ", ".join("%s %s" % (k, "OK" if v else "CHYBA") for k, v in res.items()))
     sys.exit(0 if all(res.values()) else 1)
 

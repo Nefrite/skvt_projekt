@@ -8,14 +8,14 @@ Společný dokument pro všechny agenty (`AGENT_Architekt_hrad.md`, `AGENT_GameD
 - když se poznatek změní, bod přepiš, nepřidávej druhý;
 - pasti a rozhodnutí se zapisují **jen sem**, agentní dokumenty na ně odkazují.
 
-Stav: 16. 11. 2026.
+Stav: 17. 11. 2026.
 
 ---
 
 ## 1. Zlatá pravidla
 
 1. **Zřícenina (03) a dostavby (05) jsou oddělené.** `03_ruin` je hrad po rozpadu (~1650), `05_constructions` pozdější „druhé zabydlení“, které na zřícenině stojí a nemění ji. **Vybavení (06) je od staveb oddělené:** `06_furnishing` obsahuje všechno, co člověk přenese (props), 05 jen pevné části staveb (16. 11. 2026). Zásah do 03 (snížení, žlábek, průlom, vybourání) se vždy uvádí výslovně jako „vyžaduje úpravu 03“ a s částí, kterou je pak nutné přestavět (`Obvod`, `Palac`, `Ostroh`).
-2. **Jeden zdroj rozměrů.** Co potřebuje 03 i 05, je v jednom specu (`tools/ruin/ostroh_spec.py`, `tower_spec.py`, `palac_spec.py`; pro bránu vznikne `brana_spec.py`). Nikdy stejné číslo na dvou místech.
+2. **Jeden zdroj rozměrů.** Co potřebuje 03 i 05, je v jednom specu (`tools/ruin/ostroh_spec.py`, `tower_spec.py`, `palac_spec.py`, `brana_spec.py`). Nikdy stejné číslo na dvou místech.
 3. **Ruční úpravy se nepřepisují.** `manual_edits.json` a `constructions_edits.json` vznikají přes capture z levelu. Capture vždy **před** dalším generováním.
 4. **Generovaná data se needitují ručně.** `ruin_layout.json` a `constructions.json` vznikají z generátorů (`gen_layout.py`, `gen_constructions.py`), ruční změna se při příštím generování ztratí.
 5. **Nic nevisí ve vzduchu.** Každý prvek má napsané, na čem leží (koruna, kapsa, žlábek, sloup, terén).
@@ -59,6 +59,7 @@ Stav: 16. 11. 2026.
 | změna jedné stavby | `05_constructions/stavby/<Stavba>.py` |
 | celý dům posádky v paláci | `05_constructions/stavby/Palac_Obydli.py` (všechny hotové části v pořadí + suť; staví všechny sady etap) |
 | celá kovárna v paláci | `05_constructions/stavby/Palac_Kovarna.py` (všechny části v pořadí + suť a vybavení; `RUIN = True` i část `Palac`) |
+| celá věž (dřevo v patrech, přístřešek hlídky) | `05_constructions/stavby/Vez.py` (`RUIN = True` i část `Obvod`) |
 | vybavení (06) | `06_furnishing/vybaveni/<Skupina>.py` (`MODE` build / capture / list / reset), všechno `06_furnishing/build_furnishing.py` |
 | všechno | `build_normal.py`: hrad, pak stavby; assety jen doplňuje |
 | poškozené assety (NaN v bounds, `InverseFast` v logu, prázdné náhledy, meshe naruby) | `build_fullscope.py`: smaže generované actory a meshe a postaví vše znovu; po běhu nepoužívat Undo |
@@ -95,6 +96,9 @@ Podrobná tabulka podle druhu změny je v `AGENT_Stavitel_hrad.md`, kap. 5. Spol
 - **Fullscope není běžný build.** `build_fullscope.py` maže assety a actory, proto ho navrhuj jen při poškozených assetech nebo po změně způsobu importu. Na běžné změny stačí dílčí skripty nebo `build_normal.py`.
 - **Knihovní meshe mají víc materiálových slotů** (kulatina `Wood`, `EndGrain`, `Bark`; proutí `Daub`, `Wattle`). Dílec kulatiny = `Stone` s `shape` z `ROUND_SHAPES` a `bark`, ostatní knihovní meshe `shape` z `LIB_SHAPES`; délka vždy podél `sx`. Materiál se přiřazuje přes `ue_assets.apply_materials` (slot `wood` = materiál dílce, ostatní `SLOT_MATS`), ne `set_material(0, ...)`.
 - **Jedna kopie `zrlib` na běh (15. 11. 2026).** Spouštěč na začátku zahodí moduly z minulého běhu, dál se načítá jen přes `zrlib/pipeline.py`. Dvě kopie knihovny znamenají dvojí stav (materiály slotů `SLOT_MATS`, rozměry meshí `_OBJ_BOX`): 05 pak nevidí, co nastavilo 03.
+
+- **Mesh na míru (plachta) se posazuje podle `<mesh>.json`** (17. 11. 2026): `mesh_textile.write_fitted` zapíše OBJ vystředěný na bounding box a vedle `.json` se středem a rozměrem v lokálních osách stavby; stavba (`zr_stavby/pristresek.py`) dá dílci přesně ten rozměr, takže měřítko vyjde 1. Mesh necentrovaný by se při stavbě posunul (pivot = střed bounding boxu) a plochý mesh (štít, tloušťka 2 cm) by se roztáhl.
+- **Plátno přes ovázané tyče:** ovázání (`SM_RuinLashing`) vyčnívá 1,6 cm nad tyč Ø 10 cm, plachta proto leží 2 cm nad krokvemi, ne 0,5 cm (17. 11. 2026, `run_checks.py --only vez` to hlídá).
 
 ### 5.3 Capture
 
@@ -167,8 +171,9 @@ Postup, který se osvědčil u poškozených bounds (15. 11. 2026):
 | 16. 11. 2026 | návrh domu měl sloup v ose příčky a komín v krokvi; před stavbou dřeva vždy porovnat polohy sloupů, krokví a komína s podezdívkami a mezi sebou | kolize se v textu návrhu nepozná, ukáže ji až výpočet |
 | 16. 11. 2026 | portál paláce je v západní (prázdné) místnosti, ve střední ho posádka rozebrala (hrubý průchod v `Palac_S` s = 16); `Palac_pricka_2` má severně od domu hrubý průchod ke kovárně | kámen šel na podezdívky domu; ze zápraží se dá projít ke kovárně |
 | 16. 11. 2026 | úprava 03 u komína domu a dozdívka koruny `Palac_J` odpadají | po zanoření zdi o 0,31 m je koruna u komína 4,4–4,8 m a všude nad krytinou |
-| 16. 11. 2026 | **vybavení = 06_furnishing**: vše, co člověk přenese (props), samostatně od staveb 05 (vlastní data `furnishing.json`, ruční úpravy `furnishing_edits.json`, tag `Zricenina_Vybaveni`); pevné kusy (výheň, sud pod okapem, kůl v zemi) zůstávají v 05 | vybavení se ladí a přesouvá nezávisle na stavbách; rozhodl Jirka |
+| 16. 11. 2026 | **vybavení = 06_furnishing**: vše, co člověk přenese (props), samostatně od staveb 05 (vlastní data `furnishing.json` včetně poloh z levelu, viz další řádek; tag `Zricenina_Vybaveni`); pevné kusy (výheň, sud pod okapem, kůl v zemi) zůstávají v 05 | vybavení se ladí a přesouvá nezávisle na stavbách; rozhodl Jirka |
 | 16. 11. 2026 | **vybavení: jeden JSON** – capture zapisuje polohy, otočení a velikost (`scale`) přímo do `furnishing.json` v rámu stavby, smazané (`removed`) a kopie z levelu (`manual`) taky; `gen_furnishing.py` slučuje a uložené polohy nechá; `furnishing_edits.json` zrušen | jedno místo s pravdou o poloze, nové generování postaví kusy rovnou na správné místo; rám stavby, aby kusy přežily posun rámu i změnu terénu; rozhodl Jirka |
+| 17. 11. 2026 | věž dobývaná z východu: `Vez_Z` jen vedlejší škody, střed vyšší (`protect`), mezera pod přístřeškem se tím z velké části zavře, zbytek je větrání; `Vez_S` bez průlomu do tvaru U, koruna plynule klesá od západu k SV rohu a navazuje na průlom `Vez_V`; západní kůl přístřešku smí zakrýt okraj výklenku okna, když se do výklenku dá vejít; data v `tower_spec.ruin_edits()` | rozhodl Jirka |
 | 16. 11. 2026 | typ `props` (samostatné actory, polohy ve specu) slouží 06 i pevným kusům 05; suť se uklízí `clear_poly` stavby; celá kovárna má souhrnný spouštěč `Palac_Kovarna.py` | ruční doladění přes capture, žádný duplicitní kód |
 | 16. 11. 2026 | kovárna rozšířená o řadu krokví k severu (střecha do n = 6,6), sloup u věže i v n = 4,4; kovadlina 1,5 m před výhní; okno věže nad střechou je jen světlík (neprůchozí) | málo místa na vybavení; kovadlina a kalicí sud byly příliš blízko výhni |
 | 15. 11. 2026 | typy `pult_roof`, `hearth`, `gutter` se píšou obecně (i pro dům); `ETAPA`, saze, udusaná hlína, žhavé uhlí a VFX ohně se s kovárnou nedělají | kovárna stojí v obou etapách; okno věže nad střechou se neřeší |

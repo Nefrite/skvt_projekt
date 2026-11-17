@@ -62,6 +62,20 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Okna a podesta:** hradní okna ve `Vez_Z` (1. a 2. patro), zvenku na `Vez_S` kapsy po podestě pod původním vstupem.
 - **Schody:** provizorní, 60°, cik-cak. Do 1. patra stoupají k východu (pole u severní zdi), do 2. patra k západu a opírají se o průvlak (sousední pole). Trámy jsou po 1,64 m. Zábradlí se nedělá (provizorní oprava).
 - **Náhled řezu věží:** `tools/constructions/check_tower.py`.
+- **Škody z dobývání (17. 11. 2026, `navrh_vez_pristresek.md` kap. 3):** hrad se dobýval od východu a jihovýchodu. Data v `tools/ruin/tower_spec.py` → `ruin_edits()`, `gen_layout.py` je jen převezme. Neověřeno v UE.
+  - `Vez_V`: hlavní průlom, nejnižší koruna 9,45 m (místy 9,1 m), střílna 2. patra zanikla (zůstal výřez s parapetem 0,7–1,05 m), kapsy trámů 2. patra zůstávají; 2 141 → 1 918 kamenů;
+  - `Vez_J`: průlom do tvaru nepravidelné mísy, koruna u vnitřního líce v u = 1,25–7,4 nejvýš 10,85 m (okap přístřešku), nadpraží střílny 2. patra stojí; 2 138 → 2 033 kamenů;
+  - JV roh 11,2–11,9 m, SV roh 11,2–11,55 m (z obou zdí);
+  - `Vez_Z`: jen vedlejší škody, střed zdi vyšší (`protect` v = 1,5–4,0 m, vnitřní líc 10,85–11,9 m); 2 050 → 2 087 kamenů;
+  - `Vez_S`: místo průlomu do tvaru U plynulý pokles koruny od SZ rohu (12,2–12,6 m) k SV rohu (11,2 m), střílna 2. patra má zase nadpraží; 1 913 → 2 018 kamenů;
+  - `Vez_Patra` beze změny (222 dílců, bez průniku se zříceninou).
+- **Přístřešek hlídky na věži (17. 11. 2026, typ `canvas_shelter`, `zr_stavby/pristresek.py`):** 05 `Vez_Pristresek` ve 2. patře věže podle `new_designs/navrh_vez_pristresek.md` kap. 4–5, celé sada `base`. Rozměry `tools/ruin/tower_spec.py` → `PR`, `pristresek()`; data `gen_constructions.py` → `vez_pristresek`.
+  - 3 kůly s kůrou Ø 16 cm na prknech nad trámem v = 4,678 (u = 1,40 / 5,50 / 7,15), hlava rozsochy `SM_RuinForkHead` zvětšená na kůl (× 1,33); hřeben Ø 14 cm ze dvou kusů (vrch 12,70 m) ve vidlicích;
+  - okapová tyč Ø 12 cm (spodek 11,05 m) na 5 podkladních kamenech na koruně `Vez_J` (výška se počítá z postavené koruny, nad 0,35 m dva kameny: vyšly 0,19 / 0,53 / 0,20 / 0,20 / 0,54 m);
+  - 5 krokvových tyčí Ø 10 cm, sklon 22,6°, 2 vzpěry do podlahy nad trámem v = 6,317; ovázání spojů (`SM_RuinLashing`);
+  - plachta 6,0 × 4,3 m a štít nad `Vez_Z` jako meshe na míru (`SM_RuinCanvasVez_A`, `SM_RuinCanvasVezGable_A`, generuje `tools/meshes/gen_meshes.py textile` z `tower_spec`); plátno leží **2 cm** nad krokvemi (návrh 0,5 cm), aby přešlo přes ovázání;
+  - 2 bouřková lana (`SM_RuinRope`) přes plachtu ke kotevním kamenům na koruně `Vez_J`, 4 zátěžové kameny na lemu; podkladní, zátěžové a kotevní kameny jsou samostatné actory (doladit ručně, capture);
+  - spuštění `05_constructions/stavby/Vez_Pristresek.py`, celá věž `stavby/Vez.py` (`Vez_Patra` + přístřešek, `RUIN = True` i část `Obvod`). Ověřeno jen mimo UE (`run_checks.py --only vez`, náhled `05_constructions/Stavby_vez_pristresek_nahled.png`).
 
 - **Překlad výklenku střílen (11/2026):** je vysoký přesně jednu řadu kamene (dřív pevně 35 cm). Nad překladem tak nezůstává vynechaná řada („kapsa“).
 
@@ -76,7 +90,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **Společné rozměry věže** jsou v `tools/ruin/tower_spec.py`. Když se změní, přegeneruje se `gen_layout.py` i `tools/constructions/gen_constructions.py`.
 - **Náhled věže:** `tools/constructions/check_tower.py`.
 - **Všechno najednou (15. 11. 2026):** `build_normal.py` v kořeni postaví hrad (03) i stavby (05) aditivně, `build_fullscope.py` je oprava (smaže generované actory a knihovní meshe a vše postaví znovu). Společná logika je v `zrlib/pipeline.py`.
-- **Spouštění po stavbách:** `05_constructions/stavby/<Stavba>.py` (`Vez_Patra`, `Ostroh_Krov`, `Ostroh_Dostavba`, `Ostroh_Podlaha`, `Sut`) postaví jen jednu stavbu. `build_constructions.py` postaví všechny.
+- **Spouštění po stavbách:** `05_constructions/stavby/<Stavba>.py` (`Vez_Patra`, `Vez_Pristresek`, `Ostroh_Krov`, `Ostroh_Dostavba`, `Ostroh_Podlaha`, `Sut`) postaví jen jednu stavbu. `build_constructions.py` postaví všechny.
 
 ## Otevřené / další kroky
 
@@ -118,7 +132,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - kamenný stůl s = 29,75–30,73; n = 0,72–1,9; výška 0,75 m, hliněný maz, ohniště 0,4 × 0,4 m pod komínem,
   - výklenek střílny s = 29 hned vedle stolu zůstává volný (manipulační prostor),
   - boční zídka n = 1,9–2,2, výška 1,2 m, s otvorem pro výfučnu,
-  - dymník 1,4 × 1,2 m se spodním okrajem 1,8 m, visí na 4 závěsných tyčích z výměn mezi krokvemi n = 0,9 a 1,8,
+  - dymník 1,4 × 1,2 m se spodním okrajem 1,9 m (zvednuto o 10 cm 17. 11. 2026, postava se o něj zasekávala cestou k výhni), visí na 4 závěsných tyčích z výměn mezi krokvemi n = 0,9 a 1,8,
   - komín 0,5 × 0,5 m, střed s = 30,0; n = 1,35, vrch 5,5 m. Rozebranou korunu `Palac_J` přesahuje o 0,3–1,5 m.
 - **Stěna a okap (15. 11. 2026, večer):**
   - 05 `Palac_Kovarna_Stena` (typ `wattle_wall`, `zr_stavby/stena.py`): proutí s hlínou v s = 25,85; n = 0,7–6,3, výška 2,1 m, dílce mezi sloupy, kůly na spojích,

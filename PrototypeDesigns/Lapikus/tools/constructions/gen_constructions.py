@@ -5,6 +5,7 @@ Dodatecne stavby "druheho zabydleni" zriceniny:
   - ostroh: krov u ostrohu (ostroh_spec.py, sdileny s 03), kamenna dostavba obytne casti a prkenna podlaha
   - palac: kovarna ve vychodni mistnosti (palac_spec.py): pristresek s pultovou strechou a krytinou, vyhen, stena z prouti, okap, kul u dreva
     (prenosne vybaveni kovarny je v 06_furnishing: tools/furnishing/gen_furnishing.py)
+  - vez_pristresek: platenny pristresek hlidky ve 2. patre veze (tower_spec.pristresek)
   - nastaveni volne suti
 
 python gen_constructions.py <ruin_layout_draft.json> <vystup constructions.json> [<03_ruin/blocks/ruin_layout.json>]
@@ -392,6 +393,24 @@ def brana(LAY):
     return [kamen, podesta, kryty]
 
 
+def vez_pristresek(D):
+    """platenny pristresek hlidky ve 2. patre veze (typ canvas_shelter; rozmery tower_spec.pristresek, navrh_vez_pristresek.md)"""
+    from tower_spec import pristresek, FORK_SEAT_K
+    TS = tower_spec(D["tower"]); p = pristresek(TS); rv = p["ridge_v"]
+    pick = lambda d, *ks: {k: d[k] for k in ks}
+    return [dict(name="Vez_Pristresek", type="canvas_shelter", folder="Stavby/Vez", stage="base",
+                 origin=TS["origin"], u=TS["UV"], v=TS["VV"], z_ref=VEZ_F, floor_top=p["floor_top"],
+                 walls=["Vez_J", "Vez_V", "Vez_S", "Vez_Z"],
+                 posts=dict(p["posts"], v=rv, fork_k=p["fork_k"], seat=FORK_SEAT_K),
+                 ridge=dict(p["ridge"], v=rv), eave=dict(p["eave"]), pads=dict(p["pads"]), weights=dict(p["weights"]),
+                 rafters=dict(p["rafters"]), slope=round(p["slope"], 5),
+                 braces=dict(p["braces"], foot_v=p["brace_v"]),
+                 canvas=dict(pick(p["canvas"], "u", "v", "lift", "sag"), mesh="SM_RuinCanvasVez_A"),
+                 gable=dict(pick(p["gable"], "u", "v", "bottom", "hem"), mesh="SM_RuinCanvasVezGable_A"),
+                 ropes=[dict(r) for r in p["ropes"]], rope=dict(p["rope"]), anchor_size=p["anchor_size"],
+                 bark=True, finish="raw")]
+
+
 if __name__ == "__main__":
     D = json.load(open(sys.argv[1]))
     LAY = json.load(open(sys.argv[3] if len(sys.argv) > 3 else os.path.join(HERE, "..", "..", "03_ruin", "blocks", "ruin_layout.json")))
@@ -399,6 +418,7 @@ if __name__ == "__main__":
     frames, addons = ostroh(LAY)
     p_frames, p_addons = palac(LAY); frames += p_frames; addons += p_addons
     addons += brana(LAY)
+    addons += vez_pristresek(D)
     out = dict(version=1, units="UE cm (pozice), m (rozmery v ramu veze)",
                note="Drevene vestavby a sut. Zricenina (zdi, kapsy, dlazba) je v 03_ruin/blocks/ruin_layout.json.",
                rubble=dict(enabled=True, folder="Stavby/Sut"),

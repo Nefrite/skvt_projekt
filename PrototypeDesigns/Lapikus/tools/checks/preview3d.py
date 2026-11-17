@@ -2,6 +2,7 @@
 python preview3d.py ostroh <vystup.png> [--layout <ruin_layout.json>] [--no-roof]
 python preview3d.py kovarna <vystup.png>      kovarna ve vychodni mistnosti palace (Palac_Kovarna_*)
 python preview3d.py brana <vystup.png> [--stage 1|2]    strazni stanoviste nad branami (Brana_*)
+python preview3d.py vez <vystup.png>        platenny pristresek hlidky ve 2. patre veze (Vez_Pristresek)
 python preview3d.py obydli <vystup.png> [--stage 1|2]   dum v prostredni mistnosti (Palac_Obydli_*); etapa 1 = base + site, 2 = base + final
 Jako knihovna: render(boxes, views, out_png), stone_boxes(stones, colf, z0)
   boxes = [(stred (m), R 3x3 (sloupce = lokalni osy), polovicni rozmery (m), rgb)]
@@ -149,6 +150,56 @@ def brana_scene(S, stage=2):
     return bx, V_
 
 
+def canvas_tiles(mesh, O, U, V, z0_abs, z0, step=5, col=(0.86, 0.81, 0.69)):
+    """plachta na miru (tools/meshes/mesh_textile.canvas_vez) jako tenke kvadry po mrizce (kazda step-ta bunka)"""
+    sys.path.insert(0, os.path.join(HERE, "..", "meshes")); import mesh_textile, numpy as np
+    P, UV, _ = mesh_textile.canvas_vez()[mesh]
+    nv1 = int(np.argmax(np.abs(UV[:, 0] - UV[0, 0]) > 1e-9))           # mrizka make_canvas: UV u je konstantni podel radku
+    G = P.reshape(-1, nv1, 3); out = []
+    W = lambda q: np.array([(O[0] + U[0] * q[0] - V[0] * q[1]) / 100, (O[1] + U[1] * q[0] - V[1] * q[1]) / 100, (z0_abs + q[2] - z0) / 100])
+    for a in range(0, G.shape[0] - step, step):
+        for b in range(0, G.shape[1] - step, step):
+            p00, p10, p01, p11 = (W(G[a, b]), W(G[a + step, b]), W(G[a, b + step]), W(G[a + step, b + step]))
+            c = (p00 + p10 + p01 + p11) / 4; ex = (p10 + p11 - p00 - p01) / 2; ey = (p01 + p11 - p00 - p10) / 2
+            lx, ly = np.linalg.norm(ex), np.linalg.norm(ey)
+            if lx < 1e-4 or ly < 1e-4: continue
+            X = ex / lx; Y = ey - X * (ey @ X); ly2 = np.linalg.norm(Y)
+            if ly2 < 1e-4: continue
+            Y /= ly2; Z = np.cross(X, Y)
+            R = [[X[i], Y[i], Z[i]] for i in range(3)]
+            out.append((tuple(c), R, (lx / 2 * 1.02, ly / 2 * 1.02, 0.006), col))
+    return out
+
+
+def vez_scene(S):
+    """platenny pristresek hlidky ve 2. patre veze (Vez_Pristresek): (kvadry, pohledy); vysky od plosiny hradu"""
+    ad = next(f for f in S["data"]["addons"] if f["name"] == "Vez_Pristresek")
+    O, U, V = ad["origin"], ad["u"], ad["v"]; Z0 = ad["z_ref"]
+    uv = lambda x, y: (((x - O[0]) * U[0] + (y - O[1]) * U[1]) / 100, ((x - O[0]) * V[0] + (y - O[1]) * V[1]) / 100)
+    z0 = S["layout"]["plateau_z_cm"]
+    P = lambda u, v, h: ((O[0] + (U[0] * u + V[0] * v) * 100) / 100, (O[1] + (U[1] * u + V[1] * v) * 100) / 100, (Z0 + h * 100 - z0) / 100)
+    ruin = [s for n, w in S["walls"].items() for s in w["stones"] + w.get("loose", []) if -4 < uv(s.x, s.y)[0] < 15 and -4 < uv(s.x, s.y)[1] < 15]
+    patra = S["groups"]["Vez_Patra"]["stones"] + S["groups"]["Vez_Patra"]["loose"]
+    g = S["groups"]["Vez_Pristresek"]; new = [s for s in g["stones"] + g["loose"] if s.cat != "canvas"]
+    col = dict(COL, face=(0.82, 0.66, 0.46), rope=(0.75, 0.62, 0.40))
+    bx = stone_boxes(ruin, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0) + stone_boxes(patra, lambda s: COL.get(s.cat, (0.5, 0.4, 0.3)), z0) + \
+         stone_boxes(new, lambda s: (0.40, 0.31, 0.22) if s.bark else col.get(s.cat, (0.6, 0.6, 0.6)), z0)
+    for mesh in (ad["canvas"]["mesh"], ad["gable"]["mesh"]):
+        bx += canvas_tiles(mesh, O, U, V, Z0, z0)
+    V_ = [dict(title="zvenku od jihovychodu", eye=P(17.0, -9.0, 14.5), target=P(5.0, 3.0, 11.0), fov=40),
+          dict(title="od jihu", eye=P(4.5, -14.0, 11.5), target=P(4.5, 3.0, 11.0), fov=38),
+          dict(title="shora od severozapadu", eye=P(-6.0, 15.0, 20.0), target=P(4.5, 3.0, 11.0), fov=40),
+          dict(title="zevnitr k jihu (strilna)", eye=P(5.0, 8.6, 10.2), target=P(4.5, 1.0, 10.4), fov=75),
+          dict(title="zevnitr od severovychodu", eye=P(9.2, 9.2, 11.5), target=P(3.5, 2.5, 10.2), fov=70),
+          dict(title="pudorys (sever nahore)", eye=P(5.5, 5.5, 40.0), target=P(5.5, 5.5, 8.0), ortho=14.0)]
+    return bx, V_
+
+
+def vez(out, layout=None):
+    sys.path.insert(0, HERE); import common
+    render(*vez_scene(common.state(layout)), out)
+
+
 def brana(out, layout=None, stage=2):
     sys.path.insert(0, HERE); import common
     render(*brana_scene(common.state(layout), stage), out)
@@ -166,11 +217,12 @@ def kovarna(out, layout=None):
 
 if __name__ == "__main__":
     import argparse
-    ap = argparse.ArgumentParser(); ap.add_argument("preset", choices=["ostroh", "kovarna", "obydli", "brana"]); ap.add_argument("--stage", type=int, default=2); ap.add_argument("out")
+    ap = argparse.ArgumentParser(); ap.add_argument("preset", choices=["ostroh", "kovarna", "obydli", "brana", "vez"]); ap.add_argument("--stage", type=int, default=2); ap.add_argument("out")
     ap.add_argument("--layout"); ap.add_argument("--no-roof", action="store_true")
     a = ap.parse_args()
     if a.preset == "kovarna": kovarna(a.out, a.layout)
     elif a.preset == "obydli": obydli(a.out, a.layout, a.stage)
     elif a.preset == "brana": brana(a.out, a.layout, a.stage)
+    elif a.preset == "vez": vez(a.out, a.layout)
     else: ostroh(a.out, a.layout, not a.no_roof)
     print("nahled:", a.out)
