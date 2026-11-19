@@ -1,0 +1,45 @@
+# Hestia – Entity × domain matrix (zadání 04 kap. 2.1; zkušební pohled 2 pro Q1, 04 kap. 5.1).
+# Varianta Bases. Buňka: depth/target, ⚠ = mezera (depth < target); „bez cíle“ = doména očekávaná
+# podle kind (core taxonomy/kinds.yaml) bez cíle; prázdné = neočekávaná doména bez cíle.
+# Očekávané domény jsou v pohledu napevno z core; lokální kinds instance pohled nezná.
+filters:
+  and:
+    - file.inFolder("Entities")
+    - 'type == "entity"'
+formulas:
+  environment: 'if(note.target_environment, if(note.depth_environment, note.depth_environment, 0).toString() + "/" + note.target_environment.toString() + if(if(note.depth_environment, note.depth_environment, 0) < note.target_environment, " ⚠", ""), if(note.kind == "place" || note.kind == "route", "bez cíle", ""))'
+  structures: 'if(note.target_structures, if(note.depth_structures, note.depth_structures, 0).toString() + "/" + note.target_structures.toString() + if(if(note.depth_structures, note.depth_structures, 0) < note.target_structures, " ⚠", ""), if(note.kind == "location" || note.kind == "structure" || note.kind == "room" || note.kind == "object" || note.kind == "district" || note.kind == "plot", "bez cíle", ""))'
+  paths: 'if(note.target_paths, if(note.depth_paths, note.depth_paths, 0).toString() + "/" + note.target_paths.toString() + if(if(note.depth_paths, note.depth_paths, 0) < note.target_paths, " ⚠", ""), if(note.kind == "place" || note.kind == "location" || note.kind == "route" || note.kind == "district", "bez cíle", ""))'
+  npc: 'if(note.target_npc, if(note.depth_npc, note.depth_npc, 0).toString() + "/" + note.target_npc.toString() + if(if(note.depth_npc, note.depth_npc, 0) < note.target_npc, " ⚠", ""), if(note.kind == "location" || note.kind == "character" || note.kind == "district" || note.kind == "plot", "bez cíle", ""))'
+  gameplay: 'if(note.target_gameplay, if(note.depth_gameplay, note.depth_gameplay, 0).toString() + "/" + note.target_gameplay.toString() + if(if(note.depth_gameplay, note.depth_gameplay, 0) < note.target_gameplay, " ⚠", ""), if(note.kind == "location" || note.kind == "structure" || note.kind == "character" || note.kind == "object" || note.kind == "system", "bez cíle", ""))'
+  narrative: 'if(note.target_narrative, if(note.depth_narrative, note.depth_narrative, 0).toString() + "/" + note.target_narrative.toString() + if(if(note.depth_narrative, note.depth_narrative, 0) < note.target_narrative, " ⚠", ""), if(note.kind == "place" || note.kind == "location" || note.kind == "character" || note.kind == "district", "bez cíle", ""))'
+properties:
+  file.name:
+    displayName: Entita
+  formula.environment:
+    displayName: environment
+  formula.structures:
+    displayName: structures
+  formula.paths:
+    displayName: paths
+  formula.npc:
+    displayName: npc
+  formula.gameplay:
+    displayName: gameplay
+  formula.narrative:
+    displayName: narrative
+views:
+  - type: table
+    name: Entity × domain matrix
+    order:
+      - file.name
+      - note.kind
+      - formula.environment
+      - formula.structures
+      - formula.paths
+      - formula.npc
+      - formula.gameplay
+      - formula.narrative
+    sort:
+      - property: file.name
+        direction: ASC

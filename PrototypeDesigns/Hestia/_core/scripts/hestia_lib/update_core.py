@@ -1,0 +1,371 @@
+"""Příkaz update_core: bezpečně převést instanci na novou verzi core (zadání 13 kap. 10.6, 11 kap. 6).
+
+- `--from <cesta k hestia/>`.
+- Dry-run: rozdíl verzí, změněné soubory core, migrační poznámky z CHANGELOG.md mezi starou a novou verzí,
+  hodnoty `taxonomy_local`, které budou v core; upozornění na necommitnuté změny v projektu (11 kap. 6, krok 2).
+- Přerušenou výměnu (existuje `_core.new`, chybí `_core`) dokončí další běh; existují-li oba, odmítne.
+- `--apply`: nový core se nakopíruje vedle (`_core.new`) a vymění atomickým přejmenováním; starý core se
+  přesune do `_to_delete/_core_<verze>/`; řádek do `structure_version.md`; z `taxonomy_local` se odstraní
+  hodnoty nově v core a zapíší do `changes.md`; funkční nastavení `.obsidian` se nemění (02 kap. 7.1).
+- Na konci upozornění, jsou-li kompiláty rolí starší než nový core.
+- Migrace MAJOR verzí: `scripts/migrations/<verze>.py` v novém core s funkcí `migrate(vault, apply)`;
+  spustí se v dry-run a s `--apply` po schválení. Ve fázi 3 jen kostra bez migrací.
+- Snippety core `.obsidian/snippets/hestia-*.css` (02 kap. 7.1) srovná při každém běhu: chybějící doplní,
+  změněné přepíše, ty, které core nemá, přesune do `_to_delete/.obsidian/snippets/`; `appearance.json`
+  (zapnutí) nemění; každý zásah zapíše do `changes.md`.
+- `--with-views` (13 kap. 10.9): nakopíruje do `Dashboard/views/` chybějící pohledy z `vault_template` nového
+  core (`bases/*.base`, `dataview/dv_*.md`), existující nepřepíše; funguje i bez změny verze core.
+"""
+from __future__ import annotations
+
+import filecmp
+import importlib.util
+import os
+import re
+import shutil
+from pathlib import Path
+
+from . import gitinfo
+from .errors import EXIT_OK, UsageError
+from .fileio import atomic_write, file_hash, read_text, to_posix
+from .logs import append_lines, format_line
+from .taxonomy import KEYED_FILES, load_yaml
+from . import views as views_mod
+from .util import today
+from .vault import Vault
+
+EXCLUDE_DIRS = {"__pycache__", ".pytest_cache"}
+VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
+CHANGELOG_HEAD_RE = re.compile(r"^## (\d+\.\d+\.\d+)\b.*$", re.M)
+COMPILED_HEADER_RE = re.compile(r"core (\d+\.\d+\.\d+)")
+
+
+def parse_version(v: str) -> tuple[int, int, int]:
+    m = VERSION_RE.match((v or "").strip())
+    if not m:
+        raise UsageError(f"Neplatná verze core {v!r} (MAJOR.MINOR.PATCH)")
+    return tuple(int(x) for x in m.groups())
+
+
+def read_version(core: Path) -> str:
+    p = core / "VERSION"
+    if not p.is_file():
+        raise UsageError(f"Chybí VERSION: {p}")
+    return read_text(p).strip()
+
+
+def core_files(root: Path) -> dict[str, Path]:
+    out = {}
+    for p in sorted(root.rglob("*")):
+        if p.is_file() and not set(p.relative_to(root).parts) & EXCLUDE_DIRS and p.suffix != ".pyc":
+            out[to_posix(p.relative_to(root))] = p
+    return out
+
+
+def changelog_notes(new_core: Path, old: str, new: str) -> list[tuple[str, str]]:
+    """Sekce CHANGELOG.md pro verze (old, new]: (verze, úvodní odstavec s migrační poznámkou)."""
+    p = new_core / "CHANGELOG.md"
+    if not p.is_file():
+        return []
+    text = read_text(p).replace("\r\n", "\n")
+    heads = list(CHANGELOG_HEAD_RE.finditer(text))
+    lo, hi = parse_version(old), parse_version(new)
+    out = []
+    for i, m in enumerate(heads):
+        ver = m.group(1)
+        if not (lo < parse_version(ver) <= hi):
+            continue
+        body = text[m.end():heads[i + 1].start() if i + 1 < len(heads) else len(text)].strip()
+        para = body.split("\n\n", 1)[0].strip()
+        migr = [l.strip() for l in body.split("\n") if re.search(r"migra", l, re.I) and l.strip() != para]
+        out.append((ver, "\n".join([para, *migr])))
+    return out
+
+
+def local_overlaps(vault: Vault, new_core: Path) -> list[tuple[str, str, str]]:
+    """(soubor, klíč, hodnota) z taxonomy_local, které nový core už obsahuje."""
+    local = vault.root / "Maintenance" / "taxonomy_local"
+    out = []
+    for fname, key in KEYED_FILES.items():
+        lp, cp = local / fname, new_core / "taxonomy" / fname
+        if not lp.is_file() or not cp.is_file():
+            continue
+        core_ids = {it.get(key) for it in (load_yaml(cp) or {}).get("items") or [] if isinstance(it, dict)}
+        for it in (load_yaml(lp) or {}).get("items") or []:
+            if isinstance(it, dict) and it.get(key) in core_ids:
+                out.append((fname, key, str(it.get(key))))
+    lp, cp = local / "enums.yaml", new_core / "taxonomy" / "enums.yaml"
+    if lp.is_file() and cp.is_file():
+        core_vals = {it.get("name"): set(it.get("values") or []) for it in (load_yaml(cp) or {}).get("items") or []}
+        for it in (load_yaml(lp) or {}).get("items") or []:
+            for v in it.get("values") or []:
+                if v in core_vals.get(it.get("name"), set()):
+                    out.append(("enums.yaml", str(it.get("name")), str(v)))
+    return out
+
+
+def remove_local_values(text: str, key: str, values: set[str]) -> str:
+    """Řádkově odstraní položky `- key: X` (blok) nebo `- {key: X, …}` z YAML seznamu items."""
+    lines = text.splitlines(keepends=True)
+    out, skip_indent = [], None
+    item_re = re.compile(r"^(\s*)-\s*(\{.*\}|" + re.escape(key) + r"\s*:\s*(.+?))\s*$")
+    for line in lines:
+        raw = line.rstrip("\r\n")
+        if skip_indent is not None:
+            ind = len(raw) - len(raw.lstrip())
+            if raw.strip() and ind > skip_indent and not raw.lstrip().startswith("- "):
+                continue
+            skip_indent = None
+        m = item_re.match(raw)
+        if m:
+            val = None
+            if m.group(2).startswith("{"):
+                mm = re.search(re.escape(key) + r"\s*:\s*([^,}]+)", m.group(2))
+                val = mm.group(1).strip().strip("\"'") if mm else None
+            else:
+                val = m.group(3).strip().strip("\"'")
+            if val in values:
+                skip_indent = len(m.group(1))
+                continue
+        out.append(line)
+    return "".join(out)
+
+
+def stale_compiled(vault: Vault, new_version: str) -> list[str]:
+    out = []
+    d = vault.root / "Roles" / "_compiled"
+    for p in sorted(d.glob("*_compiled.md")) if d.is_dir() else []:
+        m = COMPILED_HEADER_RE.search("\n".join(read_text(p).splitlines()[:3]))
+        if not m or m.group(1) != new_version:
+            out.append(p.name)
+    return out
+
+
+def find_migrations(new_core: Path, old: str, new: str) -> list[Path]:
+    """Migrace MAJOR verzí: scripts/migrations/<verze>.py pro verze (old, new] se změnou MAJOR."""
+    d = new_core / "scripts" / "migrations"
+    if not d.is_dir() or parse_version(new)[0] == parse_version(old)[0]:
+        return []
+    lo, hi = parse_version(old), parse_version(new)
+    out = []
+    for p in sorted(d.glob("*.py")):
+        if VERSION_RE.match(p.stem) and lo < parse_version(p.stem) <= hi:
+            out.append(p)
+    return out
+
+
+def run_migration(path: Path, vault: Vault, apply: bool) -> str:
+    spec = importlib.util.spec_from_file_location(f"hestia_migration_{path.stem.replace('.', '_')}", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    if not hasattr(mod, "migrate"):
+        raise UsageError(f"Migrace {path.name} nemá funkci migrate(vault, apply)")
+    return str(mod.migrate(vault, apply) or "")
+
+
+SNIPPETS_REL = ".obsidian/snippets"
+SNIPPET_GLOB = "hestia-*.css"
+
+
+def snippet_plan(vault: Vault, new_core: Path) -> list[tuple[str, str]]:
+    """(akce, jméno) pro snippety core: add / update / remove (02 kap. 7.1)."""
+    src_dir = new_core / "vault_template" / SNIPPETS_REL
+    dst_dir = vault.root / SNIPPETS_REL
+    if not (vault.root / ".obsidian").is_dir():
+        return []
+    src = {p.name: p for p in src_dir.glob(SNIPPET_GLOB)} if src_dir.is_dir() else {}
+    dst = {p.name: p for p in dst_dir.glob(SNIPPET_GLOB)} if dst_dir.is_dir() else {}
+    out = [("add", n) for n in sorted(set(src) - set(dst))]
+    out += [("update", n) for n in sorted(set(src) & set(dst)) if src[n].read_bytes() != dst[n].read_bytes()]
+    out += [("remove", n) for n in sorted(set(dst) - set(src))]
+    return out
+
+
+def apply_snippets(vault: Vault, new_core: Path, plan: list[tuple[str, str]]) -> None:
+    src_dir, dst_dir = new_core / "vault_template" / SNIPPETS_REL, vault.root / SNIPPETS_REL
+    for action, name in plan:
+        dst = dst_dir / name
+        if action == "remove":
+            trash = vault.root / "_to_delete" / SNIPPETS_REL / name
+            n = 2
+            while trash.exists():
+                trash = trash.with_name(f"{name[:-4]}_{n}.css")
+                n += 1
+            trash.parent.mkdir(parents=True, exist_ok=True)
+            os.rename(dst, trash)
+        else:
+            atomic_write(dst, (src_dir / name).read_bytes(),
+                         expected_hash=file_hash(dst) if action == "update" else None)
+
+
+SNIPPET_VERB = {"add": "doplněn", "update": "aktualizován", "remove": "přesunut do _to_delete/ (core ho nemá)"}
+
+
+def missing_views(vault: Vault, new_core: Path) -> list[tuple[Path, Path]]:
+    """(zdroj ve vault_template, cíl ve vaultu) pro pohledy z manifestu nového core, které ve vaultu chybí;
+    při `game_layer: false` bez pohledů s příznakem herní vrstvy. `local/` se nekontroluje."""
+    src_root = new_core / "vault_template" / "Dashboard" / "views"
+    out = []
+    for rel in views_mod.template_files(new_core, vault.game_layer):
+        src, dst = src_root / rel, vault.root / views_mod.VIEWS_REL / views_mod.ViewDef.target(rel)
+        if src.is_file() and not dst.exists():
+            out.append((src, dst))
+    keep_src = src_root / "local" / ".gitkeep"                # složka pro vlastní pohledy instance
+    if keep_src.is_file() and not (vault.root / views_mod.VIEWS_REL / "local").exists():
+        out.append((keep_src, vault.root / views_mod.VIEWS_REL / "local" / ".gitkeep"))
+    return out
+
+
+def run(args, vault: Vault) -> tuple[int, dict, str]:
+    new_core = Path(args.source).resolve()
+    cur_core = vault.root / "_core"
+    if not (new_core / "scripts" / "hestia.py").is_file() or not (new_core / "taxonomy").is_dir():
+        raise UsageError(f"{new_core} nevypadá jako hestia/ (chybí scripts/hestia.py nebo taxonomy/)")
+    if new_core == cur_core.resolve():
+        raise UsageError("--from ukazuje na _core/ tohoto vaultu")
+    resumed = ""
+    staging = vault.root / "_core.new"
+    if staging.is_dir() and not cur_core.exists():          # přerušená výměna (13 kap. 10.6): dokončit
+        if args.apply:
+            os.rename(staging, cur_core)
+            resumed = "Dokončena přerušená výměna: _core.new -> _core."
+        else:
+            resumed = "Přerušená výměna: _core.new se s --apply přejmenuje na _core (dry-run počítá s ním)."
+            cur_core = staging
+    new_v = read_version(new_core)
+    old_v = read_version(cur_core) if cur_core.is_dir() else "0.0.0"
+    if parse_version(new_v) < parse_version(old_v) and not args.force:
+        raise UsageError(f"Nová verze {new_v} je starší než {old_v} (návrat jen s --force)")
+
+    new_files, old_files = core_files(new_core), core_files(cur_core) if cur_core.is_dir() else {}
+    added = sorted(set(new_files) - set(old_files))
+    removed = sorted(set(old_files) - set(new_files))
+    modified = sorted(f for f in set(new_files) & set(old_files)
+                      if not filecmp.cmp(new_files[f], old_files[f], shallow=False))
+    notes = changelog_notes(new_core, old_v, new_v)
+    overlaps = local_overlaps(vault, new_core)
+    migrations = find_migrations(new_core, old_v, new_v)
+    dirty = gitinfo.changed_files(vault.project_root)
+    warnings = []
+    if dirty:
+        warnings.append(f"projekt má {len(dirty)} necommitnutých změn; před --apply commitni (11 kap. 6, krok 2)")
+    unchanged = not (added or removed or modified) and new_v == old_v
+
+    day = today()
+    applied = False
+    migr_out = [f"{p.name}: {run_migration(p, vault, False)}" for p in migrations]
+    if args.apply and not unchanged:
+        staging = vault.root / "_core.new"
+        if staging.exists():
+            raise UsageError(f"{staging} už existuje (přerušená aktualizace?); zkontroluj a přesuň ho ručně")
+        shutil.copytree(new_core, staging, ignore=shutil.ignore_patterns(*EXCLUDE_DIRS, "*.pyc"))
+        trash = vault.root / "_to_delete" / f"_core_{old_v}"
+        n = 2
+        while trash.exists():
+            trash = vault.root / "_to_delete" / f"_core_{old_v}_{n}"
+            n += 1
+        trash.parent.mkdir(parents=True, exist_ok=True)
+        if cur_core.is_dir():
+            os.rename(cur_core, trash)
+        os.rename(staging, cur_core)
+        sv = vault.root / "Maintenance" / "structure_version.md"
+        if sv.is_file():
+            text = read_text(sv)
+            atomic_write(sv, append_lines(text, [format_line([day.isoformat(), f"core {new_v}",
+                                                              f"aktualizace z {old_v} (update_core)", ""])], today=day),
+                         expected_hash=file_hash(sv))
+        removed_local = []
+        local = vault.root / "Maintenance" / "taxonomy_local"
+        by_file: dict[str, tuple[str, set]] = {}
+        for fname, key, value in overlaps:
+            if fname == "enums.yaml":
+                continue                              # hodnoty výčtů se odstraňují ručně (vnořený seznam)
+            by_file.setdefault(fname, (key, set()))[1].add(value)
+        for fname, (key, values) in by_file.items():
+            p = local / fname
+            old_text = read_text(p)
+            new_text = remove_local_values(old_text, key, values)
+            if new_text != old_text:
+                atomic_write(p, new_text, expected_hash=file_hash(p))
+                removed_local += [f"{fname}: {v}" for v in sorted(values)]
+        if removed_local:
+            cp = vault.root / "Maintenance" / "changes.md"
+            if cp.is_file():
+                lines = [format_line([day.isoformat(), "hestia", f"taxonomy_local/{x.split(':')[0]}",
+                                      f"hodnota {x.split(': ', 1)[1]} je nově v core {new_v}, odstraněna lokálně",
+                                      "update_core"]) for x in removed_local]
+                atomic_write(cp, append_lines(read_text(cp), lines, today=day), expected_hash=file_hash(cp))
+        migr_out = [f"{p.name}: {run_migration(p, Vault.load(vault.root), True)}" for p in migrations]
+        applied = True
+
+    snippets = snippet_plan(vault, new_core)
+    if args.apply and snippets:
+        apply_snippets(vault, new_core, snippets)
+        cp = vault.root / "Maintenance" / "changes.md"
+        if cp.is_file():
+            rows = [format_line([day.isoformat(), "hestia", f"{SNIPPETS_REL}/{n}",
+                                 f"snippet core {SNIPPET_VERB[a]} (core {new_v})", "update_core"]) for a, n in snippets]
+            atomic_write(cp, append_lines(read_text(cp), rows, today=day), expected_hash=file_hash(cp))
+
+    views, views_note = [], ""
+    if getattr(args, "with_views", False):
+        skipped = views_mod.skipped_views(new_core, vault.game_layer)
+        if skipped:
+            views_note = f"bez herní vrstvy vynechané pohledy (čtou entity): {', '.join(skipped)}"
+        views = missing_views(vault, new_core)
+        if args.apply and views:
+            for src, dst in views:
+                atomic_write(dst, read_text(src).replace("{{date:YYYY-MM-DD}}", day.isoformat()))
+            cp = vault.root / "Maintenance" / "changes.md"
+            if cp.is_file():
+                names = ", ".join(to_posix(d.relative_to(vault.root / "Dashboard" / "views")) for _s, d in views)
+                line = format_line([day.isoformat(), "hestia", "Dashboard/views",
+                                    f"doplněné pohledy z core {new_v}: {names}", "update_core --with-views"])
+                atomic_write(cp, append_lines(read_text(cp), [line], today=day), expected_hash=file_hash(cp))
+    view_rels = [to_posix(d.relative_to(vault.root)) for _s, d in views]
+
+    stale = stale_compiled(vault, new_v)
+    payload = {"command": "update_core", "applied": applied, "from": old_v, "to": new_v,
+               "added": added, "removed": removed, "modified": modified,
+               "changelog": [{"version": v, "note": n} for v, n in notes],
+               "taxonomy_local_in_core": [{"file": f, "key": k, "value": v} for f, k, v in overlaps],
+               "migrations": migr_out, "stale_compiled": stale, "warnings": warnings, "views": view_rels,
+               "resumed": resumed, "snippets": [{"action": a, "file": n} for a, n in snippets]}
+    if unchanged:
+        lines = [f"update_core: core {old_v} je aktuální, beze změny"]
+    else:
+        verb = "aktualizováno" if applied else "aktualizovalo by se (dry-run, zapiš s --apply)"
+        lines = [f"update_core: {old_v} -> {new_v} {verb}",
+                 f"Soubory core: nové {len(added)}, odebrané {len(removed)}, změněné {len(modified)}"]
+        lines += [f"  + {f}" for f in added] + [f"  - {f}" for f in removed] + [f"  ~ {f}" for f in modified]
+        if notes:
+            lines.append("Poznámky z CHANGELOG.md:")
+            for v, n in notes:
+                lines.append(f"  {v}: " + n.replace("\n", "\n    "))
+        if applied:
+            lines.append("Starý core přesunut do _to_delete/; řádek v structure_version.md.")
+    if overlaps:
+        lines.append("Hodnoty taxonomy_local, které jsou v novém core: "
+                     + ", ".join(f"{f} {v}" for f, _k, v in overlaps)
+                     + ("" if applied else " (s --apply se odstraní lokálně a zapíší do changes.md)"))
+    if migrations:
+        lines.append("Migrace MAJOR verze: " + "; ".join(migr_out))
+    if snippets:
+        verb = "" if args.apply else " (dry-run)"
+        lines.append(f"Snippety core{verb}: " + ", ".join(f"{n} {SNIPPET_VERB[a]}" for a, n in snippets)
+                     + "; zapnutí v appearance.json beze změny")
+    if getattr(args, "with_views", False):
+        if views:
+            verb = "doplněny" if args.apply else "doplnily by se (dry-run)"
+            lines.append(f"Pohledy {verb}: " + ", ".join(view_rels))
+        else:
+            lines.append("Pohledy: všechny už ve vaultu jsou (existující se nepřepisují)")
+        if views_note:
+            lines.append(f"Pohledy: {views_note}")
+    if stale:
+        lines.append(f"Upozornění: kompiláty rolí jsou starší než core {new_v}: {', '.join(stale)}; "
+                     f"spusť compose_role --apply")
+    lines += [f"Upozornění: {w}" for w in warnings]
+    if resumed:
+        lines.insert(0, resumed)
+    return EXIT_OK, payload, "\n".join(lines)

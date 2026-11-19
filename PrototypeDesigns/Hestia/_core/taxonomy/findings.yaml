@@ -1,0 +1,17 @@
+# Nálezy G1–G13 (zadání 04, kap. 4). informace = info, upozornění = warning, chyba = error.
+taxonomy: findings
+spec: "04 kap. 4"
+items:
+  - {code: G1,  severity: info,    label: "Cíl nesplněný podle režimu: build depth_x < target_x, design hloubka návrhu < target_x"}
+  - {code: G2,  severity: warning, label: "Očekávaná doména (podle kind) bez target_x"}
+  - {code: G3,  severity: warning, label: "Entita bez dokumentu v doméně s target_x > 0; doména crosscut bez cílového dokumentu"}
+  - {code: G4,  severity: warning, label: "Dokumentační dluh (built/verified bez platného state)"}
+  - {code: G5,  severity: warning, label: "Zastaralý dokument; scratch raw déle než práh"}
+  - {code: G6,  severity: error,   label: "Rozbitý odkaz (wikilink, assets/ue_path, hlavička skriptu); osiřelá poznámka"}
+  - {code: G7,  severity: error,   label: "Chybějící nebo neplatný frontmatter; chybějící povinná sekce hubu"}
+  - {code: G8,  severity: warning, label: "Duplicita (stejný obsah ve dvou souborech)"}
+  - {code: G9,  severity: info,    label: "Soubor mimo vault bez napojení na entitu (orphan asset)"}
+  - {code: G10, severity: info,    label: "Nesoulad kódu a hloubky"}
+  - {code: G11, severity: warning, label: "Nezdokumentovaná změna kódu nebo dat"}
+  - {code: G12, severity: warning, label: "Povinný dokument instance chybí nebo má prázdnou povinnou sekci"}
+  - {code: G13, severity: info,    label: "Připraveno ke stavbě: režim build, hloubka návrhu ≥ target_x, realizace depth_x < target_x"}

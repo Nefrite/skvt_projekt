@@ -1,0 +1,34 @@
+# Hestia – Structures status (zadání 04 kap. 2.1; zkušební pohled 1 pro Q1, 04 kap. 5.1).
+# Varianta Bases (core plugin). Stavby, místnosti a objekty: stav, hloubka a cíl domény structures,
+# rodič, poslední změna; seskupeno podle status. Úpravy pohledu v Obsidianu mohou soubor přepsat.
+filters:
+  and:
+    - file.inFolder("Entities")
+    - 'type == "entity"'
+    - or:
+        - 'kind == "structure"'
+        - 'kind == "room"'
+        - 'kind == "object"'
+properties:
+  file.name:
+    displayName: Entita
+  note.depth_structures:
+    displayName: depth
+  note.target_structures:
+    displayName: target
+views:
+  - type: table
+    name: Structures status
+    groupBy:
+      property: note.status
+      direction: ASC
+    order:
+      - file.name
+      - note.status
+      - note.depth_structures
+      - note.target_structures
+      - note.parent
+      - note.updated
+    sort:
+      - property: file.name
+        direction: ASC

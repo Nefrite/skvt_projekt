@@ -1,0 +1,85 @@
+# Mapa složek kódu → entita, krok, domény, role (zadání 13, kap. 10.2; zadání 10, kap. 7, pravidlo 3; pilot 05, kap. 4a).
+# NÁVRH (předání A3), 2026-11-18; 0.2 2026-11-19: les = entita Les_Lapikus (pilot 02). Cesty od kořene projektu (skvt_projekt), bez úvodního lomítka; nejdelší shodná cesta vyhrává.
+# Složka je až 3. pravidlo: hlavička a jméno souboru (prefix = entita, např. Palac_Kovarna_Okap.py) mají přednost.
+#
+# Role: uvádí se jen tam, kde ji core neodhadne sám. POZOR: role ze složky přebíjí odhad ze jména (*_spec.py → spec,
+# checks/ → check), proto tools/ a tools/ruin/ roli nemají (jinak by spec a check*.py dostaly roli generator).
+# gen_*.py v tools/ tak zatím vyjdou jako entry; přesná role přijde s hlavičkami skriptů (B14, mimo MVP).
+items:
+  # --- kroky světa
+  - path: "PrototypeDesigns/Lapikus/01_terrain/"
+    entity: Lapikus_Region
+    build_step: 01_terrain
+    domains: [environment]
+  - path: "PrototypeDesigns/Lapikus/02_river/"
+    entity: Udoli_Reky
+    build_step: 02_river
+    domains: [environment]
+  - path: "PrototypeDesigns/Lapikus/03_ruin/"
+    entity: Lapikus
+    build_step: 03_ruin
+    domains: [structures]
+  - path: "PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/"
+    build_step: 03_ruin
+    domains: [structures]
+    role: library                  # dokumentace Steps/shared/zr_ruin (B16)
+  - path: "PrototypeDesigns/Lapikus/04_forest/"
+    entity: Les_Lapikus            # entita lesa (pilot 02)
+    build_step: 04_forest
+    domains: [environment]
+  - path: "PrototypeDesigns/Lapikus/05_constructions/"
+    entity: Lapikus                # spouštěče ve stavby/ se napojí jménem (prefix = entita)
+    build_step: 05_constructions
+    domains: [structures]
+  - path: "PrototypeDesigns/Lapikus/05_constructions/zr_stavby/"
+    build_step: 05_constructions
+    domains: [structures]
+    role: library                  # Steps/shared/Typy_staveb (Kdo používá)
+  - path: "PrototypeDesigns/Lapikus/06_furnishing/"
+    entity: Lapikus                # vybaveni/Palac_Kovarna*.py se napojí jménem na Palac_Kovarna;
+                                   # na Palac_Kovarna_Vybaveni až hlavičkou (B14), jméno má přednost před složkou
+    build_step: 06_furnishing
+    domains: [structures]
+
+  # --- sdílený kód a nástroje
+  - path: "PrototypeDesigns/Lapikus/zrlib/"
+    role: library                  # Steps/shared/zrlib (B16)
+  - path: "PrototypeDesigns/Lapikus/tools/meshes/"
+    domains: [structures]
+    role: library                  # Steps/shared/Meshe; gen_meshes.py je generator → hlavička (B14)
+  - path: "PrototypeDesigns/Lapikus/tools/ruin/"
+    entity: Lapikus
+    build_step: 03_ruin
+    domains: [structures]          # *_spec.py: role spec ze jména, entity hlavičkou (B15)
+  - path: "PrototypeDesigns/Lapikus/tools/constructions/"
+    build_step: 05_constructions
+    domains: [structures]
+    role: generator
+  - path: "PrototypeDesigns/Lapikus/tools/furnishing/"
+    build_step: 06_furnishing
+    domains: [structures]
+    role: generator
+  - path: "PrototypeDesigns/Lapikus/tools/textures/"
+    role: generator
+  - path: "PrototypeDesigns/Lapikus/tools/checks/"
+    role: check
+
+  # --- výstupy generátorů
+  - path: "PrototypeDesigns/Lapikus/meshes/"
+    domains: [structures]
+    role: output
+  - path: "PrototypeDesigns/Lapikus/textures/"
+    role: output
+
+  # --- systémy postav
+  - path: "PrototypeDesigns/Characters/"
+    entity: Characters
+    domains: [gameplay]
+  - path: "PrototypeDesigns/Characters/01_sitting/"
+    entity: Characters
+    build_step: 01_sitting
+    domains: [gameplay]
+  - path: "PrototypeDesigns/Characters/NPC/"
+    entity: Characters
+    build_step: NPC
+    domains: [npc, gameplay]

@@ -1,0 +1,9 @@
+/* Hestia: skrýt složku _core/ ve stromu souborů (zadání 02 kap. 7.1, nice-to-have).
+   Soubor je funkční (verzuje se), zapnutí je uživatelská volba:
+   Nastavení → Vzhled → Úryvky CSS (Settings → Appearance → CSS snippets) → hestia-hide-core.
+   Vyhledávání a graf _core/ nevidí už díky vyloučeným souborům (app.json). */
+.nav-folder:has(> .nav-folder-title[data-path="_core"]),
+.nav-folder-title[data-path="_core"],
+.nav-folder-title[data-path="_core"] + .nav-folder-children {
+  display: none;
+}

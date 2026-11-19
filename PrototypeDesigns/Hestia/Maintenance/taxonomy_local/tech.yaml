@@ -1,0 +1,32 @@
+# Technologie pro know-how instance Lapikus (pole tech, knowhow_tags; zadání 01, kap. 9.1; 12, kap. 4.3; 13, kap. 5).
+# NÁVRH (předání A3), 2026-11-18; 0.2 2026-11-19: megaplants (KnowHow README_assets_stromy, mapa M15). Odvozeno z kapitol pastí KNOWHOW_hrad (kap. 5.1–5.7) a z AGENT_*; seznam je otevřený,
+# doplní se při rozpadu KNOWHOW_hrad (B9), až bude jasné, které tagy pasti skutečně potřebují.
+items:
+  - id: ue_python
+    label: Python v Unreal Editoru (Execute Python Script, editor scripting)
+  - id: python
+    label: Python mimo Unreal (generátory, náhledy, kontroly)
+  - id: landscape
+    label: Landscape, heightmapy, materiál krajiny
+  - id: spline
+    label: Spline (řeka, zóny lesa)
+  - id: megaplants
+    label: Quixel Megaplants (assety stromů a rostlin)
+  - id: pcg
+    label: PCG (procedurální rozmístění lesa)
+  - id: static_mesh_import
+    label: Import meshí a assetů do Unrealu
+  - id: mesh_generator
+    label: Offline generátor meshí (tools/meshes)
+  - id: nanite
+    label: Nanite
+  - id: capture
+    label: Capture náhledů z Unrealu
+  - id: statetree
+    label: StateTree (NPC)
+  - id: smart_objects
+    label: Smart objects a smart places
+  - id: animation
+    label: Animace postavy (sezení, rozšíření animací)
+  - id: obsidian
+    label: Obsidian (vault Hestia)

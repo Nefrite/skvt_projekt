@@ -1,0 +1,15 @@
+# Konfigurace instance Hestia – pilot Lapikus (zadání 13, kap. 4; pilot 01, kap. 4a).
+# NÁVRH (předání A2), 2026-11-18, core v0.7.0. Při B2 nahradí Maintenance/config.yaml založený `init`.
+# Chybějící klíč = výchozí hodnota z _core/taxonomy/defaults.yaml; neznámý klíč = varování.
+hestia_config: 1
+game_layer: true
+instance: lapikus                  # source_instance v CR (export_cr)
+project_root: "../.."              # vault je skvt_projekt/PrototypeDesigns/Hestia → kořen repozitáře skvt_projekt
+code_roots: ["PrototypeDesigns/Lapikus/", "PrototypeDesigns/Characters/"]   # relativně k project_root
+ignore: ["**/__pycache__/**", "**/_to_delete/**", "**/generated/**", "**/*.bak"]
+prototypes:
+  - id: Lapikus
+    root_entity: Lapikus_Region
+    lore: Lore_Lapikus
+engine_version: "5.8"
+protected_files: ["**/manual_edits.json", "**/constructions_edits.json", "**/furnishing.json"]   # file_safety, write_rules

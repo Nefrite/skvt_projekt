@@ -1,0 +1,19 @@
+# Milníky (čas ve hře) instance Lapikus (zadání 03, kap. 4b; pilot 02 a 03, kap. 2.4).
+# NÁVRH (předání A3), 2026-11-18. id stabilní a významový; order řídké celé číslo; trigger: history, time, quest.
+# Slovo „etapa“ zůstává v dokumentech a v kódu (tagy actorů stage:base/site/final), Hestia používá „milník“ (pilot 01, kap. 5).
+milestones:
+  - id: siege
+    order: -10
+    trigger: history
+    description: Dobývání hradu od východu a jihovýchodu; vznik zřícenin
+  - id: arrival
+    order: 10
+    trigger: time
+    game_time: zacatek_leta
+    description: Etapa 1 – hráč přichází poprvé; posádka přišla začátkem léta, dům posádky se staví, kovárna stojí, hlídka spí pod plachtou na věži
+    ue: "stage: base + site"
+  - id: house_done
+    order: 20
+    trigger: time                  # OVĚŘIT: time, nebo quest (quest zatím neexistuje; zadání 03 uvádí příklad s quest)
+    description: Etapa 2 – dům posádky je dostavěný
+    ue: "stage: base + final"

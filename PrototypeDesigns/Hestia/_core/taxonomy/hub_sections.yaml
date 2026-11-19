@@ -1,0 +1,24 @@
+# Povinné nadpisy hubu (03 kap. 5) a dokumentu kroku (10 kap. 5a–5b). Porovnává se přesný text nadpisu ##.
+# generated: sekce nese blok <!-- hestia:generated:start/end -->, který přepisuje skript hubs.
+taxonomy: hub_sections
+spec: "03 kap. 5; 10 kap. 5a–5b"
+items:
+  - {type: entity, heading: "Záměr",                 generated: false}
+  - {type: entity, heading: "Domény",                generated: true}
+  - {type: entity, heading: "Dokumenty",             generated: true}
+  - {type: entity, heading: "Postup stavby",         generated: true}
+  - {type: entity, heading: "Soubory",               generated: true}
+  - {type: entity, heading: "Vazby",                 generated: false}
+  - {type: entity, heading: "Stav v UE",             generated: false}
+  - {type: entity, heading: "Otevřené otázky",       generated: false}
+  - {type: entity, heading: "Historie a rozhodnutí", generated: false}
+  - {type: step, step_kind: build,  heading: "Účel kroku",           generated: false}
+  - {type: step, step_kind: build,  heading: "Spouštění",            generated: false}
+  - {type: step, step_kind: build,  heading: "Skripty",              generated: true}
+  - {type: step, step_kind: build,  heading: "Vstupy a výstupy",     generated: false}
+  - {type: step, step_kind: build,  heading: "Dopad na dokumentaci", generated: false}
+  - {type: step, step_kind: build,  heading: "Známé pasti",          generated: false}
+  - {type: step, step_kind: shared, heading: "Co poskytuje",         generated: false}
+  - {type: step, step_kind: shared, heading: "Kdo používá",          generated: false}
+  - {type: step, step_kind: shared, heading: "Dopad změny",          generated: false}
+  - {type: step, step_kind: shared, heading: "Známé pasti",          generated: false}

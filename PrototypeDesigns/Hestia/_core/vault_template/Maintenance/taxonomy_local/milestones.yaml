@@ -1,0 +1,8 @@
+# Milníky (čas ve hře) instance (zadání 03, kap. 4b).
+# id stabilní a významový, bez čísla; order = řídké celé číslo (vkládání mezi, předřazení záporným);
+# trigger: history, time, quest; volitelně description, game_time, quest, ue.
+milestones: []
+#  - id: arrival
+#    order: 10
+#    trigger: time
+#    description: Hráč přichází poprvé

@@ -1,0 +1,20 @@
+# Kategorie (zadání 01, kap. 4): domovská doména a typické přesahy.
+taxonomy: categories
+spec: "01 kap. 4"
+items:
+  - {id: terrain,   home_domain: environment, overlaps: [paths]}
+  - {id: flora,     home_domain: environment, overlaps: [narrative]}
+  - {id: place,     home_domain: environment, overlaps: [structures, paths, narrative]}
+  - {id: building,  home_domain: structures,  overlaps: [gameplay]}
+  - {id: route,     home_domain: paths,       overlaps: [environment]}
+  - {id: character, home_domain: npc,         overlaps: [gameplay, narrative]}
+  - {id: behavior,  home_domain: npc,         overlaps: [gameplay]}
+  - {id: fauna,     home_domain: npc,         overlaps: [environment]}
+  - {id: mechanic,  home_domain: gameplay,    overlaps: [npc]}
+  - {id: quest,     home_domain: gameplay,    overlaps: [narrative, npc]}
+  - {id: system,    home_domain: gameplay,    overlaps: [npc]}
+  - {id: lore,      home_domain: narrative,   overlaps: [environment, structures]}
+  - {id: story,     home_domain: narrative,   overlaps: [npc]}
+  - {id: twist,     home_domain: narrative,   overlaps: [npc]}
+  - {id: dialogue,  home_domain: narrative,   overlaps: [npc]}
+  - {id: cutscene,  home_domain: narrative,   overlaps: [npc, gameplay]}

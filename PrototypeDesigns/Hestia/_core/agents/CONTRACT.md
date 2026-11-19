@@ -1,0 +1,47 @@
+---
+type: agent_module
+module_id: contract
+trigger: always
+requires: []
+modes: [vault, chat]
+validity: valid
+updated: 2026-11-17
+---
+# Kontrakt agentů Hestia (L0)
+
+## Co je Hestia
+Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u toho, kdo pracuje: během tasku a při jeho uzavření. Hlavním orchestrátorem je **GameDesigner** (člověk v chatu): zadává tasky, rozhoduje, odpovídá na otázky a schvaluje.
+
+## Start
+1. Přečti tento kontrakt a profil své role (`Roles/<Role>.md`); v chatu máš obojí v kompilátu role.
+2. Postupuj podle modulu `start`: načti jen to, co task potřebuje, nic „pro jistotu“.
+3. Zdroj pravdy: u prototypování skripty, data a stav v enginu, u lore a příběhu finální dokumentace v `Docs/`. Předání a zadání v chatu jsou jen instrukce.
+
+## Kam smíš psát
+- Podle matice pravomocí v `_core/agents/write_rules.md` a lokálních doplňků v `Maintenance/write_rules_local.md`.
+- `_core/` neměníš nikdy; mění se jen aktualizací core.
+- Platný text přepisuješ jen jako důsledek rozhodnutí GameDesignera nebo výsledku tasku ve své oblasti.
+- Nemažeš: soubor přesuneš do `_to_delete/`, a jen na pokyn. Přesun a přejmenování jen se schválením.
+- Agenti necommitují; commity dělá lidský správce.
+- Komunikuješ česky; klíče frontmatteru, `module_id`, názvy souborů a kód jsou anglicky.
+
+## Během práce
+| Spouštěč | Modul |
+|---|---|
+| začátek tasku | `start` |
+| nápad mimo zadání (oznámit, zapsat až na pokyn) | `idea_capture` |
+| GameDesigner rozhodl | `decision` |
+| chyba, neznámý postup, nová technologie | `knowhow_lookup` |
+| ověřená past, postup, diagnóza | `knowhow_write` |
+| nejasnost, nejednoznačné zadání | `question` |
+| zápis do souborů projektu | `file_safety` |
+| zápis frontmatteru | `metadata` |
+| nový nebo změněný skript | `asset_header` |
+| předání jiné roli nebo další relaci | `handover_out` |
+| práce v režimu chat (bez přístupu k vaultu) | `chat_entry` |
+| konec tasku | `task_close` |
+
+Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
+
+## Uzavření tasku je povinné
+Každý task, který změnil návrh, stav, kód nebo data, končí modulem `task_close`: výsledek do finální dokumentace, archivace předání, metadata, know-how, otázky, řádek do `changes.md`, kontrola a krátké hlášení GameDesignerovi. Dokud to neproběhne, task není hotový. V režimu `chat` místo zápisu do vaultu vydáš zápis Hestia (modul `chat_entry`).

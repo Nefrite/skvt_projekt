@@ -1,0 +1,48 @@
+# Cesta instance Lapikus: kroky prototypování (zadání 10, kap. 2.2; pilot 05, kap. 4a).
+# NÁVRH (předání A3), 2026-11-18; 0.2 2026-11-19 podle odpovědí GameDesignera (stavy kroků, kroky postav). id = složka v kódu (stabilní); order = řídké číslo; type z build_step_catalog.
+# status: planned, active, done, skipped, abandoned. code: cesty od kořene projektu (skvt_projekt).
+# Každý krok má dokument Steps/<id>.md (type: step + build_step, jinak G7; zadání 10, kap. 5a); dokumenty viz migrace_mapa.yaml,
+# Steps/04_forest.md vznikne jako kostra v B3. Krok = fáze prototypování; víc fází = víc kroků nebo active (10 kap. 2.2).
+# Stavy potvrdil GameDesigner 2026-11-19.
+steps:
+  - id: 01_terrain
+    order: 10
+    type: terrain_rough
+    status: done
+    code: ["/PrototypeDesigns/Lapikus/01_terrain/"]
+  - id: 02_river
+    order: 20
+    type: terrain_rough            # terén a řeka = jeden typ ve dvou krocích
+    status: active                 # čeká na začištění
+    code: ["/PrototypeDesigns/Lapikus/02_river/"]
+  - id: 03_ruin
+    order: 30
+    type: structures_rough
+    status: done
+    code: ["/PrototypeDesigns/Lapikus/03_ruin/"]
+  - id: 04_forest
+    order: 40
+    type: flora_rough
+    status: active                 # čeká na modelaci
+    code: ["/PrototypeDesigns/Lapikus/04_forest/"]
+  - id: 05_constructions
+    order: 50
+    type: constructions
+    status: active
+    code: ["/PrototypeDesigns/Lapikus/05_constructions/"]
+  - id: 06_furnishing
+    order: 60
+    type: furnishing
+    status: active
+    code: ["/PrototypeDesigns/Lapikus/06_furnishing/"]
+
+  # Systémy postav mimo sekvenci světa (zadání 10, kap. 2.1: katalog typů pro systémy „vznikne, až bude potřeba“).
+  # Bez type, dokud nevznikne katalog kroků postav (zadání 10, kap. 2.1; GameDesigner 2026-11-19); id = složka; domény dodá folder_map.
+  - id: 01_sitting
+    order: 900
+    status: done
+    code: ["/PrototypeDesigns/Characters/01_sitting/"]
+  - id: NPC
+    order: 910
+    status: active
+    code: ["/PrototypeDesigns/Characters/NPC/"]

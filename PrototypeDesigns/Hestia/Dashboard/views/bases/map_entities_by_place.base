@@ -1,0 +1,34 @@
+# Hestia – Map: entities by place (zadání 04 kap. 2.1; zkušební pohled 3 pro Q1, 04 kap. 5.1).
+# Varianta Bases. Umístění = located_in; prázdné se dědí od parent (03 kap. 1). Bases neumí rekurzi,
+# dědičnost je proto rozepsaná na tři úrovně předků (formula.p1–p3); hlubší strom se neprojeví.
+filters:
+  and:
+    - file.inFolder("Entities")
+    - 'type == "entity"'
+formulas:
+  p1: 'if(note.parent, note.parent.asFile().properties.located_in, [])'
+  p2: 'if(note.parent, if(note.parent.asFile().properties.parent, note.parent.asFile().properties.parent.asFile().properties.located_in, []), [])'
+  p3: 'if(note.parent, if(note.parent.asFile().properties.parent, if(note.parent.asFile().properties.parent.asFile().properties.parent, note.parent.asFile().properties.parent.asFile().properties.parent.asFile().properties.located_in, []), []), [])'
+  place: 'if(note.located_in && note.located_in.length > 0, note.located_in, if(formula.p1 && formula.p1.length > 0, formula.p1, if(formula.p2 && formula.p2.length > 0, formula.p2, if(formula.p3 && formula.p3.length > 0, formula.p3, "(bez umístění)"))))'
+  inherited: 'if(note.located_in && note.located_in.length > 0, "", if(formula.place == "(bez umístění)", "", "zděděno"))'
+properties:
+  file.name:
+    displayName: Entita
+  formula.place:
+    displayName: Místo
+  formula.inherited:
+    displayName: Původ
+views:
+  - type: table
+    name: Map – entities by place
+    groupBy:
+      property: formula.place
+      direction: ASC
+    order:
+      - file.name
+      - note.kind
+      - note.parent
+      - formula.inherited
+    sort:
+      - property: file.name
+        direction: ASC

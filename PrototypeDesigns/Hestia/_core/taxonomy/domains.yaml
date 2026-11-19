@@ -1,0 +1,30 @@
+# Domény (zadání 01, kap. 3). Normativní je text 01; YAML se mění ve stejném commitu.
+# target_mode: výchozí režim cíle domény (design = stačí navrhnout, build = vymodelovat/implementovat; 01 kap. 5).
+# U lokální domény (taxonomy_local/domains.yaml) je target_mode povinný (13 kap. 5, zadání 0.13.5).
+taxonomy: domains
+spec: "01 kap. 3"
+items:
+  - id: environment
+    label: Prostředí
+    covers: terén, voda, skály, flóra
+    target_mode: build
+  - id: structures
+    label: Stavby
+    covers: pevné stavby, dostavby (constructions), vybavení místností
+    target_mode: build
+  - id: paths
+    label: Cesty a navigace
+    covers: stezky, cesty, mosty, brody, průchody
+    target_mode: build
+  - id: npc
+    label: NPC
+    covers: background, rutiny, chování, reakce na hráče, fauna
+    target_mode: design
+  - id: gameplay
+    label: Herní logika
+    covers: herní záměr, aktivity hráče, mechaniky, průběh questů, AI, smart objects a smart places, stavové stromy, obecné systémy postav (animace, sedání)
+    target_mode: design
+  - id: narrative
+    label: Vyprávění
+    covers: lore, příběh, zvraty, dialogy, cutscény, storytelling
+    target_mode: design

@@ -1,0 +1,9 @@
+/* Hestia: skrýt složku Maintenance/ ve stromu souborů (zadání 02 kap. 7.1, nice-to-have).
+   Samostatně od _core/: z Maintenance/ čte člověk frontu (queue.md) a reporty; ty zůstanou
+   dostupné přes vyhledávání, odkazy a Dashboard/Index.md.
+   Zapnutí: Nastavení → Vzhled → Úryvky CSS → hestia-hide-maintenance. */
+.nav-folder:has(> .nav-folder-title[data-path="Maintenance"]),
+.nav-folder-title[data-path="Maintenance"],
+.nav-folder-title[data-path="Maintenance"] + .nav-folder-children {
+  display: none;
+}

@@ -1,0 +1,12 @@
+{
+  "userIgnoreFilters": [
+    "_core/",
+    "Maintenance/reports/",
+    "Roles/_compiled/",
+    "Handovers/_archive/",
+    "_to_delete/"
+  ],
+  "useMarkdownLinks": false,
+  "newLinkFormat": "shortest",
+  "attachmentFolderPath": "Attachments"
+}

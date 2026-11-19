@@ -1,0 +1,168 @@
+# Typy poznámek (zadání 01, kap. 7). Pole podle katalogu 01 kap. 9.1 (fields.yaml).
+# game_section: required / optional / none (herní sekce frontmatteru, 01 kap. 2).
+# required_fields: pole povinná vždy (podmíněná pole viz fields.yaml, klíč required).
+# optional_fields: další pole, která typ smí mít. depth_<domain>/target_<domain>/target_mode_<domain> = vzor pro všechny domény.
+# zone: výchozí složka (02 kap. 4); <domain> = hodnota pole domain. template: šablona v templates/ (07, předpona tpl_).
+taxonomy: types
+spec: "01 kap. 7"
+items:
+  - id: entity
+    description: Hub poznámka entity
+    game_section: required
+    required_fields: [type, updated, kind, status, parent]
+    optional_fields: [aliases, tags, derived_from, alternative_to, located_in, pattern, "depth_<domain>", "target_<domain>", "target_mode_<domain>",
+                      ue_path, assets, scale, bounds, grid_ref, milestone_from, milestone_to]
+    zone: "Entities/"
+    template: tpl_entity.md
+
+  - id: scratch
+    description: Nezpracovaný nápad nebo brainstorm; z inboxu nebo psaný přímo
+    game_section: optional
+    required_fields: [type, validity, updated, intake, source]
+    optional_fields: [superseded_by, derived_from, alternative_to, captured_by, reviewed, aliases, tags, category, entity]
+    zone: "Scratch/"
+    template: tpl_scratch.md
+
+  - id: crosscut
+    description: Přesah s dopadem na více domén
+    game_section: required
+    required_fields: [type, validity, updated, domains, depth]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/crosscut/"
+    template: tpl_crosscut.md
+
+  - id: concept
+    description: Herní záměr, lore, popis světa
+    game_section: required
+    required_fields: [type, validity, updated, domain, depth]
+    optional_fields: [superseded_by, derived_from, alternative_to, status, master, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_design.md
+
+  - id: design
+    description: Návrh/plán na vyšší úrovni
+    game_section: required
+    required_fields: [type, validity, updated, domain, depth]
+    optional_fields: [superseded_by, derived_from, alternative_to, status, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_design.md
+
+  - id: spec
+    description: Specifikace pro stavitele/furnishera
+    game_section: required
+    required_fields: [type, validity, updated, domain, depth]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_design.md
+
+  - id: handover
+    description: Předání práce mezi rolemi
+    game_section: required
+    required_fields: [type, validity, updated, domain]                 # bez depth (01 kap. 5, zadání 0.13.3)
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Handovers/"
+    template: tpl_handover.md
+
+  - id: state
+    description: Popis skutečného stavu (ex-post)
+    game_section: required
+    required_fields: [type, validity, updated, domain, depth]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_state.md
+
+  - id: guide
+    description: Postup krok za krokem, který není dokumentací kroku ani sdíleného kódu
+    game_section: required
+    required_fields: [type, validity, updated, domain]                 # bez depth (01 kap. 5, zadání 0.13.3)
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_design.md
+
+  - id: step
+    description: Dokumentace kroku prototypování nebo sdíleného kódu
+    game_section: required
+    required_fields: [type, validity, updated, step_kind, domains]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, build_step, entity]
+    zone: "Steps/"
+    template: tpl_step.md
+
+  - id: checklist
+    description: Seznam úkolů/assetů
+    game_section: required
+    required_fields: [type, validity, updated, domain]                 # bez depth (01 kap. 5, zadání 0.13.3)
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_design.md
+
+  - id: reference
+    description: Přehledy, souřadnice, konvence
+    game_section: optional
+    required_fields: [type, validity, updated]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, domain, category, entity, depth, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: null
+
+  - id: decision
+    description: Rozhodnutí, které uzavírá existující cestu
+    game_section: optional
+    required_fields: [type, validity, updated]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, domain, category, entity, depth, build_step, assets, milestone]
+    zone: "Docs/<domain>/"
+    template: tpl_decision.md
+
+  - id: knowhow
+    description: Ověřené know-how (past, postup, diagnóza, konvence, nástroj)
+    game_section: optional
+    required_fields: [type, validity, updated, knowhow_kind, tech, scope, verified]
+    optional_fields: [superseded_by, derived_from, alternative_to, engine_version, reviewed, aliases, tags, domain, entity]
+    zone: "KnowHow/"
+    template: tpl_knowhow.md
+
+  - id: role
+    description: Profil role agenta (L2)
+    game_section: none
+    required_fields: [type, validity, updated]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, modules, knowhow_tags, context, combines]
+    zone: "Roles/"
+    template: tpl_role.md
+
+  - id: agent_module
+    description: Modul instrukcí agenta (L1)
+    game_section: none
+    required_fields: [type, validity, updated, module_id, trigger, modes]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, requires]
+    zone: "Roles/modules/"
+    template: tpl_agent_module.md
+
+  - id: report
+    description: Výstup auditu
+    game_section: none
+    required_fields: [type, updated]
+    optional_fields: [aliases, tags]
+    zone: "Maintenance/reports/"
+    template: tpl_report.md
+
+  - id: queue
+    description: Fronta údržby
+    game_section: none
+    required_fields: [type, updated]
+    optional_fields: [aliases, tags]
+    zone: "Maintenance/"
+    template: tpl_queue.md
+
+  - id: log
+    description: Průběžné záznamy (changes.md, structure_log.md)
+    game_section: none
+    required_fields: [type, updated]
+    optional_fields: [aliases, tags]
+    zone: "Maintenance/"
+    template: tpl_changes.md
+
+  - id: change_request
+    description: Požadavek na změnu Hestia (jen v outbox/ a v HearthLore)
+    game_section: none
+    required_fields: [type, updated, cr_status]
+    optional_fields: [aliases, tags, source_instance, hestia_version, area, gd_relevance, structure_log, spec_refs, released_in]
+    zone: "Maintenance/outbox/"
+    template: tpl_change_request.md

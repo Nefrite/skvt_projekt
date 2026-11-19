@@ -1,0 +1,18 @@
+# Výchozí katalog typů kroků (zadání 10, kap. 2.1). Pořadí je doporučené, ne závazné.
+taxonomy: build_step_catalog
+spec: "10 kap. 2.1"
+items:
+  - {id: terrain_rough,        order: 1,  domains: [environment],         typical_depth: [1, 2], description: "hrubý návrh terraformace prostředí (půda, skály, voda)"}
+  - {id: structures_rough,     order: 2,  domains: [structures],          typical_depth: [1, 2], description: "hrubý návrh pevných staveb"}
+  - {id: paths_rough,          order: 3,  domains: [paths],               typical_depth: [1, 2], description: "hrubý návrh cest a stezek kolem staveb (kudy vede cesta, mosty)"}
+  - {id: flora_rough,          order: 4,  domains: [environment],         typical_depth: [1, 2], description: "hrubý návrh rozložení flóry v okolí"}
+  - {id: constructions,        order: 5,  domains: [structures],          typical_depth: [3, 4], description: "návrh staveb (dostavby)"}
+  - {id: npc_base,             order: 6,  domains: [npc],                 typical_depth: [1, 2], description: "základní návrh NPC (background, rutiny v okolí)"}
+  - {id: gameplay_intent,      order: 7,  domains: [gameplay, narrative], typical_depth: [1, 2], description: "základní herní záměr (co tu hráč dělá, questy, základní lore)"}
+  - {id: storytelling_base,    order: 8,  domains: [narrative],           typical_depth: [1, 2], description: "základní storytelling (vztah hráče k místu a NPC)"}
+  - {id: paths_refine,         order: 9,  domains: [paths],               typical_depth: [3, 4], description: "upřesnění cest a stezek"}
+  - {id: npc_behavior,         order: 10, domains: [npc, gameplay],       typical_depth: [3, 4], description: "návrh chování NPC a reakcí na hráče"}
+  - {id: furnishing,           order: 11, domains: [structures],          typical_depth: [3, 4], description: "návrh vybavení místností"}
+  - {id: smart_objects,        order: 12, domains: [gameplay],            typical_depth: [3, 5], description: "definice smart objects a smart places (triggery pro NPC, činnosti v lokacích)"}
+  - {id: flora_fauna_activity, order: 13, domains: [environment, npc],    typical_depth: [3, 4], description: "flóra a fauna podle mapy očekávané aktivity (NPC, hráč)"}
+  - {id: npc_ai,               order: 14, domains: [gameplay, npc],       typical_depth: [4, 5], description: "AI NPC (stavové stromy, vazby na smart objects)"}

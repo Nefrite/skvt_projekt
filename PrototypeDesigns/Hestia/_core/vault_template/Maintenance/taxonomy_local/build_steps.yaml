@@ -1,0 +1,10 @@
+# Cesta instance: kroky prototypování, které projekt skutečně dělá (zadání 10, kap. 2.2).
+# id = složka v kódu (stabilní); order = řídké číslo; type = typ z _core/taxonomy/build_step_catalog.yaml;
+# status: planned, active, done, skipped, abandoned; volitelně code: [cesty], iterates: <id>.
+# Každý krok má dokument Steps/<id>.md (jinak G7).
+steps: []
+#  - id: 01_terrain
+#    order: 10
+#    type: terrain_rough
+#    status: planned
+#    code: ["/Code/steps/01_terrain/"]

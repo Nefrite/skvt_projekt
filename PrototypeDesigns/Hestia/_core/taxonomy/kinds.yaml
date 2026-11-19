@@ -1,0 +1,37 @@
+# Druhy entit (zadání 01, kap. 8). Otevřená množina; očekávané domény nejsou restriktivní (G2).
+taxonomy: kinds
+spec: "01 kap. 8"
+items:
+  - id: place
+    expected_domains: [environment, paths, narrative]
+    description: Pojmenované místo nebo území na mapě (jakékoli měřítko)
+  - id: location
+    expected_domains: [structures, paths, npc, gameplay, narrative]
+    description: Složená lokace z entit (hrad, osídlí)
+  - id: structure
+    expected_domains: [structures, gameplay]
+    description: Stavba nebo její samostatná část
+  - id: room
+    expected_domains: [structures]
+    description: Vnitřní prostor stavby (zatím nepoužitý)
+  - id: character
+    expected_domains: [npc, gameplay, narrative]
+    description: Postava (hráč, NPC)
+  - id: object
+    expected_domains: [structures, gameplay]
+    description: Samostatný objekt
+  - id: route
+    expected_domains: [paths, environment]
+    description: Stezka, cesta, trasa NPC
+  - id: system
+    expected_domains: [gameplay]
+    description: Herní nebo technický systém
+  - id: group
+    expected_domains: []
+    description: Seskupení bez vlastního významu; jen agreguje potomky
+  - id: district
+    expected_domains: [structures, paths, npc, narrative]
+    description: Čtvrť (šablona osídlení, 03 kap. 4a)
+  - id: plot
+    expected_domains: [structures, npc]
+    description: Soudomí, usedlost, parcela (šablona osídlení)

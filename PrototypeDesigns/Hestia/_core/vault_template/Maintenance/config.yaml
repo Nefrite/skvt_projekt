@@ -1,0 +1,13 @@
+# Konfigurace instance Hestia (zadání 13, kap. 4).
+# Chybějící klíč = výchozí hodnota z _core/taxonomy/defaults.yaml; neznámý klíč = varování.
+hestia_config: 1
+game_layer: true                   # false = instance bez herní vrstvy (01, kap. 2; Q31)
+# instance: lapikus                # jméno pro source_instance v CR (export_cr); bez něj jméno složky projektu
+project_root: ".."                 # relativně k vaultu
+code_roots: []                     # např. ["Code/"]
+prototypes:
+  - id: {{prototype}}
+    root_entity: {{root}}
+    lore: Lore_{{prototype}}
+engine_version: {{engine_version}}
+protected_files: []                # soubory, které skripty nepřepisují (file_safety, write_rules)

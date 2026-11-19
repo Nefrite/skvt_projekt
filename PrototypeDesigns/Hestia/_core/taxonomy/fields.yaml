@@ -1,0 +1,94 @@
+# Katalog polí frontmatteru (zadání 01, kap. 9.1).
+# section: orchestration / game (01 kap. 2). section_entity: sekce u typu entity, liší-li se.
+# value: enum:<jméno> | wikilink | wikilink_list | list | date | depth | path_list | text
+#        (wikilink_list přijme i jeden wikilink; list s klíčem items = typ položek).
+#        enum:type/domain/category/kind = taxonomy/*.yaml; enum:tech/build_step/milestone = jen taxonomy_local.
+# required: always | no | podmínka, kterou implementuje validátor:
+#        "type in [..]", "<pole> == <hodnota>", "<pole> in [..]", "<pole> present",
+#        "<pole> present in build mode" (u vzorů s <domain>: a režim cíle domény je build).
+# allow_empty: povinný klíč smí mít prázdnou hodnotu (parent u kořenů).
+# spec: odkud pole pochází; test parity porovnává s 01 jen pole se spec "01 …".
+taxonomy: fields
+spec: "01 kap. 9.1"
+
+groups:
+  all: &all [entity, scratch, crosscut, concept, design, spec, handover, state, guide, step, checklist,
+             reference, decision, knowhow, role, agent_module, report, queue, log, change_request]
+  documents: &documents [scratch, crosscut, concept, design, spec, handover, state, guide, step, checklist,
+                         reference, decision, knowhow, role, agent_module]
+  documents_entity: &documents_entity [entity, scratch, crosscut, concept, design, spec, handover, state, guide,
+                                       step, checklist, reference, decision, knowhow, role, agent_module]
+  game_documents: &game_documents [scratch, crosscut, concept, design, spec, handover, state, guide, step,
+                                   checklist, reference, decision, knowhow]
+
+items:
+  # --- orchestrace ---
+  - {name: type,           section: orchestration, applies_to: *all,       value: "enum:type",     required: always}
+  - {name: validity,       section: orchestration, applies_to: *documents, value: "enum:validity", required: always}
+  - {name: superseded_by,  section: orchestration, applies_to: *documents, value: wikilink,        required: "validity == superseded"}
+  - {name: derived_from,   section: orchestration, section_entity: game, applies_to: *documents_entity, value: wikilink_list, required: no}
+  - {name: alternative_to, section: orchestration, applies_to: *documents_entity, value: wikilink_list, required: no}
+  - {name: intake,         section: orchestration, applies_to: [scratch],  value: "enum:intake",   required: always}
+  - {name: source,         section: orchestration, applies_to: [scratch],  value: "enum:source",   required: always}
+  - {name: captured_by,    section: orchestration, applies_to: [scratch],  value: text,            required: "source in [agent, chat]"}
+  - {name: knowhow_kind,   section: orchestration, applies_to: [knowhow],  value: "enum:knowhow_kind", required: always}
+  - {name: tech,           section: orchestration, applies_to: [knowhow],  value: list, items: "enum:tech", required: always}
+  - {name: scope,          section: orchestration, applies_to: [knowhow],  value: "enum:scope",    required: always}
+  - {name: engine_version, section: orchestration, applies_to: [knowhow],  value: text,            required: "scope == engine"}
+  - {name: verified,       section: orchestration, applies_to: [knowhow],  value: date,            required: always}
+  - {name: step_kind,      section: orchestration, applies_to: [step],     value: "enum:step_kind", required: always}
+  - {name: modules,        section: orchestration, applies_to: [role],     value: list, items: text, required: no}
+  - {name: knowhow_tags,   section: orchestration, applies_to: [role],     value: list, items: "enum:tech", required: no}
+  - {name: context,        section: orchestration, applies_to: [role],     value: wikilink_list,   required: no}
+  - {name: combines,       section: orchestration, applies_to: [role],     value: list, items: text, required: no}
+  - {name: master,         section: orchestration, applies_to: [concept],  value: "enum:master",   required: no}
+  - {name: module_id,      section: orchestration, applies_to: [agent_module], value: text,        required: always}
+  - {name: trigger,        section: orchestration, applies_to: [agent_module], value: text,        required: always}
+  - {name: requires,       section: orchestration, applies_to: [agent_module], value: list, items: text, required: no}
+  - {name: modes,          section: orchestration, applies_to: [agent_module], value: list, items: "enum:modes", required: always}
+  - {name: reviewed,       section: orchestration, applies_to: *documents, value: date,            required: no}
+  - {name: updated,        section: orchestration, applies_to: *all,       value: date,            required: always}
+  - {name: aliases,        section: orchestration, applies_to: *all,       value: list, items: text, required: no}
+  - {name: tags,           section: orchestration, applies_to: *all,       value: list, items: text, required: no}
+
+  # --- hra ---
+  - {name: domain,   section: game, applies_to: [concept, design, spec, handover, state, guide, checklist, reference, decision, knowhow],
+     value: "enum:domain", required: "type in [concept, design, spec, handover, state, guide, checklist]"}
+  - {name: domains,  section: game, applies_to: [crosscut, step], value: list, items: "enum:domain", required: always}
+  - {name: category, section: game, applies_to: [scratch, crosscut, concept, design, spec, handover, state, guide, checklist, reference, decision],
+     value: list, items: "enum:category", required: no}
+  - {name: entity,   section: game, applies_to: *game_documents, value: wikilink_list, required: no}
+  # depth jen u dokumentů, které věc popisují; handover, guide, checklist ho nemají (01 kap. 5, zadání 0.13.3)
+  - {name: depth,    section: game, applies_to: [crosscut, concept, design, spec, state, reference, decision], value: depth,
+     required: "type in [crosscut, concept, design, spec, state]"}
+  - {name: build_step, section: game, applies_to: [crosscut, concept, design, spec, handover, state, guide, step, checklist, reference, decision],
+     value: "enum:build_step", required: no}
+  - {name: assets,   section: game, applies_to: [entity, crosscut, concept, design, spec, handover, state, guide, checklist, reference, decision],
+     value: path_list, required: no}
+  - {name: kind,     section: game, applies_to: [entity], value: "enum:kind",   required: always}
+  - {name: status,   section: game, applies_to: [entity, concept, design], value: "enum:status", required: "type in [entity]"}   # u dokumentu jen alternativa (01 kap. 6)
+  - {name: parent,   section: game, applies_to: [entity], value: wikilink, required: always, allow_empty: true}
+  - {name: located_in, section: game, applies_to: [entity], value: wikilink_list, required: no}
+  - {name: pattern,  section: game, applies_to: [entity], value: wikilink, required: no}
+  # depth_<domain> = realizace; povinná jen u cíle v režimu build (01 kap. 5, 9.1; zadání 0.13)
+  - {name: "depth_<domain>",  section: game, applies_to: [entity], value: depth, required: "target_<domain> present in build mode"}
+  - {name: "target_<domain>", section: game, applies_to: [entity], value: depth, required: no}
+  - {name: "target_mode_<domain>", section: game, applies_to: [entity], value: "enum:target_mode", required: no}
+  - {name: ue_path,  section: game, applies_to: [entity], value: text, required: no}
+  - {name: scale,    section: game, applies_to: [entity], value: text, required: no}
+  - {name: bounds,   section: game, applies_to: [entity], value: text, required: no}
+  - {name: grid_ref, section: game, applies_to: [entity], value: text, required: no}
+  - {name: milestone_from, section: game, applies_to: [entity], value: "enum:milestone", required: no}
+  - {name: milestone_to,   section: game, applies_to: [entity], value: "enum:milestone", required: no}
+  - {name: milestone, section: game, applies_to: [crosscut, concept, design, spec, handover, state, guide, checklist, reference, decision],
+     value: list, items: "enum:milestone", required: no}
+
+  # --- change request (11 kap. 3) ---
+  - {name: cr_status,       spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: "enum:cr_status", required: always}
+  - {name: source_instance, spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: text, required: no}
+  - {name: hestia_version,  spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: text, required: no}
+  - {name: area,            spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: "enum:cr_area", required: no}
+  - {name: gd_relevance,    spec: "11 kap. 2–3", section: orchestration, applies_to: [change_request], value: "enum:gd_relevance", required: no}
+  - {name: structure_log,   spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: list, items: text, required: no}
+  - {name: spec_refs,       spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: list, items: text, required: no}
+  - {name: released_in,     spec: "11 kap. 3", section: orchestration, applies_to: [change_request], value: text, required: no}

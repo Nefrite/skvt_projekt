@@ -1,0 +1,20 @@
+# Hloubka 0–6 (zadání 01, kap. 5). Ve frontmatteru je vždy číslo; label je popisek.
+# Jedna stupnice, dva jazyky (zadání 0.13.2): unreal = realizace v prototypu (depth_<domain> u entity),
+# design = návrh GameDesignu (depth dokumentu návrhu). Návrh úrovně N = dost podrobný, aby šlo stavět do úrovně N.
+taxonomy: depth
+spec: "01 kap. 5"
+items:
+  - {value: 0, label: null,       unreal: "nezačato",
+     design: "nezačato"}
+  - {value: 1, label: blockout,   unreal: "Krychle/BSP, hrubé tahy Landscape sculptu; má to polohu",
+     design: "Poznámka, jedna věta: poloha a záměr"}
+  - {value: 2, label: greybox,    unreal: "Správné rozměry, měřítko, průchodnost, silueta, kolize",
+     design: "Osnova: rozměry, role, průchody, rytmus"}
+  - {value: 3, label: whitebox,   unreal: "Proxy meshe, základní materiály, tagy, rozdělení na actory; chování popsané slovy",
+     design: "Rozpracovaný návrh: členění, materiály, rozepsaná scéna, chování a reakce slovy"}
+  - {value: 4, label: asset_data, unreal: "Procedurální nebo placeholder meshe, data (JSON, DataTable), specifikace",
+     design: "Specifikace: pravidla, parametry a data (zóny, hustoty, rozměry), podle kterých jde stavět"}
+  - {value: 5, label: functional, unreal: "Blueprint, StateTree, smart objects, data assety, základní animace; věc ve hře funguje",
+     design: "Implementační návrh: stavy, přechody, vazby a data popsané pro implementaci"}
+  - {value: 6, label: production, unreal: "Artist modely, jemné animace, plná AI; mimo rozsah prototypu",
+     design: "Produkční podklady (art brief, finální texty)"}

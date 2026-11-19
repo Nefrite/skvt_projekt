@@ -1,0 +1,18 @@
+# Manifest pohledů core (zadání 13 kap. 10.9). Není taxonomie instance: taxonomy_local ho nedoplňuje
+# a do Dashboard/ se nekopíruje. Soubory leží ve vault_template/Dashboard/views/<cesta>.
+# game_layer: true = pohled čte Entities/; init --no-game-layer a update_core --with-views při
+# game_layer: false ho vynechají. Varianta generated/ = generovaný blok, který přepisuje hubs.
+taxonomy: views
+spec: "13 kap. 10.9"
+items:
+  - id: structures_status
+    game_layer: true
+    files: [bases/structures_status.base, dataview/dv_structures_status.md.tpl]
+  - id: entity_domain_matrix
+    game_layer: true
+    files: [bases/entity_domain_matrix.base, dataview/dv_entity_domain_matrix.md.tpl,
+            generated/entity_domain_matrix.md.tpl]
+  - id: map_entities_by_place
+    game_layer: true
+    files: [bases/map_entities_by_place.base, dataview/dv_map_entities_by_place.md.tpl,
+            generated/map_entities_by_place.md.tpl]

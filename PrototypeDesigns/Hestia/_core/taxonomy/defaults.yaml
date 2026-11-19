@@ -1,0 +1,19 @@
+# Výchozí konfigurace instance (zadání 13, kap. 4).
+# Chybějící klíč v Maintenance/config.yaml = hodnota odsud; neznámý klíč = varování.
+hestia_config: 1
+game_layer: true                   # false = instance bez herní vrstvy (01 kap. 2, Q31)
+instance: null                     # jméno instance pro source_instance v CR (export_cr); null = jméno složky projektu
+project_root: ".."
+code_roots: []
+ignore: ["**/__pycache__/**", "**/_to_delete/**", "**/generated/**", "**/*.bak"]
+prototypes: []
+engine_version: null
+thresholds:
+  scratch_raw_days: 14
+  stale_doc_days: 90
+  open_question_days: 14
+  knowhow_unverified_days: 180
+  g11_step_entities: 5
+  bulk_metadata_files: 10
+required_docs: [lore_master]
+protected_files: []

@@ -1,0 +1,28 @@
+# Výčty hodnot (zadání 01 a navazující dokumenty). open: true = instance smí přidat hodnoty
+# v Maintenance/taxonomy_local/enums.yaml (sloučení core ∪ local; kolize = chyba konfigurace).
+# spec: odkud výčet pochází; test parity 01 ↔ YAML porovnává jen výčty se spec "01 …".
+taxonomy: enums
+items:
+  # --- 01 Datový model ---
+  - {name: status,       spec: "01 kap. 6",   open: false, values: [idea, draft, selected, in_progress, built, verified, on_hold, rejected]}
+  - {name: validity,     spec: "01 kap. 6",   open: false, values: [valid, draft, outdated, superseded, archived]}
+  - {name: target_mode,  spec: "01 kap. 5",   open: false, values: [design, build]}
+  - {name: intake,       spec: "01 kap. 9.1", open: false, values: [raw, prepared]}
+  - {name: source,       spec: "01 kap. 9.1", open: true,  values: [notion, obsidian, manual, agent, chat]}
+  - {name: knowhow_kind, spec: "01 kap. 9.1", open: false, values: [pitfall, technique, diagnosis, convention, tool]}
+  - {name: scope,        spec: "01 kap. 9.1", open: false, values: [instance, engine, general]}
+  - {name: step_kind,    spec: "01 kap. 9.1", open: false, values: [build, shared]}
+  - {name: master,       spec: "01 kap. 9.1", open: true,  values: [lore]}
+  - {name: modes,        spec: "01 kap. 9.1", open: false, values: [vault, chat]}
+  # --- navazující dokumenty ---
+  - {name: asset_role,             spec: "10 kap. 6",   open: false, values: [entry, library, generator, spec, check, data, output, ue_asset]}
+  - {name: cr_status,              spec: "11 kap. 3",   open: false, values: [new, accepted, rejected, in_spec, in_pilot, released]}
+  - {name: cr_area,                spec: "11 kap. 3",   open: false, values: [taxonomy, vault, templates, agents, scripts, views, process, knowhow]}
+  - {name: gd_relevance,           spec: "11 kap. 2",   open: false, values: [direct, indirect, none]}
+  - {name: queue_state,            spec: "05 kap. 7.2", open: false, values: [open, approved, in_progress, done, rejected]}
+  - {name: queue_priority,         spec: "05 kap. 7.2", open: false, values: [high, medium, low]}
+  - {name: queue_kind,             spec: "05 kap. 7.2", open: false, values: [finding, proposal, task]}
+  - {name: proposal_kind,          spec: "03 kap. 3",   open: false, values: [assign, split, reparent, promote, derive, rename]}
+  - {name: structure_log_category, spec: "05 kap. 7.3", open: false, values: [friction, missing, surplus, collision, taxonomy, works, idea]}
+  - {name: build_step_status,      spec: "10 kap. 2.2", open: false, values: [planned, active, done, skipped, abandoned]}
+  - {name: milestone_trigger,      spec: "03 kap. 4b",  open: false, values: [history, time, quest]}

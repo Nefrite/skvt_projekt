@@ -1,0 +1,5 @@
+# Technologie pro know-how; struktura items: [{id, label?}] (13 kap. 5) (pole tech, knowhow_tags; zadání 01 kap. 9.1, 12 kap. 4.3).
+# Otevřený seznam instance, např. ue_python, landscape, pcg, statetree, procedural_mesh, obsidian.
+items: []
+#  - id: ue_python
+#    label: Python v Unreal Editoru
