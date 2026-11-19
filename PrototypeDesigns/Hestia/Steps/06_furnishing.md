@@ -11,21 +11,10 @@ domains: [structures]
 ---
 # 06_furnishing – vybavení
 
+## Účel kroku
 Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (05): **vybavení je všechno, co člověk přenese** (rozhodl Jirka). Pevné části staveb (výheň, sloupy, stěny, žlab, sud pod okapem, kůl zatlučený do země) zůstávají v `05_constructions`.
 
-## 1. Soubory
-
-| Soubor | Co dělá |
-|---|---|
-| `build_furnishing.py` | build, capture, výpis a vrácení na spec v UE; mimo UE statistika (`python build_furnishing.py`), `list`, `reset [kusy]` |
-| `furn_data.py` | práce s `furnishing.json`: příznaky kusů, sloučení se specem (`merge`), vrácení na spec (`reset`), zápis se zálohou |
-| `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
-| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py` |
-| `furnishing.json` | **jediný zdroj poloh vybavení.** Sestaví ho `tools/furnishing/gen_furnishing.py` ze speců, capture do něj zapisuje polohy z levelu. Předchozí verze vždy v `furnishing.json.bak`. Ručně ho upravovat jde, ale běžná cesta je level + capture. |
-| `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`) |
-| `..\05_constructions\zr_stavby\vybaveni.py` | typ `props` (rozmístění hotových meshí), společný s 05 (tam pro pevné kusy, např. kůl u dřeva) |
-
-## 2. Jak to funguje
+### 2. Jak to funguje
 
 - Každý kus je **samostatný actor** s tagy `Zricenina_Vybaveni`, `vybaveni:<skupina>` a `id:<skupina>|<kus>`. Ve World Outlineru je ve složce `Vybaveni/...` (kovárna `Vybaveni/Palac/Kovarna`).
 - Build smaže jen actory své skupiny a postaví je znovu podle `furnishing.json` a uložených ručních úprav. Navíc smaže staré actory stejné skupiny z doby, kdy vybavení bylo v 05 (tag `Zricenina_Stavby`, `stavba:Palac_Kovarna_Vybaveni`).
@@ -40,7 +29,46 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
   - Starý soubor `furnishing_edits.json` se už nepoužívá; když existuje, build i capture vypíšou upozornění.
 - **Celý hrad:** `build_normal.py` a `build_fullscope.py` staví vybavení po stavbách 05 (`zrlib/pipeline.py` → `build_all`, `furnishing`). Fullscope maže i actory s tagem `Zricenina_Vybaveni`.
 
-## 3. Skupiny
+## Spouštění
+### 4. Spuštění v UE
+
+| Situace | Skript |
+|---|---|
+| jen vybavení kovárny | `06_furnishing/vybaveni/Palac_Kovarna.py` |
+| celá kovárna včetně vybavení | `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
+| uložit ruční úpravy | **`06_furnishing/vybaveni/Palac_Kovarna_Capture.py`**; jinak `Palac_Kovarna.py` s `MODE = "capture"`, nebo `Palac_Kovarna.py` v 05 s `MODE = "capture"` (uloží stavby do `constructions_edits.json` a vybavení do `furnishing.json`) |
+| všechno vybavení | `06_furnishing/build_furnishing.py` |
+| uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` (skupiny bez actorů v levelu přeskočí) |
+| celý hrad | `build_normal.py` (`VYBAVENI = True` staví i vybavení; `CAPTURE_VYBAVENI = True` před buildem uloží úpravy z levelu), stejně `build_fullscope.py` |
+
+### 5. Nová skupina vybavení
+
+1. Kusy a polohy do specu stavby (funkce vracející seznam položek typu `props`, viz `kovarna_vybaveni()`; poloha = střed bounding boxu meshe, `KNOWHOW_hrad.md` kap. 5.7).
+2. Skupinu do `tools/furnishing/gen_furnishing.py`, vygenerovat `furnishing.json` (existující data se sloučí, uložené polohy jiných skupin zůstanou).
+3. Spouštěč `vybaveni/<Skupina>.py` (kopie `Palac_Kovarna.py`, jiný seznam `SKUPINY`); případně přidat do souhrnného spouštěče stavby v 05.
+4. Kontroly do `run_checks.py` (vybavení je v `common.state()` pod klíčem `furn`).
+
+## Skripty
+<!-- hestia:generated:start -->
+
+_`asset_index.json` chybí; spusť `asset_index`._
+
+<!-- hestia:generated:end -->
+
+## Vstupy a výstupy
+### 1. Soubory
+
+| Soubor | Co dělá |
+|---|---|
+| `build_furnishing.py` | build, capture, výpis a vrácení na spec v UE; mimo UE statistika (`python build_furnishing.py`), `list`, `reset [kusy]` |
+| `furn_data.py` | práce s `furnishing.json`: příznaky kusů, sloučení se specem (`merge`), vrácení na spec (`reset`), zápis se zálohou |
+| `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
+| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py` |
+| `furnishing.json` | **jediný zdroj poloh vybavení.** Sestaví ho `tools/furnishing/gen_furnishing.py` ze speců, capture do něj zapisuje polohy z levelu. Předchozí verze vždy v `furnishing.json.bak`. Ručně ho upravovat jde, ale běžná cesta je level + capture. |
+| `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`) |
+| `..\05_constructions\zr_stavby\vybaveni.py` | typ `props` (rozmístění hotových meshí), společný s 05 (tam pro pevné kusy, např. kůl u dřeva) |
+
+### 3. Skupiny
 
 **`Palac_Kovarna_Vybaveni`** – vybavení kovárny ve východní místnosti paláce ([[navrh_palac_kovarna]] kap. 4.4). Polohy v rámu paláce (`s`, `n`), konstanty `K_*` a funkce `kovarna_vybaveni()` v `tools/ruin/palac_spec.py`:
 
@@ -52,20 +80,8 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 
 Kontrola: `tools/checks/run_checks.py --only palac` (průniky se zříceninou, se stavbami kovárny i mezi sebou, výfučna v otvoru, vzdálenosti kovadlina – výheň – sud, průchody, dřevo pod přesahem). Náhled: `tools/checks/preview3d.py kovarna`.
 
-## 4. Spuštění v UE
+## Dopad na dokumentaci
+Doplní se při rozpadu.
 
-| Situace | Skript |
-|---|---|
-| jen vybavení kovárny | `06_furnishing/vybaveni/Palac_Kovarna.py` |
-| celá kovárna včetně vybavení | `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
-| uložit ruční úpravy | **`06_furnishing/vybaveni/Palac_Kovarna_Capture.py`**; jinak `Palac_Kovarna.py` s `MODE = "capture"`, nebo `Palac_Kovarna.py` v 05 s `MODE = "capture"` (uloží stavby do `constructions_edits.json` a vybavení do `furnishing.json`) |
-| všechno vybavení | `06_furnishing/build_furnishing.py` |
-| uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` (skupiny bez actorů v levelu přeskočí) |
-| celý hrad | `build_normal.py` (`VYBAVENI = True` staví i vybavení; `CAPTURE_VYBAVENI = True` před buildem uloží úpravy z levelu), stejně `build_fullscope.py` |
-
-## 5. Nová skupina vybavení
-
-1. Kusy a polohy do specu stavby (funkce vracející seznam položek typu `props`, viz `kovarna_vybaveni()`; poloha = střed bounding boxu meshe, `KNOWHOW_hrad.md` kap. 5.7).
-2. Skupinu do `tools/furnishing/gen_furnishing.py`, vygenerovat `furnishing.json` (existující data se sloučí, uložené polohy jiných skupin zůstanou).
-3. Spouštěč `vybaveni/<Skupina>.py` (kopie `Palac_Kovarna.py`, jiný seznam `SKUPINY`); případně přidat do souhrnného spouštěče stavby v 05.
-4. Kontroly do `run_checks.py` (vybavení je v `common.state()` pod klíčem `furn`).
+## Známé pasti
+Doplní se při rozpadu.

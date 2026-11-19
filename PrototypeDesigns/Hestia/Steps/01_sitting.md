@@ -12,21 +12,11 @@ entity: "[[Characters]]"
 ---
 # 01 Sitting – posazení postavy na sedátko libovolné výšky
 
+## Účel kroku
 Postava si na klávesu **E** sedne na židli, pařez, stoličku a podobně. Rozdíl výšky sedátka proti animaci se dorovná posunem pánve a IK nohou, takže jedna sada animací pokryje sedátka zhruba **30–60 cm**.
 Navazuje na [[README_animations]] (dřep, skok, aliasy, Inertialization).
 
-## Obsah složky
-
-| Soubor | K čemu |
-|---|---|
-| [[01_sitting]] | Tento návod |
-| `seat_test_station.py` | Postaví před kamerou testovací kvádry 30 / 45 / 60 cm |
-| `seat_place_selected.py` | Na vybrané actory položí `BP_Seat` a změří výšku sedáku |
-| `seat_report.py` | Vypíše všechna sedátka v mapě, označí ta mimo rozsah, uloží `Saved/SeatReport.csv` |
-
-Skripty se spouštějí přes **File → Execute Python Script…** (potřebný plugin **Python Editor Script Plugin**). Python běží jen v editoru. Samotné sezení ve hře řeší Blueprinty.
-
-## Princip
+### Princip
 
 ```
 BP_Seat (na sedátku)           BP_SkvtBaseChar                ABP_SkvtCharacter
@@ -43,7 +33,8 @@ BP_Seat (na sedátku)           BP_SkvtBaseChar                ABP_SkvtCharacter
 
 ---
 
-## 1. Animace
+## Spouštění
+### 1. Animace
 
 Potřebné jsou 3 sekvence na kostře UE5 Manny:
 
@@ -73,14 +64,14 @@ Alternativa bez převodu: komunitní balík „GASP retargeted to UE5 mannequin�
 
 ---
 
-## 2. Vstup
+### 2. Vstup
 
 1. `Content/Skvt/Characters/Input/Actions`: nová **Input Action** `IA_Interact`, **Value Type = Digital (bool)**.
 2. `IMC_Default`: mapping `IA_Interact` → klávesa **E**.
 
 ---
 
-## 3. Blueprint Interface `BPI_Interactable`
+### 3. Blueprint Interface `BPI_Interactable`
 
 Obecné rozhraní pro všechno, s čím jde interagovat (sedátka, později dveře, páky…).
 
@@ -90,7 +81,7 @@ Obecné rozhraní pro všechno, s čím jde interagovat (sedátka, později dve�
 
 ---
 
-## 4. `BP_Seat`
+### 4. `BP_Seat`
 
 Složka `Content/Skvt/Interaction/Seat`: **Blueprint Class → Actor** → `BP_Seat`.
 Cesta musí sedět s `BP_SEAT_PATH` ve skriptech: `/Game/Skvt/Interaction/Seat/BP_Seat`.
@@ -125,9 +116,9 @@ Event Interact (Instigator)
 
 ---
 
-## 5. Postava: `BP_SkvtBaseChar`
+### 5. Postava: `BP_SkvtBaseChar`
 
-### 5.1 Proměnné
+#### 5.1 Proměnné
 
 | Proměnná | Typ | Výchozí | K čemu |
 |---|---|---|---|
@@ -141,7 +132,7 @@ Event Interact (Instigator)
 | `SitDownTime` | Float | délka `A_Sit_Down` | |
 | `StandUpTime` | Float | délka `A_Sit_StandUp` | |
 
-### 5.2 Pomocné funkce (Pure)
+#### 5.2 Pomocné funkce (Pure)
 
 **`GetSitRootLocation`** (vstup `Seat`, výstup Vector) – kde stojí kapsle při sezení:
 ```
@@ -160,7 +151,7 @@ GetSitRootLocation(Seat) + Seat.SitPoint Forward Vector × StandDistance
 2. **For Each Loop** přes Out Actors: **Does Implement Interface** (`BPI_Interactable`) → pokud ano a vzdálenost (`Get Distance To`) je menší než dosud nejmenší → ulož do lokální proměnné `Best`.
 3. Po dokončení (Completed) vrať `Best`.
 
-### 5.3 Event `SitOn` (Custom Event, vstup `Seat` typu BP_Seat)
+#### 5.3 Event `SitOn` (Custom Event, vstup `Seat` typu BP_Seat)
 
 Musí to být Custom Event v Event Graphu (ne funkce), protože používá latentní **Move Component To**.
 
@@ -189,7 +180,7 @@ SitOn (Seat)
 Kapsle nemá rodiče, takže „Relative“ v Move Component To = světové souřadnice.
 Pokud animace nemá posun kořene (krok 1.3), nastav u druhého Move Component To **Over Time = 0.3** místo `SitDownTime`.
 
-### 5.4 Event `StandUp` a `OnStandUpFinished` (Custom Events)
+#### 5.4 Event `StandUp` a `OnStandUpFinished` (Custom Events)
 
 ```
 StandUp
@@ -208,7 +199,7 @@ OnStandUpFinished
  → SET SitPelvisOffset = 0, SET IsSeatTransition = false
 ```
 
-### 5.5 Vstupy
+#### 5.5 Vstupy
 
 **E (`IA_Interact`, Started):**
 ```
@@ -227,7 +218,7 @@ Zkompiluj, ulož. Vrať se do `BP_Seat` a zapoj `SitOn` (krok 4).
 
 ---
 
-## 6. ABP: `ABP_SkvtCharacter`, Event Graph
+### 6. ABP: `ABP_SkvtCharacter`, Event Graph
 
 1. Proměnné: `SkvtCharRef` (BP_SkvtBaseChar Object Ref), `Is Sitting` (Boolean), `Sit Pelvis Offset` (Float).
 2. **Initialize:** za stávající `SET Character Ref` přidej `Cast To BP_SkvtBaseChar` → `SET SkvtCharRef`.
@@ -237,7 +228,7 @@ Zkompiluj, ulož. Vrať se do `BP_Seat` a zapoj `SitOn` (krok 4).
 
 ---
 
-## 7. ABP: state machine `Main`
+### 7. ABP: state machine `Main`
 
 **Nové stavy:**
 
@@ -262,7 +253,7 @@ Zkompiluj, ulož. Vrať se do `BP_Seat` a zapoj `SitOn` (krok 4).
 
 ---
 
-## 8. ABP: AnimGraph – posun pánve a IK nohou
+### 8. ABP: AnimGraph – posun pánve a IK nohou
 
 Cíl: pánev se posune o `Sit Pelvis Offset` nahoru/dolů, chodidla zůstanou tam, kde je má animace (na zemi).
 Kostra Manny má pomocné kosti `ik_foot_l` / `ik_foot_r` (pod `root`, ne pod pánví), posun pánve je neovlivní. Proto se do nich nejdřív zkopíruje poloha chodidel a pak se k nim nohy „přitáhnou“.
@@ -302,7 +293,7 @@ Mimo sezení mají nody alpha 0 a na ostatní animace nemají vliv.
 
 ---
 
-## 9. Testovací stanoviště a ladění
+### 9. Testovací stanoviště a ladění
 
 1. Otoč kameru viewportu na volnou rovnou plochu.
 2. **Execute Python Script → `seat_test_station.py`** → vzniknou kvádry `SeatTest_30cm`, `_45cm`, `_60cm` (vybrané).
@@ -318,7 +309,7 @@ Ladění v ABP: `slomo 0.3` v konzoli, Debug Filter na postavu, sleduj stavy Sit
 
 ---
 
-## 10. Sedátka v mapě (Python)
+### 10. Sedátka v mapě (Python)
 
 1. Vyber židle, pařezy, stoličky (klidně desítky najednou).
 2. **`seat_place_selected.py`** → každý dostane `BP_Seat` (připojený, posouvá se s ním).
@@ -333,7 +324,7 @@ Skript lze spouštět opakovaně. Po přesunu sedátka v mapě stačí ho vybrat
 
 ---
 
-## 11. Test (PIE)
+### 11. Test (PIE)
 
 | # | Akce | Očekávaný výsledek |
 |---|---|---|
@@ -349,7 +340,33 @@ Skript lze spouštět opakovaně. Po přesunu sedátka v mapě stačí ho vybrat
 
 ---
 
-## 12. Možná rozšíření
+## Skripty
+<!-- hestia:generated:start -->
+
+_`asset_index.json` chybí; spusť `asset_index`._
+
+<!-- hestia:generated:end -->
+
+## Vstupy a výstupy
+### Obsah složky
+
+| Soubor | K čemu |
+|---|---|
+| [[01_sitting]] | Tento návod |
+| `seat_test_station.py` | Postaví před kamerou testovací kvádry 30 / 45 / 60 cm |
+| `seat_place_selected.py` | Na vybrané actory položí `BP_Seat` a změří výšku sedáku |
+| `seat_report.py` | Vypíše všechna sedátka v mapě, označí ta mimo rozsah, uloží `Saved/SeatReport.csv` |
+
+Skripty se spouštějí přes **File → Execute Python Script…** (potřebný plugin **Python Editor Script Plugin**). Python běží jen v editoru. Samotné sezení ve hře řeší Blueprinty.
+
+## Dopad na dokumentaci
+Doplní se při rozpadu.
+
+## Známé pasti
+Doplní se při rozpadu.
+
+## Další rozvoj
+### 12. Možná rozšíření
 
 - **Varianty animací** low (zem, kámen < 30 cm) a high (barová stolička > 60 cm): v `BP_Seat` enum `SeatType` podle výšky, v ABP výběr stavu (nebo **Blend Poses by Enum**) a vlastní `RefSeatHeight` pro každou variantu.
 - **Motion Warping** místo Move Component To: přesnější dosednutí přímo z animace s root motion.

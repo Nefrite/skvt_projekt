@@ -12,32 +12,19 @@ entity: "[[Udoli_Reky]]"
 ---
 # Řeka a bahnité koryto – Zřícenina v meandru
 
+## Účel kroku
 Podklady a postup pro řeku (Water Body River) a materiál koryta (štěrk / bahno) v mapě `LapikusPrototypeMap`.
 Platí pro landscape z `Zricenina_heightmap_505_50cm.png` (Location 0, 0, 3200, Scale 50 / 50 / 12.5).
 
-## Obsah složky
+## Spouštění
+### Část 1 – Řeka
 
-| Soubor | K čemu |
-|---|---|
-| `import_river_spline.py` | Python skript: nastaví vybrané řece 27 bodů splinu |
-| `Zricenina_505_body_reky.csv` | Stejné body jako tabulka (X/Y/Z v cm, Z = hladina) |
-| `Zricenina_505_body_reky.png` | Náhled s očíslovanými body a hradem |
-| `T_RiverMask_505.png` | Maska pro materiál: R = dno (štěrk/oblázky), G = bahnitý břeh |
-| `T_RiverMask_preview.png` | Náhled masky (šedá = dno, hnědá = bahno) |
-
-Souřadnice: obrázek vpravo = +X, dolů = +Y, střed landscapu = 0, 0.
-Díky Location Z = 3200 platí: **výška terénu v m × 100 = světové Z v cm**.
-
----
-
-## Část 1 – Řeka
-
-### 1.1 Pluginy
+#### 1.1 Pluginy
 
 1. **Edit → Plugins**, zapnout **Water** a **Python Editor Script Plugin**, restart editoru.
 2. Pokud se objeví hláška o chybějícím kolizním profilu *WaterBodyCollision*, kliknout **Add Entry / Fix**.
 
-### 1.2 Vložení řeky bez zásahu do terénu
+#### 1.2 Vložení řeky bez zásahu do terénu
 
 Koryto už je v heightmapě, řeka nemá terén upravovat.
 
@@ -47,7 +34,7 @@ Koryto už je v heightmapě, řeka nemá terén upravovat.
 4. Pokud se terén přesto změnil, smazat actor **Landscape_WaterBrushManager**. Případně v Landscape mode → Sculpt → Edit Layers smazat vrstvu, kterou přidala voda.
 5. Řece nastavit **Location 0, 0, 0** a **Rotation 0, 0, 0**.
 
-### 1.3 Body splinu skriptem
+#### 1.3 Body splinu skriptem
 
 1. Vybrat **WaterBodyRiver**.
 2. **Tools → Execute Python Script…** a vybrat `import_river_spline.py`.
@@ -58,7 +45,7 @@ Koryto už je v heightmapě, řeka nemá terén upravovat.
 Body jdou ve směru toku (jih → SV) po ~20 m. První a poslední bod jsou vytažené 10 m za okraj mapy.
 Hladina je ~25 cm pod hranou koryta: ≈ 437 cm na jihu, ≈ 265 cm na SV.
 
-### 1.4 Parametry vody
+#### 1.4 Parametry vody
 
 Vybrat všechny body splinu (Ctrl+A) a v Details nastavit:
 
@@ -70,14 +57,14 @@ Vybrat všechny body splinu (Ctrl+A) a v Details nastavit:
 
 Změna těchto hodnot zároveň vynutí přepočet vodní plochy.
 
-### 1.5 Water Zone
+#### 1.5 Water Zone
 
 Vybrat **WaterZone** a nastavit:
 
 - **Location** 0, 0, 0
 - **Zone Extent** 30000 × 30000 (landscape má 25 250 cm)
 
-### 1.6 Řešení problémů
+#### 1.6 Řešení problémů
 
 | Problém | Řešení |
 |---|---|
@@ -90,12 +77,12 @@ Vybrat **WaterZone** a nastavit:
 
 ---
 
-## Část 2 – Štěrk a bahno v korytě
+### Část 2 – Štěrk a bahno v korytě
 
 Maska `T_RiverMask_505.png` pokrývá přesně celý landscape a kopíruje koryto z heightmapy.
 Pokud byl spline výrazně posunut mimo koryto, maska ho kopírovat nebude a je potřeba ji přegenerovat.
 
-### 2.1 Import masky
+#### 2.1 Import masky
 
 1. Přetáhnout `T_RiverMask_505.png` do Content Browseru, do `Skvt/Lapikus`.
 2. V textuře nastavit:
@@ -103,7 +90,7 @@ Pokud byl spline výrazně posunut mimo koryto, maska ho kopírovat nebude a je 
    - **sRGB:** vypnuto
    - **X / Y-axis Tiling Method:** Clamp
 
-### 2.2 Úprava materiálu `M_Landscape_Forest_Auto` (v projektu `M_Lanscape_Forest_Auto`)
+#### 2.2 Úprava materiálu `M_Landscape_Forest_Auto` (v projektu `M_Lanscape_Forest_Auto`)
 
 1. **Souřadnice masky:** přidat druhý `LandscapeLayerCoords`, **Mapping Scale = 504**. Maska se tak roztáhne přesně jednou přes landscape.
 2. **Maska:** Texture Sample s `T_RiverMask_505`, do UVs zapojit nové coords (504).
@@ -123,8 +110,37 @@ Roughness = Lerp(0.85, 0.4, MaskMud)             (mokré bahno se leskne)
 
 6. Apply a Save.
 
-### 2.3 Ladění
+#### 2.3 Ladění
 
 - **Moc tmavé nebo světlé bahno:** upravit Constant3Vector.
 - **Ostřejší nebo měkčí přechod:** masku přegenerovat s jinou šířkou (stačí napsat Claudovi).
 - **Ruční úpravy štětcem:** převést materiál na malované vrstvy (`LandscapeLayerBlend`) a masku použít jako výchozí váhovou mapu vrstvy.
+
+## Skripty
+<!-- hestia:generated:start -->
+
+_`asset_index.json` chybí; spusť `asset_index`._
+
+<!-- hestia:generated:end -->
+
+## Vstupy a výstupy
+### Obsah složky
+
+| Soubor | K čemu |
+|---|---|
+| `import_river_spline.py` | Python skript: nastaví vybrané řece 27 bodů splinu |
+| `Zricenina_505_body_reky.csv` | Stejné body jako tabulka (X/Y/Z v cm, Z = hladina) |
+| `Zricenina_505_body_reky.png` | Náhled s očíslovanými body a hradem |
+| `T_RiverMask_505.png` | Maska pro materiál: R = dno (štěrk/oblázky), G = bahnitý břeh |
+| `T_RiverMask_preview.png` | Náhled masky (šedá = dno, hnědá = bahno) |
+
+Souřadnice: obrázek vpravo = +X, dolů = +Y, střed landscapu = 0, 0.
+Díky Location Z = 3200 platí: **výška terénu v m × 100 = světové Z v cm**.
+
+---
+
+## Dopad na dokumentaci
+Koryto a materiál koryta mění prostředí údolí (doména `environment`, entita [[Udoli_Reky]]): materiál terénu [[M_Landscape_Forest_Auto]] (Část 2). Řešení koryta a jeho vlivu na prostředí rozhodne GameDesigner později. Ostatní dopady se doplní při rozpadu.
+
+## Známé pasti
+Doplní se při rozpadu.

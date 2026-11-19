@@ -12,21 +12,12 @@ entity: "[[Lapikus_Region]]"
 ---
 # 01 Terrain – import terénu a materiál M_Landscape_Forest_Auto (část 1)
 
+## Účel kroku
 Postup pro mapu `LapikusPrototypeMap` (v návodu dříve pracovně `Zricenina_Proto`). Terén se vytvoří z heightmapy a dostane automatický materiál, který podle sklonu míchá trávu, štěrk a kámen.
 Řeka a koryto jsou ve složce `02_river`.
 
-## Obsah složky
-
-| Soubor | K čemu |
-|---|---|
-| `Zricenina_heightmap_505_50cm.png` | Heightmapa k importu (16 bit, 505 × 505 px, 0,5 m/px = 252 × 252 m) |
-| `Zricenina_preview_orez.png` | Náhled sklonu terénu: zelená < 8°, oranžová 8–18°, růžová 18–28°, magenta > 28°, vrstevnice po 5 m |
-| [[M_Landscape_Forest_Auto]] | Krátký tahák s nastavením materiálu (do dokumentace) |
-| [[01_terrain]] | Tento návod |
-
----
-
-## 1. Nová mapa
+## Spouštění
+### 1. Nová mapa
 
 1. **File → New Level → Basic.** Neber Open World (World Partition) ani Empty Level.
 2. **File → Save Current Level As** do `Content/Skvt/LapikusPrototypeMap` (skutečný stav projektu).
@@ -34,7 +25,7 @@ Postup pro mapu `LapikusPrototypeMap` (v návodu dříve pracovně `Zricenina_Pr
 4. **Window → World Settings → GameMode Override = `BP_SkvtGameMode`.**
 5. Uložit (Ctrl+S).
 
-## 2. Import landscapu
+### 2. Import landscapu
 
 1. **Landscape mode:** Shift+2 nebo menu módů vlevo nahoře → Landscape.
 2. **Manage → New → Import from File.**
@@ -65,7 +56,7 @@ Pole *Enable Edit Layers* v UE 5.8 není. Edit layers jsou u nového landscapu z
 - Scale Z 12.5 znamená, že celý 16bitový rozsah PNG odpovídá 64 m převýšení.
 - Location Z 3200 posune terén tak, že **výška v m × 100 = světové Z v cm**.
 
-## 3. Kontrola
+### 3. Kontrola
 
 1. Přepnout do **Selection Mode** (Shift+1), vybrat Landscape a stisknout **F**.
 2. V Details zkontrolovat Location (0, 0, 3200) a Scale (50, 50, 12.5).
@@ -85,7 +76,7 @@ Pole *Enable Edit Layers* v UE 5.8 není. Edit layers jsou u nového landscapu z
 | Terén zrcadlově otočený | Bylo zaškrtnuté Flip Y. Importovat znovu. |
 | Postava propadá | Landscape → Collision Presets = BlockAll. |
 
-## 4. Player Start
+### 4. Player Start
 
 | Varianta | X | Y | Z | Rotation Z |
 |---|---|---|---|---|
@@ -97,24 +88,24 @@ Záložky kamery uložíš přes **Ctrl+1…9** a skočíš na ně klávesou **1
 
 ---
 
-## 5. Materiál M_Landscape_Forest_Auto – základ
+### 5. Materiál M_Landscape_Forest_Auto – základ
 
-### 5.1 Princip
+#### 5.1 Princip
 
 `VertexNormalWS` → maska **B** (svislá složka normály) = **cos(sklon)**: rovina 1, svislá stěna 0.
 Masky vznikají jako `1 − SmoothStep(cos(konec), cos(začátek), cosSklonu)`.
 
-### 5.2 Založení
+#### 5.2 Založení
 
 1. Content Browser → `Skvt/Lapikus` → pravé tlačítko → **Material** → `M_Landscape_Forest_Auto`.
    - V projektu existuje jako **`M_Lanscape_Forest_Auto`** (překlep *Lanscape*). Přejmenovat lze přes pravé tlačítko → Rename; Unreal odkazy opraví sám, pak na složce pravé tlačítko → **Update Redirector References** (ve starších verzích UE **Fix Up Redirectors**), pokud tam redirectory zůstaly.
 2. Otevřít dvojklikem.
 
-### 5.3 UV souřadnice
+#### 5.3 UV souřadnice
 
 `LandscapeLayerCoords`, **Mapping Scale = 8** (opakování textury každé 4 m). Pro přehlednost z ní udělat Named Reroute `UV`.
 
-### 5.4 Textury (StarterContent/Textures)
+#### 5.4 Textury (StarterContent/Textures)
 
 Texturu stačí přetáhnout z Content Browseru do grafu, Texture Sample vznikne sám.
 Případně podržet **T** a kliknout do grafu, pak texturu vybrat v Details → Texture.
@@ -131,7 +122,7 @@ U každého Texture Sample:
 - **Sampler Source:** Shared: Wrap.
 - **Sampler Type:** Color u D textur, **Normal** u N textur (obvykle se nastaví samo).
 
-### 5.5 Maska sklonu
+#### 5.5 Maska sklonu
 
 ```
 VertexNormalWS → ComponentMask (jen B) → [cosSklonu]
@@ -143,7 +134,7 @@ MaskRock   = 1 − SmoothStep(Min = 0.74, Max = 0.82, cosSklonu)
 Uzel `1 − x` je **OneMinus**. Výstupy pojmenovat jako Named Reroute `MaskGravel` a `MaskRock`
 (pravé tlačítko → **Named Reroute Declaration**, Name + Node Color; použití: pravé tlačítko → napsat název).
 
-### 5.6 Míchání (Lerp: podržet L + klik)
+#### 5.6 Míchání (Lerp: podržet L + klik)
 
 ```
 Lerp1 = Lerp(A = Grass_D, B = Gravel_D, Alpha = MaskGravel)
@@ -153,7 +144,7 @@ Lerp4 = Lerp(A = Lerp3,   B = Rock_N,   Alpha = MaskRock)    → Normal
 Constant 0.85 (podržet 1 + klik)                             → Roughness
 ```
 
-### 5.7 Přiřazení
+#### 5.7 Přiřazení
 
 1. **Apply** a **Save**.
 2. Vybrat Landscape a v Details nastavit **Landscape Material** = `M_Landscape_Forest_Auto`.
@@ -162,11 +153,11 @@ Materiál jde vyměnit kdykoli, terén se tím nemění.
 
 ---
 
-## 6. Ladění přechodů podle sklonu (doporučený způsob)
+### 6. Ladění přechodů podle sklonu (doporučený způsob)
 
 Ideální je ladit **ve stupních**, v **Material Instance**, se **zapínatelným debug zobrazením**. Změny pak vidíš na terénu hned, bez kompilace.
 
-### 6.1 Parametry ve stupních
+#### 6.1 Parametry ve stupních
 
 Místo pevných čísel ve SmoothStepech:
 
@@ -187,7 +178,7 @@ Místo pevných čísel ve SmoothStepech:
 
 Pravidlo: `Gravel_Start < Gravel_End < Rock_Start < Rock_End`. Jinak se přechody překryjí a štěrk zmizí.
 
-### 6.2 Debug zobrazení sklonu
+#### 6.2 Debug zobrazení sklonu
 
 1. Přidat **StaticSwitchParameter** `Debug_Slope` (výchozí False).
 2. Debug barvy:
@@ -203,13 +194,13 @@ Barvy jsou `Constant3Vector`, podržet **3** + klik.
 
 Zapnutý debug ukáže terén obarvený přesně podle toho, kde je tráva / štěrk / kámen. Hranice jsou tak vidět i tam, kde se textury podobají.
 
-### 6.3 Material Instance
+#### 6.3 Material Instance
 
 1. Pravé tlačítko na `M_Landscape_Forest_Auto` → **Create Material Instance** → `MI_Landscape_Forest_Auto`.
 2. Landscape → Details → **Landscape Material = `MI_Landscape_Forest_Auto`**.
 3. Otevřít instanci a nechat ji vedle viewportu. Zaškrtnout `Debug_Slope`, pak posouvat stupně ve skupině Slope.
 
-### 6.4 Postup ladění
+#### 6.4 Postup ladění
 
 1. Zapnout `Debug_Slope`, kameru dát na pohled šikmo shora na hrad.
 2. Nastavit **kámen:** `Rock_End_Deg` posouvat tak dlouho, až je červená jen na skalní stěně pod hradem a na nejprudších místech výsepného břehu.
@@ -224,7 +215,7 @@ Pro porovnání slouží `Zricenina_preview_orez.png`: má stejný výřez a bar
 
 Debug switch je statický, takže v hotové hře nic nestojí. Lze ho v materiálu nechat napořád.
 
-### 6.5 Tahák cos(úhel)
+#### 6.5 Tahák cos(úhel)
 
 | úhel | cos | úhel | cos |
 |---|---|---|---|
@@ -235,7 +226,33 @@ Debug switch je statický, takže v hotové hře nic nestojí. Lze ho v materiá
 
 ---
 
-## 7. Další vylepšení (volitelné)
+## Skripty
+<!-- hestia:generated:start -->
+
+_`asset_index.json` chybí; spusť `asset_index`._
+
+<!-- hestia:generated:end -->
+
+## Vstupy a výstupy
+### Obsah složky
+
+| Soubor | K čemu |
+|---|---|
+| `Zricenina_heightmap_505_50cm.png` | Heightmapa k importu (16 bit, 505 × 505 px, 0,5 m/px = 252 × 252 m) |
+| `Zricenina_preview_orez.png` | Náhled sklonu terénu: zelená < 8°, oranžová 8–18°, růžová 18–28°, magenta > 28°, vrstevnice po 5 m |
+| [[M_Landscape_Forest_Auto]] | Krátký tahák s nastavením materiálu (do dokumentace) |
+| [[01_terrain]] | Tento návod |
+
+---
+
+## Dopad na dokumentaci
+Doplní se při rozpadu.
+
+## Známé pasti
+Doplní se při rozpadu.
+
+## Další rozvoj
+### 7. Další vylepšení (volitelné)
 
 - **Roztažená skála na srázech:** pro kámen použít `WorldAlignedTexture` (triplanar, Texture Size ~400) místo Texture Sample.
 - **Opakování textur:** druhý `LandscapeLayerCoords` s jiným Mapping Scale (např. 37) a Multiply s jemnou variací barvy.

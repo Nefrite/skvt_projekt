@@ -12,6 +12,7 @@ entity: "[[Characters]]"
 ---
 # NPC – obecné chování (StateTree): potulování a hlídkování
 
+## Účel kroku
 Podklady pro NPC, které nejsou společné s hráčem. Obecné chování NPC:
 
 | Chování | Popis | Stav |
@@ -22,45 +23,8 @@ Podklady pro NPC, které nejsou společné s hráčem. Obecné chování NPC:
 
 AI systém: **StateTree** (StateTree AI Component). Behavior Tree varianta v projektu zůstává jen jako ukázka.
 
-## Obsah složky
-
-| Soubor | K čemu |
-|---|---|
-| [[NPC]] | Tento návod |
-| `npc_nav_bounds.py` | Vytvoří / upraví NavMeshBoundsVolume přes vybrané actory (landscape, podlaha) |
-| `npc_make_patrol_route.py` | Z vybraných hlídkovacích bodů vytvoří trasu, přejmenuje body, přiřadí trasu vybraným NPC |
-| `npc_report.py` | Kontrola: NPC a body na navmeshi, existence cesty mezi body. Výstup `Saved/NPCReport.csv` |
-
-Skripty: **File → Execute Python Script…** (plugin **Python Editor Script Plugin**). Běží jen v editoru, chování ve hře řeší StateTree a Blueprinty.
-
----
-
-## 0. Co už v projektu je (stav 11. 11. 2026)
-
-Složka `Content/Skvt/Characters/NPC`:
-
-| Asset | Co to je | Stav / problém |
-|---|---|---|
-| `BP_NPC_base` | Character, `SKM_Manny_Simple`, fialové materiály | používá šablonový **`ABP_Manny`** |
-| `Nav_Jump` | NavLinkProxy (smart link pro skok NPC) | použitelný |
-| `BehaviorTrees/AIC_BT_NPCBase` | AIController, Run Behavior Tree `BT_NPCBase` | funkční |
-| `BehaviorTrees/BB_BT_NPCBase` | Blackboard (jen SelfActor + objekt) | |
-| `BehaviorTrees/BT_NPCBase` | Sequence → `BTTask_Follow` | sledování hráče |
-| `BehaviorTrees/Tasks/BTTask_Follow` | AI MoveTo na `TargetActor` | |
-| `BehaviorTrees/BP_NPC_BT_base` | potomek `BP_NPC_base` (modré mat.), AI Controller = AIC_BT | |
-| `StateTrees/AIC_ST_NPCBase` | AIController | **chybí StateTree AI komponenta** |
-| `StateTrees/STAI_NPCbase` | StateTree, jen stav Root | **schéma `StateTreeComponentSchema`** (obecné, ne AI) |
-| `StateTrees/BP_NPC_ST_base` | potomek `BP_NPC_base`, PawnSensing | **odkaz na neexistující `/Game/Skvt/Systems/HealthSystem/SkvtHealthComponent`** |
-
-Další zjištění:
-- **Žádná mapa nemá NavMeshBoundsVolume** → NPC se zatím nemají kde pohybovat.
-- V mapách není umístěné žádné NPC.
-- Pluginy **StateTree** a **GameplayStateTree** jsou zapnuté.
-- Upstream repozitář kurzu (`upstream/Stream6`) obsahuje starší rozpracované NPC (`STT_GoToRandomLocation`, `STT_SetSpeed`, `BPC_SkvtHealth`). Do této větve se **nemergují** (jiná verze `BP_SkvtBaseChar`), slouží jen jako inspirace.
-
----
-
-## 1. Úklid a příprava
+## Spouštění
+### 1. Úklid a příprava
 
 1. **`BP_NPC_ST_base`:** otevři. Komponenta `SkvtHealthComponent` je rozbitá (asset neexistuje) → vyber ji v Components a smaž. Zkompiluj, ulož. (Zdraví se doplní později vlastním systémem.)
 2. **`STAI_NPCbase`** nech být (jiné schéma nejde změnit). Nový strom vznikne v kroku 7. Starý pak lze smazat.
@@ -69,7 +33,7 @@ Další zjištění:
 
 ---
 
-## 2. Navmesh v mapě
+### 2. Navmesh v mapě
 
 Bez navmeshe NPC nikam nedojde.
 
@@ -85,7 +49,7 @@ Skoky přes překážky: `Nav_Jump` (NavLinkProxy) umístit na hranu, oba konce 
 
 ---
 
-## 3. Pawn NPC: `BP_NPC_base` a `BP_NPC_ST_base`
+### 3. Pawn NPC: `BP_NPC_base` a `BP_NPC_ST_base`
 
 **`BP_NPC_base`** (společný základ všech NPC):
 
@@ -106,7 +70,7 @@ ABP: proměnné pro sezení hráče (`SkvtCharRef`) u NPC zůstanou prázdné, `
 
 ---
 
-## 4. AI Controller: `AIC_ST_NPCBase`
+### 4. AI Controller: `AIC_ST_NPCBase`
 
 1. Components → **Add → StateTree AI** (`StateTreeAIComponent`).
 2. Details komponenty: **State Tree** = `ST_NPC` (vytvoříš v kroku 7, pak se sem vrať), **Start Logic Automatically** = zapnuto.
@@ -114,16 +78,16 @@ ABP: proměnné pro sezení hráče (`SkvtCharRef`) u NPC zůstanou prázdné, `
 
 ---
 
-## 5. Data a logika NPC v `BP_NPC_ST_base`
+### 5. Data a logika NPC v `BP_NPC_ST_base`
 
-### 5.1 Enum `E_NPCBehavior`
+#### 5.1 Enum `E_NPCBehavior`
 
 `Content/Skvt/Characters/NPC`: **Blueprint → Enumeration** → `E_NPCBehavior`, hodnoty:
 `Auto`, `Idle`, `Wander`, `Patrol`.
 
 `Auto` = hlídkuje, pokud má trasu, jinak se potuluje.
 
-### 5.2 Proměnné
+#### 5.2 Proměnné
 
 | Proměnná | Typ | Výchozí | Instance Editable | K čemu |
 |---|---|---|---|---|
@@ -141,7 +105,7 @@ ABP: proměnné pro sezení hráče (`SkvtCharRef`) u NPC zůstanou prázdné, `
 | `PatrolIndex` | Integer | −1 | | aktuální bod trasy |
 | `PatrolDirection` | Integer | 1 | | směr u trasy tam a zpět |
 
-### 5.3 BeginPlay → funkce `InitBehavior`
+#### 5.3 BeginPlay → funkce `InitBehavior`
 
 ```
 SET HomeLocation = Get Actor Location
@@ -154,7 +118,7 @@ Switch on E_NPCBehavior (Behavior):
 ```
 Pokud Event BeginPlay v `BP_NPC_ST_base` ještě neexistuje, přidej ho. Pokud existuje v `BP_NPC_base` i tady, v potomkovi zapoj **Parent: BeginPlay** (pravý klik na event → Add Call to Parent Function).
 
-### 5.4 Funkce `SelectWanderPoint` (výstup Boolean `Success`)
+#### 5.4 Funkce `SelectWanderPoint` (výstup Boolean `Success`)
 
 ```
 SET Character Movement → Max Walk Speed = WalkSpeed
@@ -167,7 +131,7 @@ For Loop 1..5:
 Return Success = false
 ```
 
-### 5.5 Funkce `SelectNextPatrolPoint` (výstup Boolean `Success`)
+#### 5.5 Funkce `SelectNextPatrolPoint` (výstup Boolean `Success`)
 
 ```
 Is Valid(PatrolRoute) AND PatrolRoute.GetPointCount > 0 → jinak Return false
@@ -183,11 +147,11 @@ NPC začne u nejbližšího bodu trasy, ne nutně u prvního.
 
 ---
 
-## 6. Hlídkovací trasa: `BP_PatrolPoint` a `BP_PatrolRoute`
+### 6. Hlídkovací trasa: `BP_PatrolPoint` a `BP_PatrolRoute`
 
 Složka `Content/Skvt/Characters/NPC/Patrol`. Názvy proměnných musí přesně sedět (používají je skripty).
 
-### 6.1 `BP_PatrolPoint` (Actor)
+#### 6.1 `BP_PatrolPoint` (Actor)
 
 | Komponenta | Nastavení |
 |---|---|
@@ -199,7 +163,7 @@ Složka `Content/Skvt/Characters/NPC/Patrol`. Názvy proměnných musí přesně
 |---|---|---|---|
 | `WaitTime` | Float | 2.0 | ✅ |
 
-### 6.2 `BP_PatrolRoute` (Actor)
+#### 6.2 `BP_PatrolRoute` (Actor)
 
 | Komponenta | Nastavení |
 |---|---|
@@ -242,9 +206,9 @@ Construction Script se přepočítá při posunu trasy, ne při posunu bodu. Po 
 
 ---
 
-## 7. StateTree `ST_NPC`
+### 7. StateTree `ST_NPC`
 
-### 7.1 Vytvoření
+#### 7.1 Vytvoření
 
 1. `Content/Skvt/Characters/NPC/StateTrees`: pravý klik → **Artificial Intelligence → State Tree** → schéma **StateTree AI Component**.
 2. Název `ST_NPC`.
@@ -254,7 +218,7 @@ Construction Script se přepočítá při posunu trasy, ne při posunu bodu. Po 
 
 Díky Context Actor Class se dají vlastnosti úloh **navázat (bind)** přímo na proměnné NPC (`MoveTarget`, `WaitTime`, `ShouldPatrol`…).
 
-### 7.2 Úlohy (Blueprint, rodič `StateTreeTaskBlueprintBase`)
+#### 7.2 Úlohy (Blueprint, rodič `StateTreeTaskBlueprintBase`)
 
 Složka `StateTrees/Tasks`. V každé úloze proměnná **`Actor`** typu `BP_NPC_ST_base`, v Details proměnné **Category = `Context`** → StateTree ji automaticky naváže na NPC.
 
@@ -277,7 +241,7 @@ Event Enter State → AI MoveTo (Pawn = Actor, Destination, Acceptance Radius)
 Event Exit State → Actor → Get Controller → Stop Movement
 ```
 
-### 7.3 Stavy a přechody
+#### 7.3 Stavy a přechody
 
 ```
 Root
@@ -311,7 +275,7 @@ Zkompiluj (**Compile** v StateTree editoru) a ulož. Vrať se do `AIC_ST_NPCBase
 
 ---
 
-## 8. Rozmístění v mapě
+### 8. Rozmístění v mapě
 
 **Potulování:**
 1. Přetáhni `BP_NPC_ST_base` do mapy (na navmesh).
@@ -328,7 +292,7 @@ Zkompiluj (**Compile** v StateTree editoru) a ulož. Vrať se do `AIC_ST_NPCBase
 
 ---
 
-## 9. Ladění
+### 9. Ladění
 
 | Nástroj | Jak |
 |---|---|
@@ -346,7 +310,7 @@ Zkompiluj (**Compile** v StateTree editoru) a ulož. Vrať se do `AIC_ST_NPCBase
 
 ---
 
-## 10. Test (PIE)
+### 10. Test (PIE)
 
 | # | Situace | Očekávaný výsledek |
 |---|---|---|
@@ -362,7 +326,60 @@ Zkompiluj (**Compile** v StateTree editoru) a ulož. Vrať se do `AIC_ST_NPCBase
 
 ---
 
-## 11. Další kroky (připraveno)
+## Skripty
+<!-- hestia:generated:start -->
+
+_`asset_index.json` chybí; spusť `asset_index`._
+
+<!-- hestia:generated:end -->
+
+## Vstupy a výstupy
+### Obsah složky
+
+| Soubor | K čemu |
+|---|---|
+| [[NPC]] | Tento návod |
+| `npc_nav_bounds.py` | Vytvoří / upraví NavMeshBoundsVolume přes vybrané actory (landscape, podlaha) |
+| `npc_make_patrol_route.py` | Z vybraných hlídkovacích bodů vytvoří trasu, přejmenuje body, přiřadí trasu vybraným NPC |
+| `npc_report.py` | Kontrola: NPC a body na navmeshi, existence cesty mezi body. Výstup `Saved/NPCReport.csv` |
+
+Skripty: **File → Execute Python Script…** (plugin **Python Editor Script Plugin**). Běží jen v editoru, chování ve hře řeší StateTree a Blueprinty.
+
+---
+
+### 0. Co už v projektu je (stav 11. 11. 2026)
+
+Složka `Content/Skvt/Characters/NPC`:
+
+| Asset | Co to je | Stav / problém |
+|---|---|---|
+| `BP_NPC_base` | Character, `SKM_Manny_Simple`, fialové materiály | používá šablonový **`ABP_Manny`** |
+| `Nav_Jump` | NavLinkProxy (smart link pro skok NPC) | použitelný |
+| `BehaviorTrees/AIC_BT_NPCBase` | AIController, Run Behavior Tree `BT_NPCBase` | funkční |
+| `BehaviorTrees/BB_BT_NPCBase` | Blackboard (jen SelfActor + objekt) | |
+| `BehaviorTrees/BT_NPCBase` | Sequence → `BTTask_Follow` | sledování hráče |
+| `BehaviorTrees/Tasks/BTTask_Follow` | AI MoveTo na `TargetActor` | |
+| `BehaviorTrees/BP_NPC_BT_base` | potomek `BP_NPC_base` (modré mat.), AI Controller = AIC_BT | |
+| `StateTrees/AIC_ST_NPCBase` | AIController | **chybí StateTree AI komponenta** |
+| `StateTrees/STAI_NPCbase` | StateTree, jen stav Root | **schéma `StateTreeComponentSchema`** (obecné, ne AI) |
+| `StateTrees/BP_NPC_ST_base` | potomek `BP_NPC_base`, PawnSensing | **odkaz na neexistující `/Game/Skvt/Systems/HealthSystem/SkvtHealthComponent`** |
+
+Další zjištění:
+- **Žádná mapa nemá NavMeshBoundsVolume** → NPC se zatím nemají kde pohybovat.
+- V mapách není umístěné žádné NPC.
+- Pluginy **StateTree** a **GameplayStateTree** jsou zapnuté.
+- Upstream repozitář kurzu (`upstream/Stream6`) obsahuje starší rozpracované NPC (`STT_GoToRandomLocation`, `STT_SetSpeed`, `BPC_SkvtHealth`). Do této větve se **nemergují** (jiná verze `BP_SkvtBaseChar`), slouží jen jako inspirace.
+
+---
+
+## Dopad na dokumentaci
+Doplní se při rozpadu.
+
+## Známé pasti
+Doplní se při rozpadu.
+
+## Další rozvoj
+### 11. Další kroky (připraveno)
 
 - **Posedávání:** `E_NPCBehavior` rozšířit o `Sit` (nebo náhodné posazení během potulování). Sedátka už mají `BP_Seat` (`../01_sitting`). Doporučení: přidat k `BP_Seat` **Smart Object** komponentu a ve StateTree použít úlohy *Find Smart Object* / *Use Smart Object*, nebo jednoduše vlastní úlohu „najdi nejbližší volné `BP_Seat` v okruhu → dojdi → `SitOn`“. Logika `SitOn` / `StandUp` se přesune z `BP_SkvtBaseChar` do společné komponenty, aby ji měla i NPC.
 - **Pohled na bodě:** při čekání otočit NPC podle šipky `BP_PatrolPoint` (úloha s `Set Actor Rotation` / RInterp).

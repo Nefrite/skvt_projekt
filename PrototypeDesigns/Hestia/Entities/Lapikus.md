@@ -41,7 +41,11 @@ _Potomci nemají cíle._
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[README_ruin]] – design, depth 4, outdated
+- [[Zricenina_03_ruin_stav]] – state, depth 4, valid
+- [[CHECKLIST_assets_navrhy]] – checklist, valid
+- nahrazené nebo archivované: 1
 
 <!-- hestia:generated:end -->
 
@@ -67,7 +71,7 @@ _`asset_index.json` chybí; spusť `asset_index`._
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Scratch: [[FURNISHING]] (prepared)
 
 <!-- hestia:generated:end -->
 

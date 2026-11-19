@@ -26,7 +26,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | – | – | build | bez cíle |
+| structures | 4 | – | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 Agregace z potomků (04 kap. 3):
@@ -38,7 +38,9 @@ _Potomci nemají cíle._
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_palac_kovarna]] – design, depth 4, valid, in_progress
+- [[stav_palac_kovarna]] – state, depth 4, valid
 
 <!-- hestia:generated:end -->
 

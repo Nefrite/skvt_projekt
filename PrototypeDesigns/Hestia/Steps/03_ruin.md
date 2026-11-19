@@ -12,6 +12,7 @@ entity: "[[Lapikus]]"
 ---
 # 03 Ruin – zřícenina z kamenných bloků (stav ~1650) – návod pro UE 5.8
 
+## Účel kroku
 Nová metoda generování: zřícenina se skládá **z jednotlivých kamenných bloků** (~18 500 kusů) místo svislých sloupců.
 
 - Okna, průchody a výšky zdí upravíš **bouracími objemy přímo v levelu** (Trigger Box s tagem, kap. 5) nebo v datech (kap. 4) a přegeneruješ.
@@ -25,7 +26,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 
 ---
 
-## Jak je zeď složená
+### Jak je zeď složená
 
 | Vrstva | Co to je | Materiál (výchozí) |
 |---|---|---|
@@ -49,7 +50,8 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 
 ---
 
-## 1. Příprava (jednorázově)
+## Spouštění
+### 1. Příprava (jednorázově)
 
 1. Zkopíruj obsah složky `03_ruin\blocks` kamkoli. Soubory `build_ruin_blocks.py`, `ruin_layout.json` a `manual_edits.json` musí zůstat **vedle sebe**.
 2. **Záložní Blueprint (doporučeno vytvořit hned).** Skript se nejdřív pokusí přidat komponentu Instanced Static Mesh sám. Kdyby to v UE 5.8 nešlo, použije tento Blueprint:
@@ -60,7 +62,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 4. **Materiály:** skript při prvním spuštění vytvoří `M_RuinStone` a instance `MI_RuinFace`, `MI_RuinCore`, `MI_RuinFrame` v `/Game/Skvt/Lapikus/Ruin/Materials` (textury ze StarterContent). Další spuštění je už nepřepisují (kromě přechodu na novou `MAT_VERSION`, viz kap. 1.2), takže je můžeš ladit v editoru.
 5. **Ulož mapu a commitni.** Před generováním smaž sloupcovou zříceninu, pokud v mapě je. Nová ji sice smaže sama, ale sloučené meshe smazat musíš ručně.
 
-### 1.1 Meshe kamenů a dřeva (`meshes/<kategorie>/*.obj`)
+#### 1.1 Meshe kamenů a dřeva (`meshes/<kategorie>/*.obj`)
 
 - `SM_RuinStone_R12/R18/R26/R34_A/B/C`: 4 poměry délka/výška (1,2 / 1,8 / 2,6 / 3,4) × 3 varianty tvaru. Zaoblené hrany (3,5–4,7 cm), mírně vypouklé plochy, nerovnosti a otlučené hrany. Každý má 1 000–2 300 trojúhelníků.
 - `SM_RuinStone_W_R12…R34_A/B/C`: zvětralé kameny koruny. Nahoře zaoblení 8,5–10,5 cm, otlučení a důlky, do stran 4,5–5,5 cm, dole jen 3 cm. Verze meshe je v metadatech (`RuinStoneVersion`, `STONE_MESH_VERSION` ve skriptu). Když jsou v projektu starší, skript je sám naimportuje znovu.
@@ -83,7 +85,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 - **Náhled bez Unrealu:** `python tools/checks/preview_meshes.py meshes/wood <out.png> [prefix ...]` vykreslí meshe ze dvou pohledů, barvy podle slotů. Odvrácené plochy se nekreslí, takže otočené normály jsou vidět jako díry.
 - `USE_STONE_MESHES = False` vrátí všude kostky.
 
-### 1.2 Materiály
+#### 1.2 Materiály
 
 - `M_RuinStone` je master materiál s parametry `BaseColor`, `Normal`, `TintA`, `TintB`, `Tiling` a `Roughness`. Každý kámen dostane náhodný odstín mezi TintA a TintB a náhodný posun textury (Per Instance Random), takže dva sousední kameny nikdy nevypadají stejně. Žádné „cihly v cihle“ jako u `M_Brick_Hewn_Stone`.
 - **Zvětrání shora (všechny kameny):** podle normaly plochy (`VertexNormalWS.z`). Co míří nahoru, je světlejší, nazelenalé a drsnější. Skvrny rozbíjí textura. Parametry: `TopTint` (barva), `TopStart` (od jakého sklonu, 0 = svislá stěna, 1 = vodorovný vrch), `TopSharp` (ostrost přechodu), `TopAmount` (síla: líc 0,55, jádro 0,45, ostění 0,35, koruna 1,0). Výchozí hodnoty jsou v `MAT_TOP` ve skriptu.
@@ -95,7 +97,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 
 ---
 
-## 2. Vygenerování
+### 2. Vygenerování
 
 1. Otevři `LapikusPrototypeMap` a otevři **Output Log**.
 2. Dej **Tools → Execute Python Script…** a vyber `build_ruin_blocks.py`.
@@ -109,7 +111,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
    - Rozpad je přitom spočítaný **přes celou zeď najednou**, takže na zlomech nevznikají skoky ve výšce.
    - **Kameny na zemi (suť)** jsou vždy **samostatné actory** ve složce `…/Sut`. Můžeš je rovnou posouvat a mazat a uložit přes capture (kap. 5.2), bez boxu `Ruin_Explode`.
 
-### 2.1 Stavění po částech (`casti\<Cast>.py`)
+#### 2.1 Stavění po částech (`casti\<Cast>.py`)
 
 Hrad je rozdělený na tři části, které se dají stavět zvlášť. Při ladění vnitřních zdí se tak nepřestavuje celý hrad.
 
@@ -143,7 +145,7 @@ Hrad je rozdělený na tři části, které se dají stavět zvlášť. Při lad
 
 ---
 
-## 3. Stáří zříceniny
+### 3. Stáří zříceniny
 
 V `ruin_layout.json` je `"age": "1650"` a sekce `presets`. Přepnout jde i nahoře ve skriptu: `AGE = "1540"`.
 
@@ -168,7 +170,7 @@ Vlastní stáří přidáš novým presetem v `presets` (např. `"1800": {...}`)
 
 ---
 
-## 4. Úpravy v datech (nedestruktivní)
+### 4. Úpravy v datech (nedestruktivní)
 
 Do `ruin_layout.json` → `"edits": [ ... ]` přidej operace a spusť skript znovu. Ukázky jsou v `"edits_examples"`. Zkopíruj je do `"edits"` a uprav.
 
@@ -189,7 +191,7 @@ Tipy:
 - **Sesuv (`breaches` u zdi):** `{"s0": 0.6, "s1": 2.6, "floor": 0.5, "slope_l": 2.0, "slope_r": 6.0}` sníží zeď mezi `s0` a `s1` na `floor` m. Boky stoupají se strmostí `slope_l`/`slope_r` (1 = 45°, 6 = skoro svisle, výchozí 1). `power_l`/`power_r` > 1 bok zakřiví: dole pozvolna, ke koruně strměji (výchozí 1 = rovná linie). Ostrým bokem se sesuv udrží v jednom úseku a sousední úsek zůstane vysoký. Příklad: `Hradba_Z_S`, úsek 01 (stezka k vodě): `{"s0": -1.0, "s1": 1.3, "floor": 0.5, "slope_r": 2.4, "power_r": 1.5}` = šikmý sesuv, nízko u paláce.
 - Datové úpravy **neposouvají ostatní bloky**. Každý blok má vlastní náhodu podle svého ID, takže zbytek zříceniny zůstane stejný.
 
-### Půdorys v3 a terén z levelu (11/2026)
+#### Půdorys v3 a terén z levelu (11/2026)
 
 - **Strážní věž se dvěma branami.** `Brana_V` je 1. brána z východu, `Brana_S` severní stěna, `Brana_J` 2. brána na západ do uličky podél věže a `Brana_Jih` nová jižní stěna. `Hradba_V` vede od jižní stěny strážní věže obloukem k JV rohu věže. `Hradba_Z_S` končí na SZ rohu strážní věže. Vstup do hlavní věže je průlom (`prulom`) ve `Vez_S`.
 - **Ochrana do výšky jiného otvoru (`protect` s `to`):** `{"s0": -1, "s1": 8, "to": [{"wall": "Brana_V", "opening": 0, "dz": 0.1}, {"wall": "Brana_J", "opening": 0, "dz": 0.1}]}` drží zeď alespoň do výšky vrchu oblouku (otvor + ostění) jiné zdi. Výška je v absolutních souřadnicích, takže sedí i při jiném terénu, podstavbě nebo `z_offset`. Se dvěma cíli vede výška lineárně od `s0` k `s1`. Použito u `Brana_S` (do výšky oblouků obou bran, sem přijde hlídková konstrukce) a u přilehlých konců `Brana_V` a `Brana_J`.
@@ -211,11 +213,11 @@ Tipy:
 
 ---
 
-## 5. Úpravy přímo v levelu: bourací objemy (doporučeno)
+### 5. Úpravy přímo v levelu: bourací objemy (doporučeno)
 
 Každá zeď je v levelu jeden Instanced Static Mesh. Kliknutím proto vybereš celou zeď, ne jednotlivý blok. Na úpravy jsou určené **objemy**: do levelu vložíš **Trigger Box**, dáš mu tag a přegeneruješ. Skript si objemy při každém spuštění načte sám. Posunem nebo zvětšením boxu a novým spuštěním úpravu upravíš, smazáním boxu ji vrátíš.
 
-### 5.1 Vložení objemu
+#### 5.1 Vložení objemu
 
 1. **Window → Place Actors**, vyhledej **Trigger Box** a přetáhni ho k místu na zdi.
 2. Box **musí protínat osu zdi**. Nastav ho přes gizmo nebo v Details → Transform. Rozměr Trigger Boxu je 2 × Box Extent × Scale. Pro vstup do věže stačí třeba šířka 1,4 m, výška 2,6 m a hloubka 4 m, aby box prošel celou zdí.
@@ -249,7 +251,7 @@ Doporučení:
 - Pojmenuj je podle účelu, např. `Vstup_vez_z_palace`.
 - Trigger Box se ve hře nezobrazuje a postavě nebrání. Může v levelu zůstat napořád.
 
-### 5.2 Ruční posun a mazání jednotlivých kamenů
+#### 5.2 Ruční posun a mazání jednotlivých kamenů
 
 1. Přes místo, které chceš ručně doladit, polož Trigger Box s tagem **`Ruin_Explode`** a přegeneruj.
 2. Bloky v boxu jsou teď **samostatné actory** ve složce `Ruin/<Část>/Kameny` (suť je samostatná vždy, ve složce `…/Sut`) s názvem `Kamen_<ID>`. Jde je vybírat, posouvat, otáčet i mazat jako běžné objekty. Box drž malý, každý kámen je jeden actor.
@@ -265,7 +267,7 @@ Pozor: capture spouštěj vždy **před** dalším generováním, i před slouč
 
 Tip: box `Ruin_Explode` nemusíš mazat. Stačí mu dočasně přepsat tag na `x_Ruin_Explode`, skript ho pak ignoruje.
 
-### 5.3 Oddělení části zdi bez přegenerování (`detach_stones.py`)
+#### 5.3 Oddělení části zdi bez přegenerování (`detach_stones.py`)
 
 Když chceš, aby kus zdi odpadl nebo se sesypal, a nechceš kvůli tomu stavět celou zříceninu znovu:
 
@@ -291,7 +293,7 @@ Box `Ruin_Detach` pak můžeš smazat. Další build zříceniny postaví odděl
 
 Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hned po oddělení hladké jádro (kostky). Při dalším buildu se tam jádro samo rozpadne na lomové kameny jako u ostatních odkrytých míst.
 
-## 6. Dál: sloučení a vzhled
+### 6. Dál: sloučení a vzhled
 
 - Až bude rozpad hotový, můžeš každou část sloučit přes **Tools → Merge Actors** (Instanced Static Mesh je podporovaný) do jednoho meshe pro Modeling Mode. Po sloučení už ale nejde jednoduše přegenerovat, takže si nejdřív zálohuj JSON a `manual_edits.json`.
 - Materiály a kameny: kap. 1.1 a 1.2.
@@ -300,49 +302,13 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 
 ---
 
-## Parametry bloků (`ruin_layout.json` → `params`)
+## Skripty
+<!-- hestia:generated:start -->
 
-| Parametr | Výchozí | Význam |
-|---|---|---|
-| `COURSE_MIN` / `COURSE_MAX` | 0.25 / 0.40 m | výška řádků |
-| `STONE_MIN` / `STONE_MAX` | 0.35 / 0.90 m | délka lícových kvádrů |
-| `CORE_MIN` / `CORE_MAX` | 1.0 / 1.8 m | délka bloků jádra |
-| `FACE_DEPTH` | 0.40 m | hloubka lícových kvádrů |
-| `JOINT` | 0.015 m | spára mezi bloky |
-| `FRAME_SPLIT` | 1.1 m | opracovaný kámen (ostění, oblouk, boky výklenku) delší, než je tato hodnota, se v hloubce zdi rozdělí na více kusů s posunutými spárami |
-| `FACE_ROB` / `FACE_ROB_H` | 1.0 / 2.2 m | síla a výška rozebírání líce u paty (odkryté jádro) |
-| `FACE_ROB_BASE` | 0.45 | podíl rozebírání u paty (násobí `FACE_ROB` × dostupnost) |
-| `TOP_ROB` / `TOP_ROB_D` | 0.55 / 0.7 m | rozebírání líce shora: síla u koruny a jak rychle slábne směrem dolů |
-| `BRIDGE` | 0.6 m | nejširší mezera, kterou kámen líce překlene |
-| `CORE_ROUGH` / `CORE_RECESS` | true / [0.05, 0.2] m | odkryté jádro z lomových kamenů, rozsah zapuštění |
-| `RUBBLE_BLOCKS` | 0.02 | podíl bloků jako suť u paty |
-| `SEED` | 1 | jiná varianta celé zříceniny |
+_`asset_index.json` chybí; spusť `asset_index`._
 
----
-
-## Soubory
-
-| Soubor | Obsah |
-|---|---|
-| `build_ruin_blocks.py` | generátor z bloků (čistý Python), `MODE = "build"` / `"capture"`; spuštěný přímo staví celý hrad; mimo UE vypíše počty bloků po částech |
-| `casti\Obvod.py`, `casti\Palac.py`, `casti\Ostroh.py` | postaví jen jednu část hradu (kap. 2.1) |
-| `..\..\build_normal.py`, `..\..\build_fullscope.py` | celý hrad + všechny stavby 05: aditivní build / oprava se smazáním generovaných actorů a meshí (kap. 2.1) |
-| `ruin_layout.json` | zdi, otvory, presety stáří, `edits`, `edits_examples`, `volumes_examples`, výšková mřížka terénu |
-| `manual_edits.json` | ručně smazané (`removed`), posunuté (`moved`) a oddělené (`detached`) kameny |
-| `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |
-| `..\..\meshes\<kategorie>\*.obj` | knihovní meshe (import automaticky): `stone` kameny líce, koruny, ostění a kvádr; `wood` trámy, sloupy, prkna. Nejsou v gitu, generuje `tools\meshes\gen_meshes.py` |
-| `gen_stones.py` | jen odkaz na `..\..\tools\meshes\gen_meshes.py` (generátor kamenů a dřeva, numpy) |
-| `Zricenina_kameny_detail.png` | detail zdi paláce se střílnou (zaoblené kameny, ostění) |
-| `Zricenina_bloky_nahled.png` | náhled (věž z nádvoří, brána detail, celek, brána a věž, palác) |
-| `zr_ruin\*.py` | vnitřní moduly generátoru (kap. 7) |
-| `..\..\zrlib\*.py` | sdílená knihovna 03 + 05 + tools, **`config.py` = nastavení vzhledu** (kap. 7) |
-| `..\..\tools\checks\run_checks.py` | kontroly bez Unrealu: otvory, kameny bez podpory, ostroh (kap. 7) |
-| `..\..\tools\ruin\check_blocks.py` | vykreslí náhled bez Unrealu |
-| `..\..\tools\ruin\gen_layout.py` | vytvoří `ruin_layout.json` z `ruin_layout_draft.json` a heightmapy |
-
----
-
-## 7. Struktura kódu (od 11/2026)
+<!-- hestia:generated:end -->
+### 7. Struktura kódu (od 11/2026)
 
 ```
 zrlib\                    sdílená knihovna 03 + 05 + tools (čistý Python, bez numpy - kvůli Pythonu v Unrealu)
@@ -380,3 +346,54 @@ tools\checks\
 - **Mimo UE:** `python tools\checks\run_checks.py` (volitelně `--layout <ruin_layout.json>`, `--only openings,floating,ostroh`). Nahradil `test_openings.py`.
 - **Refaktoring:** `python tools\checks\fingerprint.py . pred.json` před změnou, po změně `python tools\checks\fingerprint.py . po.json --compare pred.json`. Volitelně `--state <složka s manual_edits.json a terrain_from_level.json>`, `--heightmap <png>` (přidá generátory dat). Rozdělení skriptů v 11/2026 dává bit po bitu stejný výstup jako předtím.
 
+## Vstupy a výstupy
+### Parametry bloků (`ruin_layout.json` → `params`)
+
+| Parametr | Výchozí | Význam |
+|---|---|---|
+| `COURSE_MIN` / `COURSE_MAX` | 0.25 / 0.40 m | výška řádků |
+| `STONE_MIN` / `STONE_MAX` | 0.35 / 0.90 m | délka lícových kvádrů |
+| `CORE_MIN` / `CORE_MAX` | 1.0 / 1.8 m | délka bloků jádra |
+| `FACE_DEPTH` | 0.40 m | hloubka lícových kvádrů |
+| `JOINT` | 0.015 m | spára mezi bloky |
+| `FRAME_SPLIT` | 1.1 m | opracovaný kámen (ostění, oblouk, boky výklenku) delší, než je tato hodnota, se v hloubce zdi rozdělí na více kusů s posunutými spárami |
+| `FACE_ROB` / `FACE_ROB_H` | 1.0 / 2.2 m | síla a výška rozebírání líce u paty (odkryté jádro) |
+| `FACE_ROB_BASE` | 0.45 | podíl rozebírání u paty (násobí `FACE_ROB` × dostupnost) |
+| `TOP_ROB` / `TOP_ROB_D` | 0.55 / 0.7 m | rozebírání líce shora: síla u koruny a jak rychle slábne směrem dolů |
+| `BRIDGE` | 0.6 m | nejširší mezera, kterou kámen líce překlene |
+| `CORE_ROUGH` / `CORE_RECESS` | true / [0.05, 0.2] m | odkryté jádro z lomových kamenů, rozsah zapuštění |
+| `RUBBLE_BLOCKS` | 0.02 | podíl bloků jako suť u paty |
+| `SEED` | 1 | jiná varianta celé zříceniny |
+
+---
+
+### Soubory
+
+| Soubor | Obsah |
+|---|---|
+| `build_ruin_blocks.py` | generátor z bloků (čistý Python), `MODE = "build"` / `"capture"`; spuštěný přímo staví celý hrad; mimo UE vypíše počty bloků po částech |
+| `casti\Obvod.py`, `casti\Palac.py`, `casti\Ostroh.py` | postaví jen jednu část hradu (kap. 2.1) |
+| `..\..\build_normal.py`, `..\..\build_fullscope.py` | celý hrad + všechny stavby 05: aditivní build / oprava se smazáním generovaných actorů a meshí (kap. 2.1) |
+| `ruin_layout.json` | zdi, otvory, presety stáří, `edits`, `edits_examples`, `volumes_examples`, výšková mřížka terénu |
+| `manual_edits.json` | ručně smazané (`removed`), posunuté (`moved`) a oddělené (`detached`) kameny |
+| `detach_stones.py` | oddělení části zdi v boxu `Ruin_Detach` bez přegenerování, fyzika pro pád (kap. 5.3) |
+| `..\..\meshes\<kategorie>\*.obj` | knihovní meshe (import automaticky): `stone` kameny líce, koruny, ostění a kvádr; `wood` trámy, sloupy, prkna. Nejsou v gitu, generuje `tools\meshes\gen_meshes.py` |
+| `gen_stones.py` | jen odkaz na `..\..\tools\meshes\gen_meshes.py` (generátor kamenů a dřeva, numpy) |
+| `Zricenina_kameny_detail.png` | detail zdi paláce se střílnou (zaoblené kameny, ostění) |
+| `Zricenina_bloky_nahled.png` | náhled (věž z nádvoří, brána detail, celek, brána a věž, palác) |
+| `zr_ruin\*.py` | vnitřní moduly generátoru (kap. 7) |
+| `..\..\zrlib\*.py` | sdílená knihovna 03 + 05 + tools, **`config.py` = nastavení vzhledu** (kap. 7) |
+| `..\..\tools\checks\run_checks.py` | kontroly bez Unrealu: otvory, kameny bez podpory, ostroh (kap. 7) |
+| `..\..\tools\ruin\check_blocks.py` | vykreslí náhled bez Unrealu |
+| `..\..\tools\ruin\gen_layout.py` | vytvoří `ruin_layout.json` z `ruin_layout_draft.json` a heightmapy |
+
+---
+
+## Dopad na dokumentaci
+Doplní se při rozpadu.
+
+## Známé pasti
+Doplní se při rozpadu.
+
+## Historie
+- [[README_build_ruin]] (`archived`): původní sloupcový generátor `03_ruin\build`; nahradila ho metoda z kamenných bloků popsaná v tomto dokumentu.

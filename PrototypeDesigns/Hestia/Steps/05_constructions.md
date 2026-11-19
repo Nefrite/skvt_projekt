@@ -11,6 +11,7 @@ domains: [structures]
 ---
 # 05 Constructions – dodatečné stavby a suť („druhé zabydlení“) – návod pro UE 5.8
 
+## Účel kroku
 Do této složky patří všechno, co do zříceniny později přistavěli její obyvatelé, a volná suť na zemi. Staví se **zvlášť od zříceniny**: když ladíš schody, trámy nebo podestu, nemusíš přegenerovat celý hrad.
 
 | Kde | Co |
@@ -22,31 +23,8 @@ Kapsy ve zdech patří ke zřícenině. Dřevo, které v nich leží, patří se
 
 ---
 
-## 1. Soubory
-
-| Soubor | Obsah |
-|---|---|
-| `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Ostroh_Dostavba.py` (kamenná dostavba u ostrohu), `Ostroh_Podlaha.py` (prkenná podlaha u ostrohu), `Palac_Kovarna.py` (**celá kovárna najednou**: přístřešek, výheň, stěna, okap, vybavení; přepínače `KRYTINA`, `RUIN` = i část zříceniny `Palac`, `SUT`), `Palac_Kovarna_Pristresek.py` (přístřešek kovárny v paláci), `Palac_Kovarna_Vyhen.py` (výheň kovárny), `Palac_Kovarna_Stena.py` (stěna z proutí), `Palac_Kovarna_Okap.py` (žlab a sud), `Palac_Kovarna_Kul.py` (kůl u dřeva), **`Palac_Obydli.py` (celý dům posádky najednou: seznam staveb, `SUT`)**, `Palac_Obydli_Kamen.py` a `Palac_Obydli_Ohniste.py` (jeho kamenné části a základ ohniště), `Palac_Obydli_Krov.py` (krov bez krytiny), `Palac_Obydli_Srub.py` (srub a štíty), **`Brana_Straz.py` (celé strážní stanoviště nad branami: seznam staveb, `RUIN` = i část zříceniny `Obvod`, `SUT`)**, `Brana_Straz_Kamen.py`, `Brana_Straz_Podesta.py` a `Brana_Straz_Kryty.py`, `Etapa.py` (přepnutí etapy v editoru), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). V `Ostroh_Krov.py` navíc `KRYTINA`: `False` postaví jen sloupy, příčku a trámy (ladění trámoví a dostavby), `True` i latě, prkna, lišty a hřeben. Dostavba je na krytině nezávislá (výšky bere z trámů). Stejný přepínač `KRYTINA` má `Palac_Kovarna_Pristresek.py` (výchozí `True`). |
-| `build_constructions.py` | nastavení, registr typů staveb (`TYPES`, povinné klíče `REQUIRED`), build / capture / freeze v UE. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
-| `zr_stavby\*.py` | typy staveb: `vez.py` (dřevo ve věži, `tower_floor`), `krov.py` (krov u ostrohu `fan_roof` + společná geometrie), `dostavba.py` (`stone_addon`), `podlaha.py` (`plank_floor`), `pult.py` (pultová střecha na sloupech, `pult_roof`), `ohniste.py` (ohniště / výheň s dymníkem a komínem, `hearth`), `zdivo.py` (zdivo z kamene rozvalin: srovnání korun, podezdívky, `stone_fill`), `stena.py` (stěna z proutí, `wattle_wall`), `okap.py` (žlab na rozsochách se sudem, `gutter`), `vybaveni.py` (rozmístění props, `props`), `srub.py` (srubové stěny a prkenné štíty, `log_wall`), `podesta.py` (trámy, prkna a zábradlí ve výšce zadané absolutně, `platform`), `kryty.py` (kryt z kůlů se špičkou na koruně zdi, paty kopírují korunu, průzory, ráhna, `palisade`) |
-| `..\zrlib\*.py` | sdílená knihovna s 03 (`config.py` = materiály, dřevo, fyzika; geometrie, Unreal; `pipeline.py` = spouštění: stavby, části, `build_normal.py`, `build_fullscope.py`) |
-| `constructions.json` | data staveb (`floors` → `Vez_Patra`, `frames` → `Ostroh_Krov`, `Palac_Kovarna_Pristresek`, `addons` → `Ostroh_Dostavba`, `Ostroh_Podlaha`, `Palac_Kovarna_Vyhen`, `Palac_Kovarna_Stena`, `Palac_Kovarna_Okap`) a nastavení suti (`rubble`) |
-| `Stavby_palac_kovarna_nahled.png` | náhled kovárny ve východní místnosti paláce (přístřešek s krytinou, výheň, stěna z proutí, okap se sudem; 8 pohledů, dílce jsou v náhledu jen kvádry) |
-| `Stavby_ostroh_dostavba_nahled.png` | náhled uzavřené obytné části u ostrohu zvenku a zevnitř |
-| `Stavby_ostroh_podlaha_nahled.png` | náhled podlahy u ostrohu |
-| `Stavby_palac_obydli_nahled.png` | náhled domu posádky v prostřední místnosti paláce (zatím kamenné části; nový kámen je v náhledu okrový) |
-| `constructions_edits.json` | ručně smazané (`removed`) a posunuté (`moved`) kusy. Vzniká přes capture, nepřepisovat. |
-| `Stavby_vez_nahled.png` | řez věží: patra, schody, ochoz |
-| `..\tools\constructions\gen_constructions.py` | vytvoří `constructions.json` z `ruin_layout_draft.json` |
-| `..\tools\constructions\check_tower.py` | náhled řezu věží bez Unrealu (zřícenina + stavby) |
-| `..\tools\ruin\tower_spec.py` | **společné rozměry věže** pro 03 i 05 (podlaha, výška patra, polohy trámů, průvlaku, otvorů, dveří) |
-| `..\tools\ruin\palac_spec.py` | **společné rozměry staveb v paláci**: souřadný rám paláce (`s` podél `Palac_J`, `n` k severu) a kovárna (linie sloupů, pozednice, krokve, komín) |
-
-Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks` proto musí ležet vedle `05_constructions` (jinak v `build_constructions.py` nastav `RUIN_DIR`) a v kořeni musí být `zrlib`.
-
----
-
-## 2. Postup v UE
+## Spouštění
+### 2. Postup v UE
 
 1. **Nejdřív zřícenina:** `03_ruin\blocks\build_ruin_blocks.py`. Ta změří terén (`terrain_from_level.json`) a postaví zdi a kapsy.
 2. **Pak stavby:** **Tools → Execute Python Script →**
@@ -85,7 +63,7 @@ Usazené kameny ve hře spí, dokud do nich někdo nestrčí. Staticky bez fyzik
 
 ---
 
-## 3. Kdy co přegenerovat
+### 3. Kdy co přegenerovat
 
 | Změna | Co spustit |
 |---|---|
@@ -100,7 +78,39 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
 ---
 
-## 4. Co je v `constructions.json` (Vez_Patra)
+## Skripty
+<!-- hestia:generated:start -->
+
+_`asset_index.json` chybí; spusť `asset_index`._
+
+<!-- hestia:generated:end -->
+
+## Vstupy a výstupy
+### 1. Soubory
+
+| Soubor | Obsah |
+|---|---|
+| `stavby\<Stavba>.py` | **spuštění jedné stavby**: `Vez_Patra.py` (dřevo ve věži), `Ostroh_Krov.py` (krov u ostrohu), `Ostroh_Dostavba.py` (kamenná dostavba u ostrohu), `Ostroh_Podlaha.py` (prkenná podlaha u ostrohu), `Palac_Kovarna.py` (**celá kovárna najednou**: přístřešek, výheň, stěna, okap, vybavení; přepínače `KRYTINA`, `RUIN` = i část zříceniny `Palac`, `SUT`), `Palac_Kovarna_Pristresek.py` (přístřešek kovárny v paláci), `Palac_Kovarna_Vyhen.py` (výheň kovárny), `Palac_Kovarna_Stena.py` (stěna z proutí), `Palac_Kovarna_Okap.py` (žlab a sud), `Palac_Kovarna_Kul.py` (kůl u dřeva), **`Palac_Obydli.py` (celý dům posádky najednou: seznam staveb, `SUT`)**, `Palac_Obydli_Kamen.py` a `Palac_Obydli_Ohniste.py` (jeho kamenné části a základ ohniště), `Palac_Obydli_Krov.py` (krov bez krytiny), `Palac_Obydli_Srub.py` (srub a štíty), **`Brana_Straz.py` (celé strážní stanoviště nad branami: seznam staveb, `RUIN` = i část zříceniny `Obvod`, `SUT`)**, `Brana_Straz_Kamen.py`, `Brana_Straz_Podesta.py` a `Brana_Straz_Kryty.py`, `Etapa.py` (přepnutí etapy v editoru), `Sut.py` (suť). Nahoře `MODE` (`build` / `capture`, u suti i `freeze`). V `Ostroh_Krov.py` navíc `KRYTINA`: `False` postaví jen sloupy, příčku a trámy (ladění trámoví a dostavby), `True` i latě, prkna, lišty a hřeben. Dostavba je na krytině nezávislá (výšky bere z trámů). Stejný přepínač `KRYTINA` má `Palac_Kovarna_Pristresek.py` (výchozí `True`). |
+| `build_constructions.py` | nastavení, registr typů staveb (`TYPES`, povinné klíče `REQUIRED`), build / capture / freeze v UE. Spuštěný přímo postaví všechny stavby najednou. Mimo UE vypíše počty kusů. |
+| `zr_stavby\*.py` | typy staveb: `vez.py` (dřevo ve věži, `tower_floor`), `krov.py` (krov u ostrohu `fan_roof` + společná geometrie), `dostavba.py` (`stone_addon`), `podlaha.py` (`plank_floor`), `pult.py` (pultová střecha na sloupech, `pult_roof`), `ohniste.py` (ohniště / výheň s dymníkem a komínem, `hearth`), `zdivo.py` (zdivo z kamene rozvalin: srovnání korun, podezdívky, `stone_fill`), `stena.py` (stěna z proutí, `wattle_wall`), `okap.py` (žlab na rozsochách se sudem, `gutter`), `vybaveni.py` (rozmístění props, `props`), `srub.py` (srubové stěny a prkenné štíty, `log_wall`), `podesta.py` (trámy, prkna a zábradlí ve výšce zadané absolutně, `platform`), `kryty.py` (kryt z kůlů se špičkou na koruně zdi, paty kopírují korunu, průzory, ráhna, `palisade`) |
+| `..\zrlib\*.py` | sdílená knihovna s 03 (`config.py` = materiály, dřevo, fyzika; geometrie, Unreal; `pipeline.py` = spouštění: stavby, části, `build_normal.py`, `build_fullscope.py`) |
+| `constructions.json` | data staveb (`floors` → `Vez_Patra`, `frames` → `Ostroh_Krov`, `Palac_Kovarna_Pristresek`, `addons` → `Ostroh_Dostavba`, `Ostroh_Podlaha`, `Palac_Kovarna_Vyhen`, `Palac_Kovarna_Stena`, `Palac_Kovarna_Okap`) a nastavení suti (`rubble`) |
+| `Stavby_palac_kovarna_nahled.png` | náhled kovárny ve východní místnosti paláce (přístřešek s krytinou, výheň, stěna z proutí, okap se sudem; 8 pohledů, dílce jsou v náhledu jen kvádry) |
+| `Stavby_ostroh_dostavba_nahled.png` | náhled uzavřené obytné části u ostrohu zvenku a zevnitř |
+| `Stavby_ostroh_podlaha_nahled.png` | náhled podlahy u ostrohu |
+| `Stavby_palac_obydli_nahled.png` | náhled domu posádky v prostřední místnosti paláce (zatím kamenné části; nový kámen je v náhledu okrový) |
+| `constructions_edits.json` | ručně smazané (`removed`) a posunuté (`moved`) kusy. Vzniká přes capture, nepřepisovat. |
+| `Stavby_vez_nahled.png` | řez věží: patra, schody, ochoz |
+| `..\tools\constructions\gen_constructions.py` | vytvoří `constructions.json` z `ruin_layout_draft.json` |
+| `..\tools\constructions\check_tower.py` | náhled řezu věží bez Unrealu (zřícenina + stavby) |
+| `..\tools\ruin\tower_spec.py` | **společné rozměry věže** pro 03 i 05 (podlaha, výška patra, polohy trámů, průvlaku, otvorů, dveří) |
+| `..\tools\ruin\palac_spec.py` | **společné rozměry staveb v paláci**: souřadný rám paláce (`s` podél `Palac_J`, `n` k severu) a kovárna (linie sloupů, pozednice, krokve, komín) |
+
+Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks` proto musí ležet vedle `05_constructions` (jinak v `build_constructions.py` nastav `RUIN_DIR`) a v kořeni musí být `zrlib`.
+
+---
+
+### 4. Co je v `constructions.json` (Vez_Patra)
 
 | Klíč | Význam |
 |---|---|
@@ -323,7 +333,7 @@ Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury,
 
 ---
 
-### Přístřešek hlídky na věži (`Vez_Pristresek`, typ `canvas_shelter`)
+#### Přístřešek hlídky na věži (`Vez_Pristresek`, typ `canvas_shelter`)
 
 - **Kód:** `zr_stavby/pristresek.py`, data `gen_constructions.py` → `vez_pristresek` z `tools/ruin/tower_spec.py` (`PR`, `pristresek()`); ram věže `u`, `v` (m), výšky `h` v m od `VEZ_F`.
 - **Dílce:** kůly s hlavou rozsochy (hlava zvětšená `fork_k` na průměr kůlu, osa hřebene nad středem hlavy `seat` změřená na OBJ), hřeben z kusů, okapová tyč na podkladních kamenech (výška z postavené koruny, kámen koruny musí pod podkladem zasahovat aspoň 3 cm), krokvové tyče, vzpěry, ovázání (`SM_RuinLashing` zvětšené na průměr tyče), plachta a štít na míru, tyčka v lemu štítu, lana z článků `SM_RuinRope` přes plachtu ke kotevním kamenům, zátěžové kameny.
@@ -331,6 +341,13 @@ Master `M_RuinStone` má kvůli tomu parametry `Desaturate` (odbarvení textury,
 - **Ruční doladění:** podkladní, zátěžové a kotevní kameny jsou samostatné actory (`Vez_Pristresek.py`, `MODE = "capture"`).
 - **Kontroly:** `run_checks.py --only vez`, náhled `preview3d.py vez` (plachta jako tenké kvádry).
 
-## 5. Do budoucna
+## Dopad na dokumentaci
+Doplní se při rozpadu.
+
+## Známé pasti
+Doplní se při rozpadu.
+
+## Další rozvoj
+### 5. Do budoucna
 
 Sem patří další dostavby druhého zabydlení: žlab a okapnice u ostrohu, lemování horního okraje krytiny, hlídková konstrukce na `Brana_S`, žebříky, lávky, dřevěné přístřešky, ohrady, provizorní střechy, zábrany v průlomech. Každá nová stavba je další položka v `constructions.json` a případně nový typ v `build_constructions.py`.

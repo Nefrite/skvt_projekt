@@ -26,7 +26,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | – | – | build | bez cíle |
+| structures | 2 | – | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -34,7 +34,8 @@ assets: []
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_nadvori_stan]] – design, depth 2, valid, on_hold
 
 <!-- hestia:generated:end -->
 

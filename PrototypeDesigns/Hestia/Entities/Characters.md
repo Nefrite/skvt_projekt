@@ -37,7 +37,8 @@ _Potomci nemají cíle._
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**gameplay**
+- [[README_animations]] – state, depth 5, valid
 
 <!-- hestia:generated:end -->
 

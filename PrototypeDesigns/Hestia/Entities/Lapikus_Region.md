@@ -29,7 +29,7 @@ target_narrative: 1
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | – | – | – | build | bez cíle |
+| environment | 3 | – | – | build | bez cíle |
 | paths | – | – | – | build | bez cíle |
 | narrative | – | 0 | 1 | design | −1 |
 
@@ -41,6 +41,9 @@ _Potomci nemají cíle._
 
 ## Dokumenty
 <!-- hestia:generated:start -->
+
+**environment**
+- [[M_Landscape_Forest_Auto]] – spec, depth 3, valid
 
 **narrative**
 - [[Lore_Lapikus]] – concept, depth 1, draft
@@ -69,7 +72,7 @@ _`asset_index.json` chybí; spusť `asset_index`._
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Scratch: [[README_PROJEKT]] (prepared)
 
 <!-- hestia:generated:end -->
 

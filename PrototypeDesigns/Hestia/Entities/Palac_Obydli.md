@@ -26,7 +26,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | – | – | build | bez cíle |
+| structures | 4 | – | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -34,7 +34,12 @@ assets: []
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_palac_obydli]] – design, depth 2, valid, rejected
+- [[navrh_palac_obydli_stred]] – design, depth 4, valid, in_progress
+
+**Aktivní předání**
+- [[predani_palac_obydli_stavitel]]
 
 <!-- hestia:generated:end -->
 

@@ -26,7 +26,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | – | – | build | bez cíle |
+| structures | 3 | – | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -34,7 +34,11 @@ assets: []
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_brana_straz]] – design, depth 3, valid, in_progress
+
+**Aktivní předání**
+- [[predani_brana_straz_striska_stavitel]]
 
 <!-- hestia:generated:end -->
 

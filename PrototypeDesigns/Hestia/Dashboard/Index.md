@@ -27,13 +27,23 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Aktivní předání**
 
-_Žádná._
+- [[predani_brana_straz_striska_stavitel]] – [[Brana_Straz]]
+- [[predani_palac_obydli_stavitel]] – [[Palac_Obydli]]
 
 **Otevřené otázky:** do 14 dní 0 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-19 · hestia · Hestia · založení vaultu ze šablony (core 0.10.2) · init
+- 2026-11-19 · migrace · Attachments/Zricenina_pudorys_navrh_v3.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Zricenina_pudorys_navrh_v3.png · migrace
+- 2026-11-19 · migrace · Attachments/Zricenina_pudorys_v3_nahled.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Zricenina_pudorys_v3_nahled.png · migrace
+- 2026-11-19 · migrace · Attachments/Zricenina_rozpad_hmota.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Zricenina_rozpad_hmota.png · migrace
+- 2026-11-19 · migrace · Attachments/Zricenina_rozpad_pohledy.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Zricenina_rozpad_pohledy.png · migrace
+- 2026-11-19 · migrace · Attachments/navrh_hradba_strilny.png · přesun z PrototypeDesigns/Lapikus/03_ruin/navrh_hradba_strilny.png · migrace
+- 2026-11-19 · migrace · Attachments/navrh_koruna_zvetrala.png · přesun z PrototypeDesigns/Lapikus/03_ruin/navrh_koruna_zvetrala.png · migrace
+- 2026-11-19 · migrace · Attachments/ZBudova_V_podpora.png · přesun z PrototypeDesigns/Lapikus/03_ruin/ZBudova_V_podpora.png · migrace
+- 2026-11-19 · migrace · Attachments/Hradba_Z_S_zaobleni.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Hradba_Z_S_zaobleni.png · migrace
+- 2026-11-19 · migrace · Attachments/Hradba_V_zlomy_pred_po.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Hradba_V_zlomy_pred_po.png · migrace
+- 2026-11-19 · migrace · Attachments/navrh_ostroh_tramy.png · přesun z PrototypeDesigns/Lapikus/05_constructions/navrh_ostroh_tramy.png · migrace
 
 <!-- hestia:generated:end -->
 

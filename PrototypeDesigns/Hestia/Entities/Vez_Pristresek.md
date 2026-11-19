@@ -26,7 +26,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | – | – | build | bez cíle |
+| structures | 3 | – | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -34,7 +34,8 @@ assets: []
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_vez_pristresek]] – design, depth 3, valid, in_progress
 
 <!-- hestia:generated:end -->
 

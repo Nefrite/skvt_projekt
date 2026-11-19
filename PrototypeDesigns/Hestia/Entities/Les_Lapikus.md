@@ -27,7 +27,7 @@ scale: sector
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | – | – | – | build | bez cíle |
+| environment | 4 | – | – | build | bez cíle |
 | paths | – | – | – | build | bez cíle |
 | narrative | – | – | – | design | bez cíle |
 
@@ -36,7 +36,11 @@ scale: sector
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**environment**
+- [[README_forest]] – design, depth 4, valid
+
+**Know-how**
+- [[README_assets_stromy]]
 
 <!-- hestia:generated:end -->
 
