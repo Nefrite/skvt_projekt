@@ -30,7 +30,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - [[predani_brana_straz_striska_stavitel]] – [[Brana_Straz]]
 - [[predani_palac_obydli_stavitel]] – [[Palac_Obydli]]
 
-**Otevřené otázky:** do 14 dní 0 · starší 0 · bez data 0
+**Otevřené otázky:** do 14 dní 4 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 

@@ -45,6 +45,7 @@ _Potomci nemají cíle._
 - [[README_ruin]] – design, depth 4, outdated
 - [[Zricenina_03_ruin_stav]] – state, depth 4, valid
 - [[CHECKLIST_assets_navrhy]] – checklist, valid
+- [[Rozhodnuti_zricenina]] – reference, valid
 - nahrazené nebo archivované: 1
 
 <!-- hestia:generated:end -->
@@ -71,6 +72,10 @@ _`asset_index.json` chybí; spusť `asset_index`._
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
+- [[Rozhodnuti_zricenina]]: jestli bude stan na nádvoří — z KNOWHOW_hrad, 2026-11-17
+- [[Rozhodnuti_zricenina]]: přiřazení kůra / loupané u jednotlivých staveb — z KNOWHOW_hrad, 2026-11-17
+- [[Rozhodnuti_zricenina]]: výstup na podestu brány — z KNOWHOW_hrad, 2026-11-17
+- [[Rozhodnuti_zricenina]]: poloha cisterny — z KNOWHOW_hrad, 2026-11-17
 - Scratch: [[FURNISHING]] (prepared)
 
 <!-- hestia:generated:end -->
