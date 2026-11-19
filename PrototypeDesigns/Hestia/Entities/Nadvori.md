@@ -47,14 +47,14 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Zatím žádné kroky._
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Žádné soubory._
 
 <!-- hestia:generated:end -->
 

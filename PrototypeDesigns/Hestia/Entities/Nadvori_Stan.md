@@ -16,6 +16,7 @@ status: on_hold
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 0
 ---
 # Nadvori_Stan
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 2 | – | – | build | bez cíle |
+| structures | 2 | 0 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -42,14 +43,14 @@ assets: []
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Zatím žádné kroky._
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Žádné soubory._
 
 <!-- hestia:generated:end -->
 

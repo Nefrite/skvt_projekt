@@ -16,6 +16,7 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 4
 ---
 # Palac
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | – | – | build | bez cíle |
+| structures | – | 4 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 Agregace z potomků (04 kap. 3):
@@ -45,14 +46,19 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[03_ruin]] | `Palac.py`, `palac_spec.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | 03_ruin | name |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/casti/Palac.py` | entry | 03_ruin | name |
 
 <!-- hestia:generated:end -->
 

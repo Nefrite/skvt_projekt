@@ -16,6 +16,7 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 3
 ---
 # Palac_Obydli
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | – | – | build | bez cíle |
+| structures | 4 | 3 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -47,14 +48,22 @@ assets: []
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py` | [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Kamen.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Krov.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Ohniste.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Srub.py` | entry | 05_constructions | name |
 
 <!-- hestia:generated:end -->
 

@@ -329,7 +329,11 @@ Zkompiluj (**Compile** v StateTree editoru) a ulož. Vrať se do `AIC_ST_NPCBase
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Characters/NPC/npc_make_patrol_route.py` | entry | [[Characters]] | – |
+| `/PrototypeDesigns/Characters/NPC/npc_nav_bounds.py` | entry | [[Characters]] | – |
+| `/PrototypeDesigns/Characters/NPC/npc_report.py` | entry | [[Characters]] | – |
 
 <!-- hestia:generated:end -->
 

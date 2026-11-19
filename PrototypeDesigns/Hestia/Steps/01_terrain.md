@@ -229,7 +229,10 @@ Debug switch je statický, takže v hotové hře nic nestojí. Lze ho v materiá
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_heightmap_505_50cm.png` | data | [[Lapikus_Region]] | – |
+| `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_preview_orez.png` | data | [[Lapikus_Region]] | – |
 
 <!-- hestia:generated:end -->
 

@@ -19,6 +19,7 @@ assets: []
 scale: cutout
 depth_narrative: 0
 target_narrative: 1
+depth_environment: 4
 ---
 # Lapikus_Region
 
@@ -29,7 +30,7 @@ target_narrative: 1
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | 3 | – | – | build | bez cíle |
+| environment | 3 | 4 | – | build | bez cíle |
 | paths | – | – | – | build | bez cíle |
 | narrative | – | 0 | 1 | design | −1 |
 
@@ -53,14 +54,19 @@ _Potomci nemají cíle._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[01_terrain]] | `Zricenina_heightmap_505_50cm.png`, `Zricenina_preview_orez.png` | [[M_Landscape_Forest_Auto]] |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_heightmap_505_50cm.png` | data | 01_terrain | folder |
+| `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_preview_orez.png` | data | 01_terrain | folder |
 
 <!-- hestia:generated:end -->
 

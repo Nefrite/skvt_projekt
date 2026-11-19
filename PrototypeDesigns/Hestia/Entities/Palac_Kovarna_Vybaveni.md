@@ -16,6 +16,7 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 3
 ---
 # Palac_Kovarna_Vybaveni
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | – | – | build | bez cíle |
+| structures | 4 | 3 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -42,14 +43,16 @@ assets: []
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[05_constructions]] | – | [[navrh_palac_kovarna]] |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Žádné soubory._
 
 <!-- hestia:generated:end -->
 

@@ -119,7 +119,13 @@ Roughness = Lerp(0.85, 0.4, MaskMud)             (mokré bahno se leskne)
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/02_river/T_RiverMask_505.png` | data | [[Udoli_Reky]] | – |
+| `/PrototypeDesigns/Lapikus/02_river/T_RiverMask_preview.png` | data | [[Udoli_Reky]] | – |
+| `/PrototypeDesigns/Lapikus/02_river/Zricenina_505_body_reky.csv` | data | [[Udoli_Reky]] | – |
+| `/PrototypeDesigns/Lapikus/02_river/Zricenina_505_body_reky.png` | data | [[Udoli_Reky]] | – |
+| `/PrototypeDesigns/Lapikus/02_river/import_river_spline.py` | entry | [[Udoli_Reky]] | – |
 
 <!-- hestia:generated:end -->
 

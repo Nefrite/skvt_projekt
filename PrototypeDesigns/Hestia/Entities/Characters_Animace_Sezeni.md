@@ -16,6 +16,7 @@ status: idea
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_gameplay: 0
 ---
 # Characters_Animace_Sezeni
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| gameplay | – | – | – | design | bez cíle |
+| gameplay | – | 0 | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
 
@@ -40,14 +41,14 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Zatím žádné kroky._
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+_Žádné soubory._
 
 <!-- hestia:generated:end -->
 

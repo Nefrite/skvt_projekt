@@ -43,14 +43,23 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[03_ruin]] | `Ostroh.py`, `ostroh_spec.py` | – |
+| [[05_constructions]] | `Ostroh_Dostavba.py`, `Ostroh_Krov.py`, `Ostroh_Podlaha.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | 03_ruin | name |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/casti/Ostroh.py` | entry | 03_ruin | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | 05_constructions | name |
 
 <!-- hestia:generated:end -->
 

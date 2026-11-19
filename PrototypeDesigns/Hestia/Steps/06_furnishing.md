@@ -51,7 +51,15 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/06_furnishing/build_furnishing.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/capture_furnishing.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/furn_data.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py` | entry | [[Palac_Kovarna]] | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna_Capture.py` | entry | [[Palac_Kovarna]] | – |
+| `/PrototypeDesigns/Lapikus/tools/furnishing/gen_furnishing.py` | generator | – | – |
 
 <!-- hestia:generated:end -->
 

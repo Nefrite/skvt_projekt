@@ -343,7 +343,11 @@ Skript lze spouštět opakovaně. Po přesunu sedátka v mapě stačí ho vybrat
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Characters/01_sitting/seat_place_selected.py` | entry | [[Characters]] | – |
+| `/PrototypeDesigns/Characters/01_sitting/seat_report.py` | entry | [[Characters]] | – |
+| `/PrototypeDesigns/Characters/01_sitting/seat_test_station.py` | entry | [[Characters]] | – |
 
 <!-- hestia:generated:end -->
 

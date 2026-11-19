@@ -16,6 +16,7 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 3
 ---
 # Brana_Straz
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 3 | – | – | build | bez cíle |
+| structures | 3 | 3 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -46,14 +47,21 @@ assets: []
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[05_constructions]] | `Brana_Straz.py`, `Brana_Straz_Kamen.py`, `Brana_Straz_Kryty.py`, `Brana_Straz_Podesta.py` | [[navrh_brana_straz]], [[stav_brana_straz]] |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kamen.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kryty.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Podesta.py` | entry | 05_constructions | name |
 
 <!-- hestia:generated:end -->
 

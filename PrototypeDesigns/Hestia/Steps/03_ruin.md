@@ -305,7 +305,54 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_Brana_S_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_bloky_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_kameny_detail.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_kameny_koruny.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_koruna_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_lic_pred_po.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_strilna_preklad_pred_po.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/Zricenina_strilny_osteni_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/build_ruin_blocks.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/casti/Obvod.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/casti/Ostroh.py` | entry | [[Ostroh]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/casti/Palac.py` | entry | [[Palac]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/detach_stones.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/gen_stones.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/manual_edits.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/ruin_layout.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/terrain_from_level.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/__init__.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/compute.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/decay.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/floor.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/post.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/prep.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/rubble.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/blocks/zr_ruin/wall.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/build/Zricenina_blockout_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/build/build_ruin.py` | entry | [[Lapikus]] | [[README_ruin]] |
+| `/PrototypeDesigns/Lapikus/03_ruin/build/ruin_layout.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/navrh_vez_okna_podesta.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/navrh_vez_patra_strilny.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/navrh_vez_schody.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/navrh_vez_vyklenky_kvadry.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/03_ruin/ruin_layout_draft.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | [[Brana]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/build_ruin.py` | entry | [[Lapikus]] | [[README_ruin]] |
+| `/PrototypeDesigns/Lapikus/tools/ruin/check3d.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/check_blocks.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/decay.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/elev.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/export_level_layout.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/gen_layout.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/layout_from_level.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/massing.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | [[Ostroh]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | [[Palac]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/tower_spec.py` | spec | [[Lapikus]] | [[navrh_vez_pristresek]] |
 
 <!-- hestia:generated:end -->
 ### 7. Struktura kódu (od 11/2026)

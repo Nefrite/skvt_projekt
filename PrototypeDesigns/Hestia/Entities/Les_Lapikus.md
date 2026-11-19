@@ -17,6 +17,7 @@ status: in_progress
 ue_path:
 assets: []
 scale: sector
+depth_environment: 1
 ---
 # Les_Lapikus
 
@@ -27,7 +28,7 @@ scale: sector
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | 4 | – | – | build | bez cíle |
+| environment | 4 | 1 | – | build | bez cíle |
 | paths | – | – | – | build | bez cíle |
 | narrative | – | – | – | design | bez cíle |
 
@@ -47,14 +48,25 @@ scale: sector
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[04_forest]] | `T_ForestZones_505.png`, `Zricenina_les_plan.png`, `Zricenina_les_zony.csv`, `Zricenina_olse.csv`, `Zricenina_olse_plan.png`, `import_zone_splines.py`, `nacrt_zony.png`, `place_alders.py` | [[README_forest]] |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/04_forest/import_zone_splines.py` | entry | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/place_alders.py` | entry | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/T_ForestZones_505.png` | data | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_les_plan.png` | data | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_les_zony.csv` | data | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_olse.csv` | data | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_olse_plan.png` | data | 04_forest | folder |
+| `/PrototypeDesigns/Lapikus/04_forest/nacrt_zony.png` | data | 04_forest | folder |
 
 <!-- hestia:generated:end -->
 

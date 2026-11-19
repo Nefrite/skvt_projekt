@@ -16,6 +16,8 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_npc: 3
+depth_gameplay: 5
 ---
 # Characters
 
@@ -26,7 +28,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| gameplay | – | – | – | design | bez cíle |
+| gameplay | – | 5 | – | design | bez cíle |
 
 Agregace z potomků (04 kap. 3):
 
@@ -45,14 +47,24 @@ _Potomci nemají cíle._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[01_sitting]] | `seat_place_selected.py`, `seat_report.py`, `seat_test_station.py` | – |
+| [[NPC]] | `npc_make_patrol_route.py`, `npc_nav_bounds.py`, `npc_report.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Characters/01_sitting/seat_place_selected.py` | entry | 01_sitting | folder |
+| `/PrototypeDesigns/Characters/01_sitting/seat_report.py` | entry | 01_sitting | folder |
+| `/PrototypeDesigns/Characters/01_sitting/seat_test_station.py` | entry | 01_sitting | folder |
+| `/PrototypeDesigns/Characters/NPC/npc_make_patrol_route.py` | entry | NPC | folder |
+| `/PrototypeDesigns/Characters/NPC/npc_nav_bounds.py` | entry | NPC | folder |
+| `/PrototypeDesigns/Characters/NPC/npc_report.py` | entry | NPC | folder |
 
 <!-- hestia:generated:end -->
 

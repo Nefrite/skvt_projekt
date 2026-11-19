@@ -16,6 +16,7 @@ status: built
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 4
 ---
 # Palac_Kovarna
 
@@ -26,7 +27,7 @@ assets: []
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | – | – | build | bez cíle |
+| structures | 4 | 4 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 Agregace z potomků (04 kap. 3):
@@ -47,14 +48,26 @@ _Potomci nemají cíle._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[05_constructions]] | `Palac_Kovarna.py`, `Palac_Kovarna_Kul.py`, `Palac_Kovarna_Okap.py`, `Palac_Kovarna_Pristresek.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Vyhen.py` | [[navrh_palac_kovarna]], [[stav_palac_kovarna]] |
+| [[06_furnishing]] | `Palac_Kovarna.py`, `Palac_Kovarna_Capture.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Kul.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Okap.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Pristresek.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Stena.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Vyhen.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py` | entry | 06_furnishing | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna_Capture.py` | entry | 06_furnishing | name |
 
 <!-- hestia:generated:end -->
 

@@ -17,6 +17,7 @@ status: in_progress
 ue_path:
 assets: []
 scale: sector
+depth_environment: 2
 ---
 # Udoli_Reky
 
@@ -27,7 +28,7 @@ scale: sector
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | – | – | – | build | bez cíle |
+| environment | – | 2 | – | build | bez cíle |
 | paths | – | – | – | build | bez cíle |
 | narrative | – | – | – | design | bez cíle |
 
@@ -43,14 +44,22 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[02_river]] | `T_RiverMask_505.png`, `T_RiverMask_preview.png`, `Zricenina_505_body_reky.csv`, `Zricenina_505_body_reky.png`, `import_river_spline.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/02_river/import_river_spline.py` | entry | 02_river | folder |
+| `/PrototypeDesigns/Lapikus/02_river/T_RiverMask_505.png` | data | 02_river | folder |
+| `/PrototypeDesigns/Lapikus/02_river/T_RiverMask_preview.png` | data | 02_river | folder |
+| `/PrototypeDesigns/Lapikus/02_river/Zricenina_505_body_reky.csv` | data | 02_river | folder |
+| `/PrototypeDesigns/Lapikus/02_river/Zricenina_505_body_reky.png` | data | 02_river | folder |
 
 <!-- hestia:generated:end -->
 

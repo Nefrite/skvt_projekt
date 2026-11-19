@@ -20,7 +20,16 @@ Doplní se při rozpadu [[README_forest]] (části PCG a spouštění).
 ## Skripty
 <!-- hestia:generated:start -->
 
-_`asset_index.json` chybí; spusť `asset_index`._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/04_forest/T_ForestZones_505.png` | data | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_les_plan.png` | data | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_les_zony.csv` | data | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_olse.csv` | data | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/Zricenina_olse_plan.png` | data | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/import_zone_splines.py` | entry | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/nacrt_zony.png` | data | [[Les_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/04_forest/place_alders.py` | entry | [[Les_Lapikus]] | – |
 
 <!-- hestia:generated:end -->
 
