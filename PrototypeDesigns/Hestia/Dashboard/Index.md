@@ -17,6 +17,24 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 ## Přehled
 <!-- hestia:generated:start -->
+
+**Kořenové entity** (zralost po doménách, v závorce nejslabší článek; 04 kap. 3)
+
+| Entita | environment | structures | paths | npc | gameplay | narrative |
+|---|---|---|---|---|---|---|
+| [[Characters]] | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle |
+| [[Lapikus_Region]] | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle |
+
+**Aktivní předání**
+
+_Žádná._
+
+**Otevřené otázky:** do 14 dní 0 · starší 0 · bez data 0
+
+**Poslední změny** (`changes.md`)
+
+- 2026-11-19 · hestia · Hestia · založení vaultu ze šablony (core 0.10.2) · init
+
 <!-- hestia:generated:end -->
 
 ## Zóny
