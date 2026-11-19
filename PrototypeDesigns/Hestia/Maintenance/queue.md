@@ -1,6 +1,6 @@
 ---
 type: queue
-updated: 2026-11-19
+updated: 2026-11-20
 ---
 # Fronta údržby
 
@@ -10,3 +10,46 @@ updated: 2026-11-19
 
 | id | priority | kind | code | target | proposal | state | closed |
 |---|---|---|---|---|---|---|---|
+| F-0001 | medium | finding | G5 | [[README_ruin]] | validity: outdated | open |  |
+| F-0002 | medium | finding | G2 | [[Brana]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0003 | medium | finding | G4 | [[Brana]] | status built bez platného dokumentu state | open |  |
+| F-0004 | medium | finding | G2 | [[Brana_Straz]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0005 | medium | finding | G2 | [[Characters]] | očekávaná doména gameplay (kind system) bez target_gameplay ani u potomků | open |  |
+| F-0006 | medium | finding | G2 | [[Characters_Animace_Sezeni]] | očekávaná doména gameplay (kind system) bez target_gameplay | open |  |
+| F-0007 | medium | finding | G2 | [[Guesthouse]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0008 | medium | finding | G2 | [[Lapikus]] | očekávaná doména gameplay (kind location) bez target_gameplay ani u potomků; očekávaná doména narrative (kind location) bez target_narrative ani u potomků; očekávaná doména npc (kind location) bez target_npc ani u potomků; očekávaná doména paths (kind location) bez target_paths ani u potomků; očekávaná doména structures (kind location) bez target_structures ani u potomků | open |  |
+| F-0009 | medium | finding | G2 | [[Lapikus_Region]] | očekávaná doména environment (kind place) bez target_environment ani u potomků; očekávaná doména paths (kind place) bez target_paths ani u potomků | open |  |
+| F-0010 | medium | finding | G2 | [[Les_Lapikus]] | očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths | open |  |
+| F-0011 | medium | finding | G2 | [[Nadvori]] | očekávaná doména environment (kind place) bez target_environment ani u potomků; očekávaná doména narrative (kind place) bez target_narrative ani u potomků; očekávaná doména paths (kind place) bez target_paths ani u potomků | open |  |
+| F-0012 | medium | finding | G4 | [[Nadvori]] | status built bez platného dokumentu state | open |  |
+| F-0013 | medium | finding | G2 | [[Nadvori_Stan]] | očekávaná doména gameplay (kind object) bez target_gameplay; očekávaná doména structures (kind object) bez target_structures | open |  |
+| F-0014 | medium | finding | G2 | [[Ostroh]] | očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths | open |  |
+| F-0015 | medium | finding | G2 | [[Palac]] | očekávaná doména gameplay (kind structure) bez target_gameplay ani u potomků; očekávaná doména structures (kind structure) bez target_structures ani u potomků | open |  |
+| F-0016 | medium | finding | G2 | [[Palac_Kovarna]] | očekávaná doména gameplay (kind structure) bez target_gameplay ani u potomků; očekávaná doména structures (kind structure) bez target_structures ani u potomků | open |  |
+| F-0017 | medium | finding | G2 | [[Palac_Kovarna_Vybaveni]] | očekávaná doména gameplay (kind object) bez target_gameplay; očekávaná doména structures (kind object) bez target_structures | open |  |
+| F-0018 | medium | finding | G2 | [[Palac_Obydli]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0019 | medium | finding | G2 | [[Palac_Treti]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0020 | medium | finding | G2 | [[Pristup_JV]] | očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths | open |  |
+| F-0021 | medium | finding | G2 | [[Strazni_Vez]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0022 | medium | finding | G4 | [[Strazni_Vez]] | status built bez platného dokumentu state | open |  |
+| F-0023 | medium | finding | G2 | [[Udoli_Reky]] | očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths | open |  |
+| F-0024 | medium | finding | G2 | [[Vez]] | očekávaná doména gameplay (kind structure) bez target_gameplay ani u potomků; očekávaná doména structures (kind structure) bez target_structures ani u potomků | open |  |
+| F-0025 | medium | finding | G2 | [[Vez_Pristresek]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | open |  |
+| F-0026 | medium | finding | G4 | [[Vez_Pristresek]] | status built bez platného dokumentu state | open |  |
+| T-0001 | medium | task | – | [[README_ruin]] | porovnat se stavem [[Zricenina_03_ruin_stav]], pak rozhodnout o platnosti (M18, GameDesigner 2026-11-19) | open |  |
+| T-0002 | medium | task | – | [[README_ruin]] | kap. 6–7 rozpadnout do [[03_ruin]] (M18) | open |  |
+| T-0003 | medium | task | – | [[CHECKLIST_assets_navrhy]] | rozpad kap. 0, 7, 9 (M07) | open |  |
+| T-0004 | medium | task | – | [[README_forest]] | rozpad PCG a spouštění do [[04_forest]] (M14) | open |  |
+| T-0005 | medium | task | – | [[05_constructions]] | kap. 4 (Vez_Patra) do specifikace entity [[Vez]] (M16) | open |  |
+| T-0006 | medium | task | – | [[Zricenina_03_ruin_stav]] | rozpad do stavů entit (M19, B11 pilotu) | open |  |
+| T-0007 | medium | task | – | [[navrh_palac_kovarna]] | kap. 0 duplicitní se [[stav_palac_kovarna]]: sjednotit (M22) | open |  |
+| T-0008 | medium | task | – | [[navrh_palac_obydli_stred]] | kap. 0.5–0.6 (postavené) se překrývá se [[stav_palac_obydli]]: sjednotit (B4) | open |  |
+| T-0009 | medium | task | – | [[01_sitting]] | záměr do `Docs/gameplay`, u [[NPC]] do `Docs/npc` (M30, M31) | open |  |
+| T-0010 | medium | task | – | [[README_PROJEKT]] | zařadit ze Scratch podle navrženého zařazení (M01, B10 pilotu) | open |  |
+| T-0011 | medium | task | – | [[FURNISHING]] | sloučit s [[06_furnishing]] (M08) | open |  |
+| T-0012 | medium | task | – | [[Kod_spousteni_kontroly_z_roli]] | zařadit do `Steps/` a `Steps/shared/` podle *Předzpracování* (B7) | open |  |
+| T-0013 | medium | task | – | [[Namety_dostavby]] | GameDesigner rozhodne, co dál (B7) | open |  |
+| T-0014 | medium | task | – | `KnowHow/`, `Docs/` | 22 textových zmínek `KNOWHOW_hrad.md` a `AGENT_*.md` nahradit odkazy na nové dokumenty (A4, B6–B7) | open |  |
+| T-0015 | medium | task | – | [[Palac_Kovarna_Vybaveni]], [[Guesthouse]] | hlavičky skriptů `entity:` (B14 pilotu; Guesthouse do vydání CR_2026-11-19_asset_index_alias_entity) | open |  |
+| T-0016 | medium | task | – | `Lapikus/README.txt` | nahradit odkazem do Hestia (B5 pilotu) | open |  |
+| T-0017 | medium | task | – | `GameDesign/Claude outputs/Lapikus`, Claude Project „GameDesign“ | projít historické zdroje a doplnit do vaultu, co chybí (B17 pilotu) | open |  |
