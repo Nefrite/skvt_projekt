@@ -183,6 +183,19 @@ Všechno je ve skriptech a prošlo kontrolami mimo Unreal, v UE zatím nic z toh
 
 **Okap (rozhodnutí Jirky 16. 11. 2026, staví se v kroku 4):** žlab má spád k západu, od kovárny. Sud stojí pod jeho západním koncem, svod přes zápraží se nedělá. Cesta ze zápraží ke kovárně tak zůstává volná. Kap. 4.7 a poznámka o svodu v kap. 6 tím neplatí.
 
+### 0.7 Co platí (rozhodnutí Jirky, z předání 16. 11. 2026)
+
+- **Etapy jsou tři sady actorů** s tagy `stage:base` / `stage:final` / `stage:site`. Dům se počítá jednou jako hotový, etapa 1 je jen filtr (`base` + `site`), etapa 2 = `base` + `final`. Co stojí v etapě 1, se v etapě 2 neskrývá.
+- **Ladí se nejdřív finální stav.** Staveniště a kontrola etapy 1 až nakonec.
+- **Dřevo je surové (`raw`) v obou etapách**, i krov a krytina. Dehtování je případný pozdější třetí stav.
+- **Zabydlení je dlouhodobé a má být pohodlné.** Styl: dobové provizorium, železo z vlastní kovárny na míru.
+- **Větší světnice:** příčka je v s = 14,85, západně od středního sloupu krovu (s = 15,3). Vchod s = 13,4–14,4, okénko světnice s = 17,5–18,1.
+- **Pec s nístějí** místo otevřeného ohniště, osa s = 16,76 (uprostřed mezi krokvemi), kouř sopouchem do dymníku.
+- **Okap:** spád k západu (od kovárny), sud pod západním koncem, svod se nedělá.
+- **Dveře a okenice** jsou v etapě 2 otevřené (kulisa). **Žebříky** nejsou pro postavu použitelné. **Sklep** se neřeší.
+- Hráč domem jen prochází, etapy mají dát dojem času.
+
+
 ## 1. Zadání
 
 - **Odkud:** Jirka.

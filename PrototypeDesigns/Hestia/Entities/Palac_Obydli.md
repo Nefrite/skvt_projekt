@@ -37,6 +37,7 @@ assets: []
 **structures**
 - [[navrh_palac_obydli]] – design, depth 2, valid, rejected
 - [[navrh_palac_obydli_stred]] – design, depth 4, valid, in_progress
+- [[stav_palac_obydli]] – state, depth 3, valid
 
 **Aktivní předání**
 - [[predani_palac_obydli_stavitel]]

@@ -36,6 +36,7 @@ assets: []
 
 **structures**
 - [[navrh_brana_straz]] – design, depth 3, valid, in_progress
+- [[stav_brana_straz]] – state, depth 3, valid
 
 **Aktivní předání**
 - [[predani_brana_straz_striska_stavitel]]

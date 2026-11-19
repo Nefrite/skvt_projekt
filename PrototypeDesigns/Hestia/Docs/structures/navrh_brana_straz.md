@@ -20,44 +20,7 @@ Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, 
 
 ## 0. Stav stavby (16. 11. 2026, platí přednostně před kap. 2–7)
 
-**Návrh neseděl na dnešní data.** Od 14. 11. se polohy zdí brány převzaly z levelu. Změřeno 16. 11. 2026 (terén z levelu):
-
-| | Návrh (kap. 2) | Skutečnost |
-|---|---|---|
-| koruna `Brana_V` nad obloukem | Z 3423–3493 | Z 3617–3654 |
-| vrch východního oblouku | pod Z 3423 | Z 3529 |
-| koruna `Brana_J` | Z 3408–3474 | Z 3455–3549 |
-| koruna `Brana_S` | Z 3321–3386 | Z 3459–3552 |
-| navržený vrch podesty | Z 3522 | pod vrchem východního oblouku |
-
-**Rozhodnutí Jirky (16. 11. 2026):**
-
-- **Trámy jdou na východě do kapes v `Brana_V`** (úprava 03, kap. 3 tím neplatí), na západě leží na vyrovnané koruně `Brana_J`. Východní zeď vyčnívá 0,4–0,7 m nad podestu jako kamenné předprsí; kůly východního krytu na ní budou kratší.
-- **Etapy:** stanoviště je v etapě 1 rozestavěné. Sady: podesta (kámen, trámy, prkna) a východní kryt `base` (potvrzeno 16. 11. 2026); severní a jižní kryt `final` (návrh architekta, Jirka nepotvrdil), přístřešek návrh `final`.
-- **Zábradlí směrem do hradu se nestaví** (16. 11. 2026, kap. 4.3 neplatí): na západní nebo jižní straně bude výlez na podestu. Kód zábradlí v typu `platform` zůstává, v datech žádné není (`B_RAILS = False`).
-
-**Kroky 1 až 3 hotové (podesta a všechny tři kryty; ve skriptech). V UE Jirka viděl podestu a východní kryt (16. 11. 2026) a zadal úpravy, které jsou tu už zapracované; nový stav v UE neověřen.**
-
-| Část | Provedení | Sada |
-|---|---|---|
-| 03: kapsy v `Brana_V` | 3 kapsy 32 × 33 cm ve vnitřním líci, spodek Z 3552 (řada 3552–3585 nad obloukem) | – |
-| 03: SV nároží `Brana_V` | kameny koruny nad Z 3618 v d < 0,75 posádka rozebrala (`cap`), kryt jde přes nároží bez mezery | – |
-| `Brana_Straz_Kamen` (`stone_fill`) | vyrovnání koruny `Brana_J` na Z 3552 (pás u = 0,2–0,65; d = 0,9–5,3; výška 0–1,0 m), vyrovnání koruny `Brana_S` pod trámem na zdi (pás d = −0,45 až 0,05) a podložení trámů v líci `Brana_V` | `base` |
-| `Brana_Straz_Podesta` (typ `platform`) | **3 trámy** z loupané kulatiny Ø 24 cm, d = 1,3 / 3,15 / 5,0; u = 0,1–6,63 (na východě 0,33 m v kapse); spodek Z 3552; **čtvrtý trám leží na koruně `Brana_S`** (d = −0,2; u = 0,1–6,2) | `base` |
-| | podlaha z prken 5 cm, u = 0,2–6,27, **d = −0,55 až 5,25** (na severu až nad `Brana_S` k severnímu krytu; prkna ze dvou kusů se spárou nad trámem); **vrch Z 3581** (4,5 m nad plošinou hradu, 5,4 m nad zemí v průjezdu) | `base` |
-| `Brana_Straz_Kryty` (typ `palisade`), východní | 30 kůlů s kůrou Ø 18–22 cm se špičkou nahoru na koruně `Brana_V` (u = 7,5; d = −0,6 až 5,35); vrch 1,8 m nad podlahou; 3 průzory 14 × 45 cm (d = 1,5 / 3,1 / 4,6; spodek 1,35 m), kůl v průzoru je rovně seříznutý | `base` |
-| severní | 37 kůlů **u vnější hrany `Brana_S`** (d = −0,75; u = 0–7,6; za krytem se nedá stoupnout), vrch 1,25 m nad podlahou (střílí se přes vrch), 3 průzory 14 × 35 cm (u = 1,8 / 3,7 / 5,6; spodek 0,9 m) | `final` |
-| jižní | 23 kůlů na jižním okraji podesty (d = 5,15; u = 2,6–7,38, tedy východní dvě třetiny, po `Hradba_V`); stojí na podlaze, na východě na koruně `Brana_V`; vrch 1,8 m, 2 průzory (u = 4,6 a 6,0) | `final` |
-
-- **Ráhna** Ø 10 cm jsou zevnitř: jedno u spodu (východní a jižní kryt 0,55 m, severní 0,45 m nad podlahou) a druhé těsně pod průzory (1,22 m; u severního krytu 0,78 m). Přes průzory žádné nevede.
-- **Kůly jsou „utopené“ 25 cm v koruně zdi** (posádka korunu vydlabala, aby lépe držely). Ve skriptech kůl do kamene jen zasahuje, kameny koruny se kvůli tomu v 03 nemění.
-- **Trámy:** 3 místo 6 (Jirka 16. 11. 2026), prkna 5 cm nesou na 1,85 m.
-- Další odchylky od kap. 4: trámy Ø 24 místo 22; podesta končí na východě u líce zdi (ne na její koruně), plocha 6,1 × 5,8 m; jižní kryt stojí na podlaze v d = 5,15 (návrh: práh z kulatiny v d = 5,35) a je delší (návrh u = 4,3–7,5); `Hradba_V` má korunu v Z 3237, podestu tedy nekryje.
-- Východní kryt stojí 1,2 m za okrajem podlahy na koruně zdi, která je 0,3–0,7 m nad podlahou: stráž k němu vystoupí na korunu.
-- Rozměry: `tools/ruin/brana_spec.py` (výšky absolutně v UE cm). Kontrola: `run_checks.py --only brana`. Náhled: `preview3d.py brana <out.png> [--stage 1|2]`, `05_constructions/Stavby_brana_straz_nahled.png` a `Stavby_brana_straz_nahled_etapa1.png`.
-- V UE: `05_constructions/stavby/Brana_Straz.py` s `RUIN = True` (přestaví část `Obvod` kvůli kapsám a nároží, dlouhé), příště stačí `RUIN = False`.
-
-**Zbývá:** přístřešek z kůry (`bark_roof`; nový návrh a instrukce pro stavitele: [[predani_brana_straz_striska_stavitel]], nahrazuje kap. 4.4), zátaras, staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
+Přesunuto do [[stav_brana_straz]] (stav stavby, odchylky od návrhu a rozhodnutí Jirky 16. 11. 2026).
 
 ## 1. Zadání
 
@@ -130,6 +93,8 @@ Kůly Ø 18–22 cm nastojato, těsně vedle sebe, nahoře zašpičatělé. Drž
 - Sloupky Ø 10 cm po 1,5 m, dvě vodorovné tyče Ø 8 cm, vrch 1,0 m nad podestou.
 
 ### 4.4 Přístřešek z kůry
+
+**Nahrazeno kap. 11** (16. 11. 2026).
 
 - **Kde:** severovýchodní kout, u = 4,2–7,9; d = 0,9–4,0 (3,3 × 3,1 m plus přesah 0,4 m za východní kryt).
 - **Nosná kostra:** na západě 2 sloupky Ø 14 cm (u = 4,2; d = 1,0 a 3,9) s vaznicí Ø 12 cm, vrch 3,25 m nad podestou. Na východě leží krokvičky na horním ráhnu východního krytu, 1,9 m nad podestou.
@@ -209,3 +174,56 @@ Kůly Ø 18–22 cm nastojato, těsně vedle sebe, nahoře zašpičatělé. Drž
 - **Půdorys:** obdélník podesty 6,8 × 4,4 m vyplňuje severní dvě třetiny strážní věže. Šest trámů vede od západní zdi k východní, rovnoběžně se severní. Kryt tvoří písmeno U otevřené k západu: celá východní strana, celá severní strana a východní 3 m jižní strany. Zbytek jižní strany a celá západní mají zábradlí. Přístřešek je v severovýchodním koutě. Před východní bránou stojí zátaras.
 - **Řez východ–západ:** trámy leží na korunách obou bran na vyrovnávací řadě kamene, nad nimi prkna. Na východní koruně stojí kůly do výšky 1,8 m nad podestou. Od nich stoupá střecha z kůry k západu na dva sloupky. V pozadí severní kryt: kůly stojí na nižší koruně severní zdi a končí 1,25 m nad podestou.
 - **Pohled od východu:** nad obloukem brány řada zašpičatělých kůlů se třemi průzory, nad ní okraj kůrové střechy. Vpravo (na severu) nižší kryt, vlevo (na jihu) krátký kryt končící u hradby. Před bránou španělský jezdec.
+
+## 11. Přístřešek z kůry – návrh 16. 11. 2026 (nahrazuje kap. 4.4)
+
+Z předání [[predani_brana_straz_striska_stavitel]] (kap. 3 a 5); kap. 4.4 tím neplatí.
+
+### 3. Návrh
+
+Pultová stříška v severovýchodním koutě, spád 22° k východu. Voda stéká přes východní kryt ven před bránu. **Kostra je samostatná, o kryt se neopírá**: nahoře u krytu není ráhno (vedlo by přes průzory) a kůly mají špičky.
+
+#### 3.1 Kostra
+
+| Prvek | Průřez | Počet a délka | Poloha | Na čem stojí nebo leží |
+|---|---|---|---|---|
+| západní sloupky | kulatina s kůrou Ø 14 cm | 2 ks, 3,2 m | u = 4,0; d = 1,3 a 3,15 | na podlaze přesně nad trámy podesty |
+| východní sloupky | kulatina s kůrou Ø 14 cm | 2 ks, asi 1,55 m | u = 7,15; d = 0,8 a 3,7 | na koruně `Brana_V` (pata kopíruje kámen), 0,35 m za kůly krytu |
+| západní vaznice | tyč s kůrou Ø 12 cm | 1 ks, 3,4 m | u = 4,0; d = 0,3–3,7; vrch 3,32 m | na západních sloupcích |
+| východní vaznice | tyč s kůrou Ø 12 cm | 1 ks, 3,6 m | u = 7,15; d = 0,3–3,9; vrch 2,05 m | na východních sloupcích |
+| krokvičky | tyče s kůrou Ø 8 cm | 7 ks, 4,55 m | d = 0,5 až 3,5 po 0,5 m; u = 3,75–7,95 | na obou vaznicích, přivázané |
+| příčné tyčky pod kůru | tyče s kůrou Ø 5 cm | 6 ks, 3,5 m | napříč krokvičkami po 0,8 m po spádu, d = 0,25–3,75 | na krokvičkách |
+| vzpěrky | tyče s kůrou Ø 8 cm | 4 ks, 0,7 m | šikmo 45° od západních sloupků k vaznici (na obě strany podél d) | zavětrování |
+
+- **Východní sloupky nesmí stát za průzory.** Průzory jsou v d = 1,5 a 3,1, sloupky v d = 0,8 a 3,7 (odstup 0,6 m).
+- **Krokvičky jdou těsně nad špičkami kůlů:** spodek krokvičky je nad osou krytu (u = 7,5) v 1,91 m, nejvyšší špička v 1,84 m. Kdyby se v UE dotýkaly, zvedni obě vaznice o 5 cm.
+- **Světlá výška** pod krokvičkami: u východního sloupku 2,05 m, u západní vaznice 3,2 m.
+- **Přesahy:** na východě 0,45 m za osu krytu (okap), na západě 0,25 m za vaznici.
+- **Spoje jsou vázané:** na každém styku krokvičky s vaznicí a vaznice se sloupkem ovázání `SM_RuinLashing`.
+
+#### 3.2 Krytina
+
+- **Pásy kůry** `SM_RuinBarkStrip` (jmenovitě 1,6 × 0,7 m), hrubou stranou nahoru, delší stranou po spádu.
+- **3 řady po spádu** s přesahem 0,2 m: horní řada vždy překrývá spodní. Délku pásu dopočítej tak, aby tři řady pokryly celou délku krokviček (vychází asi 1,64 m).
+- **V řadě 6 pásů** vedle sebe s bočním přesahem 0,1 m; sousední řady jsou posunuté o půl pásu.
+- **Půdorys krytiny:** u = 3,7–8,0; d = 0,25–3,75 (4,3 × 3,5 m).
+- **3 přítlačné tyče** Ø 6 cm s kůrou napříč (podél d), po jedné na každém přesahu řad a jedna u okapu, přivázané na koncích ke krajním krokvičkám.
+- Pásy lehce náhodně natoč (do ± 3°) a posuň (do ± 3 cm), ať krytina nevypadá jako mřížka.
+
+#### 3.3 Co zůstává volné
+
+- Na severu je mezi vrchem severního krytu (1,25 m) a stříškou volný pruh na střelbu.
+- Jižní část podesty (d > 3,9) a celá západní polovina zůstávají pod širým nebem; tam bude výlez.
+
+### 5. Kontroly (doplň do `check_brana` v `tools/checks/run_checks.py`)
+
+- sklon 22° ± 2°;
+- západní sloupky stojí na podlaze nad trámem (d trámu ± 0,1 m), východní na kameni koruny;
+- žádný sloupek blíž než 0,5 m (podél d) od průzoru východního krytu;
+- každá krokvička leží na obou vaznicích;
+- spodek krokviček je nad špičkami kůlů východního krytu aspoň o 1 cm;
+- světlá výška u východního krytu aspoň 1,85 m;
+- stříška se neprotíná s kůly a ráhny krytů (východního ani severního);
+- kůra pokrývá půdorys krytiny aspoň z 99 %;
+- všechny dílce mají sadu `final`;
+- náhled: doplň do `brana_scene` v `preview3d.py` pohled pod stříšku od západu a pohled od východu zpoza brány.
