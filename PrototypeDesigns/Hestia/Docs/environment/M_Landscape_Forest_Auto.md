@@ -1,3 +1,14 @@
+---
+# orchestrace
+type: spec
+validity: valid
+updated: 2026-11-09
+# hra
+domain: environment
+depth: 3
+entity: "[[Lapikus_Region]]"
+build_step: 01_terrain
+---
 # M_Landscape_Forest_Auto – automatické míchání podle sklonu
 
 Landscape materiál pro lokaci Zřícenina. Podle sklonu terénu míchá trávu, štěrk a kámen, nic se nemaluje ručně.

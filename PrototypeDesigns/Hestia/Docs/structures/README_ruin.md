@@ -1,9 +1,20 @@
+---
+# orchestrace
+type: design
+validity: outdated
+updated: 2026-11-16
+# hra
+domain: structures
+depth: 4
+entity: "[[Lapikus]]"
+build_step: 03_ruin
+---
 # 03 Ruin – plán stavby zříceniny
 
 Cíl: na plošině ostrohu postavit zříceninu hradu ve stavu **blockout + hrubý vzhled**: správné rozměry, průchodnost a silueta ruiny, kamenný materiál a sutě. Detail přijde později.
 Postup: **část generuje skript** (zdi, věž, palác podle půdorysu), **část se domodeluje ručně** v Modeling Mode podle pocitu.
 
-![Půdorys – návrh](Zricenina_hrad_plan.png)
+![[Zricenina_hrad_plan.png]]
 
 > Stav: **návrh k doladění**. Půdorys, výšky i míra rozpadu se budou upravovat postupně podle potřeb hry.
 
@@ -230,7 +241,7 @@ Rozměry pro postavu (Character Movement):
 
 Vychází z `ruin_layout_draft.json` a ladí se v něm.
 
-### Krok 2 – generátor v UE: `build_ruin.py` (hotovo – návod `build/README_build_ruin.md`)
+### Krok 2 – generátor v UE: `build_ruin.py` (hotovo – návod [[README_build_ruin]])
 
 - staví zdi z `SM_Cube` (`LevelPrototyping`) po segmentech ~0,5–1 m
   - rozpadlá koruna: náhodné výšky v pásmu profilu
@@ -285,7 +296,7 @@ Opravy dělat v JSON nebo ručně.
 ## 8. Checklist
 
 1. ☐ Odsouhlasit půdorys, stav ~1540 a rozpad podle dostupnosti (kap. 2–4, nákresy), rozhodnout o předhradí
-2. ☑ `build/ruin_layout.json` + `build/build_ruin.py` (návod `build/README_build_ruin.md`)
+2. ☑ `build/ruin_layout.json` + `build/build_ruin.py` (návod [[README_build_ruin]])
 3. ☐ Spustit generátor, Play test měřítka
 4. ☐ Ladění rozpadu a výšek (JSON / parametry)
 5. ☐ Merge Actors po částech, domodelování v Modeling Mode
@@ -297,11 +308,11 @@ Opravy dělat v JSON nebo ručně.
 
 | Soubor | Obsah |
 |---|---|
-| `README_ruin.md` | tento plán |
-| `Zricenina_hrad_plan.png` | návrh půdorysu na terénu (sever nahoře, měřítko 20 m) |
-| `Zricenina_rozpad_pohledy.png` | odhad rozpadu – rozvinuté pohledy na zdi (původní obrys, dochované zdivo, dostupnost) |
-| `Zricenina_rozpad_hmota.png` | hmotový náčrt celé ruiny ze dvou stran |
-| `build/` | generátor: `build_ruin.py`, `ruin_layout.json`, návod `README_build_ruin.md`, náhled |
+| [[README_ruin]] | tento plán |
+| [[Zricenina_hrad_plan.png]] | návrh půdorysu na terénu (sever nahoře, měřítko 20 m) |
+| [[Zricenina_rozpad_pohledy.png]] | odhad rozpadu – rozvinuté pohledy na zdi (původní obrys, dochované zdivo, dostupnost) |
+| [[Zricenina_rozpad_hmota.png]] | hmotový náčrt celé ruiny ze dvou stran |
+| `build/` | generátor: `build_ruin.py`, `ruin_layout.json`, návod [[README_build_ruin]], náhled |
 | `ruin_layout_draft.json` | návrh obrysů v UE cm: hradba, palác, věž, brána, západní budova, sklep, cisterna, rampa |
 
 ## Zdroje

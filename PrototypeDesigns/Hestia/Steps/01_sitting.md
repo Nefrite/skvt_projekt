@@ -1,13 +1,25 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_sitting]
+step_kind: build
+updated: 2026-11-11
+# hra
+build_step: 01_sitting
+domains: [gameplay]
+entity: "[[Characters]]"
+---
 # 01 Sitting – posazení postavy na sedátko libovolné výšky
 
 Postava si na klávesu **E** sedne na židli, pařez, stoličku a podobně. Rozdíl výšky sedátka proti animaci se dorovná posunem pánve a IK nohou, takže jedna sada animací pokryje sedátka zhruba **30–60 cm**.
-Navazuje na `../README_animations.md` (dřep, skok, aliasy, Inertialization).
+Navazuje na [[README_animations]] (dřep, skok, aliasy, Inertialization).
 
 ## Obsah složky
 
 | Soubor | K čemu |
 |---|---|
-| `README_sitting.md` | Tento návod |
+| [[01_sitting]] | Tento návod |
 | `seat_test_station.py` | Postaví před kamerou testovací kvádry 30 / 45 / 60 cm |
 | `seat_place_selected.py` | Na vybrané actory položí `BP_Seat` a změří výšku sedáku |
 | `seat_report.py` | Vypíše všechna sedátka v mapě, označí ta mimo rozsah, uloží `Saved/SeatReport.csv` |

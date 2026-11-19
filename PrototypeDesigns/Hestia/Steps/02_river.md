@@ -1,3 +1,15 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_river_mud]
+step_kind: build
+updated: 2026-11-10
+# hra
+build_step: 02_river
+domains: [environment]
+entity: "[[Udoli_Reky]]"
+---
 # Řeka a bahnité koryto – Zřícenina v meandru
 
 Podklady a postup pro řeku (Water Body River) a materiál koryta (štěrk / bahno) v mapě `LapikusPrototypeMap`.

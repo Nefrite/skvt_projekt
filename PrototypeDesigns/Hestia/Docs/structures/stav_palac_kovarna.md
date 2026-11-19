@@ -1,6 +1,17 @@
+---
+# orchestrace
+type: state
+validity: valid
+updated: 2026-11-16
+# hra
+domain: structures
+depth: 4
+entity: "[[Palac_Kovarna]]"
+build_step: 05_constructions
+---
 # Kovárna v paláci (Palac_Kovarna) – stav stavby proti návrhu
 
-Stav: 16. 11. 2026 (kroky 1–4 hotové). Návrh: `navrh_palac_kovarna.md` (stejný přehled je v jeho kap. 0, při změně uprav oba). Rozměry: `tools/ruin/palac_spec.py`. Náhled: `05_constructions/Stavby_palac_kovarna_nahled.png`.
+Stav: 16. 11. 2026 (kroky 1–4 hotové). Návrh: [[navrh_palac_kovarna]] (stejný přehled je v jeho kap. 0, při změně uprav oba). Rozměry: `tools/ruin/palac_spec.py`. Náhled: `05_constructions/Stavby_palac_kovarna_nahled.png`.
 
 ## Co je hotové a co zbývá
 
@@ -67,4 +78,4 @@ Nové meshe nejsou (props, dílce stěny, žlab, rozsochy a sud už v projektu j
 
 1. Ověřit v UE krytinu s prostupem komína, lemování, stěnu z proutí, okap se sudem a vybavení; ruční doladění props uložit přes `06_furnishing/vybaveni/Palac_Kovarna.py` (`MODE = "capture"`).
 2. Odloženo: žhavé uhlí, saze, oheň a kouř, udusaná hlína.
-3. Před stavbou domu přepočítat koruny `Palac_J` v `navrh_palac_obydli_stred.md` (zeď je o 0,31 m níž).
+3. Před stavbou domu přepočítat koruny `Palac_J` v [[navrh_palac_obydli_stred]] (zeď je o 0,31 m níž).

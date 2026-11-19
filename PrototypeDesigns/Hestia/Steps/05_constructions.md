@@ -1,3 +1,14 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_constructions]
+step_kind: build
+updated: 2026-11-17
+# hra
+build_step: 05_constructions
+domains: [structures]
+---
 # 05 Constructions – dodatečné stavby a suť („druhé zabydlení“) – návod pro UE 5.8
 
 Do této složky patří všechno, co do zříceniny později přistavěli její obyvatelé, a volná suť na zemi. Staví se **zvlášť od zříceniny**: když ladíš schody, trámy nebo podestu, nemusíš přegenerovat celý hrad.
@@ -41,7 +52,7 @@ Skript používá generátor zříceniny jako knihovnu. Složka `03_ruin\blocks`
 2. **Pak stavby:** **Tools → Execute Python Script →**
    - **jedna stavba:** `05_constructions\stavby\Ostroh_Krov.py` (nebo `Ostroh_Dostavba.py`, `Ostroh_Podlaha.py`, `Vez_Patra.py`, `Palac_Kovarna_Pristresek.py`, `Palac_Kovarna_Vyhen.py`, `Palac_Kovarna_Stena.py`, `Palac_Kovarna_Okap.py`, `Sut.py`). Smaže a postaví jen tuto stavbu, ostatní zůstanou, jak jsou.
    - **všechno:** `05_constructions\build_constructions.py`.
-   - **zřícenina i stavby jedním spuštěním:** `build_normal.py` v kořeni prototypu (aditivně), nebo `build_fullscope.py` (oprava: smaže generované actory a meshe a vše postaví znovu; popis v `03_ruin\blocks\README_bloky.md` kap. 2.1).
+   - **zřícenina i stavby jedním spuštěním:** `build_normal.py` v kořeni prototypu (aditivně), nebo `build_fullscope.py` (oprava: smaže generované actory a meshe a vše postaví znovu; popis v [[03_ruin]] kap. 2.1).
    - Každý actor má tag `Zricenina_Stavby` a `stavba:<jméno>`. Zříceniny se build staveb nedotkne a build zříceniny nesmaže stavby.
 3. V Outlineru přibude:
    - `Stavby/Vez/Vez_Patra_Drevo`: trámy, prkna, průvlak, sloupy, schody a ochoz (Instanced Static Mesh),
@@ -70,7 +81,7 @@ Mazání v UE jde podle tagu `stavba:<jméno>`. Actor bez něj (ze starších bu
 2. Vyber je (Outliner `Stavby/Sut` nebo tag `Ruin_Physics`), stiskni **K** (Keep Simulation Changes) a simulaci ukonči.
 3. `MODE = "capture"` uloží jejich polohy.
 
-Usazené kameny ve hře spí, dokud do nich někdo nestrčí. Staticky bez fyziky: `MODE = "freeze"` (do dalšího buildu) nebo `RUBBLE_PHYSICS = False`. Jak silně hráč tlačí, se nastavuje v Character Movement postavy (viz `README_bloky.md`, kap. 5.3).
+Usazené kameny ve hře spí, dokud do nich někdo nestrčí. Staticky bez fyziky: `MODE = "freeze"` (do dalšího buildu) nebo `RUBBLE_PHYSICS = False`. Jak silně hráč tlačí, se nastavuje v Character Movement postavy (viz [[03_ruin]], kap. 5.3).
 
 ---
 
@@ -161,7 +172,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
 
 
-**`frames` → `Palac_Kovarna_Pristresek`** (typ `pult_roof`, `zr_stavby\pult.py`): přístřešek kovárny ve východní místnosti paláce, v koutě mezi `Palac_J` a věží (`Vez_Z`). Návrh: `new_designs\navrh_palac_kovarna.md`. Kostra, krytina s prostupem komína a lemování.
+**`frames` → `Palac_Kovarna_Pristresek`** (typ `pult_roof`, `zr_stavby\pult.py`): přístřešek kovárny ve východní místnosti paláce, v koutě mezi `Palac_J` a věží (`Vez_Z`). Návrh: [[navrh_palac_kovarna]]. Kostra, krytina s prostupem komína a lemování.
 
 - **Rám stavby:** `origin`, `u`, `v` = rám paláce z `palac_spec.py` (`s` podél `Palac_J` k věži, `n` k severu), rozměry v metrech. `axis` = osa, po které střecha padá (`"u"`: spád k západu). Výšky se počítají od terénu v bodě `ref` (střed přístřešku).
 - **Podpory** (`supports`): pozednice kolmé na spád, každá s polohou `at`, rozsahem `span`, vrchem `top`, průřezem `sec` a sloupy (`posts`, `post`).
@@ -202,7 +213,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
 **`addons` → `Palac_Kovarna_Kul`** (typ `props`, `zr_stavby\vybaveni.py`): pevný kůl s kůrou Ø 10 cm zatlučený do země zvenku pod přesahem, 1,5 m od `Palac_J` (1,5 m nad zemí, 0,4 m v zemi). Od něj vede hranice dřeva, ta je vybavení.
 
-**Vybavení kovárny** (kovadlina, měchy s pákou, brus, ponk, truhlík, nářadí s lištou, pruty, koš, hranice dřeva) je od 16. 11. 2026 v **`06_furnishing`** (skupina `Palac_Kovarna_Vybaveni`, `06_furnishing/README_furnishing.md`). Typ `props` (`zr_stavby/vybaveni.py`) je společný: v 05 pro pevné kusy, v 06 pro přenosné. Úklid suti v celé východní místnosti dělá `clear_poly` u `Palac_Kovarna_Pristresek` (s = 21,35–30,8; n = 0,65–8,85).
+**Vybavení kovárny** (kovadlina, měchy s pákou, brus, ponk, truhlík, nářadí s lištou, pruty, koš, hranice dřeva) je od 16. 11. 2026 v **`06_furnishing`** (skupina `Palac_Kovarna_Vybaveni`, [[06_furnishing]]). Typ `props` (`zr_stavby/vybaveni.py`) je společný: v 05 pro pevné kusy, v 06 pro přenosné. Úklid suti v celé východní místnosti dělá `clear_poly` u `Palac_Kovarna_Pristresek` (s = 21,35–30,8; n = 0,65–8,85).
 
 **`addons` → `Palac_Kovarna_Okap`** (typ `gutter`, `zr_stavby\okap.py`, 15. 11. 2026): žlab pod západním okapem přístřešku a sud na dešťovou vodu.
 
@@ -213,7 +224,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 
 **Etapy stavby (sady actorů).** Stavba s klíčem `stage` v datech se staví po sadách: `base` (stojí už v etapě 1 a zůstává), `final` (dostavba, přibude v etapě 2), `site` (staveniště, jen v etapě 1). Každý actor sady má tag `stage:<sada>` a v názvu příponu (`…_Kamen_Base`). Přepnutí etapy ve hře = zobrazit a skrýt actory podle tagu: etapa 1 = `base` + `site`, etapa 2 = `base` + `final`. Dílec může mít vlastní sadu (`Stone.stage`), jinak patří do sady stavby; u ohniště dává `stage_top` sadu dymníku a komína. Sady jsou v `zrlib\config.py` (`STAGES`, `STAGE_TAG`). Stavby bez `stage` (věž, ostroh, kovárna) se nemění.
 
-**`addons` → `Palac_Obydli_Kamen`** (typ `stone_fill`, `zr_stavby\zdivo.py`, sada `base`): kamenné části domu posádky v prostřední místnosti paláce. Návrh a plán po etapách: `new_designs\navrh_palac_obydli_stred.md`, kap. 0.
+**`addons` → `Palac_Obydli_Kamen`** (typ `stone_fill`, `zr_stavby\zdivo.py`, sada `base`): kamenné části domu posádky v prostřední místnosti paláce. Návrh a plán po etapách: [[navrh_palac_obydli_stred]], kap. 0.
 
 - **Části** (`parts`): obdélník v rámu paláce (`a` = s, `c` = n), vrch `top` v m nad terénem v bodě `ref`, mezery `gaps` (dveře).
   - `W`, `E`: srovnání korun `Palac_pricka_1` a `_2` na 1,4 m v celé tloušťce 0,8 m, včetně zazdění jejich dveří.

@@ -1,3 +1,13 @@
+---
+# orchestrace
+type: state
+validity: valid
+updated: 2026-11-11
+# hra
+domain: gameplay
+depth: 5
+entity: "[[Characters]]"
+---
 # Characters – animace postavy (přehled a rozšíření)
 
 Evidence animací postavy v projektu: co je hotové, co je k dispozici a co se bude postupně přidávat.

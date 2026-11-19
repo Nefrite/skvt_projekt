@@ -1,8 +1,21 @@
+---
+# orchestrace
+type: design
+validity: valid
+alternative_to: ["[[navrh_palac_obydli]]"]
+updated: 2026-11-16
+# hra
+status: in_progress
+domain: structures
+depth: 4
+entity: "[[Palac_Obydli]]"
+build_step: 05_constructions
+---
 # Návrh: Palac_Obydli – obytná stavba posádky v prostřední místnosti paláce
 
-Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **staví se po krocích** (16. 11. 2026): plán po etapách a stav je v kap. 0, která platí přednostně; kamenné části jsou ve skriptech. Je to kopie návrhu `navrh_palac_obydli.md` (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: `navrh_palac_obydli_stred.png` (hotová stavba) a `navrh_palac_obydli_stred_etapa1.png` (rozestavěný stav). Jsou to schémata, ne přesné modely.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **staví se po krocích** (16. 11. 2026): plán po etapách a stav je v kap. 0, která platí přednostně; kamenné části jsou ve skriptech. Je to kopie návrhu [[navrh_palac_obydli]] (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: [[navrh_palac_obydli_stred.png]] (hotová stavba) a [[navrh_palac_obydli_stred_etapa1.png]] (rozestavěný stav). Jsou to schémata, ne přesné modely.
 
-**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`. **Tohle je platný návrh domu**, varianta ve východní místnosti je zavržená.
+**Připravenost (15. 11. 2026)** – podrobně [[CHECKLIST_assets_navrhy]]. **Tohle je platný návrh domu**, varianta ve východní místnosti je zavržená.
 - **Hotové dílce stavby:** loupaná kulatina `SM_RuinLog` (srub), trámy, sloupy a prkna (`SM_RuinTimber`, `SM_RuinPost`, `SM_RuinPlank`), žlab `SM_RuinGutter` / `SM_RuinGutterBark` s vidlicí `SM_RuinForkHead`, dymník `SM_RuinSmokeHood`, komín `SM_RuinChimney`. Materiály: loupané dřevo (`peeled`), výplň spár srubu `MI_RuinChinking`, mazanina, proutí.
 - **Hotové vybavení (kap. 4.8):** lůžko `SM_RuinBed` / `SM_RuinBedFolded`, stůl `SM_RuinTable`, truhla `SM_RuinChest`, police `SM_RuinShelf`, ponk `SM_RuinWorkbench` (menší škálováním), hranice dřeva `SM_RuinWoodpile`, dveře `SM_RuinDoor`, okenice `SM_RuinShutter` (0,5 × 0,5 m škálováním), žebřík `SM_RuinLadder`.
 - **Hotové pro staveniště (kap. 9.2):** žebřík, koš `SM_RuinBasket`, tesařské nářadí (sekera, širočina, dvoumužná pila, kladivo, palice).
@@ -12,7 +25,7 @@ Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, 
 
 ## 0. Plán stavby po etapách (16. 11. 2026, platí přednostně před kap. 3–9)
 
-Dohodnuto s Jirkou 15.–16. 11. 2026. Kde se tato kapitola liší od starších kapitol níž, platí tato. Co zbývá dodělat a na co si dát pozor, je v předávacím dokumentu `new_designs/predani_palac_obydli_stavitel.md`.
+Dohodnuto s Jirkou 15.–16. 11. 2026. Kde se tato kapitola liší od starších kapitol níž, platí tato. Co zbývá dodělat a na co si dát pozor, je v předávacím dokumentu [[predani_palac_obydli_stavitel]].
 
 ### 0.1 Zásady
 
@@ -34,7 +47,7 @@ Dohodnuto s Jirkou 15.–16. 11. 2026. Kde se tato kapitola liší od starších
 
 ### 0.2 Výchozí stav po úpravě `Palac_J` (změřeno z dat 16. 11. 2026)
 
-Celá `Palac_J` je zanořená o 0,31 m (`navrh_palac_kovarna.md` kap. 3). V prostřední místnosti z toho plyne:
+Celá `Palac_J` je zanořená o 0,31 m ([[navrh_palac_kovarna]] kap. 3). V prostřední místnosti z toho plyne:
 
 | s (m) | Koruna `Palac_J`, vnitřní líc (m nad terénem) |
 |---|---|
@@ -357,7 +370,7 @@ Dům zabírá jižní část místnosti v celé délce: s = 10,1–21,4 (obě bo
 
 ## 8. Rozdíly proti návrhu ve východní místnosti
 
-| | Východní (`navrh_palac_obydli.md`) | Prostřední (tento dokument) |
+| | Východní ([[navrh_palac_obydli]]) | Prostřední (tento dokument) |
 |---|---|---|
 | Plocha uvnitř | 49 m² | 52 m² |
 | Východní stěna | věž | kámen + srub na `Palac_pricka_2` |

@@ -1,3 +1,12 @@
+---
+# orchestrace
+type: checklist
+validity: valid
+updated: 2026-11-17
+# hra
+domain: structures
+entity: "[[Lapikus]]"
+---
 # Checklist: assety a podklady pro nové návrhy (11/2026)
 
 Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `new_designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 2, zapracované odpovědi Jirky (14. 11. 2026). Nic zatím není hotové, čeká na prioritizaci.**
@@ -6,11 +15,11 @@ Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro n
 
 | Návrh | Stav | Etapa |
 |---|---|---|
-| `navrh_vez_pristresek.md` | **specifikace pro stavitele (17. 11. 2026)**, nepostaveno: varianta B, průlomy `Vez_J` + `Vez_V`, vyšší střed `Vez_Z`, plynulá `Vez_S` | 1 i 2 (sada `base`) |
-| `navrh_palac_obydli_stred.md` (+ `_etapa1.png`) | dům v prostřední místnosti; **staví se** (16. 11. 2026: plán po etapách v kap. 0, kamenné části hotové) | 1 = rozestavěno, 2 = hotovo |
-| `navrh_palac_kovarna.md` | vybraný návrh, **staví se** (15. 11. 2026: úprava 03, kostra přístřešku a výheň v koutě hotové; přehled v kap. 0 návrhu) | 1 i 2 |
-| `navrh_brana_straz.md` | rozestavěno (podesta 16. 11. 2026, kap. 0) | otevřené |
-| `navrh_nadvori_stan.md` | **možná bude**, v seznamu se drží | jen 1 |
+| [[navrh_vez_pristresek]] | **specifikace pro stavitele (17. 11. 2026)**, nepostaveno: varianta B, průlomy `Vez_J` + `Vez_V`, vyšší střed `Vez_Z`, plynulá `Vez_S` | 1 i 2 (sada `base`) |
+| [[navrh_palac_obydli_stred]] (+ `_etapa1.png`) | dům v prostřední místnosti; **staví se** (16. 11. 2026: plán po etapách v kap. 0, kamenné části hotové) | 1 = rozestavěno, 2 = hotovo |
+| [[navrh_palac_kovarna]] | vybraný návrh, **staví se** (15. 11. 2026: úprava 03, kostra přístřešku a výheň v koutě hotové; přehled v kap. 0 návrhu) | 1 i 2 |
+| [[navrh_brana_straz]] | rozestavěno (podesta 16. 11. 2026, kap. 0) | otevřené |
+| [[navrh_nadvori_stan]] | **možná bude**, v seznamu se drží | jen 1 |
 
 **Rozhodnuto (Jirka, 14. 11. 2026):**
 - **Kulatina s kůrou i bez kůry**, podle stavby (kap. 2.1).
@@ -102,8 +111,8 @@ tools/meshes/
 - ☑ Rozhodnuto: jeden vstup `tools/meshes/gen_meshes.py` + moduly podle materiálu (14. 11. 2026). **Hotové:** `mesh_common.py`, `mesh_stone.py`, `mesh_wood.py`. Další moduly (`mesh_bark`, `mesh_wattle`, `mesh_textile`, `mesh_props`) přibydou s novými tvary.
 - ☑ Výstupní složky podle kategorie (14. 11. 2026): OBJ v `meshes/<kategorie>/` v kořeni (`stone`, `wood`), v UE `Ruin/Stones`, `Ruin/Wood` (`MESH_DIRS` v `zrlib/config.py`). Dřevo přesunuté do `Ruin/Wood`, ověřeno v UE (oba buildy, redirectory smazané). Další kategorie = modul + `CATEGORIES` + `MESH_DIRS` + `_needed_meshes`.
 - ☑ **Přesun beze změny tvaru:** stávající kameny a dřevo musí po refaktoringu vyjít bit po bitu stejné (md5 OBJ před a po, případně `fingerprint.py`). Teprve potom přidávat nové tvary. **Ověřeno:** všech 42 OBJ shodných s repem (md5), stejný výpis.
-- ☑ Starý `gen_stones.py` nechat jako tenký wrapper (volá `gen_meshes.py stone wood`), aby platily návody v `README_bloky.md`. Nebo opravit dokumentaci.
-- ☑ Aktualizovat `README_bloky.md`, `README_constructions.md`, `zrlib/config.py` (komentář), `README_PROJEKT.md` a hint ve `Zricenina_03_ruin_stav.md` (zjednodušení sítě kamenů).
+- ☑ Starý `gen_stones.py` nechat jako tenký wrapper (volá `gen_meshes.py stone wood`), aby platily návody v [[03_ruin]]. Nebo opravit dokumentaci.
+- ☑ Aktualizovat [[03_ruin]], [[05_constructions]], `zrlib/config.py` (komentář), [[README_PROJEKT]] a hint ve [[Zricenina_03_ruin_stav]] (zjednodušení sítě kamenů).
 
 **Tvary „na míru“** (plátno, lana, výplet konkrétní stěny, plachta stanu) nejsou knihovní meshe, závisí na poloze dílců stavby. ❓ Rozhodnout, kde vznikají:
 - (a) při `gen_constructions.py` jako OBJ pro každou stavbu a pak import do UE,
@@ -276,14 +285,14 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 
 | ☐ | Zeď | Změna | Zdroj |
 |---|---|---|---|
-| ☑ | `Vez_V` | 2 × `breaches` (hlavní průlom, nejnižší 9,45 m, severní bok mírný `slope_r` 0,35 až k SV rohu 11,2 m) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | `navrh_vez_pristresek.md` 3.1 |
+| ☑ | `Vez_V` | 2 × `breaches` (hlavní průlom, nejnižší 9,45 m, severní bok mírný `slope_r` 0,35 až k SV rohu 11,2 m) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | [[navrh_vez_pristresek]] 3.1 |
 | ☑ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.2 |
 | ☑ | `Vez_Z` | 2 × `protect` (s = 7,0–8,2 `min` 12,1; s = 8,2–9,5 `min` 11,8): střed zdi vyšší, jen vedlejší škody (Jirka 17. 11. 2026) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.3 |
 | ☑ | `Vez_S` | zrušit `breaches` s = 3,5–7,5 (tvar U); nový `breaches` (rampa od SV rohu, `power_r` 0,7) + 8 × `protect` po 1,5 m: koruna plynule klesá od SZ rohu k SV rohu (Jirka 17. 11. 2026) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.4 |
-| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | `navrh_palac_obydli_stred.md` kap. 0.2 |
-| ☑ | `Palac_J` | celá zeď zanořená o jednu řadu do země (`z_offset` −0,31), rozebraná koruna u věže (`breaches` s = 29,6–33, komín kovárny ji přesahuje) a `kapsa` pro východní pozednici kovárny v s = 30,55 (15. 11. 2026, neověřeno v UE) | `navrh_palac_kovarna.md` kap. 3, `palac_spec.py` |
-| ☑ | `Palac_S` | portál přesunutý do západní místnosti (s = 4,5, `protect` s = 2,5–6,5), ve střední místnosti hrubý průchod (`prulom` s = 16, 1,8 m) (16. 11. 2026, neověřeno v UE) | `navrh_palac_obydli_stred.md` kap. 0.2a, `gen_layout.py` |
-| ☑ | `Palac_pricka_2` | hrubý průchod ze zápraží domu ke kovárně (`prulom` n = 6,9–8,5) (16. 11. 2026, neověřeno v UE) | `navrh_palac_obydli_stred.md` kap. 0.2a, `palac_spec.py` → `D_PASS` |
+| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | [[navrh_palac_obydli_stred]] kap. 0.2 |
+| ☑ | `Palac_J` | celá zeď zanořená o jednu řadu do země (`z_offset` −0,31), rozebraná koruna u věže (`breaches` s = 29,6–33, komín kovárny ji přesahuje) a `kapsa` pro východní pozednici kovárny v s = 30,55 (15. 11. 2026, neověřeno v UE) | [[navrh_palac_kovarna]] kap. 3, `palac_spec.py` |
+| ☑ | `Palac_S` | portál přesunutý do západní místnosti (s = 4,5, `protect` s = 2,5–6,5), ve střední místnosti hrubý průchod (`prulom` s = 16, 1,8 m) (16. 11. 2026, neověřeno v UE) | [[navrh_palac_obydli_stred]] kap. 0.2a, `gen_layout.py` |
+| ☑ | `Palac_pricka_2` | hrubý průchod ze zápraží domu ke kovárně (`prulom` n = 6,9–8,5) (16. 11. 2026, neověřeno v UE) | [[navrh_palac_obydli_stred]] kap. 0.2a, `palac_spec.py` → `D_PASS` |
 | ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Vez_Z`, `Palac_J`, `Palac_S`, `Palac_pricka_2` se po přestavbě změní (17. 11. 2026 prázdný) | – |
 
 ---

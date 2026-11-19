@@ -1,8 +1,20 @@
+---
+# orchestrace
+type: design
+validity: valid
+alternative_to: ["[[navrh_palac_obydli_stred]]"]
+updated: 2026-11-15
+# hra
+status: rejected
+domain: structures
+depth: 2
+entity: "[[Palac_Obydli]]"
+---
 # Návrh: Palac_Obydli – obytná stavba posádky ve východní části paláce
 
-Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno. Vybraná varianta C** (pultová střecha opřená o jižní zeď a věž, rozhodl Jirka 14. 11. 2026). Náčrt: `navrh_palac_obydli.png` (schéma, ne přesný model). Nahrazuje východní místnost ze staršího `navrh_palac_posadka.md`.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno. Vybraná varianta C** (pultová střecha opřená o jižní zeď a věž, rozhodl Jirka 14. 11. 2026). Náčrt: [[navrh_palac_obydli.png]] (schéma, ne přesný model). Nahrazuje východní místnost ze staršího `navrh_palac_posadka.md`.
 
-**ZAVRŽENÁ VARIANTA (stav 15. 11. 2026).** Dům u věže se stavět nebude: ve východní místnosti má být kovárna a komín u věže má špatný tah. Platí `navrh_palac_obydli_stred.md` (dům v prostřední místnosti). Tento dokument zůstává jen pro srovnání (rozdíly jsou v kap. 8 platného návrhu) a neaktualizuje se.
+**ZAVRŽENÁ VARIANTA (stav 15. 11. 2026).** Dům u věže se stavět nebude: ve východní místnosti má být kovárna a komín u věže má špatný tah. Platí [[navrh_palac_obydli_stred]] (dům v prostřední místnosti). Tento dokument zůstává jen pro srovnání (rozdíly jsou v kap. 8 platného návrhu) a neaktualizuje se.
 
 ## 1. Zadání
 

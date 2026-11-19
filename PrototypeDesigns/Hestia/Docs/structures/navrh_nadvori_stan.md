@@ -1,8 +1,19 @@
+---
+# orchestrace
+type: design
+validity: valid
+updated: 2026-11-16
+# hra
+status: on_hold
+domain: structures
+depth: 2
+entity: "[[Nadvori_Stan]]"
+---
 # Návrh: Nadvori_Stan – zabydlený vojenský stan pro dva na nádvoří
 
 Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **podmíněný návrh, nepostaveno.** Jirka zatím nerozhodl, jestli stan ve hře bude (14. 11. 2026). Náčrt není, jen popis slovy v kap. 10.
 
-**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md` (položky ⛺):
+**Připravenost (15. 11. 2026)** – podrobně [[CHECKLIST_assets_navrhy]] (položky ⛺):
 - **Rozhodnutí pořád chybí.** Stan se drží v seznamu s nízkou prioritou.
 - **Hotové dílce:** tyče s kůrou `SM_RuinPoleBark` (stojky, hřeben, krokvičky), kolíky `SM_RuinStakeSmall`, vidlice `SM_RuinForkHead`, pásy kůry `SM_RuinBarkStrip`, lano `SM_RuinRope`, špalek `SM_RuinStump`, materiál plátna `MI_RuinCanvas`.
 - **Chybí:** plachta stanu do A, lůžka z klád a tyčí, výplň lůžek, ranec a truhlička, typy staveb `tent` a `bark_roof`, přepínač `ETAPA`.
@@ -22,7 +33,7 @@ Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, 
 
 ## 2. Výchozí stav (spočítáno z dat, 11/2026)
 
-**Souřadnice paláce** (stejné jako v `navrh_palac_obydli_stred.md`): `s` v metrech podél `Palac_J` od jejího prvního bodu (UE −2350 / −50), `n` v metrech kolmo k severu. Jednotkové vektory v UE: `s` = (0,9758; −0,2184), `n` = (−0,2189; −0,9757). Výšky v metrech nad terénem (v datech rovina Z 3129).
+**Souřadnice paláce** (stejné jako v [[navrh_palac_obydli_stred]]): `s` v metrech podél `Palac_J` od jejího prvního bodu (UE −2350 / −50), `n` v metrech kolmo k severu. Jednotkové vektory v UE: `s` = (0,9758; −0,2184), `n` = (−0,2189; −0,9757). Výšky v metrech nad terénem (v datech rovina Z 3129).
 
 Nádvoří je pruh mezi severní zdí paláce (vnější líc n = 10,2) a severní hradbou.
 
@@ -100,7 +111,7 @@ Stan stojí u paty severní hradby v nejvyšším úseku (s = 21,5–23,9), hře
 
 ## 6. Vazby, kolize, pořadí
 
-- **Staveniště domu:** hromada krokví a prken leží podle `navrh_palac_obydli_stred.md` před severní zdí paláce (n = 10,5–12,3). Mezi ní a stanem zůstává průchod 2,3 m.
+- **Staveniště domu:** hromada krokví a prken leží podle [[navrh_palac_obydli_stred]] před severní zdí paláce (n = 10,5–12,3). Mezi ní a stanem zůstává průchod 2,3 m.
 - **Cesta brána → vstup do paláce (průchod v s = 16)** vede tímto průchodem. Musí zůstat volná v šířce aspoň 1,2 m.
 - **Cisterna:** stan je mimo její obrys z návrhu dat. Až bude poloha určená, zkontrolovat.
 - **Šňůry a kolíky** nesmí zasahovat do průchodu. Na jižní straně končí nejdál v n = 14,1.

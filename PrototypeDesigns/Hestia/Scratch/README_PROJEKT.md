@@ -1,3 +1,13 @@
+---
+# orchestrace
+type: scratch
+validity: valid
+intake: prepared
+source: manual
+updated: 2026-11-17
+# hra
+entity: "[[Lapikus_Region]]"
+---
 # Zřícenina v meandru – stav projektu a jak navázat
 
 Prototyp lokace pro kurz *Game design pro začátečníky* (skvt.cz): zřícenina hradu na ostrohu v meandru potoka, zarostlá smíšeným lesem.
@@ -5,7 +15,7 @@ Inspirace: zřícenina **Lapikus** nad Plenkovickým potokem (screenshot z mapy 
 
 Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká padla rozhodnutí, co je hotové a jak podklady znovu vygenerovat. Stav: 15. 11. 2026.
 
-**Kam dál:** pravidla, konvence, ověřené pasti a rozhodnutí kolem hradu jsou v `KNOWHOW_hrad.md`. Aktuální stav zříceniny je v `03_ruin\Zricenina_03_ruin_stav.md`. Přehled vybavení (06) je v `FURNISHING.md`.
+**Kam dál:** pravidla, konvence, ověřené pasti a rozhodnutí kolem hradu jsou v `KNOWHOW_hrad.md`. Aktuální stav zříceniny je v [[Zricenina_03_ruin_stav]]. Přehled vybavení (06) je v [[FURNISHING]].
 
 ---
 
@@ -13,23 +23,23 @@ Tento dokument shrnuje vše potřebné k návratu k tématu: kde co je, jaká pa
 
 | Oblast | Stav | Složka / návod |
 |---|---|---|
-| Terén (heightmapa, import) | ✅ hotovo, naimportováno v UE | `01_terrain/README_terrain.md` |
-| Materiál terénu podle sklonu (tráva / štěrk / kámen) | ✅ základ hotový | `01_terrain/README_terrain.md`, `01_terrain/M_Landscape_Forest_Auto.md` |
-| Ladění přechodů ve stupních + debug | 📝 návod připraven, neověřeno v UE | `01_terrain/README_terrain.md` kap. 6 |
-| Player Start, procházení | ✅ návod, nastaveno | `01_terrain/README_terrain.md` kap. 4 |
-| Řeka (Water Body River) | ✅ vložena a odladěna | `02_river/README_river_mud.md` |
-| Štěrk / bahno v korytě (maska) | ⏸ odloženo, podklady hotové | `02_river/README_river_mud.md` kap. 2 |
-| Les (PCG) | 📝 plán + zóny + spliny, čeká na stažení stromů | `04_forest/README_forest.md`, `04_forest/README_assets_stromy.md` |
-| Zřícenina hradu (03) | ✅ postavená v UE skriptem z jednotlivých kamenů (stav ~1650): 18 zdí, asi 23 000 bloků, tři části (`Obvod`, `Palac`, `Ostroh`) | `03_ruin/Zricenina_03_ruin_stav.md`, `03_ruin/blocks/README_bloky.md` |
-| Dostavby „druhého zabydlení“ (05) | ✅ dřevo ve věži, krov, kamenná dostavba a podlaha u ostrohu, suť s fyzikou | `05_constructions/README_constructions.md` |
-| Knihovna meshí a props | ✅ 111 meshí v UE (kameny, hraněné dřevo, kulatina, kůra, proutí, lano, plátno, props kovárny a obydlí) s vlastními texturami a materiály | `05_constructions/README_constructions.md`, `CHECKLIST_assets_navrhy.md` |
-| Další stavby (věž, palác, brána, nádvoří) | 📝 specifikace hotové, nepostaveno; chybí nové typy staveb v 05 a úpravy 03 | `new_designs/navrh_*.md`, `CHECKLIST_assets_navrhy.md` |
+| Terén (heightmapa, import) | ✅ hotovo, naimportováno v UE | [[01_terrain]] |
+| Materiál terénu podle sklonu (tráva / štěrk / kámen) | ✅ základ hotový | [[01_terrain]], [[M_Landscape_Forest_Auto]] |
+| Ladění přechodů ve stupních + debug | 📝 návod připraven, neověřeno v UE | [[01_terrain]] kap. 6 |
+| Player Start, procházení | ✅ návod, nastaveno | [[01_terrain]] kap. 4 |
+| Řeka (Water Body River) | ✅ vložena a odladěna | [[02_river]] |
+| Štěrk / bahno v korytě (maska) | ⏸ odloženo, podklady hotové | [[02_river]] kap. 2 |
+| Les (PCG) | 📝 plán + zóny + spliny, čeká na stažení stromů | [[README_forest]], [[README_assets_stromy]] |
+| Zřícenina hradu (03) | ✅ postavená v UE skriptem z jednotlivých kamenů (stav ~1650): 18 zdí, asi 23 000 bloků, tři části (`Obvod`, `Palac`, `Ostroh`) | [[Zricenina_03_ruin_stav]], [[03_ruin]] |
+| Dostavby „druhého zabydlení“ (05) | ✅ dřevo ve věži, krov, kamenná dostavba a podlaha u ostrohu, suť s fyzikou | [[05_constructions]] |
+| Knihovna meshí a props | ✅ 111 meshí v UE (kameny, hraněné dřevo, kulatina, kůra, proutí, lano, plátno, props kovárny a obydlí) s vlastními texturami a materiály | [[05_constructions]], [[CHECKLIST_assets_navrhy]] |
+| Další stavby (věž, palác, brána, nádvoří) | 📝 specifikace hotové, nepostaveno; chybí nové typy staveb v 05 a úpravy 03 | `new_designs/navrh_*.md`, [[CHECKLIST_assets_navrhy]] |
 
 ### Další kroky (doporučené pořadí)
 
-1. **Les:** rozhodnout, jak řešit velikost stromů v gitu (LFS / `.gitignore`), stáhnout Quixel Megaplants, zapnout PCG, vložit spliny zón a postavit `PCG_Forest` (checklist v `04_forest\README_forest.md`).
+1. **Les:** rozhodnout, jak řešit velikost stromů v gitu (LFS / `.gitignore`), stáhnout Quixel Megaplants, zapnout PCG, vložit spliny zón a postavit `PCG_Forest` (checklist v [[README_forest]]).
 2. **Koryto:** štěrk a bahno v materiálu (`02_river` kap. 2), případně stezka z `T_ForestZones_505.png` (kanál B).
-3. **Hrad:** stavby z návrhů v `new_designs` podle priorit v `CHECKLIST_assets_navrhy.md` (kovárna a dům v paláci, přístřešek na věži, stráž na bráně). Potřebují nové typy staveb v 05 (`pult_roof`, `log_wall`, `hearth`…), rozmístění props a přepínač etap.
+3. **Hrad:** stavby z návrhů v `new_designs` podle priorit v [[CHECKLIST_assets_navrhy]] (kovárna a dům v paláci, přístřešek na věži, stráž na bráně). Potřebují nové typy staveb v 05 (`pult_roof`, `log_wall`, `hearth`…), rozmístění props a přepínač etap.
 4. **Atmosféra:** Exponential Height Fog, nízké slunce, `P_Ambient_Dust`; oheň a kouř pro kovárnu a ohniště.
 
 ---
@@ -52,7 +62,7 @@ Pluginy zatím nejsou zapsané v `skvt_projekt.uproject`. Po zapnutí zkontroluj
 
 **Git:**
 
-- Repo nemá Git LFS, GitHub odmítne soubor > 100 MB. Týká se hlavně stažených stromů (viz `04_forest\README_forest.md` kap. 3 a `README_assets_stromy.md`).
+- Repo nemá Git LFS, GitHub odmítne soubor > 100 MB. Týká se hlavně stažených stromů (viz [[README_forest]] kap. 3 a [[README_assets_stromy]]).
 - `.gitignore` ignoruje `SourceArt/**/*.png`. Pokud se podklady přesunou do repa, použij jinou složku, např. `LevelSource/Zricenina/`.
 
 ---
@@ -186,4 +196,4 @@ Po změně terénu je potřeba přegenerovat i kroky 2–5 a heightmapu v UE zno
   - uzel **Cosine → Period** (ladění ve stupních)
   - uzly PCG pro uzavřené spliny jako plochu
 - Plavání postavy ve vodě (Water plugin + Character Movement).
-- Hrad: nerozhodnuté body (stan na nádvoří, umístění kovárny, výstup na podestu brány, přepínání etap, cisterna) jsou v `CHECKLIST_assets_navrhy.md` kap. 9 a `KNOWHOW_hrad.md` kap. 7.
+- Hrad: nerozhodnuté body (stan na nádvoří, umístění kovárny, výstup na podestu brány, přepínání etap, cisterna) jsou v [[CHECKLIST_assets_navrhy]] kap. 9 a `KNOWHOW_hrad.md` kap. 7.

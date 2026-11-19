@@ -1,3 +1,14 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_furnishing]
+step_kind: build
+updated: 2026-11-17
+# hra
+build_step: 06_furnishing
+domains: [structures]
+---
 # 06_furnishing – vybavení
 
 Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (05): **vybavení je všechno, co člověk přenese** (rozhodl Jirka). Pevné části staveb (výheň, sloupy, stěny, žlab, sud pod okapem, kůl zatlučený do země) zůstávají v `05_constructions`.
@@ -31,7 +42,7 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 
 ## 3. Skupiny
 
-**`Palac_Kovarna_Vybaveni`** – vybavení kovárny ve východní místnosti paláce (`new_designs/navrh_palac_kovarna.md` kap. 4.4). Polohy v rámu paláce (`s`, `n`), konstanty `K_*` a funkce `kovarna_vybaveni()` v `tools/ruin/palac_spec.py`:
+**`Palac_Kovarna_Vybaveni`** – vybavení kovárny ve východní místnosti paláce ([[navrh_palac_kovarna]] kap. 4.4). Polohy v rámu paláce (`s`, `n`), konstanty `K_*` a funkce `kovarna_vybaveni()` v `tools/ruin/palac_spec.py`:
 
 - kovadlina na špalku (vrch 0,75 m) v s = 28,0; n = 1,4; kalicí sud (28,3; 2,6); hřebovnice na menším špalku (27,35; 1,75);
 - měchy podél věže, výfučna v otvoru boční zídky výhně (0,91 m); páka Ø 6 cm na laně z krokve n = 2,7, s madlem měchů spojená lanem;

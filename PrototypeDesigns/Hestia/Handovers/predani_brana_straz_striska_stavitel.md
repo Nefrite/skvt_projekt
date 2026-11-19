@@ -1,8 +1,18 @@
+---
+# orchestrace
+type: handover
+validity: valid
+updated: 2026-11-16
+# hra
+domain: structures
+entity: "[[Brana_Straz]]"
+build_step: 05_constructions
+---
 # Strážní stanoviště nad branami – stříška z kůry (etapa 2): návrh a instrukce pro stavitele
 
-Stav: 16. 11. 2026. Připravil architekt (session s Jirkou). **Návrh, nepostaveno.** Nahrazuje kap. 4.4 v `navrh_brana_straz.md`: ta počítala s podestou a kryty, které dnes vypadají jinak.
+Stav: 16. 11. 2026. Připravil architekt (session s Jirkou). **Návrh, nepostaveno.** Nahrazuje kap. 4.4 v [[navrh_brana_straz]]: ta počítala s podestou a kryty, které dnes vypadají jinak.
 
-Čti spolu s: `AGENT_Stavitel_hrad.md`, `KNOWHOW_hrad.md`, `new_designs/navrh_brana_straz.md` kap. 0 (skutečný stav stanoviště), `tools/ruin/brana_spec.py`.
+Čti spolu s: `AGENT_Stavitel_hrad.md`, `KNOWHOW_hrad.md`, [[navrh_brana_straz]] kap. 0 (skutečný stav stanoviště), `tools/ruin/brana_spec.py`.
 
 ## 1. Zadání
 
@@ -99,4 +109,4 @@ Pultová stříška v severovýchodním koutě, spád 22° k východu. Voda sté
 - Nové soubory jen do `skvt_projekt\PrototypeDesigns\Lapikus`; v `GameDesign\Claude outputs\Lapikus` jen přepisuj existující kopie.
 - Nikdy nepřepisuj `manual_edits.json` ani `constructions_edits.json`; `constructions.json` jen generátorem.
 - Sdílené soubory (`build_constructions.py`, `gen_constructions.py`, `config.py`) mění i jiné stavby: přidávej, neměň cizí data, po změně pusť celé `run_checks.py`.
-- Po dokončení zapiš stav do `navrh_brana_straz.md` kap. 0, `03_ruin/Zricenina_03_ruin_stav.md`, `05_constructions/README_constructions.md` a `CHECKLIST_assets_navrhy.md`. V hlášení uveď, co je a není ověřené v UE a co má Jirka spustit.
+- Po dokončení zapiš stav do [[navrh_brana_straz]] kap. 0, [[Zricenina_03_ruin_stav]], [[05_constructions]] a [[CHECKLIST_assets_navrhy]]. V hlášení uveď, co je a není ověřené v UE a co má Jirka spustit.

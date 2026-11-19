@@ -1,3 +1,15 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_bloky]
+step_kind: build
+updated: 2026-11-15
+# hra
+build_step: 03_ruin
+domains: [structures]
+entity: "[[Lapikus]]"
+---
 # 03 Ruin – zřícenina z kamenných bloků (stav ~1650) – návod pro UE 5.8
 
 Nová metoda generování: zřícenina se skládá **z jednotlivých kamenných bloků** (~18 500 kusů) místo svislých sloupců.
@@ -5,7 +17,7 @@ Nová metoda generování: zřícenina se skládá **z jednotlivých kamenných 
 - Okna, průchody a výšky zdí upravíš **bouracími objemy přímo v levelu** (Trigger Box s tagem, kap. 5) nebo v datech (kap. 4) a přegeneruješ.
 - Jednotlivé kameny můžeš rozložit na samostatné actory, ručně posunout a smazat. Změny se pamatují i po přegenerování.
 
-![Náhled (spočítáno mimo UE)](Zricenina_bloky_nahled.png)
+![Náhled (spočítáno mimo UE)](../../Lapikus/03_ruin/blocks/Zricenina_bloky_nahled.png)
 
 **Nastavení vzhledu** (materiály `MAT_*`, `MAT_LOOK`, `MAT_TOP`, zaoblené kameny `USE_STONE_MESHES`, `STONE_*`, dřevo `WOOD_*`, fyzika `STONE_PHYSICS`, tagy) je od 11/2026 v **`zrlib\config.py`** v kořeni repozitáře a platí pro 03 i 05. Nahoře v `build_ruin_blocks.py` zůstává jen nastavení běhu (`LAYOUT_PATH`, `AGE`, `OVERRIDE`, `TERRAIN_FROM_LEVEL`, `ONLY_WALLS`, `CAST`, `CASTI`, `MODE`). Struktura kódu je v kap. 7.
 
@@ -28,7 +40,7 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 
 **Rozpad** jde v tomto pořadí:
 
-1. **Výška zdi:** model rozpadu z `README_ruin.md` kap. 4 (čas, rozebírání podle dostupnosti a výšky, otvory) určí, jak vysoko zeď v daném místě sahá.
+1. **Výška zdi:** model rozpadu z [[README_ruin]] kap. 4 (čas, rozebírání podle dostupnosti a výšky, otvory) určí, jak vysoko zeď v daném místě sahá.
 2. **Bloky nad touto výškou zmizí.** Na koruně zůstanou jednotlivé uvolněné a pootočené kameny.
 3. **Podpora:** blok bez opory pod sebou nezůstane (výjimka: je nad intaktním nadpražím nebo obloukem).
 4. **Rozebraný líc:** kameny se berou hlavně **shora**, v pásu pod korunou (`TOP_ROB`, `TOP_ROB_D`). Líc pod korunou ustupuje stupňovitě. U paty jen menší hloučky 2–4 kamenů, kam se dosáhne (`FACE_ROB_BASE`, víc u `access_points`). Ve věži se výška u paty měří zevnitř od podlahy. Kameny se vybírají v hloučcích (plynulý šum), ne po jednom. Vnější líc nad útesem zůstává.
@@ -55,8 +67,8 @@ Původní sloupcový generátor (`03_ruin\build`) zůstává beze změny. Obě m
 - `SM_RuinDressed_R12…R34_A/B`: opracované kameny ostění, nadpraží, parapetů a výklenků střílen. Rovné plochy, zaoblení 2,4–3,7 cm, nahoře o něco víc.
 - `SM_RuinAshlar`: kvádr s lehce sraženými hranami, jen dlažba.
 - **Dřevo** (`WOOD_MESHES = True`): `SM_RuinTimber_A/B/C` (trám, průvlak, schodnice, vzpěry), `SM_RuinPlank_A/B/C` (prkna, fošny schodů), `SM_RuinPost_A/B/C` (sloupy). Dřevo je vysušené od slunce: podélné praskliny (i až do čela), ohlazené a otlučené hrany, měkká promáčknutí, lehký prohyb a zkrut. Prkna jsou mírně prohnutá do misky. Vlákna a letokruhy dělá normálová mapa materiálu, ne geometrie. Síť je hrubá, asi 2–3 tisíce trojúhelníků na kus. Skript kus vybere podle tvaru a naskaluje na přesný rozměr.
-- **Kulatina** (`tools/meshes/mesh_log.py`, také v `meshes/wood`, v UE `Ruin/Wood`): `SM_RuinLog`, `SM_RuinLogBark`, `SM_RuinPole`, `SM_RuinPoleBark`, `SM_RuinStake`, `SM_RuinStakeSmall`, `SM_RuinForkHead`, `SM_RuinGutter`, `SM_RuinGutterBark`. Má víc materiálových slotů (`Wood`, `EndGrain`, `Bark`), popis v `README_constructions.md` kap. 4. Náhled: `05_constructions/Kulatina_meshe_nahled.png`.
-- **Další knihovní meshe** (popis v `README_constructions.md` kap. 4): pás kůry `SM_RuinBarkStrip` (`mesh_bark.py`, kategorie `wood`), proutí a mazanina `SM_RuinWattlePanel`, `SM_RuinSmokeHood`, `SM_RuinChimney` (`mesh_wattle.py`, `meshes/wattle`, v UE `Ruin/Wattle`), lano `SM_RuinRope`, ovázání `SM_RuinLashing` a ukázka plachty `SM_RuinCanvasSample` (`mesh_textile.py`, `meshes/textile`, v UE `Ruin/Textile`). Náhled: `05_constructions/Knihovna_meshe_nahled.png`. Props (kovárna, špalek, ponk, hranice, koš, žebřík): `mesh_props.py`, `meshes/props`, v UE `Ruin/Props`, náhled `05_constructions/Props_kovarna_nahled.png`.
+- **Kulatina** (`tools/meshes/mesh_log.py`, také v `meshes/wood`, v UE `Ruin/Wood`): `SM_RuinLog`, `SM_RuinLogBark`, `SM_RuinPole`, `SM_RuinPoleBark`, `SM_RuinStake`, `SM_RuinStakeSmall`, `SM_RuinForkHead`, `SM_RuinGutter`, `SM_RuinGutterBark`. Má víc materiálových slotů (`Wood`, `EndGrain`, `Bark`), popis v [[05_constructions]] kap. 4. Náhled: `05_constructions/Kulatina_meshe_nahled.png`.
+- **Další knihovní meshe** (popis v [[05_constructions]] kap. 4): pás kůry `SM_RuinBarkStrip` (`mesh_bark.py`, kategorie `wood`), proutí a mazanina `SM_RuinWattlePanel`, `SM_RuinSmokeHood`, `SM_RuinChimney` (`mesh_wattle.py`, `meshes/wattle`, v UE `Ruin/Wattle`), lano `SM_RuinRope`, ovázání `SM_RuinLashing` a ukázka plachty `SM_RuinCanvasSample` (`mesh_textile.py`, `meshes/textile`, v UE `Ruin/Textile`). Náhled: `05_constructions/Knihovna_meshe_nahled.png`. Props (kovárna, špalek, ponk, hranice, koš, žebřík): `mesh_props.py`, `meshes/props`, v UE `Ruin/Props`, náhled `05_constructions/Props_kovarna_nahled.png`.
 - **Textury** (`tools/textures/gen_textures.py` → `textures/*.png`, nejsou v gitu): kůra, čela, lano, proutí, mazanina, plátno, železo, kůže, dřevěné uhlí, voda. Jen vybrané: `python tools/textures/gen_textures.py T_RuinRope T_RuinDaub`. Build je sám naimportuje do `/Game/Skvt/Lapikus/Ruin/Textures` (normálové mapy nastaví jako Normalmap). Po změně textur zvyš `TEX_VERSION` v `zrlib/config.py`.
 - Skript vybere ke každému bloku variantu podle poměru délka/výška a naškáluje ji **přesně na rozměr bloku** (`STONE_OVERSIZE = 1.04` = o 4 % větší, aby spáry nebyly moc hluboké). Polovina kamenů je otočená o 180°, takže se tvary méně opakují. Varianta je vázaná na ID bloku a po přegenerování se nemění.
 - **Osy meshů:** OBJ se zapisuje rovnou v osách UE (`tools/meshes/mesh_common.obj_v`, `obj_f`; import OBJ v UE otáčí znaménko Y a s ním pořadí vrcholů trojúhelníků, ověřeno skriptem `tools/checks/UE_Osy_OBJ.py`, proto se zapisuje zrcadlené Y i obrácené trojúhelníky). Asset tedy stojí správně i v Content Browseru a po ručním přetažení do scény. Skript při stavbě jen naškáluje mesh na rozměr bloku (osy prohodí, jen když nesedí rozměry, např. u cizího meshe). Meshe importované se starým zápisem (do 15. 11. 2026: OBJ Y-up, v UE naležato, při stavbě se otáčely o 180°) se díky `MESH_AXES` v `zrlib/config.py` naimportují znovu samy.
@@ -171,7 +183,7 @@ Tipy:
 
 - **Kde je `s`:** v sekci `walls` má každá zeď `points` (UE cm). `s` se měří od prvního bodu v metrech. Délku úseku zjistíš v UE měřením (prostřední tlačítko myši + tah v Top/Side view).
 - **Hledání `box`:** vlož do levelu kostku, umísti ji na místo průchodu a z Details opiš Location ± polovinu Scale × 50.
-- **Typy otvorů a celé zdi** (výška `H0`, dostupnost `access`, otvory `openings`) se mění v `walls` (viz `03_ruin\build\README_build_ruin.md` kap. 3).
+- **Typy otvorů a celé zdi** (výška `H0`, dostupnost `access`, otvory `openings`) se mění v `walls` (viz [[README_build_ruin]] kap. 3).
 - **Zvýšení úseku (`raise` u zdi):** `{"s0": 15.85, "s1": 26.75, "dh": 0.5}` zvedne zeď nad výsledek rozpadu o `dh` m, na krajích plynule. `ZBudova_V` má +0,7 m (2 řady), `Hradba_Z_S` úseky 03–04 +0,5 m.
 - **Zaoblené zlomy (`fillet` v `gen_layout.py`):** zlomy `Hradba_Z_S` mezi úseky 02–06 jsou oblouky. Výšky a otvory se zadávají podle původní nezaoblené čáry a `remap_wall` je převede. `seg_group` drží číslování actorů podle původních úseků (oblouk patří k sousedním úsekům).
 - **Sesuv (`breaches` u zdi):** `{"s0": 0.6, "s1": 2.6, "floor": 0.5, "slope_l": 2.0, "slope_r": 6.0}` sníží zeď mezi `s0` a `s1` na `floor` m. Boky stoupají se strmostí `slope_l`/`slope_r` (1 = 45°, 6 = skoro svisle, výchozí 1). `power_l`/`power_r` > 1 bok zakřiví: dole pozvolna, ke koruně strměji (výchozí 1 = rovná linie). Ostrým bokem se sesuv udrží v jednom úseku a sousední úsek zůstane vysoký. Příklad: `Hradba_Z_S`, úsek 01 (stezka k vodě): `{"s0": -1.0, "s1": 1.3, "floor": 0.5, "slope_r": 2.4, "power_r": 1.5}` = šikmý sesuv, nízko u paláce.
@@ -194,7 +206,7 @@ Tipy:
   - `ragged` (m) náhodně vylámá líc kolem průchodu.
   - Kamenná dlažba přízemí je v `floors` → `Vez_Dlazba`.
   - Rozměry věže (podlaha, patro, polohy trámů, průvlaku, dveří) jsou společné se stavbami v `tools\ruin\tower_spec.py`.
-- **Dřevěné vestavby a suť jsou od 11/2026 v `05_constructions`.** Patří sem trámy, prkna, průvlak, schody, podesta a volná suť na zemi (`build_constructions.py`, návod `README_constructions.md`). Build zříceniny je nestaví ani nemaže. `compute_blocks(..., rubble=True)` sem suť vrátí postaru.
+- **Dřevěné vestavby a suť jsou od 11/2026 v `05_constructions`.** Patří sem trámy, prkna, průvlak, schody, podesta a volná suť na zemi (`build_constructions.py`, návod [[05_constructions]]). Build zříceniny je nestaví ani nemaže. `compute_blocks(..., rubble=True)` sem suť vrátí postaru.
 - **Přenos ručních posunů zdí do dat:** `tools\ruin\export_level_layout.py` zapíše posunuté actory a body `RuinPt_<Zed>_<NN>` do `layout_from_level.json`. Podle něj se upraví `gen_layout.py`.
 
 ---

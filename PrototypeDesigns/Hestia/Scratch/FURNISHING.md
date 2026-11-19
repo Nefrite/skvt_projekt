@@ -1,6 +1,16 @@
+---
+# orchestrace
+type: scratch
+validity: valid
+intake: prepared
+source: manual
+updated: 2026-11-17
+# hra
+entity: "[[Lapikus]]"
+---
 # FURNISHING – vybavení hradu (základní přehled)
 
-Stav: 16. 11. 2026. Instrukce pro agenta vybavení: `AGENT_Furnisher_hrad.md`. Podrobný technický návod je v `06_furnishing/README_furnishing.md`, pravidla a pasti v `KNOWHOW_hrad.md`, seznam meshí v `CHECKLIST_assets_navrhy.md` kap. 6.
+Stav: 16. 11. 2026. Instrukce pro agenta vybavení: `AGENT_Furnisher_hrad.md`. Podrobný technický návod je v [[06_furnishing]], pravidla a pasti v `KNOWHOW_hrad.md`, seznam meshí v [[CHECKLIST_assets_navrhy]] kap. 6.
 
 ## 1. Co je vybavení
 
@@ -45,7 +55,7 @@ Meshe props jsou ve sdílené knihovně (`zrlib/config.py` → `LIB_MESHES`, typ
 |---|---|---|---|
 | `Palac_Kovarna_Vybaveni` | kovárna, východní místnost paláce | ✅ rozmístěno 16. 11. 2026, kontroly OK, v UE neověřeno | 28 kusů: kovadlina na špalku, kalicí sud, hřebovnice, měchy s pákou, šlapací brus se stoličkou, ponk, truhlík s uhlím a víkem, koš, lišta s nářadím, železné pruty, tři hranice dřeva pod přesahem |
 
-**Kandidáti na další skupiny** (meshe částečně hotové, viz `CHECKLIST_assets_navrhy.md` kap. 6):
+**Kandidáti na další skupiny** (meshe částečně hotové, viz [[CHECKLIST_assets_navrhy]] kap. 6):
 
 - dům posádky, etapa 2: lůžka, stůl, truhly, police, ponk, hranice dřeva v síni, žebřík na půdu;
 - dům posádky, staveniště (etapa 1): kozy, rozpracovaná kulatina, hromady materiálu, tesařské nářadí, žebřík;

@@ -1,11 +1,23 @@
+---
+# orchestrace
+type: design
+validity: valid
+updated: 2026-11-17
+# hra
+status: in_progress
+domain: structures
+depth: 3
+entity: "[[Vez_Pristresek]]"
+build_step: 05_constructions
+---
 # Návrh: Vez_Pristresek – plátěný přístřešek hlídky na věži
 
 Specifikace architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **postaveno 17. 11. 2026, neověřeno v UE.** Úpravy 03 (kap. 3) v `tower_spec.ruin_edits()`, přístřešek 05 `Vez_Pristresek` (typ `canvas_shelter`, `tower_spec.pristresek()`), kontroly `run_checks.py --only vez`, náhled `05_constructions/Stavby_vez_pristresek_nahled.png`. Odchylky od kap. 4: plátno 2 cm nad krokvemi (ne 0,5 cm, přes ovázání), podkladní kámen v u = 7,20 je dvojitý (0,54 m; koruna pod ním je 10,49 m, kámen 10,84 m sahá pod podklad jen rohem). Vybraná varianta B (západní 2/3 šířky), průlomy z dobývání ve `Vez_J` a `Vez_V` (Jirka 14. 11. 2026), vyšší střed `Vez_Z` a plynule klesající `Vez_S` místo průlomu do tvaru U (Jirka 17. 11. 2026).
 
 **Náhledy:**
-- `navrh_vez_pristresek_3d.png`: šest pohledů na přístřešek; zřícenina je spočítaná z dat s úpravami z kap. 3, přístřešek z čísel v kap. 4. Kulatina je jen hranol, plátno je prověšené o 5 cm.
-- `navrh_vez_pristresek_3d_dnes_nove.png`: věž dnes a nově ve čtyřech pohledech (z jihovýchodu, od východu, od severu, od severovýchodu).
-- `navrh_vez_pristresek.png`: původní schéma z 14. 11. Platí pro korunu `Vez_J` a jižní část `Vez_V` (v ≤ 6 m). Severní bok `Vez_V`, `Vez_Z`, `Vez_S` a štít jsou v něm ve starší podobě.
+- [[navrh_vez_pristresek_3d.png]]: šest pohledů na přístřešek; zřícenina je spočítaná z dat s úpravami z kap. 3, přístřešek z čísel v kap. 4. Kulatina je jen hranol, plátno je prověšené o 5 cm.
+- [[navrh_vez_pristresek_3d_dnes_nove.png]]: věž dnes a nově ve čtyřech pohledech (z jihovýchodu, od východu, od severu, od severovýchodu).
+- [[navrh_vez_pristresek.png]]: původní schéma z 14. 11. Platí pro korunu `Vez_J` a jižní část `Vez_V` (v ≤ 6 m). Severní bok `Vez_V`, `Vez_Z`, `Vez_S` a štít jsou v něm ve starší podobě.
 
 **Ověřeno 17. 11. 2026 mimo UE na kopii projektu** (data se stejným md5 jako v projektu, terén z levelu `terrain_from_level.json`, `manual_edits.json` prázdný):
 - úpravy z kap. 3 zapsané do kopie `gen_layout.py`, z ní vygenerovaný `ruin_layout.json`;
@@ -14,7 +26,7 @@ Specifikace architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap
 
 Soubory projektu se při ověřování neměnily.
 
-**Připravenost** (podrobně `..\CHECKLIST_assets_navrhy.md`):
+**Připravenost** (podrobně [[CHECKLIST_assets_navrhy]]):
 - **Hotové dílce:** kulatina a tyče s kůrou `SM_RuinLogBark`, `SM_RuinPoleBark`, hlava rozsochy `SM_RuinForkHead`, lano `SM_RuinRope`, ovázání `SM_RuinLashing`, kameny zříceniny. Materiály `MI_RuinBark`, `MI_RuinRope`, oboustranné plátno `MI_RuinCanvas` (vítr připravený parametrem `WindAmount`, výchozí 0).
 - **Plátno a štít:** generátor prověšené plochy je hotový (`tools/meshes/mesh_textile.make_canvas` + `write_canvas`), napojení na stavbu chybí.
 - **Chybí:** typ stavby `canvas_shelter`, sekce přístřešku v `tools/ruin/tower_spec.py`, úpravy 03 (kap. 3), sekce `vez` v `run_checks.py`.
@@ -344,7 +356,7 @@ Nová sekce `run_checks.py --only vez` a náhled `preview3d.py vez`.
 - průchody ≥ 1,2 m podle kap. 4.5;
 - štít je ≥ 5 cm od líce `Vez_Z` a jeho horní okraj leží na krajní krokvi.
 
-**Náhled:** pohledy jako v `navrh_vez_pristresek_3d.png`, tedy zvenku od JV, od jihu, shora od SZ, zevnitř k jihu, zevnitř od SV a půdorys.
+**Náhled:** pohledy jako v [[navrh_vez_pristresek_3d.png]], tedy zvenku od JV, od jihu, shora od SZ, zevnitř k jihu, zevnitř od SV a půdorys.
 
 ## 9. Zavržené možnosti
 

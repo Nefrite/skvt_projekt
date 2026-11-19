@@ -1,8 +1,19 @@
+---
+# orchestrace
+type: design
+validity: valid
+updated: 2026-11-10
+# hra
+domain: environment
+depth: 4
+entity: "[[Les_Lapikus]]"
+build_step: 04_forest
+---
 # 04 Forest – plán smíšeného lesa
 
 Cíl: travnaté plochy mapy `LapikusPrototypeMap` pokrýt **automaticky** smíšeným lesem (dubohabřina, ve stinných polohách buk). Okolí řeky, hrad a stará cesta ke hradu zůstanou bez stromů. Na skalnatém podloží roste jen kosodřevina a keře.
 
-![Plán zón](Zricenina_les_plan.png)
+![Plán zón](../../../Lapikus/04_forest/Zricenina_les_plan.png)
 
 ## 1. Zóny
 
@@ -18,7 +29,7 @@ Cíl: travnaté plochy mapy `LapikusPrototypeMap` pokrýt **automaticky** smíš
 | **P – stará cesta** | od příkopu na východ k okraji mapy, ~96 m, šířka ~6 m (spline `PCG_Path`) | ~600 m² | zarostlá vozová cesta: tráva, kapraď, nízké keře, bez stromů; uprostřed vyšlapaná stezka ~2,5 m pro koně v řadě | – |
 | **K – skalnaté podloží** | plocha JV od hradu podle náčrtu (spline `PCG_Rocky`) | ~1 200 m² | borovice lesní, bříza, suchá borovice, dub · vřes, borůvka, brusinka, kameny | 1 strom / ~250 m² → **~5 stromů** |
 
-Skladba vychází ze skutečné lokality: zřícenina Lapikus nad Plenkovickým potokem (Znojemsko), přirozeně **dubohabřina**, buk jen ve stinných polohách údolí. Podíly druhů a seznam assetů jsou v `README_assets_stromy.md` kap. 2.
+Skladba vychází ze skutečné lokality: zřícenina Lapikus nad Plenkovickým potokem (Znojemsko), přirozeně **dubohabřina**, buk jen ve stinných polohách údolí. Podíly druhů a seznam assetů jsou v [[README_assets_stromy]] kap. 2.
 
 Zbytek ostrohu mezi hradem a řekou je teď normální les (zóny A/B), protější břeh je zalesněný.
 
@@ -36,7 +47,7 @@ Hodnoty jsou výchozí návrh. Všechny jsou parametry PCG grafu, takže je jde 
 
 ## 3. Stromy ke stažení
 
-Podrobný výběr druhů, git strategie a návod, jak assety dostat do projektu a vyexportovat: **`README_assets_stromy.md`**.
+Podrobný výběr druhů, git strategie a návod, jak assety dostat do projektu a vyexportovat: **[[README_assets_stromy]]**.
 
 Shrnutí:
 
@@ -107,7 +118,7 @@ Udělat z nich parametry grafu, aby šly měnit v Details PCG Volume:
 | `PathClearance` | 500 cm | pás bez stromů kolem osy cesty (keře až od 150 cm) |
 | `RockyTreeRatio` | 0.05 | podíl stromů ponechaných na skalnatém podloží |
 | `Seed` | 1 | jiné náhodné rozmístění |
-| váhy druhů | A1: dub 40 / habr 35 / javor 10 / osika, buk, jeřáb 5; A2: buk 45 / habr 25 / javor 20 / smrk, dub 5 | mix lesa (`README_assets_stromy.md` kap. 2.1) |
+| váhy druhů | A1: dub 40 / habr 35 / javor 10 / osika, buk, jeřáb 5; A2: buk 45 / habr 25 / javor 20 / smrk, dub 5 | mix lesa ([[README_assets_stromy]] kap. 2.1) |
 
 ## 5. Ruční doladění
 
@@ -115,7 +126,7 @@ Udělat z nich parametry grafu, aby šly měnit v Details PCG Volume:
 
 Olše jsou rozmístěné podle toho, jak olše lepkavá u potoka opravdu roste. Body jsou v `Zricenina_olse.csv`, náhled je `Zricenina_olse_plan.png`.
 
-![Olše podél řeky](Zricenina_olse_plan.png)
+![Olše podél řeky](../../../Lapikus/04_forest/Zricenina_olse_plan.png)
 
 Náhled ukazuje jen olše, řeku, hrad a cestu. Čára u stromu značí směr a sílu náklonu koruny nad vodu. **Zóny lesa (A, B, D, S, K, R, C, P) a jejich legenda jsou v `Zricenina_les_plan.png`** na začátku tohoto dokumentu.
 
@@ -157,7 +168,7 @@ Výšky Z jsou z heightmapy, 15 cm pod terénem. Pokud byl spline řeky výrazn�
 ## 7. Postup krok za krokem (checklist)
 
 1. ☐ Rozhodnout, jak řešit velikost repa (kap. 3)
-2. ☐ Assety podle `README_assets_stromy.md`: dub, habr, buk, javor, olše, líska (stažení + export v PVE)
+2. ☐ Assety podle [[README_assets_stromy]]: dub, habr, buk, javor, olše, líska (stažení + export v PVE)
 3. ☐ Zapnout plugin PCG
 4. ☐ Vložit PCG Volume a 3× `BP_PCGSpline` (hrad, cesta, skály), spustit `import_zone_splines.py`
 5. ☐ Graf `PCG_Forest` – nejdřív jen stromy zóny A, pak vyloučení R, C a P
@@ -170,12 +181,12 @@ Výšky Z jsou z heightmapy, 15 cm pod terénem. Pokud byl spline řeky výrazn�
 
 | Soubor | Obsah |
 |---|---|
-| `README_forest.md` | tento plán |
+| [[README_forest]] | tento plán |
 | `Zricenina_les_plan.png` | mapa zón lesa s legendou (stejný výřez jako `Zricenina_preview_orez.png`) |
 | `import_zone_splines.py` | nastaví spliny `PCG_NoForest`, `PCG_Path`, `PCG_Rocky` podle náčrtu |
 | `Zricenina_les_zony.csv` | body těchto splinů (X/Y/Z v cm) |
 | `T_ForestZones_505.png` | maska zón přes celý landscape: R = bez stromů (řeka, hrad, cesta), G = skalnaté podloží, B = vyšlapaná stezka |
-| `README_assets_stromy.md` | výběr druhů z Megaplants, stažení z Fabu, export v PVE, git strategie |
+| [[README_assets_stromy]] | výběr druhů z Megaplants, stažení z Fabu, export v PVE, git strategie |
 | `place_alders.py` | UE skript: vloží olše podél řeky |
 | `Zricenina_olse.csv` | 41 olší: X/Y/Z, yaw, náklon, směr k vodě, scale, břeh |
 | `Zricenina_olse_plan.png` | náhled rozmístění olší (bez zón lesa; legenda zón je v `Zricenina_les_plan.png`) |

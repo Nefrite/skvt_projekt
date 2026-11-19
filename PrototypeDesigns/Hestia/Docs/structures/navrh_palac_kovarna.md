@@ -1,6 +1,18 @@
+---
+# orchestrace
+type: design
+validity: valid
+updated: 2026-11-17
+# hra
+status: in_progress
+domain: structures
+depth: 4
+entity: ["[[Palac_Kovarna]]", "[[Palac_Kovarna_Vybaveni]]"]
+build_step: 05_constructions
+---
 # Návrh: Palac_Kovarna – provizorní kovárna pod přístřeškem
 
-Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **vybraný návrh, staví se po krocích** (16. 11. 2026; hotové kroky 1–4, v UE ověřená kostra a výheň). Co je hotové a co zbývá, je v kap. 0. Náčrt: `navrh_palac_kovarna.png` je starší schéma, které se v hlavním (výheň v koutě) shoduje, v rozměrech ne; **platí tento text**.
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **vybraný návrh, staví se po krocích** (16. 11. 2026; hotové kroky 1–4, v UE ověřená kostra a výheň). Co je hotové a co zbývá, je v kap. 0. Náčrt: [[navrh_palac_kovarna.png]] je starší schéma, které se v hlavním (výheň v koutě) shoduje, v rozměrech ne; **platí tento text**.
 
 ## 0. Stav stavby proti návrhu (16. 11. 2026)
 
@@ -49,7 +61,7 @@ Všechno „hotovo“ znamená: je ve skriptech a datech a prošlo kontrolami mi
 - **Krytina (krok 2):** latě 9 řad (nad a pod prostupem komína, jinak nejvýš po 0,9 m), prkna 22–30 cm po spádu od líce věže po okapovou hranu s = 24,85 (10 cm za konci krokví, nad osou žlabu), lišty přes spáry, prostup komína s mezerou 3 cm (prkna se kladou od jeho okrajů ven). Od líce `Palac_J` mezera 3,5 cm, protože kameny koruny v s = 27–29 leží v úrovni střechy a vystupují z líce. Lemování: prkno 25 cm na stojato u věže a podél `Palac_J`.
 - **Stěna a okap (krok 3):** stěna z dílců proutí mezi sloupy, spodní pás 0,1 m mezi patními kameny, kůly Ø 9 cm na spojích dílců. Žlab Ø 20 cm (loupaný) na třech rozsochách v n = 1,4 / 3,1 / 5,3 (jižní posunutá 16. 11. 2026 od `Palac_J` kvůli průchodu ke střílně, žlab k hradbě volně přesahuje), vrch 12–25 cm pod krytinou, spád 2,5 % k severu; sud pod jeho koncem (s = 24,8; n = 5,9) je samostatný actor.
 
-**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`, kap. 6.1:
+**Připravenost (15. 11. 2026)** – podrobně [[CHECKLIST_assets_navrhy]], kap. 6.1:
 - **Vybavení je hotové** jako vlastní procedurální props (`tools/meshes/mesh_props.py`), zatím nerozmístěné: špalek `SM_RuinStump`, kovadlina `SM_RuinAnvil`, měchy s rámem a výfučnou `SM_RuinBellows`, páka (loupaná tyč `SM_RuinPole`), kalicí sud `SM_RuinBarrel`, **šlapací brus** `SM_RuinGrindstoneTreadle` s třínohou stoličkou `SM_RuinStool`, ponk se svěrákem `SM_RuinWorkbench`, kleště, kladivo, sekáč (`SM_RuinTongs`, `SM_RuinHammer`, `SM_RuinChisel`), hřebovnice `SM_RuinNailHeader`, truhlík na uhlí `SM_RuinCoalBox` s volným víkem `SM_RuinCoalBoxLid`, hranice dřeva `SM_RuinWoodpile`, železné pruty `SM_RuinIronBars`, koš `SM_RuinBasket`.
 - **Hotové dílce stavby:** loupaná kulatina `SM_RuinLog` (krokve), dílce proutěné stěny `SM_RuinWattlePanel`, dymník `SM_RuinSmokeHood`, komín `SM_RuinChimney`, žlab `SM_RuinGutter`.
 - **Hotové (15. 11. 2026):** typy `pult_roof` bez krytiny (`05_constructions/zr_stavby/pult.py`) a `hearth` (`zr_stavby/ohniste.py`), sdílené rozměry `tools/ruin/palac_spec.py`, úpravy 03 (`z_offset`, `breaches`, `kapsa`), kontrola `run_checks.py --only palac`, náhled `preview3d.py kovarna`.
@@ -69,7 +81,7 @@ Všechno „hotovo“ znamená: je ve skriptech a datech a prošlo kontrolami mi
   - brusný kotouč;
   - sud na chlazení a kalení;
   - zásoba dřeva.
-- **Umístění:** východní místnost paláce u věže (potvrdil Jirka 15. 11. 2026). Obydlí je kvůli tomu v prostřední místnosti (`navrh_palac_obydli_stred.md`).
+- **Umístění:** východní místnost paláce u věže (potvrdil Jirka 15. 11. 2026). Obydlí je kvůli tomu v prostřední místnosti ([[navrh_palac_obydli_stred]]).
 
 ## 2. Výchozí stav (spočítáno z dat, 11/2026)
 
@@ -94,7 +106,7 @@ Východní místnost má uvnitř 9,35 × 8,1 m (s = 21,4–30,75; n = 0,7–8,8)
 1. **Celá `Palac_J` je zanořená o jednu řadu kamene do země** (`z_offset: −0,31` v datech zdi, `J_SINK`).
    - Zeď se posouvá po ose Z jako celek, počet řad i tvar koruny zůstávají. 0,31 m je výška první celé řady nad terénem, takže spáry u země vypadají stejně jako před posunem.
    - Posouvá se všechno ve zdi: střílny, jejich výklenky (dno výklenku je teď 0,24 m nad zemí místo 0,55 m, vrch 2,39 m) i okna.
-   - Týká se celé délky zdi, tedy i prostřední místnosti. **Koruny `Palac_J` v `navrh_palac_obydli_stred.md` (kap. 2 a 3) jsou proto o 0,31 m výš, než je skutečnost.**
+   - Týká se celé délky zdi, tedy i prostřední místnosti. **Koruny `Palac_J` v [[navrh_palac_obydli_stred]] (kap. 2 a 3) jsou proto o 0,31 m výš, než je skutečnost.**
 2. **Rozebraná koruna u věže**, aby ji komín přesahoval: `breaches` `{s0: 29,6; s1: 33; floor: 6,1; slope_l: 0,8}` (`J_BREACH`). Je to rozpad, ne rovné zarovnání: koruna vychází ve stupních po řadách 5,2 m (s = 28,5–29,3), 4,8 m (od s = 29,5) a vnitřní líc u komína místy 4,0 m. Komín (5,5 m) ji v okruhu 1,5 m přesahuje o 0,3–1,5 m.
    - `protect` `{s0: 30,3; s1: 30,9; min: 4,95}` drží řadu kamene nad kapsou pozednice.
 3. **Kapsa pro východní pozednici** ve vnitřním líci `Palac_J`: otvor `kapsa` v s = 30,55, šířka 0,26 m, hloubka = vnitřní líc (0,4 m). Kapsa se zarovnává na řady kamene: zabírá řadu 4,04–4,43 m nad terénem, pozednice v ní leží spodkem na spáře (proto má vrch 4,24 m, ne 4,2 m). Ostatní kameny zdi se kapsou nemění.
@@ -204,7 +216,7 @@ Kovárna stojí v jihovýchodním koutě místnosti. Jižní stranu tvoří `Pal
 ## 6. Vazby, kolize, pořadí
 
 - **Odstup od domu:** výheň je 8,3 m od východního štítu domu, západní okraj přístřešku (okap) 3,55 m. Podmínka z návrhu domu (výheň aspoň 6 m) je splněná.
-- **Dvorek před kovárnou** je mezi střechou (n = 6,6) a `Palac_S` (n = 8,8) široký 2,2 m. **Vstup:** původními dveřmi paláce (s = 26,45–27,55) na dvorek a odtud otevřenou severní stranou. Od 16. 11. 2026 i ze zápraží domu hrubým průchodem v `Palac_pricka_2` (n = 6,9–8,5; `navrh_palac_obydli_stred.md` kap. 0.2a), který ústí na západní konec dvorku (s = 21,4).
+- **Dvorek před kovárnou** je mezi střechou (n = 6,6) a `Palac_S` (n = 8,8) široký 2,2 m. **Vstup:** původními dveřmi paláce (s = 26,45–27,55) na dvorek a odtud otevřenou severní stranou. Od 16. 11. 2026 i ze zápraží domu hrubým průchodem v `Palac_pricka_2` (n = 6,9–8,5; [[navrh_palac_obydli_stred]] kap. 0.2a), který ústí na západní konec dvorku (s = 21,4).
 - **Výheň** (s od 29,75) nezasahuje do výklenku střílny s = 29 (ten končí v s = 29,65).
 - **Západní linie** (s = 25,85) je 0,2 m východně od výklenku střílny s = 25; výklenek je přístupný ze dvorku podél `Palac_J` (volno 1 m k rozsoše, 1,45 m ke dřevu).
 - **Sud pod žlabem** stojí u severozápadního rohu přístřešku, mimo cestu ode dveří.

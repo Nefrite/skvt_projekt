@@ -1,6 +1,16 @@
+---
+# orchestrace
+type: guide
+validity: archived
+updated: 2026-11-14
+# hra
+domain: structures
+entity: "[[Lapikus]]"
+build_step: 03_ruin
+---
 # 03 Ruin – generování zříceniny v Unreal Editoru 5.8 (krok za krokem)
 
-Skript `build_ruin.py` postaví v mapě **blockout zříceniny** podle `ruin_layout.json`. Používá model rozpadu z `README_ruin.md` kap. 4:
+Skript `build_ruin.py` postaví v mapě **blockout zříceniny** podle `ruin_layout.json`. Používá model rozpadu z [[README_ruin]] kap. 4:
 
 - mírný přirozený rozpad
 - rozebírání podle dostupnosti a výšky
@@ -8,7 +18,7 @@ Skript `build_ruin.py` postaví v mapě **blockout zříceniny** podle `ruin_lay
 
 Zdi jsou složené z kostek po 0,5 m. Výsledek je hrubá hmota k testování průchodnosti a měřítka, kterou pak ručně sloučíš a domodeluješ.
 
-![Náhled výsledku (spočítaný mimo UE)](Zricenina_blockout_nahled.png)
+![Náhled výsledku (spočítaný mimo UE)](../../Lapikus/03_ruin/build/Zricenina_blockout_nahled.png)
 
 ---
 
@@ -69,8 +79,8 @@ V tom případě musí být `LAYOUT_PATH` vyplněná, protože `__file__` není 
 | `Ruin/ZapadniBudova` | východní a severní zeď (vnější zdi tvoří hradba s brankou) |
 | `Ruin/Rampa` | suťová rampa na ochoz hradby |
 
-2. **Top view (Alt+J):** porovnej s `03_ruin\Zricenina_hrad_plan.png`. Hrad má sedět na plošině u příkopu a brána v SV rohu.
-3. **Perspektiva:** vnější zdi (palác nad útesem, věž, hradba) musí být vysoké, vnitřní (severní zeď paláce, příčky, západní budova) nízké. Porovnej s `Zricenina_rozpad_hmota.png`.
+2. **Top view (Alt+J):** porovnej s [[Zricenina_hrad_plan.png]]. Hrad má sedět na plošině u příkopu a brána v SV rohu.
+3. **Perspektiva:** vnější zdi (palác nad útesem, věž, hradba) musí být vysoké, vnitřní (severní zeď paláce, příčky, západní budova) nízké. Porovnej s [[Zricenina_rozpad_hmota.png]].
 4. **Play** (s Player Startem na hřbetu za příkopem, viz `01_terrain`). Projdi:
 
 | Místo | Co ověřit |
@@ -158,7 +168,7 @@ Kostky jsou jen stavební materiál. Pro další práci je slouč po částech.
 | **Smooth / Displace** | méně „kostkový“ vzhled koruny |
 | **Remesh** | pokud je mesh po booleanech příliš rozbitý |
 
-Ruční seznam z `README_ruin.md` kap. 4.5:
+Ruční seznam z [[README_ruin]] kap. 4.5:
 
 - zaklíněné trámy
 - výklenky střílen a oken
@@ -169,7 +179,7 @@ Ruční seznam z `README_ruin.md` kap. 4.5:
 
 ## 6. Další kroky
 
-1. Materiál zdiva `M_RuinStone_WA` (world-aligned), `README_ruin.md` kap. 6, krok 4.
+1. Materiál zdiva `M_RuinStone_WA` (world-aligned), [[README_ruin]] kap. 6, krok 4.
 2. Upravit spline `PCG_NoForest` podle hotové ruiny (`04_forest`).
 3. Vegetace v ruině: kopřivy a bez u zdí, bříza a jeřáb v sutích.
 
@@ -195,6 +205,6 @@ Ruční seznam z `README_ruin.md` kap. 4.5:
 | `build_ruin.py` | generátor pro UE (čistý Python, bez numpy); mimo UE jen spočítá a vypíše statistiku |
 | `ruin_layout.json` | zdi, otvory, průlomy, ochrany, rampa, parametry rozpadu, výšková mřížka terénu |
 | `Zricenina_blockout_nahled.png` | náhled výsledku spočítaný mimo UE |
-| `README_build_ruin.md` | tento návod |
+| [[README_build_ruin]] | tento návod |
 | `..\..\tools\ruin\gen_layout.py` | vytvoří `ruin_layout.json` z `ruin_layout_draft.json` a heightmapy |
 | `..\..\tools\ruin\check3d.py` | 3D náhled výsledku bez Unrealu |

@@ -1,3 +1,15 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_terrain]
+step_kind: build
+updated: 2026-11-14
+# hra
+build_step: 01_terrain
+domains: [environment]
+entity: "[[Lapikus_Region]]"
+---
 # 01 Terrain – import terénu a materiál M_Landscape_Forest_Auto (část 1)
 
 Postup pro mapu `LapikusPrototypeMap` (v návodu dříve pracovně `Zricenina_Proto`). Terén se vytvoří z heightmapy a dostane automatický materiál, který podle sklonu míchá trávu, štěrk a kámen.
@@ -9,8 +21,8 @@ Postup pro mapu `LapikusPrototypeMap` (v návodu dříve pracovně `Zricenina_Pr
 |---|---|
 | `Zricenina_heightmap_505_50cm.png` | Heightmapa k importu (16 bit, 505 × 505 px, 0,5 m/px = 252 × 252 m) |
 | `Zricenina_preview_orez.png` | Náhled sklonu terénu: zelená < 8°, oranžová 8–18°, růžová 18–28°, magenta > 28°, vrstevnice po 5 m |
-| `M_Landscape_Forest_Auto.md` | Krátký tahák s nastavením materiálu (do dokumentace) |
-| `README_terrain.md` | Tento návod |
+| [[M_Landscape_Forest_Auto]] | Krátký tahák s nastavením materiálu (do dokumentace) |
+| [[01_terrain]] | Tento návod |
 
 ---
 
@@ -206,7 +218,7 @@ Zapnutý debug ukáže terén obarvený přesně podle toho, kde je tráva / št
    - úzký přechod (5°) = ostrá hranice
    - široký přechod (10–15°) = měkké přelivy
 5. Vypnout `Debug_Slope`, zkontrolovat výsledek s texturami a pustit **Play**. Z výšky postavy působí přechody jinak než z letu.
-6. Výsledné hodnoty zapsat do `M_Landscape_Forest_Auto.md`.
+6. Výsledné hodnoty zapsat do [[M_Landscape_Forest_Auto]].
 
 Pro porovnání slouží `Zricenina_preview_orez.png`: má stejný výřez a barevné pásy sklonu.
 

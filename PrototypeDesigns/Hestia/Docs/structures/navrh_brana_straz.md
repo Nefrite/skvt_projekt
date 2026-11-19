@@ -1,8 +1,20 @@
+---
+# orchestrace
+type: design
+validity: valid
+updated: 2026-11-16
+# hra
+status: in_progress
+domain: structures
+depth: 3
+entity: "[[Brana_Straz]]"
+build_step: 05_constructions
+---
 # Návrh: Brana_Straz – strážní podesta nad oblouky východní brány
 
-Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **rozestavěno, viz kap. 0** (podesta je ve skriptech, kryty a přístřešek ne). Náčrt: `navrh_brana_straz.png` (schéma, ne přesný model).
+Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **rozestavěno, viz kap. 0** (podesta je ve skriptech, kryty a přístřešek ne). Náčrt: [[navrh_brana_straz.png]] (schéma, ne přesný model).
 
-**Připravenost (15. 11. 2026)** – podrobně `..\CHECKLIST_assets_navrhy.md`:
+**Připravenost (15. 11. 2026)** – podrobně [[CHECKLIST_assets_navrhy]]:
 - **Hotové dílce:** loupaná kulatina `SM_RuinLog` (trámy podesty Ø 22), kůly se špičkou `SM_RuinStake` (kryty), tyče s kůrou `SM_RuinPoleBark` (ráhna, zábradlí, krokvičky, přítlačné tyče), kulatina s kůrou `SM_RuinLogBark` (sloupky, vaznice, kmen jezdce), loupané kůly `SM_RuinStakeSmall` (ramena jezdce), pásy kůry `SM_RuinBarkStrip`, ovázání `SM_RuinLashing`, prkna `SM_RuinPlank`. Materiál kůry `MI_RuinBark` už existuje.
 - **Chybí:** typy staveb `palisade` a `bark_roof`, trámy na koruně (rozšíření `tower_floor`), `tools/ruin/brana_spec.py`, složení španělského jezdce do jednoho actoru. Otevřený zůstává výstup na podestu a etapa (kap. 9).
 
@@ -45,7 +57,7 @@ Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, 
 - Rozměry: `tools/ruin/brana_spec.py` (výšky absolutně v UE cm). Kontrola: `run_checks.py --only brana`. Náhled: `preview3d.py brana <out.png> [--stage 1|2]`, `05_constructions/Stavby_brana_straz_nahled.png` a `Stavby_brana_straz_nahled_etapa1.png`.
 - V UE: `05_constructions/stavby/Brana_Straz.py` s `RUIN = True` (přestaví část `Obvod` kvůli kapsám a nároží, dlouhé), příště stačí `RUIN = False`.
 
-**Zbývá:** přístřešek z kůry (`bark_roof`; nový návrh a instrukce pro stavitele: `new_designs/predani_brana_straz_striska_stavitel.md`, nahrazuje kap. 4.4), zátaras, staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
+**Zbývá:** přístřešek z kůry (`bark_roof`; nový návrh a instrukce pro stavitele: [[predani_brana_straz_striska_stavitel]], nahrazuje kap. 4.4), zátaras, staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
 
 ## 1. Zadání
 
@@ -134,7 +146,7 @@ Kůly Ø 18–22 cm nastojato, těsně vedle sebe, nahoře zašpičatělé. Drž
 
 ### 4.6 Úprava dřeva
 
-- Kulatina, kůly, tyče a prkna: čerstvé dřevo. Trámy podesty a ramena jezdce loupané, kůly krytů, ráhna, zábradlí, kostra přístřešku a kmen jezdce s kůrou (přiřazení podle `CHECKLIST_assets_navrhy.md` kap. 2.1, čeká na potvrzení). Prkna `raw`.
+- Kulatina, kůly, tyče a prkna: čerstvé dřevo. Trámy podesty a ramena jezdce loupané, kůly krytů, ráhna, zábradlí, kostra přístřešku a kmen jezdce s kůrou (přiřazení podle [[CHECKLIST_assets_navrhy]] kap. 2.1, čeká na potvrzení). Prkna `raw`.
 - Kůra: materiál `MI_RuinBark` (tmavě hnědá, hrubá).
 
 ## 5. Dostavba 05

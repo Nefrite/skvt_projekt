@@ -1,8 +1,21 @@
+---
+# orchestrace
+type: knowhow
+validity: valid
+knowhow_kind: tool
+tech: [megaplants]
+scope: instance
+verified: 2026-11-10
+updated: 2026-11-10
+# hra
+domain: environment
+entity: "[[Les_Lapikus]]"
+---
 # 04 Forest – assety stromů a rostlin (Quixel Megaplants)
 
 Výběr volně dostupných rostlin pro lokaci Zřícenina (podle seznamu dostupných Megaplants, listopad 2026) a postup, jak je dostat do projektu `skvt_projekt` (UE 5.8).
 Zdroj: [Quixel Megaplants na Fabu (Free)](https://www.fab.com/sellers/Quixel%20Megaplants?is_free=1).
-Kam se stromy rozmístí, popisuje `README_forest.md`.
+Kam se stromy rozmístí, popisuje [[README_forest]].
 
 ---
 
@@ -194,7 +207,7 @@ Doporučený počet pro první verzi:
    - měřítko vůči postavě (dospělý buk a dub mají 25–35 m, habr 15–25 m, olše 15–25 m)
    - vítr (pokud je zapnutý Dynamic Wind)
    - LOD přechody při oddalování
-2. **Olše:** u olšových exportů dát v Content Browseru pravé tlačítko → **Copy Reference** a vložit do `ALDER_MESHES` v `place_alders.py`. Pak skript spustit (`README_forest.md` kap. 5.1).
+2. **Olše:** u olšových exportů dát v Content Browseru pravé tlačítko → **Copy Reference** a vložit do `ALDER_MESHES` v `place_alders.py`. Pak skript spustit ([[README_forest]] kap. 5.1).
 3. **Les (PCG):** exporty přidat do uzlů **Static Mesh Spawner** v grafu `PCG_Forest` s váhami podle kap. 2.1 (zvlášť pro A1, A2, B, D, K).
 4. **Vrba jíva:** exporty vložit do `WILLOW_MESHES` v `place_alders.py`. Asi třetina stromů na jesepu pak bude vrba místo olše.
 5. **Commit:** jen `Vegetation/`, mapu a nastavení projektu, ne zdrojové balíky.

@@ -1,8 +1,18 @@
+---
+# orchestrace
+type: handover
+validity: valid
+updated: 2026-11-16
+# hra
+domain: structures
+entity: "[[Palac_Obydli]]"
+build_step: 05_constructions
+---
 # Dům posádky v paláci (Palac_Obydli) – předání staviteli
 
 Stav: 16. 11. 2026. Předává architekt (session s Jirkou), přebírá stavitel. Cíl: dodělat **finální stav domu** (etapa 2) a potom **staveniště** (etapa 1).
 
-Čti spolu s: `AGENT_Stavitel_hrad.md`, `KNOWHOW_hrad.md`, `new_designs/navrh_palac_obydli_stred.md` (kap. 0 platí přednostně před kap. 3–9), `05_constructions/README_constructions.md`.
+Čti spolu s: `AGENT_Stavitel_hrad.md`, `KNOWHOW_hrad.md`, [[navrh_palac_obydli_stred]] (kap. 0 platí přednostně před kap. 3–9), [[05_constructions]].
 
 ## 1. Co platí (rozhodnutí Jirky)
 
@@ -125,9 +135,9 @@ Na co se v UE podívat jako první: nároží srubu a průchod příčky severn�
 
 ## 8. Dokumentace, kterou drž aktuální
 
-- `new_designs/navrh_palac_obydli_stred.md` kap. 0 (stav po krocích, odchylky),
-- `03_ruin/Zricenina_03_ruin_stav.md` (i v projektu SKVT jako `claude/Zricenina_03_ruin_stav.md`),
-- `05_constructions/README_constructions.md` (typy a klíče dat),
-- `CHECKLIST_assets_navrhy.md` (kap. 8 a tabulka typů),
+- [[navrh_palac_obydli_stred]] kap. 0 (stav po krocích, odchylky),
+- [[Zricenina_03_ruin_stav]] (i v projektu SKVT jako [[Zricenina_03_ruin_stav]]),
+- [[05_constructions]] (typy a klíče dat),
+- [[CHECKLIST_assets_navrhy]] (kap. 8 a tabulka typů),
 - `KNOWHOW_hrad.md` (poučení),
 - tento soubor: po každém dokončeném kroku přepiš kap. 2 a 4.

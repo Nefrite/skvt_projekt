@@ -1,3 +1,15 @@
+---
+# orchestrace
+type: step
+validity: valid
+aliases: [README_NPC]
+step_kind: build
+updated: 2026-11-11
+# hra
+build_step: NPC
+domains: [npc, gameplay]
+entity: "[[Characters]]"
+---
 # NPC – obecné chování (StateTree): potulování a hlídkování
 
 Podklady pro NPC, které nejsou společné s hráčem. Obecné chování NPC:
@@ -14,7 +26,7 @@ AI systém: **StateTree** (StateTree AI Component). Behavior Tree varianta v pro
 
 | Soubor | K čemu |
 |---|---|
-| `README_NPC.md` | Tento návod |
+| [[NPC]] | Tento návod |
 | `npc_nav_bounds.py` | Vytvoří / upraví NavMeshBoundsVolume přes vybrané actory (landscape, podlaha) |
 | `npc_make_patrol_route.py` | Z vybraných hlídkovacích bodů vytvoří trasu, přejmenuje body, přiřadí trasu vybraným NPC |
 | `npc_report.py` | Kontrola: NPC a body na navmeshi, existence cesty mezi body. Výstup `Saved/NPCReport.csv` |
