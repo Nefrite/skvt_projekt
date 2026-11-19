@@ -22,33 +22,11 @@ Postup: **část generuje skript** (zdi, věž, palác podle půdorysu), **čás
 
 ## 1. Předloha: hrad Lapikus
 
-Podle povrchového průzkumu (Archeologický ústav AV ČR, Brno):
-
-| Prvek | Skutečnost |
-|---|---|
-| Poloha | skalní ostroh nad Plenkovickým potokem, 2,2 km ZSZ od Plavče (Znojemsko) |
-| Stavba | 1364–1381 (Boček z Plavče, původně „Hrádek“); racionální dispozice typu Karlštejn / Radyně / Kašperk, na Moravě Ronov |
-| Zánik | pustý nejpozději 1508, nejspíš po česko-uherských válkách (2. pol. 15. st.) |
-| Příkopy | **dva šíjové příkopy** přes hřbet: první (~6–8 m široký), za ním **předhradí** ~50 m bez zástavby, pak druhý velký příkop před jádrem |
-| Přístup | po **severním svahu** pod předhradím k velkému příkopu naproti bráně |
-| Jádro – sever | **nádvoří**, ohradní zeď dochovaná v délce 43 m; **brána** s nárožním pilířem přiložená k hradbě, zpevněné opěrákem |
-| Jádro – jih | **blokový palác** dlouhý 44 m nad nádvořím, západní konec 9,5 m široký, úzké okno k jihu; uvnitř příčky |
-| Věž | východní, **věžovitá čelní část paláce ~11 × 11 m** (k příkopu) |
-| Západ | budova s **vnější branou** (dochované jedno ostění a kapsa pro závoru) |
+Přesunuto do [[Lore_Lapikus]] (*Svět a doba*, *Časové vrstvy*).
 
 ## 2. Herní verze: stav kolem roku 1540
 
-Zřícenina je „dříve v čase“: zhruba **60–80 let po opuštění**. Zbývá víc než dnes:
-
-| Prvek | Stav v roce ~1540 |
-|---|---|
-| Střechy, stropy, dřevo | spadlé a shnilé; z trámů zbyly jen kapsy ve zdech a pár trámů zaklíněných ve věži |
-| Věž | stojí do **~17–21 m z ~24 m**, strana do nádvoří nahoře rozebraná (V do 11 m); uvnitř zbytky stropů, schodiště ve zdi částečně průchozí |
-| Palác | **vnější (jižní) zeď nad útesem 8–11 m** s okny; **severní k nádvoří 4–8 m, u dveří až k zemi**; příčky 4–7 m; **sklep** pod západní částí s klenbou částečně propadlou |
-| Hradba | **5–7 m** (vnější, špatně dostupná), u brány nižší; ochoz u rampy; jeden **průlom** na severu |
-| Brána | gotický oblouk stojí, vrata pryč, **most přes příkop zřícený** (zbyly pilíře a trámy) |
-| Západní budova | **1,5–4 m** (nízká a dostupná, rozebraná nejvíc), **branka** s ostěním vede ven na špičku ostrohu |
-| Nádvoří | suťové kužely pod zdmi, **cisterna**, náletové dřeviny (bez, bříza, jeřáb), kopřivy u zdí |
+Přesunuto do [[Lore_Lapikus]] (*Svět a doba*, *Časové vrstvy*).
 
 ## 3. Půdorys pro hru
 

@@ -3,7 +3,7 @@ type: role
 validity: valid
 updated: 2026-11-19
 modules: [start, question, decision, idea_capture, handover_out, task_close, design_template]
-context: ["[[Lore_Lapikus]]"]
+context: ["[[Lore_Lapikus]]", "[[Pravidla_zabydleni]]", "[[Materialy_a_upravy_dreva]]", "[[Pohyb_postavy_a_herni_mista]]"]
 knowhow_tags: []
 combines: []
 ---

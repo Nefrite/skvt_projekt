@@ -332,7 +332,7 @@ Specifikace jako text; do `Docs/structures/navrh_<část>_<stavba>.md` ji ulož�
 
 ## Role Architect (L2)
 
-Kontext role (čti vždy): [[Lore_Lapikus]]
+Kontext role (čti vždy): [[Lore_Lapikus]], [[Pravidla_zabydleni]], [[Materialy_a_upravy_dreva]], [[Pohyb_postavy_a_herni_mista]]
 
 Know-how ke startu (`knowhow_tags`): python
 

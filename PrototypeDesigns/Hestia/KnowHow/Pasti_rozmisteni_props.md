@@ -25,5 +25,5 @@ domain: structures
 - Kus těsně u zdi: mezera ≥ 3,5 cm, kontrola průnikem (5.5).
 - Starý `furnishing_edits.json` se už nepoužívá; když se objeví, build vypíše upozornění. Jeho obsah ručně přenes jen po dohodě.
 
-3. **`06_furnishing/furnishing.json` je jediný zdroj poloh vybavení** a obsahuje i Jirkovy ruční úpravy z levelu (kap. 4). Generuj ho **jen přes `tools/furnishing/gen_furnishing.py`** (slučuje, polohy z levelu nechá). Nikdy ho nepřepisuj vlastním skriptem a nemaž z něj kusy s příznakem `captured`, `removed` nebo `manual` bez Jirkova souhlasu. `manual_edits.json` (03) a `constructions_edits.json` (05) nepřepisuj vůbec.
+3. **`06_furnishing/furnishing.json` je jediný zdroj poloh vybavení** a obsahuje i Jirkovy ruční úpravy z levelu ([[Kod_spousteni_kontroly_z_roli]], Furnisher kap. 4). Generuj ho **jen přes `tools/furnishing/gen_furnishing.py`** (slučuje, polohy z levelu nechá). Nikdy ho nepřepisuj vlastním skriptem a nemaž z něj kusy s příznakem `captured`, `removed` nebo `manual` bez Jirkova souhlasu. `manual_edits.json` (03) a `constructions_edits.json` (05) nepřepisuj vůbec.
 6. Mazání souborů jen na výslovný pokyn. `furnishing.json.bak` (záloha z posledního zápisu) nemaž, je to jediná cesta zpět po chybném capture nebo generování.

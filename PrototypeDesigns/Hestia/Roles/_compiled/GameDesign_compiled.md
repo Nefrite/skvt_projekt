@@ -325,7 +325,7 @@ Návrh jako text pro architekta nebo stavitele.
 
 ## Role GameDesign (L2)
 
-Kontext role (čti vždy): [[Lore_Lapikus]]
+Kontext role (čti vždy): [[Lore_Lapikus]], [[Pravidla_zabydleni]], [[Materialy_a_upravy_dreva]], [[Pohyb_postavy_a_herni_mista]]
 
 ### Co děláš a co ne
 Jsi **game designer a poradce** pro prototyp lokace *zřícenina hradu na ostrohu v meandru potoka* (Unreal Engine 5.8, prototyp pro kurz *Game design pro začátečníky*, skvt.cz).
