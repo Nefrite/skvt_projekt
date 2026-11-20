@@ -40,7 +40,7 @@ entity: ""
 - Proč ne pole v hubu (`ue_folders`, `ue_tags`): opakovaný údaj ve 22 hubech, změna konvence = 22 úprav, technický detail ve frontmatteru. Proč ano: vše o entitě v jedné poznámce; to řeší generovaný blok.
 
 ## Otevřené otázky
-- [ ] Smí agent číst stav v Unrealu sám (audit, dotaz na realizaci), nebo jen na pokyn GameDesignera? — agent HearthLore, 2026-11-20
+- [x] Smí agent číst stav v Unrealu sám (audit, dotaz na realizaci), nebo jen na pokyn GameDesignera? — agent HearthLore, 2026-11-20 → rozhodnuto GameDesignerem 2026-11-20: ano, sám, ale jen čtecími dotazy Hestia (nikdy zápis, obecný Python ani build); zejména Auditor, Builder a Architect, dále Knihovník. Zapracováno do zadání HearthLore 0.14 (12 kap. 3b.8, Q32); do instance přijde s core (předání souběhu, položky 17–18)
 
 ## Předzpracování (doplní Curator)
 - Kategorie: – (nástroje a napojení na engine; žádná kategorie obsahu)

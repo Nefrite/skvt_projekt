@@ -56,3 +56,4 @@ updated: 2026-11-19
 | 2026-11-19 | migrace | Attachments/Hradba_V_zlomy_pred_po.png | přesun z PrototypeDesigns/Lapikus/03_ruin/Hradba_V_zlomy_pred_po.png | migrace |
 | 2026-11-19 | migrace | Attachments/navrh_ostroh_tramy.png | přesun z PrototypeDesigns/Lapikus/05_constructions/navrh_ostroh_tramy.png | migrace |
 | 2026-11-20 | agent HearthLore | Scratch/Scratch_Unreal_napojeni.md | nový tematický scratch: zapnutí Unreal MCP v 5.8 (neověřeno), konvence actorů v levelu a návrh napojení entit na Unreal | chat |
+| 2026-11-20 | agent HearthLore | Scratch/Scratch_Unreal_napojeni.md | uzavřena otázka: agent smí číst Unreal sám, jen čtecími dotazy (Auditor, Builder, Architect, Knihovník); zadání HearthLore 0.14 | chat |
