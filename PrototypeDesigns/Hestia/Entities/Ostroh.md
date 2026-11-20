@@ -46,7 +46,6 @@ _Zatím žádné dokumenty._
 | Krok | Skripty | Dokumenty |
 |---|---|---|
 | [[03_ruin]] | `Ostroh.py`, `ostroh_spec.py` | – |
-| [[05_constructions]] | `Ostroh_Dostavba.py`, `Ostroh_Krov.py`, `Ostroh_Podlaha.py` | – |
 
 <!-- hestia:generated:end -->
 
@@ -57,21 +56,20 @@ _Zatím žádné dokumenty._
 |---|---|---|---|
 | `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | 03_ruin | name |
 | `/PrototypeDesigns/Lapikus/03_ruin/blocks/casti/Ostroh.py` | entry | 03_ruin | name |
-| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | 05_constructions | name |
-| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | 05_constructions | name |
-| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | 05_constructions | name |
 
 <!-- hestia:generated:end -->
 
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0014 (G2, [[Ostroh]]): očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths
 
 <!-- hestia:generated:end -->
 

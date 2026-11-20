@@ -73,12 +73,15 @@ depth_environment: 1
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0010 (G2, [[Les_Lapikus]]): očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths
+- Fronta T-0004 (–, [[README_forest]]): rozpad PCG a spouštění do [[04_forest]] (M14)
 
 <!-- hestia:generated:end -->
 

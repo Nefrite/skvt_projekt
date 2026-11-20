@@ -4,6 +4,7 @@ hestia_config: 1
 game_layer: true                   # false = instance bez herní vrstvy (01, kap. 2; Q31)
 # instance: lapikus                # jméno pro source_instance v CR (export_cr); bez něj jméno složky projektu
 project_root: ".."                 # relativně k vaultu
+# core_source: "../../HearthLore"  # repozitář HearthLore se značkami core relativně k vaultu (update_core --tag/--latest)
 code_roots: []                     # např. ["Code/"]
 prototypes:
   - id: {{prototype}}

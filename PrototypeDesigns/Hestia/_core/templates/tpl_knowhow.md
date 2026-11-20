@@ -15,6 +15,9 @@ entity: ""
 ---
 # {{title}}
 
+<!-- Tematický seznam pastí (Pasti_<téma>, 12 kap. 4.3): sekce níže odpadají; tělo je seznam,
+     jedna odrážka = jedna past (co dělat, proč, ověřeno RRRR-MM-DD); do HearthLore se sdílí po odrážkách.
+     Nad asi 30 odrážek téma rozdělit. -->
 ## Příznak
 ## Příčina
 ## Řešení

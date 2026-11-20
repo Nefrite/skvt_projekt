@@ -7,8 +7,10 @@ nesleduje odkazy a modul si při spouštěči nedotáhne.
 - Profil: `Roles/<Role>.md`, jinak `_core/agents/<Role>.md` (Curator, Auditor); `type: role`.
 - `combines`: složené profily (do hloubky, bez cyklů); při rozporu platí přísnější role (12 kap. 2.2).
 - Moduly: core `_core/agents/modules/`, lokální `Roles/modules/` (kolize `module_id` = chyba konfigurace).
-  Do kompilátu jdou **všechny moduly core s režimem `chat`** (pořadí podle tabulky spouštěčů
-  v kontraktu) a lokální moduly z profilů (pořadí podle profilů) s transitivními `requires`.
+  Do kompilátu jdou **všechny moduly core s režimem `chat` a `compile: all`** (pořadí podle tabulky
+  spouštěčů v kontraktu) a lokální moduly z profilů (pořadí podle profilů) s transitivními `requires`.
+  Moduly core s `compile: listed` (moduly Knihovníka) jen roli, která je uvádí v `modules` nebo skládá
+  roli, která je uvádí; ostatním kompilát vyjmenuje s pokynem předat věc Knihovníkovi (zadání 0.14.2).
   Moduly bez režimu `chat` se vynechají a vyjmenují (12 kap. 2, zadání 0.9.5).
 - Nadpisy částí se posunou o úroveň níž, frontmatter a HTML komentáře se vynechají.
 - Kompilát nese verzi core a datum; zapisuje se jen při změně obsahu (datum samo změnu nedělá).
@@ -57,6 +59,11 @@ class Module(Part):
     @property
     def modes(self) -> list[str]:
         return [str(x) for x in (self.fm.get("modes") or [])]
+
+    @property
+    def listed(self) -> bool:
+        """compile: listed = do kompilátu jen rolím, které modul uvádějí (12 kap. 2, zadání 0.14.2)."""
+        return str(self.fm.get("compile") or "all") == "listed"
 
 
 @dataclass
@@ -237,7 +244,11 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
     contract = _read_part(_agents_dir(core_root) / "CONTRACT.md", "_core/agents/CONTRACT.md")
 
     core_ids = [m.id for m in modules.values() if m.rel.startswith("_core/")]
-    queue: list[str] = sorted(core_ids, key=_contract_order(contract.body, core_ids))
+    in_profiles = {str(mid) for _n, part in profiles for mid in (part.fm.get("modules") or [])}
+    not_listed = sorted((mid for mid in core_ids if modules[mid].listed and mid not in in_profiles),
+                        key=_contract_order(contract.body, core_ids))
+    queue: list[str] = sorted((mid for mid in core_ids if mid not in not_listed),
+                              key=_contract_order(contract.body, core_ids))
     for name, part in profiles:
         for mid in part.fm.get("modules") or []:
             mid = str(mid)
@@ -284,6 +295,11 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
                       "Při rozporu mají přednost pravidla přísnější role (zadání 12, kap. 2.2)."]
     if skipped:
         lines += ["", f"Vynechané moduly (jen režim `vault`): {_join(f'`{m}`' for m in skipped)}."]
+    omitted = [m for m in not_listed if m not in included]
+    if omitted:
+        lines += ["", f"Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: "
+                      f"{_join(f'`{m}`' for m in omitted)}. Když nastane jejich spouštěč, předej věc Knihovníkovi "
+                      "(zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2)."]
 
     lines += ["", "## Kontrakt Hestia (L0)", "", *_clean_body(contract.body)]
     for mid in included:

@@ -1,6 +1,7 @@
 """Příkaz update_core: bezpečně převést instanci na novou verzi core (zadání 13 kap. 10.6, 11 kap. 6).
 
-- `--from <cesta k hestia/>`.
+- Zdroj: `--from <cesta k hestia/>`, nebo `--tag vX.Y.Z` / `--latest` z repozitáře `core_source` (config.yaml)
+  přes `git archive` do dočasné složky mimo vault; jen značky tvaru `vMAJOR.MINOR.PATCH` (zadání 0.15).
 - Dry-run: rozdíl verzí, změněné soubory core, migrační poznámky z CHANGELOG.md mezi starou a novou verzí,
   hodnoty `taxonomy_local`, které budou v core; upozornění na necommitnuté změny v projektu (11 kap. 6, krok 2).
 - Přerušenou výměnu (existuje `_core.new`, chybí `_core`) dokončí další běh; existují-li oba, odmítne.
@@ -13,16 +14,25 @@
 - Snippety core `.obsidian/snippets/hestia-*.css` (02 kap. 7.1) srovná při každém běhu: chybějící doplní,
   změněné přepíše, ty, které core nemá, přesune do `_to_delete/.obsidian/snippets/`; `appearance.json`
   (zapnutí) nemění; každý zásah zapíše do `changes.md`.
+- Kroky po aktualizaci podle manifestu `upgrade.yaml` nového core (13 kap. 10.6a, modul `upgrade`): dry-run je
+  vypíše; po `--apply` je řídicí skript spustí **novým** core jako `update_core --after-only --since <stará>`
+  (automatické kroky, `lint`/`audit` v dry-run, ruční úkoly do `queue.md`, report). `--no-after` je přeskočí.
 - `--with-views` (13 kap. 10.9): nakopíruje do `Dashboard/views/` chybějící pohledy z `vault_template` nového
   core (`bases/*.base`, `dataview/dv_*.md`), existující nepřepíše; funguje i bez změny verze core.
 """
 from __future__ import annotations
 
 import filecmp
+import json
 import importlib.util
 import os
 import re
 import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+from io import BytesIO
 from pathlib import Path
 
 from . import gitinfo
@@ -30,6 +40,7 @@ from .errors import EXIT_OK, UsageError
 from .fileio import atomic_write, file_hash, read_text, to_posix
 from .logs import append_lines, format_line
 from .taxonomy import KEYED_FILES, load_yaml
+from . import upgrade as upgrade_mod
 from . import views as views_mod
 from .util import today
 from .vault import Vault
@@ -37,7 +48,8 @@ from .vault import Vault
 EXCLUDE_DIRS = {"__pycache__", ".pytest_cache"}
 VERSION_RE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 CHANGELOG_HEAD_RE = re.compile(r"^## (\d+\.\d+\.\d+)\b.*$", re.M)
-COMPILED_HEADER_RE = re.compile(r"core (\d+\.\d+\.\d+)")
+COMPILED_HEADER_RE = re.compile(r"\bcore:? (\d+\.\d+\.\d+)")      # hlavička compose_role: „| core: X |“
+TAG_RE = re.compile(r"^v(\d+)\.(\d+)\.(\d+)$")
 
 
 def parse_version(v: str) -> tuple[int, int, int]:
@@ -216,8 +228,82 @@ def missing_views(vault: Vault, new_core: Path) -> list[tuple[Path, Path]]:
     return out
 
 
+def core_repo(vault: Vault) -> Path:
+    """Repozitář HearthLore podle `core_source` (relativně k vaultu, 13 kap. 4)."""
+    cs = vault.config.get("core_source")
+    if not cs:
+        raise UsageError("Chybí core_source v Maintenance/config.yaml (cesta k repozitáři HearthLore relativně "
+                         "k vaultu, např. core_source: \"../../HearthLore\"); nebo použij --from <cesta k hestia/>")
+    repo = (vault.root / str(cs)).resolve()
+    if not repo.is_dir() or gitinfo.toplevel(repo) is None:
+        raise UsageError(f"core_source {cs!r} ({repo}) není git repozitář")
+    return repo
+
+
+def core_tags(repo: Path) -> list[str]:
+    """Značky core `vMAJOR.MINOR.PATCH` vzestupně podle verze."""
+    tags = gitinfo.tags(repo)
+    if tags is None:
+        raise UsageError(f"Nelze číst značky v {repo} (git)")
+    return sorted((t for t in tags if TAG_RE.match(t)), key=lambda t: parse_version(t[1:]))
+
+
+def resolve_tag(args, repo: Path) -> str:
+    tags = core_tags(repo)
+    if args.latest:
+        if not tags:
+            raise UsageError(f"V {repo} není žádná značka core vMAJOR.MINOR.PATCH")
+        return tags[-1]
+    if not TAG_RE.match(args.tag or ""):
+        raise UsageError(f"--tag {args.tag!r}: čekám značku core tvaru vMAJOR.MINOR.PATCH (např. v0.14.0)")
+    if args.tag not in tags:
+        raise UsageError(f"Značka {args.tag} v {repo} není (poslední: {tags[-1] if tags else '–'})")
+    return args.tag
+
+
+def export_tag(repo: Path, tag: str, dest: Path) -> Path:
+    """`hestia/` značky přes git archive do dest; vrací cestu k hestia/."""
+    data = gitinfo.archive(repo, tag, "hestia")
+    if data is None:
+        raise UsageError(f"git archive {tag} hestia v {repo} selhal (má značka složku hestia/?)")
+    with tarfile.open(fileobj=BytesIO(data)) as tar:
+        try:
+            tar.extractall(dest, filter="data")
+        except TypeError:                                   # Python bez filtru extrakce
+            tar.extractall(dest)
+    return dest / "hestia"
+
+
 def run(args, vault: Vault) -> tuple[int, dict, str]:
-    new_core = Path(args.source).resolve()
+    if getattr(args, "after_only", False):
+        if args.source or args.tag or args.latest:
+            raise UsageError("--after-only nebere zdroj core (--from, --tag, --latest); běží nad _core/")
+        return upgrade_mod.run_after(args, vault)
+    if args.tag or args.latest:
+        repo = core_repo(vault)
+        tag = resolve_tag(args, repo)
+        with tempfile.TemporaryDirectory(prefix="hestia_core_") as tmp:
+            return _run(args, vault, export_tag(repo, tag, Path(tmp)), tag)
+    if not args.source:
+        raise UsageError("Zadej zdroj core: --from <cesta k hestia/>, --tag vX.Y.Z nebo --latest (s core_source)")
+    return _run(args, vault, Path(args.source).resolve(), "")
+
+
+def run_after_subprocess(vault: Vault, old_v: str) -> tuple[int, dict | None, str]:
+    """Kroky po aktualizaci novým core (13 kap. 10.6): podproces _core/scripts/hestia.py --after-only."""
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    r = subprocess.run([sys.executable, "-I", str(vault.root / "_core" / "scripts" / "hestia.py"), "update_core",
+                        "--vault", str(vault.root), "--after-only", "--since", old_v, "--apply", "--json"],
+                       capture_output=True, text=True, encoding="utf-8", env=env)
+    try:
+        data = json.loads(r.stdout)
+    except (json.JSONDecodeError, TypeError):
+        tail = [l for l in (r.stderr or r.stdout or "").splitlines() if l.strip()]
+        return r.returncode or 1, None, tail[-1] if tail else f"návratový kód {r.returncode}"
+    return r.returncode, data, ""
+
+
+def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
     cur_core = vault.root / "_core"
     if not (new_core / "scripts" / "hestia.py").is_file() or not (new_core / "taxonomy").is_dir():
         raise UsageError(f"{new_core} nevypadá jako hestia/ (chybí scripts/hestia.py nebo taxonomy/)")
@@ -245,6 +331,9 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     notes = changelog_notes(new_core, old_v, new_v)
     overlaps = local_overlaps(vault, new_core)
     migrations = find_migrations(new_core, old_v, new_v)
+    upl = upgrade_mod.plan(new_core, old_v, new_v) if parse_version(new_v) > parse_version(old_v) \
+        else upgrade_mod.Plan()
+    no_after = getattr(args, "no_after", False)
     dirty = gitinfo.changed_files(vault.project_root)
     warnings = []
     if dirty:
@@ -271,8 +360,10 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         sv = vault.root / "Maintenance" / "structure_version.md"
         if sv.is_file():
             text = read_text(sv)
+            how = f"update_core --tag {tag}" if tag else "update_core"
             atomic_write(sv, append_lines(text, [format_line([day.isoformat(), f"core {new_v}",
-                                                              f"aktualizace z {old_v} (update_core)", ""])], today=day),
+                                                              f"aktualizace z {old_v} ({how})",
+                                                              ", ".join(upl.crs)])], today=day),
                          expected_hash=file_hash(sv))
         removed_local = []
         local = vault.root / "Maintenance" / "taxonomy_local"
@@ -324,8 +415,13 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
                 atomic_write(cp, append_lines(read_text(cp), [line], today=day), expected_hash=file_hash(cp))
     view_rels = [to_posix(d.relative_to(vault.root)) for _s, d in views]
 
+    after, after_code, after_err = None, EXIT_OK, ""
+    if applied and not no_after:
+        after_code, after, after_err = run_after_subprocess(vault, old_v)
+
     stale = stale_compiled(vault, new_v)
-    payload = {"command": "update_core", "applied": applied, "from": old_v, "to": new_v,
+    payload = {"command": "update_core", "applied": applied, "from": old_v, "to": new_v, "source": tag or None,
+               "upgrade": upl.as_dict(), "after": after, "after_error": after_err or None,
                "added": added, "removed": removed, "modified": modified,
                "changelog": [{"version": v, "note": n} for v, n in notes],
                "taxonomy_local_in_core": [{"file": f, "key": k, "value": v} for f, k, v in overlaps],
@@ -335,7 +431,7 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         lines = [f"update_core: core {old_v} je aktuální, beze změny"]
     else:
         verb = "aktualizováno" if applied else "aktualizovalo by se (dry-run, zapiš s --apply)"
-        lines = [f"update_core: {old_v} -> {new_v} {verb}",
+        lines = [f"update_core: {old_v} -> {new_v} {verb}" + (f" (značka {tag})" if tag else ""),
                  f"Soubory core: nové {len(added)}, odebrané {len(removed)}, změněné {len(modified)}"]
         lines += [f"  + {f}" for f in added] + [f"  - {f}" for f in removed] + [f"  ~ {f}" for f in modified]
         if notes:
@@ -344,6 +440,10 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
                 lines.append(f"  {v}: " + n.replace("\n", "\n    "))
         if applied:
             lines.append("Starý core přesunut do _to_delete/; řádek v structure_version.md.")
+        if not applied or no_after:
+            lines += upgrade_mod.plan_lines(upl)
+        if applied and no_after:
+            lines.append("Kroky po aktualizaci přeskočeny (--no-after); doběhnou s update_core --after-only --apply.")
     if overlaps:
         lines.append("Hodnoty taxonomy_local, které jsou v novém core: "
                      + ", ".join(f"{f} {v}" for f, _k, v in overlaps)
@@ -362,10 +462,37 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
             lines.append("Pohledy: všechny už ve vaultu jsou (existující se nepřepisují)")
         if views_note:
             lines.append(f"Pohledy: {views_note}")
-    if stale:
+    if after is not None:
+        lines.append(_after_text(after))
+    elif after_err:
+        lines.append(f"Chyba: kroky po aktualizaci novým core neproběhly ({after_err}); _core/ zůstává nový, "
+                     f"po opravě update_core --after-only --apply")
+    if stale and not (after and "compose_role" in [s["step"] for s in after.get("steps") or [] if s["ok"]]):
         lines.append(f"Upozornění: kompiláty rolí jsou starší než core {new_v}: {', '.join(stale)}; "
                      f"spusť compose_role --apply")
     lines += [f"Upozornění: {w}" for w in warnings]
     if resumed:
         lines.insert(0, resumed)
-    return EXIT_OK, payload, "\n".join(lines)
+    code = EXIT_OK if (after is None and not after_err) or after_code == EXIT_OK else 1
+    return code, payload, "\n".join(lines)
+
+
+def _after_text(after: dict) -> str:
+    """Textový souhrn výsledku --after-only z podprocesu (JSON)."""
+    lines = [f"Kroky po aktualizaci (core {after.get('version')}):"]
+    lines += [f"  {s['step']}: {'v pořádku' if s['ok'] else 'selhal: ' + s['message']}"
+              for s in after.get("steps") or []] or ["  žádné automatické kroky"]
+    lines += [f"  {x}" for x in upgrade_mod.check_text(after.get("checks") or {})]
+    if after.get("tasks"):
+        lines.append(f"Ruční úkoly do queue.md: {', '.join(after['tasks'])}")
+    if after.get("tasks_existing"):
+        lines.append(f"Ruční úkoly už ve frontě: {', '.join(after['tasks_existing'])}")
+    crs = (after.get("upgrade") or {}).get("crs") or []
+    if crs:
+        lines.append("CR k ověření v instanci (in_pilot): " + ", ".join(crs))
+    if after.get("report"):
+        lines.append(f"Report: {after['report']}")
+    if after.get("remaining"):
+        lines.append(f"Chyba: krok {after['remaining'][0]} selhal; zbývá {', '.join(after['remaining'])}. "
+                     f"_core/ zůstává nový; po opravě doběhne update_core --after-only --apply")
+    return "\n".join(lines)

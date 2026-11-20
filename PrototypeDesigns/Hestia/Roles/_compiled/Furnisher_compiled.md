@@ -1,11 +1,13 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Furnisher | core: 0.10.2 | date: 2026-11-19 -->
+<!-- role: Furnisher | core: 0.14.0 | date: 2026-11-20 -->
 <!-- sources: Roles/Furnisher.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md -->
 # Furnisher – instrukce pro chat
 
 Kompilát pro režim `chat`: kontrakt (L0), moduly (L1) a profil role (L2) v jednom souboru. Soubory vaultu odsud neotevřeš; co k tasku potřebuješ, dostaneš v předání nebo na vyžádání. Platí verze ve vaultu, změny vracíš zápisem Hestia (modul `chat_entry`).
 
 Vynechané moduly (jen režim `vault`): `file_safety`, `metadata`, `asset_header`.
+
+Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: `lookup`, `file_info`, `completeness`, `canon_check`, `inbox_triage`, `ue_lookup`. Když nastane jejich spouštěč, předej věc Knihovníkovi (zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2).
 
 ## Kontrakt Hestia (L0)
 
@@ -34,6 +36,10 @@ Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u 
 | chyba, neznámý postup, nová technologie | `knowhow_lookup` |
 | ověřená past, postup, diagnóza | `knowhow_write` |
 | nejasnost, nejednoznačné zadání | `question` |
+| otázka na obsah dokumentace (odpověď s citacemi) | `lookup` |
+| pokyn k zápisu: kam patří, náležitosti, soulad s kánonem | `file_info`, `completeness`, `canon_check` |
+| položky inboxu `intake: raw` (třídění s GameDesignerem) | `inbox_triage` |
+| otázka na realizaci v Unrealu (jen čtení) | `ue_lookup` |
 | zápis do souborů projektu | `file_safety` |
 | zápis frontmatteru | `metadata` |
 | nový nebo změněný skript | `asset_header` |
@@ -41,7 +47,7 @@ Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u 
 | práce v režimu chat (bez přístupu k vaultu) | `chat_entry` |
 | konec tasku | `task_close` |
 
-Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
+Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Výjimka: moduly Knihovníka (`compile: listed`) používá jen role, která je má v profilu nebo skládá `Librarian`; ostatní předají věc Knihovníkovi (zápis Hestia), nebo se zeptají GameDesignera. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
 
 ### Uzavření tasku je povinné
 Každý task, který změnil návrh, stav, kód nebo data, končí modulem `task_close`: výsledek do finální dokumentace, archivace předání, metadata, know-how, otázky, řádek do `changes.md`, kontrola a krátké hlášení GameDesignerovi. Dokud to neproběhne, task není hotový. V režimu `chat` místo zápisu do vaultu vydáš zápis Hestia (modul `chat_entry`).
@@ -222,7 +228,7 @@ Na konci tasku vydej strukturovaný blok. Prázdné sekce vynech.
 ## Zápis Hestia
 - task: <krátký název> | role: <role> | datum: RRRR-MM-DD
 ### Finální dokumentace
-- [[cílový dokument]] § <sekce>: <text k zapsání nebo nahrazení>
+- [[cílový dokument]] § <sekce> | forma: doslovně | přeformulováno: <text k zapsání nebo nahrazení>
 ### Předání
 - [[predani_…]] → archivovat | zbývá: …
 ### Rozhodnutí (uzavírá cestu)
@@ -239,6 +245,8 @@ Na konci tasku vydej strukturovaný blok. Prázdné sekce vynech.
 - | RRRR-MM-DD | role | entita | co | zdroj |
 ```
 
+- Pole **`forma`** u finální dokumentace: `doslovně` = textace GameDesignera, zapíše se přímo; `přeformulováno` = tvůj text, zapíše se až po schválení. Chybí-li `forma`, platí `přeformulováno` (12 kap. 6, 3b.2).
+- Obsah zápisu před zapracováním formalizuje Knihovník (náležitosti, místo, kánon).
 - Položka, která **nahrazuje** existující text, uvádí cíl (dokument a sekce) a výslovně `nahradit:`; bez toho se text jen doplňuje.
 - Když cílový text nevidíš, popiš ho **významem** (`nahradit: tvrzení o výstupu na podestu`); orchestrační agent text najde a přepis nechá schválit.
 - Kopie dokumentů v chatu jsou jen zrcadla ke čtení; platí verze ve vaultu.

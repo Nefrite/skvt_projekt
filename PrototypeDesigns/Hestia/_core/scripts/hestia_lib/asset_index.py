@@ -3,13 +3,16 @@
 Prochází `code_roots` (od kořene projektu), vynechá `ignore` z konfigurace, vault, `_to_delete/`,
 `__pycache__/`, `generated/` (jen počet) a soubory podle .gitignore. Pravidla propojení v pořadí 10 kap. 7:
 1. hlavička (`hestia:`, `entities`, `docs`, `build_step`, `domains`, `role`),
-2. jméno souboru = ID entity nebo její prefix (`Palac_Kovarna_Okap.py` -> `Palac_Kovarna`),
+2. jméno souboru: přesná shoda jména nebo prefixu `<Jméno>_<Part>` s aliasem entity (`rule: alias`, zadání 0.14),
+   jinak ID entity nebo její nejdelší prefix (`Palac_Kovarna_Okap.py` -> `Palac_Kovarna`, `rule: name`);
+   alias u dvou entit = upozornění a použije se prefix,
 3. složka podle `taxonomy_local/folder_map.yaml` (nejdelší shodná cesta),
 4. krok ze `build_steps.code` nebo ze složky se jménem kroku,
 5. odkaz z dokumentu (`assets:` v dokumentu nebo hubu).
 Hlavní entita = první shoda; `entities` = sjednocení hlavičky, jména a tabulky *Kdo používá* sdíleného kódu.
 Výstup: `Maintenance/asset_index.json` (pro skripty) a `asset_index.md` (pro člověka) jedním během;
-přepisují se jen při změně obsahu (čas `generated` změnu nedělá).
+přepisují se jen při změně obsahu (čas `generated` změnu nedělá). Report vypíše změny přiřazení hlavní entity
+proti předchozímu indexu (13 kap. 10.2).
 """
 from __future__ import annotations
 
@@ -118,6 +121,23 @@ class Indexer:
                     self.doc_refs.setdefault(a, []).append(n)
         self.shared = {n.name: shared_users(self.m, n) for n in self.m.notes
                        if n.type == "step" and n.fm.get("step_kind") == "shared"}
+        self.aliases, self.alias_warnings = self.entity_aliases()
+
+    def entity_aliases(self) -> tuple[dict[str, str], list[str]]:
+        """`aliases` hubů: lower(alias) -> entita; alias u dvou entit se vynechá s upozorněním (10 kap. 4)."""
+        seen: dict[str, list[str]] = {}
+        for name, n in sorted(self.m.entities.items()):
+            for a in as_list(n.fm.get("aliases")):
+                key = str(a).strip().lower()
+                if key and key != name.lower() and name not in seen.setdefault(key, []):
+                    seen[key].append(name)
+        out, warnings = {}, []
+        for key, ents in sorted(seen.items()):
+            if len(ents) == 1:
+                out[key] = ents[0]
+            else:
+                warnings.append(f"alias {key} je u entit {', '.join(ents)}; použije se prefix jména")
+        return out, warnings
 
     # ------------------------------------------------------------ výběr souborů
     def candidates(self) -> tuple[list[Path], int, list[str]]:
@@ -168,6 +188,15 @@ class Indexer:
                 return part
         return None
 
+    def alias_entity(self, stem: str) -> str | None:
+        """Přesná shoda jména souboru nebo jeho prefixu `<Jméno>_<Part>` s aliasem entity (nejdelší první)."""
+        parts = stem.split("_")
+        for i in range(len(parts), 0, -1):
+            hit = self.aliases.get("_".join(parts[:i]).lower())
+            if hit:
+                return hit
+        return None
+
     def name_entity(self, stem: str) -> str | None:
         parts = stem.split("_")
         for i in range(len(parts), 0, -1):
@@ -211,9 +240,13 @@ class Indexer:
 
         # 2) jméno souboru
         if entity is None and not STEP_SCRIPT_RE.match(path.stem):
-            e = self.name_entity(path.stem)
+            e = self.alias_entity(path.stem)
             if e:
-                entity, rule = e, "name"
+                entity, rule = e, "alias"
+            else:
+                e = self.name_entity(path.stem)
+                if e:
+                    entity, rule = e, "name"
 
         # 3) složka (folder_map)
         fm_item = next((it for it in self.folder_map
@@ -271,6 +304,7 @@ class Indexer:
     def build(self) -> IndexResult:
         out = IndexResult()
         files, out.generated_count, out.warnings = self.candidates()
+        out.warnings += self.alias_warnings
         out.files = [self.entry(p, out) for p in files]
         out.files.sort(key=lambda f: f["path"])
         return out
@@ -278,6 +312,15 @@ class Indexer:
 
 def build(vault: Vault, model: Model | None = None) -> IndexResult:
     return Indexer(vault, model).build()
+
+
+def reassigned(old: dict | None, res: IndexResult) -> list[dict]:
+    """Soubory, kterým se proti předchozímu indexu změnila hlavní entita (13 kap. 10.2)."""
+    if not old:
+        return []
+    before = {f.get("path"): f.get("entity") for f in old.get("files") or [] if isinstance(f, dict)}
+    return [{"path": f["path"], "from": before[f["path"]], "to": f["entity"], "rule": f["rule"]}
+            for f in res.files if f["path"] in before and before[f["path"]] != f["entity"]]
 
 
 def load_json(vault: Vault) -> dict | None:
@@ -344,6 +387,7 @@ def plan(vault: Vault, res: IndexResult, cs: ChangeSet, now: _dt.datetime | None
 
 def run(args, vault: Vault) -> tuple[int, dict, str]:
     res = build(vault)
+    moved = reassigned(load_json(vault), res)
     cs = ChangeSet(vault.project_root)
     changed = plan(vault, res, cs)
     if args.apply and changed:
@@ -352,7 +396,7 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     payload = {"command": "asset_index", "applied": bool(args.apply and changed), "changed": changed,
                "files": len(res.files), "generated_files": res.generated_count,
                "unlinked": [f["path"] for f in res.files if not f["entities"] and not f["docs"]],
-               "findings": [f.as_dict() for f in findings], "warnings": res.warnings}
+               "reassigned": moved, "findings": [f.as_dict() for f in findings], "warnings": res.warnings}
     roles: dict = {}
     for f in res.files:
         roles[f["role"]] = roles.get(f["role"], 0) + 1
@@ -361,6 +405,8 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
              f"{JSON_REL} a .md {state}"]
     if payload["unlinked"]:
         lines.append("Bez napojení na entitu ani dokument: " + ", ".join(payload["unlinked"]))
+    lines += [f"Změna přiřazení: {m['path']}: {m['from'] or '–'} -> {m['to'] or '–'} ({m['rule'] or '–'})"
+              for m in moved]
     lines += [f"Upozornění: {w}" for w in res.warnings]
     if findings:
         lines.append(to_text(findings))

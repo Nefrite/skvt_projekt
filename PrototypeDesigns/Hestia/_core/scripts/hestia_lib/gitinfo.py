@@ -1,4 +1,4 @@
-"""Git jen pro čtení (zadání 13 kap. 8): log, diff --name-only, status --porcelain.
+"""Git jen pro čtení (zadání 13 kap. 8): log, diff --name-only, status --porcelain, tag --list, archive.
 
 Skripty nikdy necommitují ani nemění index. Není-li projekt v gitu nebo git chybí, vrací None
 a volající (G11, lint bez argumentů) to ohlásí jako upozornění.
@@ -119,3 +119,23 @@ def head_text(path: Path) -> str | None:
     if r is None or r.returncode != 0:
         return None
     return r.stdout
+
+
+def tags(repo: Path, pattern: str = "v*") -> list[str] | None:
+    """Značky repozitáře podle vzoru (update_core --tag/--latest, 13 kap. 10.6); None mimo git."""
+    r = _git(Path(repo), "tag", "--list", pattern)
+    if r is None or r.returncode != 0:
+        return None
+    return [t.strip() for t in r.stdout.splitlines() if t.strip()]
+
+
+def archive(repo: Path, ref: str, path: str) -> bytes | None:
+    """`git archive --format=tar <ref> <path>` jako bajty (jen čtení); None při chybě."""
+    if shutil.which("git") is None:
+        return None
+    try:
+        r = subprocess.run(["git", "archive", "--format=tar", ref, path], cwd=str(repo),
+                           capture_output=True, timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.stdout if r.returncode == 0 else None

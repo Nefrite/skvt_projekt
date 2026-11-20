@@ -1,0 +1,43 @@
+---
+type: agent_module
+module_id: lookup
+trigger: otázka na obsah dokumentace
+requires: []
+modes: [vault, chat]
+compile: listed
+validity: valid
+updated: 2026-11-20
+---
+# Vyhledávání v dokumentaci
+
+## Kdy
+Někdo se ptá, co dokumentace říká („Co víme o bráně?“, „Jakou střechu má kovárna?“), nebo potřebuješ ověřit fakt před zápisem (`canon_check`).
+
+## Postup
+1. **Ve vaultu** hledej nejdřív v indexu dokumentů `Maintenance/doc_index.json` (název, `aliases`, nadpisy, entita, typ, platnost) a v glosáři `Dashboard/Glossary.md`; otevři jen kandidátní dokumenty. Starý index obnov `hestia.py doc_index --apply`.
+2. **V chatu** pracuj jen s balíčkem kontextu (`compose_context`) a s tím, co máš v tasku; co v něm není, nedomýšlej a řekni si o balíček.
+3. U otázky o entitě vezmi z hubu stav: návrh, realizace, cíl a režim (blok *Domény*).
+4. Rozliš **návrh** (`design`, `spec`, `decision`), **realizaci** (`state`, skript, report Unrealu) a **zavržené** (`status: rejected`). Realizaci ověř čtecím dotazem nebo posledním reportem (modul `ue_lookup`), je-li to potřeba.
+5. Když si zdroje odporují, nerozhoduj: vypiš rozpor a podle hierarchie zdrojů (12 kap. 3b.3) uveď, co platí. Zapiš otázku k dotčenému dokumentu, u rozporu mezi dokumenty i položku fronty pro Auditora.
+6. `outdated`, `superseded` a `archived` dokumenty uváděj jen jako historii a označ je. Položky z `Inbox/` a nezařazené ze `Scratch/` jsou **neověřené**.
+
+## Výstup
+```markdown
+**Odpověď:** <stručná odpověď, jen z dokumentace>
+
+**Zdroje:**
+- [[dokument#sekce]] – <typ>, <validity>, <návrh / realizace>, updated RRRR-MM-DD
+- report Unrealu `ue_<entita>.json` (RRRR-MM-DD), je-li
+
+**Stav:** návrh <N> / realizace <M> / cíl <T> (<režim>) – z hubu, je-li otázka o entitě
+**Rozpory:** <tvrzení A [[…]]> × <tvrzení B [[…]]> → podle 12 kap. 3b.3 platí …; nebo „žádné“
+**Neověřené:** položky z `Inbox/` a `Scratch/` (nezařazené)
+**Mezery:** co v dokumentaci chybí → navržená otevřená otázka (kam)
+```
+Odpověď bez zdroje není povolená; „není zdokumentováno“ je platná odpověď.
+
+## Známé pasti
+- Doplnit odpověď z obecných znalostí nebo z odhadu; v dokumentaci to není, takže to patří do *Mezer*.
+- Citovat zavržený návrh nebo zastaralý dokument jako platný.
+- Vydávat návrh za realizaci („kovárna má pultovou střechu“, když to říká jen návrh).
+- Číst celý vault místo indexu; je to pomalé a do kontextu se dostane šum.

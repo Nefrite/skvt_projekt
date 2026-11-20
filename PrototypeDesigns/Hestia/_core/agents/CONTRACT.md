@@ -5,7 +5,7 @@ trigger: always
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-20
 ---
 # Kontrakt agentů Hestia (L0)
 
@@ -34,6 +34,10 @@ Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u 
 | chyba, neznámý postup, nová technologie | `knowhow_lookup` |
 | ověřená past, postup, diagnóza | `knowhow_write` |
 | nejasnost, nejednoznačné zadání | `question` |
+| otázka na obsah dokumentace (odpověď s citacemi) | `lookup` |
+| pokyn k zápisu: kam patří, náležitosti, soulad s kánonem | `file_info`, `completeness`, `canon_check` |
+| položky inboxu `intake: raw` (třídění s GameDesignerem) | `inbox_triage` |
+| otázka na realizaci v Unrealu (jen čtení) | `ue_lookup` |
 | zápis do souborů projektu | `file_safety` |
 | zápis frontmatteru | `metadata` |
 | nový nebo změněný skript | `asset_header` |
@@ -41,7 +45,7 @@ Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u 
 | práce v režimu chat (bez přístupu k vaultu) | `chat_entry` |
 | konec tasku | `task_close` |
 
-Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
+Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Výjimka: moduly Knihovníka (`compile: listed`) používá jen role, která je má v profilu nebo skládá `Librarian`; ostatní předají věc Knihovníkovi (zápis Hestia), nebo se zeptají GameDesignera. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
 
 ## Uzavření tasku je povinné
 Každý task, který změnil návrh, stav, kód nebo data, končí modulem `task_close`: výsledek do finální dokumentace, archivace předání, metadata, know-how, otázky, řádek do `changes.md`, kontrola a krátké hlášení GameDesignerovi. Dokud to neproběhne, task není hotový. V režimu `chat` místo zápisu do vaultu vydáš zápis Hestia (modul `chat_entry`).

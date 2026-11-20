@@ -57,12 +57,14 @@ _Žádné soubory._
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0020 (G2, [[Pristup_JV]]): očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths
 
 <!-- hestia:generated:end -->
 

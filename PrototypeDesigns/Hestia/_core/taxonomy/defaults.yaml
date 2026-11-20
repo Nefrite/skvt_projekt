@@ -4,6 +4,7 @@ hestia_config: 1
 game_layer: true                   # false = instance bez herní vrstvy (01 kap. 2, Q31)
 instance: null                     # jméno instance pro source_instance v CR (export_cr); null = jméno složky projektu
 project_root: ".."
+core_source: null                  # repozitář HearthLore se značkami core relativně k vaultu (update_core --tag/--latest, 13 kap. 10.6)
 code_roots: []
 ignore: ["**/__pycache__/**", "**/_to_delete/**", "**/generated/**", "**/*.bak"]
 prototypes: []
@@ -17,3 +18,5 @@ thresholds:
   bulk_metadata_files: 10
 required_docs: [lore_master]
 protected_files: []
+context_max_chars: 60000           # limit balíčku compose_context (13 kap. 10.10)
+ue_report_days: 14                 # report z Unrealu starší než práh = starý (13 kap. 10.11)

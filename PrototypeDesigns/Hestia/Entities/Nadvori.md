@@ -61,12 +61,15 @@ _Žádné soubory._
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0011 (G2, [[Nadvori]]): očekávaná doména environment (kind place) bez target_environment ani u potomků; očekávaná doména narrative (kind place) bez target_narrative ani u potomků; očekávaná doména paths (kind place) bez target_paths ani u potomků
+- Fronta F-0012 (G4, [[Nadvori]]): status built bez platného dokumentu state
 
 <!-- hestia:generated:end -->
 

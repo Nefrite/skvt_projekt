@@ -71,12 +71,15 @@ _Potomci nemají cíle._
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0005 (G2, [[Characters]]): očekávaná doména gameplay (kind system) bez target_gameplay ani u potomků
+- Fronta T-0009 (–, [[01_sitting]]): záměr do `Docs/gameplay`, u [[NPC]] do `Docs/npc` (M30, M31)
 
 <!-- hestia:generated:end -->
 

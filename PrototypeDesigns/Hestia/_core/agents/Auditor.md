@@ -1,8 +1,8 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-17
-modules: [start, question]
+updated: 2026-11-20
+modules: [start, question, ue_lookup]
 context: []
 knowhow_tags: []
 combines: []
@@ -35,7 +35,9 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Auditor) a lokální dopl
 - **Audit:** `python _core/scripts/hestia.py audit` nejdřív bez `--apply`, pak s `--apply` (zapíše `reports/audit_RRRR-MM-DD.md` a `.json` a nové položky do `queue.md`).
 - **Zralost:** porovnání dosažené hloubky s `target_*` po entitách a doménách podle režimu cíle (`build`: realizace `depth_*`, `design`: hloubka návrhu z dokumentů); G13 = navržené a čekající na stavbu; v reportu změny `target_*` od minulého auditu.
 - **Porovnání tvrzení:** rozpory mezi dokumenty téže entity (G3) zapiš jako nález s odkazy na obě místa; nerozhoduj, který platí.
-- **Kompiláty rolí:** kompilát v `Roles/_compiled/` starší než jeho zdroje hlas jako G5.
+- **Kompiláty rolí:** kompilát v `Roles/_compiled/` starší než jeho zdroje hlas jako G5; stejně balíček kontextu v `Maintenance/context/` (spusť `compose_context` znovu).
+- **Knihovník:** v reportu sekce *Knihovník* (změny kánonu v `changes.md` s předponou `změna kánonu:`, `Inbox/` `raw` a jeho stáří, scratch zařazené za období); audit při běhu obnoví i generovaný index `Maintenance/doc_index.json`.
+- **Unreal** (jen s `Maintenance/taxonomy_local/ue_map.yaml`): týdně, běží-li editor, nech přečíst stav všech entit jedním během (`ue_query --emit --all --apply`, spuštění v editoru, `ue_query --import --all --apply`, `hubs --apply`; modul `ue_lookup`). Audit pak hlásí G10 u entity s pravidlem a `depth_* ≥ 2` v režimu build bez jediného actora a v sekci *Unreal* entity bez pravidla, bez reportu a staré reporty. Úroveň realizace neodhaduješ; `depth_*` neměníš.
 - **Povinné dokumenty:** master lore a další z `required_docs` bez vyplněných povinných sekcí hlas jako G12.
 - **Fáze prototypu:** při uzavření fáze se člověkem revize `target_*`, dokumentační dluh a master lore.
 

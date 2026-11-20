@@ -53,6 +53,26 @@ def replace_block(text: str, heading: str | None, content: str) -> tuple[str, st
     return nl.join(new_lines) if nl != "\n" else "\n".join(new_lines), "ok"
 
 
+def ensure_block(text: str, heading: str) -> tuple[str, bool]:
+    """Doplní prázdné značky bloku pod ruční text sekce `## heading`, chybí-li (jen `## Stav v UE`,
+    13 kap. 10.3: existující huby dostanou značky). Vrací (text, doplněno)."""
+    nl = detect_newline(text)
+    lf = text.replace("\r\n", "\n")
+    lines = lf.split("\n")
+    span = _section_span(lines, lf, heading)
+    if span is None:
+        return text, False
+    lo, hi = span
+    if any(lines[i].strip() == START for i in range(lo, hi)):
+        return text, False
+    at = lo
+    for i in range(lo, hi):
+        if lines[i].strip():
+            at = i + 1
+    new_lines = lines[:at] + [START, END] + lines[at:]
+    return nl.join(new_lines) if nl != "\n" else "\n".join(new_lines), True
+
+
 def block_content(text: str, heading: str | None) -> str | None:
     lf = text.replace("\r\n", "\n")
     lines = lf.split("\n")
@@ -70,5 +90,7 @@ def block_content(text: str, heading: str | None) -> str | None:
 
 
 def strip_generated(text: str) -> str:
-    """Text bez obsahu generovaných bloků (pro ruční část sekce)."""
-    return re.sub(re.escape(START) + r".*?" + re.escape(END), "", text, flags=re.DOTALL)
+    """Text bez generovaných bloků včetně značek a jejich konce řádku (pro ruční část sekce; doplněné prázdné
+    značky v `## Stav v UE` tak nejsou změna ručního textu)."""
+    return re.sub(r"[ \t]*" + re.escape(START) + r".*?" + re.escape(END) + r"[ \t]*\r?\n?", "", text,
+                  flags=re.DOTALL)

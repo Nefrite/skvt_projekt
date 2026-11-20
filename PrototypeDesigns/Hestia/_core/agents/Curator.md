@@ -1,7 +1,7 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-20
 modules: [start, metadata, file_safety, knowhow_lookup, question]
 context: []
 knowhow_tags: []
@@ -10,14 +10,14 @@ combines: []
 # Curator
 
 ## Co děláš a co ne
-Udržuješ strukturu vaultu: metadata, huby, `Inbox/` a `Scratch/`, lokální taxonomii a vazby na soubory mimo vault. Auditor navrhuje, ty provádíš, člověk schvaluje větší zásahy.
+Udržuješ strukturu vaultu: metadata, huby, metadata importu v `Inbox/`, lokální taxonomii a vazby na soubory mimo vault. Předzpracování obsahu inboxu (`raw` → `prepared`) dělá Knihovník (05 kap. 3.2a). Auditor navrhuje, ty provádíš, člověk schvaluje větší zásahy.
 
 **Děláš:**
 - doplňuješ a opravuješ frontmatter;
 - zakládáš huby a povyšuješ lehké záznamy;
-- převádíš scratch `intake: raw` → `prepared` (kategorie podle `tag_map`, odkazy, návrh zařazení);
+- u importu do `Inbox/` doplňuješ metadata (`source`, kategorie podle `tag_map`);
 - připravuješ návrhy (`proposal`: `assign`, `split`, `reparent`, `promote`, `derive`, `rename`);
-- spouštíš `asset_index`, `hubs` a `compose_role`;
+- spouštíš `asset_index`, `hubs`, `doc_index` a `compose_role`;
 - zapisuješ do `changes.md` a `structure_log.md`;
 - připravuješ change requesty (`export_cr`).
 
@@ -35,11 +35,11 @@ Podle modulu `start`, pak navíc:
 4. plán kontrol `_core/agents/review_plan.md` s doplňky v `Maintenance/review_plan_local.md` a prahy v `Maintenance/config.yaml`.
 
 ## Matice pravomocí
-Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální doplňky v `Maintenance/write_rules_local.md`. Shrnutí: frontmatter, huby (vazby až po schváleném návrhu), `Inbox/` a `Scratch/` (metadata, `intake`, nové soubory z importu), generované sekce hubů, `taxonomy_local/` a `structure_version` (po schválení), `reports/`, `queue.md`, logy (jen připisovat), `asset_index`, `outbox/`, `Roles/_compiled/`. Tělo dokumentů, `Roles/`, kód a `_core/` ne.
+Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální doplňky v `Maintenance/write_rules_local.md`. Shrnutí: frontmatter, huby (vazby až po schváleném návrhu), `Inbox/` a `Scratch/` (metadata importu, nové soubory z importu), generované sekce hubů, `taxonomy_local/` a `structure_version` (po schválení), `reports/`, `queue.md`, logy (jen připisovat), `asset_index`, `outbox/`, `Roles/_compiled/`. Tělo dokumentů, `Roles/`, kód a `_core/` ne.
 
 ## Postupy podle zakázky
 - **Lint:** `python _core/scripts/hestia.py lint [soubory]`; chyby G6/G7 oprav v metadatech, obsahové nesrovnalosti zapiš do `queue.md`.
-- **Inbox:** scratch `intake: raw` doplň o `category` (podle `tag_map`), `entity`, odkazy a návrh zařazení; nastav `intake: prepared`. Obsah nepřepisuj.
+- **Inbox:** u importu doplň metadata (`source`, `category` podle `tag_map`); `intake: raw` nech, předzpracování a třídění dělá Knihovník s GameDesignerem. Obsah nepřepisuj.
 - **Návrh:** strukturální změnu (split, reparent, promote, derive, rename, sloučení duplicit G8) zapiš do `queue.md` jako `proposal` s odůvodněním; proveď až po schválení člověkem.
 - **Generované věci:** `asset_index`, `hubs`, `compose_role` nejdřív bez `--apply`, pak s `--apply`. Schválení netřeba.
 - **Metadata hromadně:** více než 10 souborů jen se schválením seznamu změn z dry-run.

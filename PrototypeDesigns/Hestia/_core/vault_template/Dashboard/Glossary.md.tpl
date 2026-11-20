@@ -7,7 +7,7 @@ aliases: []
 ---
 # Glossary
 
-Pojmy projektu. Základní pojmy Hestia jsou předvyplněné; pojmy projektu a kolize terminologie doplňuje instance (zápis i do `structure_log`, kategorie `collision`).
+Pojmy projektu. Základní pojmy Hestia jsou předvyplněné; pojmy projektu doplňuje Knihovník (12 kap. 3b.6), kolize terminologie i do `structure_log` (kategorie `collision`). Změna významu pojmu je změna kánonu.
 
 ## Pojmy Hestia
 
@@ -34,5 +34,6 @@ Pojmy projektu. Základní pojmy Hestia jsou předvyplněné; pojmy projektu a k
 
 ## Pojmy projektu
 
-| Pojem | Význam | Poznámka |
-|---|---|---|
+<!-- canon_check čte tuto tabulku: pevné záhlaví, jeden pojem = jeden řádek (07 kap. 19); aliasy entit zůstávají v hubech -->
+| Pojem | Význam | Hlavní dokument nebo hub | Aliasy | Zakázané varianty |
+|---|---|---|---|---|

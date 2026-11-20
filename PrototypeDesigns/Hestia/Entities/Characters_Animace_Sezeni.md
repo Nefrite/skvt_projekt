@@ -55,12 +55,14 @@ _Žádné soubory._
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0006 (G2, [[Characters_Animace_Sezeni]]): očekávaná doména gameplay (kind system) bez target_gameplay
 
 <!-- hestia:generated:end -->
 

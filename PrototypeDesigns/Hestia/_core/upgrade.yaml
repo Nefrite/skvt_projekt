@@ -1,0 +1,42 @@
+# Kroky po aktualizaci core v instanci (zadání 13 kap. 10.6a, 11 kap. 5).
+# Záznam přidává vývojář s každou vydanou verzí, i prázdný; test hlídá úplnost proti CHANGELOG.md.
+# update_core sečte záznamy verzí (stará, nová] a po výměně _core/ je provede novým core:
+#   after   automatické kroky (asset_index, hubs, doc_index, compose_role); pořadí určuje update_core
+#   manual  ruční úkoly do Maintenance/queue.md (T-…, klíč update_core:<verze>:<id>); id stabilní v rámci verze
+#   crs     change requesty implementované ve verzi; ověří je instance (in_pilot)
+#   migration  jen MAJOR: scripts/migrations/<verze>.py
+# Záznamy do 0.13.0 doplněné zpětně podle CHANGELOG.md (od verze pilotu 0.10.2).
+upgrade: 1
+versions:
+  - version: 0.10.2
+    after: []
+    manual: []
+    crs: [CR_2026-11-19_zminky_v_backtickach_cil]
+  - version: 0.10.3
+    after: []
+    manual: []
+    crs: [CR_2026-11-19_jmena_roli_anglicky, CR_2026-11-19_knowhow_tematicke_pasti]
+  - version: 0.11.0
+    after: [asset_index, hubs]
+    manual: []
+    crs: [CR_2026-11-19_asset_index_alias_entity]
+  - version: 0.12.0
+    after: [doc_index, compose_role]
+    manual:
+      - id: glossary_header
+        text: "Převést záhlaví tabulky Pojmy projektu v Dashboard/Glossary.md na pět sloupců: Pojem | Význam | Hlavní dokument nebo hub | Aliasy | Zakázané varianty (07 kap. 19)"
+    crs: []
+  - version: 0.13.0
+    after: [hubs, compose_role]
+    manual: []
+    crs: []
+  - version: 0.14.0
+    after: []
+    manual:
+      - id: core_source
+        text: "Doplnit do Maintenance/config.yaml klíč core_source (cesta k repozitáři HearthLore relativně k vaultu); další aktualizace pak update_core --latest (13 kap. 4, 10.6)"
+    crs: []
+  - version: 0.14.1
+    after: []
+    manual: []
+    crs: []

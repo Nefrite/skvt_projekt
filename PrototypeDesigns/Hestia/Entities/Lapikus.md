@@ -139,6 +139,8 @@ _Potomci nemají cíle._
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
@@ -155,6 +157,15 @@ _Potomci nemají cíle._
 - [[Rozhodnuti_zricenina]]: přiřazení kůra / loupané u jednotlivých staveb — z KNOWHOW_hrad, 2026-11-17
 - [[Rozhodnuti_zricenina]]: výstup na podestu brány — z KNOWHOW_hrad, 2026-11-17
 - [[Rozhodnuti_zricenina]]: poloha cisterny — z KNOWHOW_hrad, 2026-11-17
+- Fronta F-0001 (G5, [[README_ruin]]): validity: outdated
+- Fronta F-0008 (G2, [[Lapikus]]): očekávaná doména gameplay (kind location) bez target_gameplay ani u potomků; očekávaná doména narrative (kind location) bez target_narrative ani u potomků; očekávaná doména npc (kind location) bez target_npc ani u potomků; očekávaná doména paths (kind location) bez target_paths ani u potomků; očekávaná doména structures (kind location) bez target_structures ani u potomků
+- Fronta T-0001 (–, [[README_ruin]]): porovnat se stavem [[Zricenina_03_ruin_stav]], pak rozhodnout o platnosti (M18, GameDesigner 2026-11-19)
+- Fronta T-0002 (–, [[README_ruin]]): kap. 6–7 rozpadnout do [[03_ruin]] (M18)
+- Fronta T-0003 (–, [[CHECKLIST_assets_navrhy]]): rozpad kap. 0, 7, 9 (M07)
+- Fronta T-0006 (–, [[Zricenina_03_ruin_stav]]): rozpad do stavů entit (M19, B11 pilotu)
+- Fronta T-0011 (–, [[FURNISHING]]): sloučit s [[06_furnishing]] (M08)
+- Fronta T-0012 (–, [[Kod_spousteni_kontroly_z_roli]]): zařadit do `Steps/` a `Steps/shared/` podle *Předzpracování* (B7)
+- Fronta T-0013 (–, [[Namety_dostavby]]): GameDesigner rozhodne, co dál (B7)
 - Scratch: [[FURNISHING]] (prepared)
 - Scratch: [[Kod_spousteni_kontroly_z_roli]] (prepared)
 - Scratch: [[Namety_dostavby]] (prepared)

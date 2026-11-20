@@ -40,6 +40,9 @@ assets: []
 ## Vazby
 
 ## Stav v UE
+<!-- ručně: co je ověřeno v enginu, kým, kdy; níže blok z posledního čtení Unrealu (ue_map.yaml) -->
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->

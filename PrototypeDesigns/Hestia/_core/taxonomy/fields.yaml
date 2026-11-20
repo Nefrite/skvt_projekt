@@ -46,6 +46,7 @@ items:
   - {name: trigger,        section: orchestration, applies_to: [agent_module], value: text,        required: always}
   - {name: requires,       section: orchestration, applies_to: [agent_module], value: list, items: text, required: no}
   - {name: modes,          section: orchestration, applies_to: [agent_module], value: list, items: "enum:modes", required: always}
+  - {name: compile, spec: "12 kap. 2", section: orchestration, applies_to: [agent_module], value: "enum:compile", required: no}
   - {name: reviewed,       section: orchestration, applies_to: *documents, value: date,            required: no}
   - {name: updated,        section: orchestration, applies_to: *all,       value: date,            required: always}
   - {name: aliases,        section: orchestration, applies_to: *all,       value: list, items: text, required: no}

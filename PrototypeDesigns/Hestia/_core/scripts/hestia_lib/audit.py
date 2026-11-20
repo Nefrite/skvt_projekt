@@ -8,6 +8,11 @@
   nález uzavře svou položku (`state: done`, datum ve sloupci `closed`; jen `kind: finding`).
 - [R4] `--baseline <reports/audit_….json>`: rozdíl nálezů proti dřívějšímu běhu.
 - Věkové prahy (otázky, dokumenty, know-how) jsou v reportu v *Doporučených krocích*, ne nálezy.
+- Sekce *Knihovník* (13 kap. 10.10, 12 kap. 3b.9): změny kánonu v `changes.md` (předpona `změna kánonu:`),
+  `Inbox/` `raw` (počet, průměrné stáří), `Scratch/` zařazené za období (od posledního auditu).
+- Sekce *Unreal* a rozšíření G10 jen s `ue_map.yaml` (13 kap. 10.11): entita s pravidlem, `depth_d ≥ 2`
+  v režimu build a v posledním reportu bez actora = G10; v sekci entity bez pravidla, bez reportu, staré reporty.
+- G5 i u balíčků kontextu (`Maintenance/context/`), které by nové složení změnilo; audit obnoví `doc_index.json`.
 Instance bez herní vrstvy: G1–G4, G10, G12 a zralost se nepočítají.
 """
 from __future__ import annotations
@@ -19,7 +24,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import asset_index as ai
-from . import gitinfo
+from . import doc_index, gitinfo
 from .changeset import ChangeSet
 from .errors import EXIT_FINDINGS, EXIT_OK, UsageError
 from .findings import SEVERITY_ORDER, Finding, has_errors, sort_findings, to_text
@@ -51,6 +56,8 @@ class AuditResult:
     warnings: list[str] = field(default_factory=list)
     commit: str | None = None
     index: ai.IndexResult | None = None
+    librarian: dict = field(default_factory=dict)
+    unreal: list[str] | None = None                    # sekce Unreal (jen s ue_map.yaml, 13 kap. 10.11)
 
 
 def key_of(f) -> tuple:
@@ -224,6 +231,76 @@ class Auditor:
                 self.add("G5", p.stem, self.v.project_rel(p),
                          "kompilát role je starší než zdroje (kontrakt, moduly, profil); spusť compose_role")
 
+    def ue_checks(self, files: list[dict]) -> None:
+        """G10 rozšíření a sekce Unreal v reportu (13 kap. 10.11): jen s ue_map.yaml."""
+        from . import ue
+        if self.v.taxonomy.ue_map is None:
+            return
+        rmap = ue.rules(self.v, self.m)
+        lines: list[str] = []
+        stepped = {e for f in files if f.get("build_step") for e in f.get("entities") or []}
+        stepped |= {e for n in self.m.notes if n.type != "entity" and n.fm.get("build_step")
+                    for e in self.m.entities_of(n)}
+        without, missing, stale = [], [], []
+        for name, n in sorted(self.m.entities.items()):
+            build_domains = [d for d in self.tx.domains if self.m.num(n.fm, f"target_{d}")
+                             and self.m.mode(name, d) == "build"]
+            if name not in rmap:
+                if name in stepped and build_domains:
+                    without.append(name)
+                continue
+            rep = ue.load_report(self.v, name)
+            if rep is None:
+                missing.append(name)
+                continue
+            if ue.is_stale(self.v, rep, self.day):
+                stale.append(f"{name} ({str(rep.get('generated') or '–')[:10]})")
+            if ue.total_actors(rep) == 0:
+                for d in self.tx.domains:
+                    depth = self.m.num(n.fm, f"depth_{d}")
+                    if depth is not None and depth >= 2 and self.m.mode(name, d) == "build":
+                        self.add("G10", name, self.file_of(n), f"v posledním reportu z Unrealu "
+                                 f"({str(rep.get('generated') or '–')[:10]}) žádný actor, ale depth_{d} {depth}")
+                        break
+        lines.append(f"- Entity s pravidlem v `ue_map.yaml`: {len(rmap)}")
+        if without:
+            lines.append("- Bez pravidla (krok a cíl v režimu build): " + ", ".join(without))
+        if missing:
+            lines.append("- S pravidlem, bez reportu: " + ", ".join(missing))
+        if stale:
+            lines.append(f"- Report starší než {int(self.v.config.get('ue_report_days') or 14)} dní: "
+                         + ", ".join(stale))
+        if missing or stale:
+            lines.append("- Obnova: `hestia.py ue_query --emit --all --apply`, spustit v editoru, "
+                         "`ue_query --import --all --apply`, `hubs --apply`")
+        self.r.unreal = lines
+
+    def context_checks(self) -> None:
+        """G5: balíček kontextu starší než zdroje (13 kap. 10.10); jinak se Maintenance/context/ nekontroluje."""
+        from . import context
+        d = self.v.root / context.CONTEXT_DIR
+        for p in sorted(d.glob(f"*{context.SUFFIX}.md")) if d.is_dir() else []:
+            why = context.stale(self.v, p, self.day)
+            if why:
+                self.add("G5", p.stem, self.v.project_rel(p), why)
+
+    def librarian_metrics(self, state: dict) -> None:
+        """Metriky Knihovníka za období od posledního auditu (12 kap. 3b.9, 13 kap. 10.10)."""
+        since = period_start(self.v, state, self.day)
+        in_period = lambda d: d is not None and (since is None or d >= since)  # noqa: E731
+        p = self.v.root / CHANGES_REL
+        canon = [e for e in (log_entries(read_text(p)) if p.is_file() else [])
+                 if len(e) > 3 and e[3].strip().startswith("změna kánonu:") and in_period(as_date(e[0]))]
+        raw = [n for n in self.m.notes if n.rel.startswith("Inbox/") and n.type == "scratch"
+               and n.fm.get("intake") == "raw"]
+        ages = [(self.day - d).days for n in raw if (d := as_date(n.fm.get("updated")))]
+        prepared = [n for n in self.m.notes if n.rel.startswith("Scratch/") and n.type == "scratch"
+                    and n.fm.get("intake") == "prepared" and in_period(as_date(n.fm.get("updated")))]
+        self.r.librarian = {"since": since.isoformat() if since else None,
+                            "canon_changes": [{"date": e[0], "target": e[2], "what": e[3]} for e in canon],
+                            "inbox_raw": len(raw), "inbox_avg_age": round(sum(ages) / len(ages), 1) if ages else None,
+                            "scratch_prepared": len(prepared)}
+
     def orphan_checks(self) -> None:
         inbound: dict[str, int] = {}
         outbound: dict[str, int] = {}
@@ -362,13 +439,16 @@ class Auditor:
             self.code_depth_checks(idx.files)
             self.lore_checks()
             self.maturity_table()
+            self.ue_checks(idx.files)
         self.stale_checks()
         self.compiled_checks()
+        self.context_checks()
         self.orphan_checks()
         self.duplicate_checks()
         self.orphan_assets(idx.files)
         self.g11(idx.files, state)
         self.recommendations()
+        self.librarian_metrics(state)
         old = ai.load_json(self.v)
         if old is not None and old.get("files") != idx.files:
             self.r.recommendations.append("`asset_index.json` neodpovídá kódu; spusť `asset_index --apply` a `hubs`.")
@@ -442,10 +522,39 @@ def report_md(vault: Vault, r: AuditResult, day: _dt.date, prev: list[dict] | No
     lines += ["", "## Zralost", "| místo / lokace | " + " | ".join(vault.taxonomy.domains) + " |",
               "|---|" + "---|" * len(vault.taxonomy.domains)]
     lines += [f"| [[{name}]] | " + " | ".join(cells) + " |" for name, cells in r.maturity]
+    lines += ["", *librarian_md(r.librarian)]
+    if r.unreal is not None:
+        lines += ["", "## Unreal", *r.unreal]
     lines += ["", "## Doporučené kroky"]
     rec = r.recommendations + queue_note + [f"Upozornění: {w}" for w in r.warnings]
     lines += [x if x.startswith("  ") else f"- {x}" for x in rec] or ["_Žádné._"]
     return "\n".join(lines) + "\n"
+
+
+def period_start(vault: Vault, state: dict, day: _dt.date) -> _dt.date | None:
+    """Začátek období metrik: poslední audit před dneškem (`last_audit`, při opakovaném běhu týž den datum
+    posledního reportu před dneškem), aby opakovaný audit týž den počítal se stejným obdobím."""
+    last = as_date(state.get("last_audit"))
+    if last is not None and last < day:
+        return last
+    d = vault.root / REPORTS
+    older = sorted(p.stem[6:] for p in d.glob("audit_*.json") if p.stem[6:] < day.isoformat()) if d.is_dir() else []
+    return as_date(older[-1]) if older else None
+
+
+def librarian_md(lib: dict) -> list[str]:
+    if not lib:
+        return []
+    since = lib.get("since")
+    out = ["## Knihovník",
+           f"Období: od posledního auditu (od {since})" if since else "Období: bez předchozího auditu (celá historie)",
+           f"- Změny kánonu v `changes.md`: {len(lib['canon_changes'])}"]
+    out += [f"  - {c['date']} {c['target']}: {c['what']}" for c in lib["canon_changes"]]
+    age = lib.get("inbox_avg_age")
+    out.append(f"- Inbox `raw`: {lib['inbox_raw']} položek"
+               + (f", průměrné stáří {str(age).replace('.', ',')} dne" if age is not None else ""))
+    out.append(f"- Scratch zařazené za období: {lib['scratch_prepared']}")
+    return out
 
 
 def plan_queue(vault: Vault, findings: list[Finding], day: _dt.date, cs: ChangeSet) -> dict:
@@ -527,13 +636,14 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     cs.write(base.with_suffix(".json"), report_json(r.findings))
     new_state = {"last_audit": day.isoformat(), "last_audited_commit": r.commit}
     cs.write(vault.root / STATE_REL, json.dumps(new_state, ensure_ascii=False, indent=2) + "\n")
+    doc_index.plan(vault, cs)                                   # index pro Knihovníka nezastará (13 kap. 10.10)
     if args.apply and not cs.empty:
         cs.apply()
     counts = {s: sum(1 for f in r.findings if f.severity == s) for s in SEVERITY_ORDER}
     payload = {"command": "audit", "applied": bool(args.apply and not cs.empty), "findings": [f.as_dict() for f in r.findings],
                "counts": counts, "queue": {"new": q["new"], "closed": q["closed"]},
                "report": to_posix(base.relative_to(vault.root)) + ".md", "changes": cs.summary(),
-               "warnings": r.warnings, "commit": r.commit}
+               "warnings": r.warnings, "commit": r.commit, "librarian": r.librarian}
     lines = [to_text(r.findings)]
     verb = "zapsáno" if args.apply else "zapsalo by se (dry-run, zapiš s --apply)"
     if cs.empty:

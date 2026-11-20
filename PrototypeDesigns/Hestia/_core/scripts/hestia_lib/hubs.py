@@ -15,8 +15,9 @@ from dataclasses import dataclass, field
 
 from . import CORE_ROOT
 from . import asset_index as ai
+from . import ue as ue_mod
 from . import views as views_mod
-from .blocks import replace_block
+from .blocks import ensure_block, replace_block
 from .changeset import ChangeSet
 from .errors import EXIT_OK, UsageError
 from .logs import log_entries, parse_queue
@@ -26,6 +27,7 @@ from .util import trailing_date
 from .vault import Note, Vault
 
 INDEX_REL = "Dashboard/Index.md"
+UE_HEADING = "Stav v UE"                         # blok z posledního čtení Unrealu (13 kap. 10.11)
 CHANGES_REL = "Maintenance/changes.md"
 QUEUE_REL = "Maintenance/queue.md"
 # mají vlastní místo: kroky v Postupu stavby, scratch v otázkách, know-how a předání ve vlastních skupinách
@@ -221,11 +223,13 @@ class Hubs:
         res = HubsResult()
         only_set = set(only or [])
         targets: list[tuple[Note, list[tuple[str | None, str]]]] = []
+        ue_rules = ue_mod.rules(self.v, self.m)
         for name, n in sorted(self.m.entities.items()):
             if only and name not in only_set:
                 continue
             targets.append((n, [("Domény", self.domains_block(n)), ("Dokumenty", self.documents_block(n)),
                                 ("Postup stavby", self.build_block(n)), ("Soubory", self.files_block(n)),
+                                (UE_HEADING, ue_mod.hub_block(self.v, self.m, name, ue_rules, self.day)),
                                 ("Otevřené otázky", self.questions_block(n))]))
         for n in sorted(self.m.notes, key=lambda x: x.name):
             if n.type == "step" and n.fm.get("step_kind") == "build" and (not only or n.name in only_set):
@@ -242,6 +246,8 @@ class Hubs:
         for note, blocks in targets:
             text = cs.current(note.path)
             for heading, content in blocks:
+                if heading == UE_HEADING:                       # značky pod ruční text (13 kap. 10.3, 10.11)
+                    text, _added = ensure_block(text, heading)
                 new, status = replace_block(text, heading, content)
                 if status != "ok":
                     what = "sekce" if status == "missing_section" else "blok hestia:generated v sekci"
@@ -260,9 +266,21 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         raise UsageError(f"Neznámá entita nebo krok: {', '.join(unknown)}")
     cs = ChangeSet(vault.project_root)
     res = h.plan(cs, args.entities or None)
-    if args.apply and not cs.empty:
-        cs.apply()
-    payload = {"command": "hubs", "applied": bool(args.apply and not cs.empty), "changed": res.changed,
+    from . import doc_index                                     # index pro Knihovníka nezastará (13 kap. 10.10)
+    applied = bool(args.apply and not cs.empty)
+    if args.apply:
+        if not cs.empty:
+            cs.apply()
+        # index až z vaultu po zápisu: generované sekce hubů nesou odkazy (links_out)
+        after = Vault.load(vault.root) if applied else vault
+        cs_idx = ChangeSet(vault.project_root)
+        if doc_index.plan(after, cs_idx):
+            cs_idx.apply()
+            res.changed.append(doc_index.JSON_REL)
+            applied = True
+    elif doc_index.plan(vault, cs, h.m):                        # dry-run: odhad ze současného stavu
+        res.changed.append(doc_index.JSON_REL)
+    payload = {"command": "hubs", "applied": applied, "changed": res.changed,
                "warnings": res.warnings}
     if not res.changed:
         lines = ["hubs: beze změny"]

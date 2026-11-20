@@ -13,7 +13,7 @@ entity: ""           # volitelné
 
 Nápad, otázka, poznámka.
 
-## Předzpracování (doplní Curator)
+## Předzpracování (doplní Knihovník)
 - Kategorie:
 - Souvisí s:
 - Návrh zařazení: (doména / crosscut / nic)

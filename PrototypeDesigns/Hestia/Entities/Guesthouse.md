@@ -42,26 +42,34 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_Zatím žádné kroky._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[05_constructions]] | `Ostroh_Dostavba.py`, `Ostroh_Krov.py`, `Ostroh_Podlaha.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_Žádné soubory._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | 05_constructions | alias |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | 05_constructions | alias |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | 05_constructions | alias |
 
 <!-- hestia:generated:end -->
 
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0007 (G2, [[Guesthouse]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
 
 <!-- hestia:generated:end -->
 

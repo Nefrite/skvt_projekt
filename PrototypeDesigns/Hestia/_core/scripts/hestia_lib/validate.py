@@ -274,6 +274,13 @@ class Checker:
                 self.add("G7", None, f"krok {sid} z build_steps.yaml nemá dokument v Steps/",
                          file=self.v.project_rel(self.v.root / "Maintenance/taxonomy_local/build_steps.yaml"),
                          target=str(sid))
+        # ue_map.yaml: položka s neexistující entitou (13 kap. 10.11)
+        if self.tx.ue_map is not None:
+            ents = {n.name for n in all_notes if n.fm.get("type") == "entity"}
+            for it in self.tx.ue_map["items"]:
+                if it["entity"] not in ents:
+                    self.add("G6", None, f"ue_map: entita {it['entity']} neexistuje",
+                             file=self.v.project_rel(self.tx.ue_map_path), target=it["entity"])
         # problémy lokální taxonomie
         for path, msg in self.tx.problems:
             self.add("G7", None, msg, file=self.v.project_rel(path), target=path.stem)

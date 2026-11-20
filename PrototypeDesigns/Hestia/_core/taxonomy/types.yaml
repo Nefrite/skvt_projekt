@@ -131,7 +131,7 @@ items:
     description: Modul instrukcí agenta (L1)
     game_section: none
     required_fields: [type, validity, updated, module_id, trigger, modes]
-    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, requires]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, requires, compile]
     zone: "Roles/modules/"
     template: tpl_agent_module.md
 

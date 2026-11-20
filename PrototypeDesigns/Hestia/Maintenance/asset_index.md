@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-20
 ---
 # Asset index
 
@@ -91,9 +91,9 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kryty.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Podesta.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Etapa.py` | entry | Lapikus | Lapikus | 05_constructions | structures | folder | – |
-| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | Ostroh | Ostroh | 05_constructions | structures | name | – |
-| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | Ostroh | Ostroh | 05_constructions | structures | name | – |
-| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | Ostroh | Ostroh | 05_constructions | structures | name | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna.py` | entry | Palac_Kovarna | Palac_Kovarna | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Kul.py` | entry | Palac_Kovarna | Palac_Kovarna | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Kovarna_Okap.py` | entry | Palac_Kovarna | Palac_Kovarna | 05_constructions | structures | name | – |

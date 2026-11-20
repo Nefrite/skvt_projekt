@@ -27,7 +27,7 @@ KEYED_FILES = {
 }
 # Soubory, které instance rozšiřovat nesmí (nejsou to výčty hodnot).
 CORE_ONLY = {"fields.yaml", "depth.yaml", "findings.yaml", "hub_sections.yaml", "defaults.yaml"}
-LOCAL_ONLY = {"build_steps.yaml", "milestones.yaml", "tech.yaml", "folder_map.yaml", "tag_map.yaml"}
+LOCAL_ONLY = {"build_steps.yaml", "milestones.yaml", "tech.yaml", "folder_map.yaml", "tag_map.yaml", "ue_map.yaml"}
 
 _COND_IN = re.compile(r"^(\w+|<\w+>)\s+in\s+\[(.*)\]$")
 _COND_EQ = re.compile(r"^(\w+)\s*==\s*(\S+)$")
@@ -148,6 +148,8 @@ class Taxonomy:
     tech: dict = field(default_factory=dict)            # id -> položka
     folder_map: list = field(default_factory=list)      # položky folder_map.yaml (13 kap. 10.2)
     tag_map: dict = field(default_factory=dict)         # externí tag -> kategorie (import inboxu, fáze 10)
+    ue_map: dict | None = None                          # taxonomy_local/ue_map.yaml (13 kap. 10.11); None = Unreal se nečte
+    ue_map_path: Path | None = None
     problems: list = field(default_factory=list)        # (soubor, zpráva) – nálezy G7 v lokální taxonomii
 
     # ------------------------------------------------------------ dotazy
@@ -388,3 +390,78 @@ def _load_local_only(tx: Taxonomy, local_dir: Path) -> None:
         if it.get("category") not in tx.categories:
             tx.problems.append((p, f"tag_map {it['tag']}: kategorie {it.get('category')!r} mimo výčet kategorií"))
         tx.tag_map[str(it["tag"])] = it.get("category")
+    _load_ue_map(tx, local_dir / "ue_map.yaml")
+
+
+UE_MAP_KEYS = {"map", "stage_tag_prefix", "defaults", "items"}
+UE_RULE_KEYS = {"tags", "folders"}
+
+
+def _ue_rule(raw, where: str, problems: list) -> dict | None:
+    """Pravidlo {tags: [...], folders: [...]}; None = neplatné (problém zapsán)."""
+    if not isinstance(raw, dict):
+        problems.append(f"{where}: pravidlo musí být mapa s tags nebo folders")
+        return None
+    extra = set(raw) - UE_RULE_KEYS - {"entity"}
+    if extra:
+        problems.append(f"{where}: neznámé klíče {', '.join(sorted(extra))}")
+    rule = {}
+    for key in ("tags", "folders"):
+        val = raw.get(key)
+        if val is None:
+            continue
+        if not isinstance(val, list) or not all(isinstance(x, str) and x.strip() for x in val):
+            problems.append(f"{where}: {key} musí být seznam textů")
+            return None
+        rule[key] = [x.strip() for x in val]
+    if not rule:
+        problems.append(f"{where}: pravidlo bez tags i folders")
+        return None
+    return rule
+
+
+def _load_ue_map(tx: Taxonomy, p: Path) -> None:
+    """ue_map.yaml (13 kap. 10.11): map, stage_tag_prefix, defaults podle kind, items s entity; chyby = problémy (G7)."""
+    if not p.is_file():
+        return
+    data = load_yaml(p)
+    problems: list[str] = []
+    out = {"map": "", "stage_tag_prefix": "stage:", "defaults": {}, "items": []}
+    if not isinstance(data, dict):
+        tx.problems.append((p, "ue_map: soubor musí být mapa (map, stage_tag_prefix, defaults, items)"))
+        tx.ue_map, tx.ue_map_path = out, p
+        return
+    extra = set(data) - UE_MAP_KEYS
+    if extra:
+        problems.append(f"ue_map: neznámé klíče {', '.join(sorted(extra))}")
+    for key in ("map", "stage_tag_prefix"):
+        if data.get(key) is not None:
+            if isinstance(data[key], str):
+                out[key] = data[key]
+            else:
+                problems.append(f"ue_map: {key} musí být text")
+    defaults = data.get("defaults") or {}
+    if not isinstance(defaults, dict):
+        problems.append("ue_map: defaults musí být mapa kind → pravidlo")
+        defaults = {}
+    for kind, raw in defaults.items():
+        if kind not in tx.kinds:
+            problems.append(f"ue_map defaults: kind {kind!r} mimo výčet")
+            continue
+        rule = _ue_rule(raw, f"ue_map defaults {kind}", problems)
+        if rule:
+            out["defaults"][kind] = rule
+    items = data.get("items") or []
+    if not isinstance(items, list):
+        problems.append("ue_map: items musí být seznam")
+        items = []
+    for i, raw in enumerate(items, 1):
+        ent = raw.get("entity") if isinstance(raw, dict) else None
+        if not isinstance(ent, str) or not ent.strip():
+            problems.append(f"ue_map items: položka {i} bez entity")
+            continue
+        rule = _ue_rule(raw, f"ue_map {ent}", problems)
+        if rule:
+            out["items"].append({"entity": ent.strip(), **rule})
+    tx.problems += [(p, m) for m in problems]
+    tx.ue_map, tx.ue_map_path = out, p

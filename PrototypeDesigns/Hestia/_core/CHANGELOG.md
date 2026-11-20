@@ -2,6 +2,73 @@
 
 Verze `MAJOR.MINOR.PATCH` podle zadání 11, kap. 5 (`hearthlore/zadani/11_vyvojovy_cyklus.md`). MAJOR verze nese migrační poznámku.
 
+## 0.14.1 – 2026-11-20
+
+Oprava z prvního přechodu pilotu na 0.14.0 (pokyn GameDesignera 2026-11-20); bez migrace, bez kroků po aktualizaci.
+
+- **`update_core`: čerstvé kompiláty rolí se hlásily jako starší než core.** Test stáří hledal v hlavičce `core X`, `compose_role` ale od 0.2.0 píše `| core: X |`; upozornění „kompiláty rolí jsou starší…“ se proto objevilo vždy (v pilotu u `--latest` hned po přechodu). Hlavička se teď čte s dvojtečkou i bez ní.
+- Testy: 276 (test se skutečnou hlavičkou z `compose_role`: čerstvý kompilát se nehlásí, starší než nový core ano).
+
+## 0.14.0 – 2026-11-20
+
+Snadná aktualizace core (zadání 0.15; předání `predani_vyvoj_core_soubeh` položka 19); bez migrace. **Přechod na tuto verzi jde jednou postaru**: skriptem nové verze z pracovní kopie značky (`git worktree add --detach ../hestia-v0.14.0 v0.14.0`, pak `python -I ../hestia-v0.14.0/hestia/scripts/hestia.py update_core --vault <Hestia> --from ../hestia-v0.14.0/hestia`); kroky po aktualizaci proběhnou už při něm. Pak do `config.yaml` `core_source` a další aktualizace `update_core --latest`.
+
+- **`update_core --tag vX.Y.Z` / `--latest`** (13 kap. 10.6): `hestia/` vydané značky z repozitáře `core_source` přes `git archive` do dočasné složky mimo vault, dál jako s `--from`. Jen značky `vMAJOR.MINOR.PATCH` (`--latest` = nejvyšší; značky zadání, větve ani pracovní strom ne); git jen čte. Bez `core_source` a bez zdroje chyba použití (kód 2) se zprávou, co doplnit; `--from` zůstává jako záloha.
+- **Klíč `core_source`** (13 kap. 4): `defaults.yaml` (`null`), v šabloně `config.yaml` zakomentovaný vzor.
+- **Manifest `hestia/upgrade.yaml`** (13 kap. 10.6a, 11 kap. 5): u každé verze `after` (`asset_index`, `hubs`, `doc_index`, `compose_role`), `manual` (`id`, `text`), `crs`, u MAJOR `migration`. Záznamy zpětně od 0.10.2 (verze pilotu) podle tohoto changelogu; test hlídá, že každá verze od 0.10.2 má záznam, kroky jsou z povolené sady a CR existují.
+- **Kroky po aktualizaci**: dry-run vypíše sečtené záznamy verzí (stará, nová]. Po `--apply` je řídicí skript spustí **novým** core jako podproces `update_core --after-only --since <stará>`, i když výměnu řídí starší skript: automatické kroky s `--apply` v pevném pořadí (každý jednou), pak `lint --all` a `audit` v dry-run se souhrnem nálezů; ruční úkoly do `queue.md` jako `T-…` s klíčem `update_core:<verze>:<id>` ve sloupci `code` (opakovaný běh je nezakládá znovu); CR k ověření v řádku `structure_version.md` (sloupec CR) a v reportu; report `Maintenance/reports/update_core_RRRR-MM-DD.md`.
+- **Selhání kroku**: další kroky se nespustí, `_core/` zůstává nový, návratový kód 1 a výpis zbývajících kroků. `--after-only` (bez výměny core) je spustí znovu; rozsah verzí vezme z posledního řádku `structure_version.md` („core <aktuální> | aktualizace z <stará>“), bez něj všechny automatické kroky bez ručních úkolů. Automatické kroky jsou generované výstupy, opakování je bezpečné. `--no-after` kroky přeskočí a jen je vypíše.
+- Upozornění na zastaralé kompiláty rolí jen tehdy, když `compose_role` neproběhl.
+- README: postup aktualizace v instanci a první přechod postaru.
+- Testy: 275 (`test_upgrade`: úplnost manifestu, dočasný git repozitář se značkami `v0.98.0`, `v0.99.0`, commitem bez značky a necommitnutým stromem; `--latest` v dry-run, `--tag` s kroky, přechod přes dvě verze, `--after-only` bez duplicit, `--no-after`, selhaný krok, chybná značka a chybějící `core_source`).
+
+## 0.13.0 – 2026-11-20
+
+Unreal, etapa 1, a pole `compile` u modulů (zadání 0.14, 0.14.2; předání `predani_vyvoj_core_soubeh` položka 18 a odpověď na otázku k položce 17); bez migrace. Po aktualizaci v instanci `compose_role` (kompiláty bez modulů Knihovníka) a `hubs --apply` (značky bloku v `## Stav v UE`). Akceptace Knihovníka, stupeň 1, může začít (`hearthlore/tests/scenarios/librarian.md`).
+
+- **`compile: all | listed`** u modulů (12 kap. 2, 3; 07 kap. 14): `fields.yaml`, výčet `compile`, `tpl_agent_module`. Moduly Knihovníka (`lookup`, `file_info`, `completeness`, `canon_check`, `inbox_triage`, `ue_lookup`) mají `listed`: `compose_role` je dá jen roli, která je uvádí v `modules`, nebo skládá roli, která je uvádí (`requires` jdou s modulem); ostatním kompilát vyjmenuje s pokynem předat věc Knihovníkovi. Kontrakt to říká u tabulky spouštěčů. Auditor má `ue_lookup` v profilu. Kompiláty projektových rolí jsou zase kratší (fixture: `Architect` uvádí `ue_lookup`, `Builder` ho skládá).
+- **`scripts/hestia_ue.py`** (13 kap. 10.11): čtecí modul pro Python editoru (3.11, jen standardní knihovna a `unreal`, bez `hestia_lib`); actory podle pravidel (tag se vzorem `*`, složka v Outlineru; v položce průnik, mezi položkami sjednocení), **nejdelší shoda vzoru** rozhodne mezi entitami (`stavba:Palac_Kovarna*` vyhraje nad `stavba:Palac*`); na entitu počet, signály realizace přes všechny actory (třídy StaticMesh / Blueprint / BSP / ostatní, zástupné meshe `/Engine/BasicShapes/`, výchozí materiály, fáze `stage:*`, bounds) a nejvýš 500 actorů s detaily. Úroveň realizace se neodhaduje, dotaz „původ“ není. Jen čtení (test hlídá, že modul nevolá zápisové API).
+- **`ue_query`** (nový příkaz): `--emit --entity X` (i potomci s pravidlem) nebo `--all` vygeneruje čtecí skript do `Maintenance/ue/`; GameDesigner ho spustí v editoru, skript zapíše surový výsledek vedle sebe; `--import [soubor]` (výchozí podle `--entity` / `--all`, jinak nejnovější) uloží report `Maintenance/reports/ue_<entita>.json` se souhrnem vlastních actorů a za potomky; novější report starším nepřepíše; upozorní na jinou otevřenou mapu. Bez `ue_map.yaml` nebo u entity bez pravidla chyba použití (kód 2).
+- **`ue_map.yaml`** (`taxonomy_local`): schéma `map`, `stage_tag_prefix`, `defaults` podle `kind` (`{entity}`), `items` (jmenovité, mají přednost před defaults); chyby schématu = G7, položka s neexistující entitou = G6 (`lint --all`).
+- **Hub, `## Stav v UE`** (07 kap. 1, 13 kap. 10.3): `hubs` doplní značky bloku pod ruční text sekce (i v existujících hubech; `strip_generated` je nepočítá jako změnu ručního textu, `task_close` proto neaktualizuje `updated`); blok s datem a cestou reportu, cestou a mapou, počtem actorů (vlastní a za potomky), třídami, zástupnými meshi a výchozími materiály, fázemi, rozsahem a `depth_*` pro srovnání; report starší než `ue_report_days` (výchozí 14) **starý**; bez pravidla nebo reportu prázdný. `tpl_entity` podle 07 kap. 1.
+- **Audit** (jen s `ue_map.yaml`): G10 u entity s pravidlem, `depth_d ≥ 2` v režimu build a v posledním reportu bez actora (informace); sekce *Unreal*: počet entit s pravidlem, entity s krokem a cílem v režimu build bez pravidla, s pravidlem bez reportu, staré reporty, postup obnovy.
+- **`templates/unreal/init_unreal.py`**: kostra toolsetu Hestia pro Unreal MCP (etapa 2), **neověřená** (API vlastních toolsetů v UE 5.8 je experimentální); jen čtecí nástroj nad `hestia_ue.collect`; test jen syntaxe. Záloha bez editoru (`UnrealEditor-Cmd`) je jen v README.
+- Modul `ue_lookup` s konkrétními příkazy, Auditor (týdenní čtení `--all`, G10, sekce *Unreal*), `write_rules` (`ue/`, `reports/ue_*.json`).
+- Očekávané výstupy: huby se značkami v `## Stav v UE` (jen značky), kompiláty rolí (bez modulů Knihovníka kromě `ue_lookup`), vědomě přegenerováno. Testy se zástupným modulem `unreal` (`hearthlore/tests/fixtures/unreal_stub/`), vygenerovaný skript se spouští „jako v editoru“.
+- Testy: 264 (`test_ue`: hestia_ue, emit, import, hub, audit, lint, kostra; `compile: listed`).
+
+## 0.12.0 – 2026-11-20
+
+Role Knihovník (`Librarian`; zadání 0.14 a 0.14.1, předání `predani_vyvoj_core_soubeh` položka 17); bez migrace. Akceptace ve dvou stupních: scénáře nad `mini_lapikus` s kontrolním seznamem `hearthlore/tests/scenarios/librarian.md` (GameDesigner v chatu s kompilátem `Librarian`), pak scénáře z podkladu `podklady/knihovnik.md` kap. 15 na pilotu. Unreal (`ue_query`, `hestia_ue.py`, blok `## Stav v UE`) přijde s položkou 18.
+
+- **Profil a moduly** (12 kap. 3, 3b; 05 kap. 3.2a, 8): `agents/Librarian.md` (osm povinných kapitol); moduly `lookup` (formát odpovědi s citacemi), `file_info`, `completeness` (náležitosti z taxonomie, `lint --draft`), `canon_check` (hierarchie zdrojů, vědomá změna kánonu), `inbox_triage`, `ue_lookup` (jen čtení; bez `ue_query` jen dodaný report), všechny v režimu `vault` i `chat`; spouštěče v `CONTRACT.md`. `chat_entry`: pole `forma` (`doslovně` / `přeformulováno`, bez něj přeformulováno). Kompiláty **všech** rolí obsahují nové moduly (12 kap. 2: všechny moduly core s režimem `chat`), jsou proto o asi 170 řádků delší.
+- **Curator bez předzpracování inboxu**: jen metadata importu; třídění `raw` → `prepared` dělá Knihovník s GameDesignerem (`Curator.md`, `review_plan.md`, `tpl_scratch` „Předzpracování (doplní Knihovník)“). `write_rules.md`: oddíl Knihovník podle 05 kap. 3.2a, řádek `doc_index.json` a `context/`.
+- **`doc_index`** (nový příkaz, 13 kap. 10.10) → `Maintenance/doc_index.json`: záznam na poznámku mimo `_core/`, `Maintenance/`, `Roles/_compiled/` (`path`, `title`, `aliases`, `type`, `validity`, `status`, `updated`, `entity`, `domain`, `domains`, `depth`, `build_step`, `master`, `headings`, `links_out`). Obnovují ho i `hubs` (po zápisu hubů, protože generované sekce nesou odkazy) a `audit`; zápis jen při změně obsahu.
+- **`compose_context`** (nový příkaz) `--entity` / `--topic` (kategorie, doména, `inbox`) / `--query` → `Maintenance/context/<id>_context.md`: hlavička v HTML komentářích (požadavek, verze core, datum, zdroje), u každé části zdroj, typ, platnost a datum; u entity hub, platné `design` / `spec` / `state` / `decision`, výňatek master lore, aktivní předání, pojmy z glosáře a otevřené otázky; u `inbox` položky `raw` s kandidátními dokumenty. Výběr k `--query` podle zadání 0.14.1: index a glosář, bez diakritiky a velikosti písmen, začátek slova (aspoň 4 znaky, společný začátek nejvýš o 2 znaky kratší než kratší slovo), glosář → hlavní dokument, entita → hub a platné dokumenty, záložně celé texty (uvedeno v hlavičce), u kandidáta důvod shody; pevné nadpisy šablon se neporovnávají. Limit `context_max_chars` (výchozí 60000) platí pro balíček kromě seznamu *Nevešlo se*. Zastaralý balíček = G5 v auditu; `lint` `Maintenance/context/` nekontroluje.
+- **`lint --draft <soubor|->` s `--as <cesta>`**: koncept zkontrolovaný jako poznámka na cílové cestě (G6, G7, odkazy vůči vaultu), nic se nezapisuje; stdin v UTF-8.
+- **Glosář** (07 kap. 19): `Glossary.md.tpl` s tabulkou *Pojmy projektu* o pěti sloupcích (`Pojem | Význam | Hlavní dokument nebo hub | Aliasy | Zakázané varianty`). U staršího záhlaví vypíše `lint` **varování bez kódu nálezu** (u `--json` na stderr) se zprávou, jak tabulku převést; převod v instanci ručně (`update_core` do `Dashboard/` nezapisuje). V pilotu po aktualizaci přepsat záhlaví prázdné tabulky.
+- **Audit, sekce *Knihovník*** (12 kap. 3b.9, 13 kap. 10.10): řádky `changes.md`, jejichž sloupec *co se změnilo* začíná `změna kánonu:` (07 kap. 10), `Inbox/` `raw` (počet, průměrné stáří), `Scratch/` zařazené za období. Období od posledního auditu před dneškem (opakovaný audit týž den počítá se stejným obdobím; `state.json` beze změny formátu); v JSON výstupu `librarian`.
+- Fixture `mini_lapikus`: glosář s pěti sloupci a dvěma pojmy, `Inbox/` s pěti položkami `raw` (duplicita s otevřenou otázkou, rozpor s kánonem, postava, doplnění platného návrhu, nápad bez entity). Dosavadní očekávané výstupy beze změny kromě kompilátů rolí (nové moduly, vědomě přegenerováno).
+- Testy: 249 (`test_librarian`: index, balíček včetně výběru k `--query`, `lint --draft`, glosář, audit; agenti: profil, moduly, `write_rules` 05 kap. 3.2a, `forma`).
+
+## 0.11.0 – 2026-11-20
+
+`asset_index` a aliasy entit podle CR z pilotu (zadání 0.14, CR_2026-11-19_asset_index_alias_entity, předání `predani_vyvoj_core_soubeh` položka 16); bez migrace. Po aktualizaci v instanci spustit `asset_index --apply`.
+
+- **Pravidlo `alias`** (10 kap. 4 a 7, 13 kap. 10.2): `asset_index` načte `aliases` hubů entit. Jméno souboru bez přípony, nebo jeho prefix `<Jméno>_<Part>`, které se přesně shoduje s aliasem (bez ohledu na velikost písmen), přiřadí soubor této entitě dřív než nejdelší prefix ID entity: `Ostroh_Krov.py` i `Ostroh_Krov_Tasky.py` u entity s `aliases: [Ostroh_Krov]`. V `asset_index.json` a `.md` `rule: alias`; hlavička a pořadí ostatních pravidel beze změny.
+- **Alias u dvou entit** = upozornění v reportu („alias … je u entit …; použije se prefix jména“), soubor se přiřadí podle prefixu.
+- **Změny přiřazení** proti předchozímu `asset_index.json`: řádky „Změna přiřazení: cesta: stará -> nová (pravidlo)“ v textovém výstupu, v JSON `reassigned` (`path`, `from`, `to`, `rule`). I v dry-runu, takže je vidět před `--apply`.
+- Testy: 227 (alias před prefixem, prefix `<Jméno>_<Part>`, nejednoznačný alias, změny přiřazení).
+
+## 0.10.3 – 2026-11-20
+
+CR z pilotu ke jménům rolí a know-how (zadání 0.14, předání `predani_vyvoj_core_soubeh` položky 14 a 15); bez migrace, chování core beze změny.
+
+- **Jména profilů rolí anglicky** (12 kap. 1.0 a 2, CR_2026-11-19_jmena_roli_anglicky): zkušební projekt `mini_lapikus` má `Roles/Builder.md` (`combines: [Architect]`) a `Roles/Architect.md` místo `Stavitel` a `Architekt`; obsah profilů česky. Očekávané kompiláty `expected/compose_role/Builder_compiled.md`, `Architect_compiled.md`; testy `test_compose`, `test_audit`. Kód jména rolí nezná; `lint` znaky jména nehlídá.
+- **Tematický seznam pastí** (12 kap. 4.3, 07 kap. 13, CR_2026-11-19_knowhow_tematicke_pasti): komentář v `tpl_knowhow` (sekce *Příznak … Ověřeno* u seznamu odpadají, jedna odrážka = jedna past, sdílení do HearthLore po odrážkách, nad asi 30 odrážek téma rozdělit). `lint` sekce know-how nehlídá; test, že seznam bez sekcí projde.
+- Testy shody se zadáním 0.14: šablony `tpl_scratch` (položka 17) a `tpl_entity` (položka 18) a šest modulů Knihovníka (položka 17) jsou vedené jako čekající; test hlídá, že rozdíl trvá, aby se po implementaci výjimka odebrala.
+- Testy: 225.
+
 ## 0.10.2 – 2026-11-19
 
 Cíl zmínek v backtickách podle CR z pilotu (zadání 0.13.8, CR_2026-11-19_zminky_v_backtickach_cil, předání `predani_vyvoj_core_soubeh` položka 13; z finálního běhu pilotu na 0.10.1); bez migrace. Týká se jen příkazu `frontmatter`.

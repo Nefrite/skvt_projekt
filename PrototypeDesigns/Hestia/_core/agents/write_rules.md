@@ -1,7 +1,7 @@
 ---
 type: reference
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-20
 ---
 # Pravidla zápisu (výchozí, core)
 
@@ -18,7 +18,7 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 | Sekce `## Otevřené otázky` (ruční část) | ✔ | ✘ | ✘ | ✔ (přidat, uzavřít) |
 | `KnowHow/` | ✔ | metadata, sloučení po schválení | ✘ | ✔ (kdo věc ověřil) |
 | Frontmatter dokumentů | ✔ | ✔ | ✘ | ✔ (`updated`, `validity`) |
-| `Inbox/`, `Scratch/` | ✔ | ✔ (metadata, `intake`, nové soubory z importu) | ✘ | ✔ (nové scratch jen na pokyn GameDesignera) |
+| `Inbox/`, `Scratch/` | ✔ | ✔ (metadata importu, nové soubory z importu) | ✘ | ✔ (nové scratch jen na pokyn GameDesignera) |
 | Hub: `kind`, `parent`, `located_in`, `derived_from`, `alternative_to` | ✔ | ✔ (po schválení návrhu) | ✘ | ✘ |
 | Hub: `depth_*`, `status` | ✔ | ✔ | ✘ | ✔ (po své práci) |
 | Hub: `target_*` | ✔ | navrhuje | ✘ | ✔ (určená role, např. game design; zápis do `changes.md`) |
@@ -27,12 +27,28 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 | `reports/`, `queue.md` | ✔ | ✔ | ✔ | ✘ |
 | `changes.md`, `structure_log.md` (jen připisovat na konec) | ✔ | ✔ | ✔ (návrhy) | ✔ (`changes.md`) |
 | `asset_index.md` | – | ✔ (skript) | ✘ | ✘ |
+| `doc_index.json`, `context/` (index dokumentů, balíčky kontextu) | – | ✔ (skripty `doc_index`, `hubs`, `compose_context`) | ✔ (skript `audit` obnoví index) | ✘ |
+| `ue/`, `reports/ue_*.json` (čtení Unrealu, jen čtecí dotazy core) | ✔ (spouští skript v editoru) | ✔ (skript `ue_query`) | ✔ (skript `ue_query`) | ✔ (skript `ue_query`, role s `ue_lookup` v profilu) |
 | `outbox/` (change requesty) | odesílá | ✔ (připravuje) | ✘ | ✘ |
 | `Roles/` (profily, lokální moduly) | ✔ | ✘ | ✘ | ✘ |
 | `Roles/_compiled/` | – | ✔ (skript `compose_role`) | ✘ | ✘ |
 | Kód, data, assety projektu | ✔ | ✘ | ✘ | ✔ (stavitel, furnisher …) |
 | Přesun a přejmenování | ✔ | po schválení | ✘ | ✘ |
 | Mazání | ✔ | ✘ (jen `_to_delete`) | ✘ | ✘ (jen `_to_delete`) |
+
+## Knihovník (`Librarian`, 05 kap. 3.2a)
+
+| Oblast | Knihovník |
+|---|---|
+| Tělo dokumentů v `Docs/`, master lore | ✔ doslovná textace GameDesignera přímo; přeformulování, sloučení a zkrácení po schválení (12 kap. 3b.2) |
+| Založení dokumentu, frontmatter zapisovaných dokumentů (`updated`, `validity`) | ✔ na pokyn k zápisu |
+| `Dashboard/Glossary.md` | ✔ (změna významu = změna kánonu) |
+| `Inbox/`, `Scratch/` | ✔ *Předzpracování*, `intake`; přesun do `Scratch/` a do `_to_delete/` podle rozhodnutí GameDesignera v třídění |
+| Sekce `## Otevřené otázky` | ✔ přidat; uzavřít po zapracování odpovědi |
+| `queue.md` | ✔ položka k rozporu mezi dokumenty (pro Auditora) |
+| `ue/`, `reports/ue_*.json` | ✔ skript `ue_query` (jen čtení Unrealu) |
+| `changes.md` | ✔ jen připisovat na konec (příznak **změna kánonu**: sloupec *co se změnilo* začíná `změna kánonu:`) |
+| Ostatní oblasti matice | ✘ |
 
 Projektová role zapisuje tělo dokumentů jen ve své oblasti (včetně přenosu z předání), do `## Otevřené otázky` přidává a uzavírá položky, nový scratch zakládá jen na pokyn GameDesignera a do `changes.md` jen připisuje na konec. Orchestrační agent má práva projektové role v rozsahu zápisu Hestia.
 

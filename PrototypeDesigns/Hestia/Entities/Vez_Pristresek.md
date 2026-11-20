@@ -61,12 +61,15 @@ depth_structures: 4
 ## Vazby
 
 ## Stav v UE
+<!-- hestia:generated:start -->
+<!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- Fronta F-0025 (G2, [[Vez_Pristresek]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
+- Fronta F-0026 (G4, [[Vez_Pristresek]]): status built bez platného dokumentu state
 
 <!-- hestia:generated:end -->
 

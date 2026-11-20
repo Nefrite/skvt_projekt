@@ -5,7 +5,7 @@ trigger: práce v režimu chat (bez přístupu k vaultu)
 requires: []
 modes: [chat]
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-20
 ---
 # Zápis Hestia (režim chat)
 
@@ -19,7 +19,7 @@ Na konci tasku vydej strukturovaný blok. Prázdné sekce vynech.
 ## Zápis Hestia
 - task: <krátký název> | role: <role> | datum: RRRR-MM-DD
 ### Finální dokumentace
-- [[cílový dokument]] § <sekce>: <text k zapsání nebo nahrazení>
+- [[cílový dokument]] § <sekce> | forma: doslovně | přeformulováno: <text k zapsání nebo nahrazení>
 ### Předání
 - [[predani_…]] → archivovat | zbývá: …
 ### Rozhodnutí (uzavírá cestu)
@@ -36,6 +36,8 @@ Na konci tasku vydej strukturovaný blok. Prázdné sekce vynech.
 - | RRRR-MM-DD | role | entita | co | zdroj |
 ```
 
+- Pole **`forma`** u finální dokumentace: `doslovně` = textace GameDesignera, zapíše se přímo; `přeformulováno` = tvůj text, zapíše se až po schválení. Chybí-li `forma`, platí `přeformulováno` (12 kap. 6, 3b.2).
+- Obsah zápisu před zapracováním formalizuje Knihovník (náležitosti, místo, kánon).
 - Položka, která **nahrazuje** existující text, uvádí cíl (dokument a sekce) a výslovně `nahradit:`; bez toho se text jen doplňuje.
 - Když cílový text nevidíš, popiš ho **významem** (`nahradit: tvrzení o výstupu na podestu`); orchestrační agent text najde a přepis nechá schválit.
 - Kopie dokumentů v chatu jsou jen zrcadla ke čtení; platí verze ve vaultu.
