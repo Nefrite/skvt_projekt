@@ -1,6 +1,6 @@
 ---
 type: log
-updated: 2026-11-19
+updated: 2026-11-21
 ---
 # Změny
 
@@ -57,3 +57,6 @@ updated: 2026-11-19
 | 2026-11-19 | migrace | Attachments/navrh_ostroh_tramy.png | přesun z PrototypeDesigns/Lapikus/05_constructions/navrh_ostroh_tramy.png | migrace |
 | 2026-11-20 | agent HearthLore | Scratch/Scratch_Unreal_napojeni.md | nový tematický scratch: zapnutí Unreal MCP v 5.8 (neověřeno), konvence actorů v levelu a návrh napojení entit na Unreal | chat |
 | 2026-11-20 | agent HearthLore | Scratch/Scratch_Unreal_napojeni.md | uzavřena otázka: agent smí číst Unreal sám, jen čtecími dotazy (Auditor, Builder, Architect, Knihovník); zadání HearthLore 0.14 | chat |
+| 2026-11-21 | agent pilotu | Dashboard/Glossary.md | záhlaví tabulky Pojmy projektu na pět sloupců (T-0018, 07 kap. 19) | předání pilotu P3 |
+| 2026-11-21 | agent pilotu | Roles/Builder.md | modul `ue_lookup` v `modules` | předání pilotu P3 |
+| 2026-11-21 | agent pilotu | Roles/Architect.md | modul `ue_lookup` v `modules` | předání pilotu P3 |

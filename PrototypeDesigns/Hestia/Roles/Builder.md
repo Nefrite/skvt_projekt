@@ -1,8 +1,8 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-19
-modules: [start, metadata, file_safety, asset_header, knowhow_lookup, knowhow_write, question, task_close]
+updated: 2026-11-21
+modules: [start, metadata, file_safety, asset_header, knowhow_lookup, knowhow_write, question, ue_lookup, task_close]
 context: []
 knowhow_tags: [ue_python, python, mesh_generator, static_mesh_import, nanite]
 combines: []

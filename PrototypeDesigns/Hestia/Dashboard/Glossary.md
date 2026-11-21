@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 ---
 # Glossary
@@ -34,5 +34,5 @@ Pojmy projektu. Základní pojmy Hestia jsou předvyplněné; pojmy projektu a k
 
 ## Pojmy projektu
 
-| Pojem | Význam | Poznámka |
-|---|---|---|
+| Pojem | Význam | Hlavní dokument nebo hub | Aliasy | Zakázané varianty |
+|---|---|---|---|---|

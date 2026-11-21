@@ -1,6 +1,6 @@
 ---
 type: queue
-updated: 2026-11-20
+updated: 2026-11-21
 ---
 # Fronta údržby
 
@@ -53,5 +53,5 @@ updated: 2026-11-20
 | T-0015 | medium | task | – | [[Palac_Kovarna_Vybaveni]], [[Guesthouse]] | hlavičky skriptů `entity:` (B14 pilotu; Guesthouse do vydání CR_2026-11-19_asset_index_alias_entity) | open |  |
 | T-0016 | medium | task | – | `Lapikus/README.txt` | nahradit odkazem do Hestia (B5 pilotu) | open |  |
 | T-0017 | medium | task | – | `GameDesign/Claude outputs/Lapikus`, Claude Project „GameDesign“ | projít historické zdroje a doplnit do vaultu, co chybí (B17 pilotu) | open |  |
-| T-0018 | medium | task | update_core:0.12.0:glossary_header | core 0.12.0 | Převést záhlaví tabulky Pojmy projektu v Dashboard/Glossary.md na pět sloupců: Pojem \| Význam \| Hlavní dokument nebo hub \| Aliasy \| Zakázané varianty (07 kap. 19) | open |  |
-| T-0019 | medium | task | update_core:0.14.0:core_source | core 0.14.0 | Doplnit do Maintenance/config.yaml klíč core_source (cesta k repozitáři HearthLore relativně k vaultu); další aktualizace pak update_core --latest (13 kap. 4, 10.6) | open |  |
+| T-0018 | medium | task | update_core:0.12.0:glossary_header | core 0.12.0 | Převést záhlaví tabulky Pojmy projektu v Dashboard/Glossary.md na pět sloupců: Pojem \| Význam \| Hlavní dokument nebo hub \| Aliasy \| Zakázané varianty (07 kap. 19) | done | 2026-11-21 |
+| T-0019 | medium | task | update_core:0.14.0:core_source | core 0.14.0 | Doplnit do Maintenance/config.yaml klíč core_source (cesta k repozitáři HearthLore relativně k vaultu); další aktualizace pak update_core --latest (13 kap. 4, 10.6) | done | 2026-11-21 |
