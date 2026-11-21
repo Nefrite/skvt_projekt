@@ -1,0 +1,9 @@
+# Mapování externích tagů na kategorie (13 kap. 10.2); zdroj: Notion 📥 Inbox, vlastnost Type.
+# Idea a Tech se nemapují (bez kategorie). Schválil GameDesigner 2026-11-21 (P10).
+items:
+  - {tag: Character, category: character}
+  - {tag: Location,  category: place}
+  - {tag: Dialogue,  category: dialogue}
+  - {tag: Lore,      category: lore}
+  - {tag: Twist,     category: twist}
+  - {tag: Mechanic,  category: mechanic}

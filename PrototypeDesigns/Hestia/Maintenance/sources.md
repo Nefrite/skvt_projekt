@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 ---
 # Historické zdroje
@@ -18,3 +18,4 @@ Složky a kopie mimo vault, které se dál neudržují a do vaultu se nemigrují
 | `Lapikus/_to_delete/KNOWHOW_hrad.md` | rozpadnuto 2026-11-19 (B6–B7) | `KnowHow/` (konvence, pasti, [[Hledani_priciny_chyby]]), [[Rozhodnuti_zricenina]], [[Lore_Lapikus]], [[Kod_spousteni_kontroly_z_roli]]; úvod a kap. 8 nemigrovány |
 | `GameDesign/Claude outputs/Lapikus` | archiv, neaktualizuje se (od 17. 11. 2026) | starší kopie dokumentů a skriptů; jen k dohledání |
 | Claude Project „SKVT“ (Project knowledge) | historický, uklizený 2026-11-20 (B9) | kopie dokumentů před migrací; záloha = git `skvt_projekt` `fb1bfd3`; v projektu jen kompiláty rolí a aktivní předání |
+| Notion 📥 Inbox (Project Lapikus) | jednorázový import 2026-11-21, položky se statusem In Hestia | zdroj se dál neimportuje |

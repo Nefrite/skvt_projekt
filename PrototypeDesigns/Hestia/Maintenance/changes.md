@@ -60,3 +60,9 @@ updated: 2026-11-21
 | 2026-11-21 | agent pilotu | Dashboard/Glossary.md | záhlaví tabulky Pojmy projektu na pět sloupců (T-0018, 07 kap. 19) | předání pilotu P3 |
 | 2026-11-21 | agent pilotu | Roles/Builder.md | modul `ue_lookup` v `modules` | předání pilotu P3 |
 | 2026-11-21 | agent pilotu | Roles/Architect.md | modul `ue_lookup` v `modules` | předání pilotu P3 |
+| 2026-11-21 | agent pilotu | Maintenance/taxonomy_local/tag_map.yaml | nový `tag_map` (Notion `Type` → kategorie; Idea, Tech bez mapování), schválil GameDesigner | import Notion |
+| 2026-11-21 | agent pilotu | Inbox/Guest_on_hunt.md | nový scratch `intake: raw` z Notion 📥 Inbox (Guest on hunt) | import Notion |
+| 2026-11-21 | agent pilotu | Inbox/Ranar.md | nový scratch `intake: raw` z Notion 📥 Inbox (Ranař) | import Notion |
+| 2026-11-21 | agent pilotu | Inbox/Rad.md | nový scratch `intake: raw` z Notion 📥 Inbox (Řád) | import Notion |
+| 2026-11-21 | agent pilotu | Inbox/Palisada_nad_branou.md | nový scratch `intake: raw` z Notion 📥 Inbox (Palisáda nad bránou) | import Notion |
+| 2026-11-21 | agent pilotu | Maintenance/sources.md | řádek Notion 📥 Inbox (Project Lapikus): jednorázový import 2026-11-21 | import Notion |
