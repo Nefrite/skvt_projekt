@@ -396,14 +396,18 @@ def _import_one(unreal, sms, task, n, cat, fresh=False):
         try: eal.delete_asset(tp)
         except Exception: pass
 
-def ensure_stone_meshes(unreal, mesh_src, force=False):
+def ensure_stone_meshes(unreal, mesh_src, force=False, only=None):
     """Nacte knihovni meshe (kameny, drevo, props ...) ze slozek MESH_ROOT/<MESH_DIRS[kategorie]>; chybejici nebo
     zastarale naimportuje z mesh_src/<kategorie>/*.obj (box kolize + Nanite); force=True vsechny, jako nove assety.
+    only = seznam prefixu (napr. ["SM_RuinCanvasTent", "SM_RuinStump"]): jen meshe <prefix> a <prefix>_<varianta>
+    (ukazka po tematech, tools/meshes/ukazka.py); None = vsechny (buildy).
     Vrati {jmeno: StaticMesh}; co chybi, nahradi se kostkou. mesh_src = slozka meshes/ v koreni (MESH_SRC)."""
     if not USE_STONE_MESHES: return {}
     eal = unreal.EditorAssetLibrary
     def want(n): return max([v for pf, v in STONE_MESH_VERSION.items() if n.startswith(pf)] or [0])
     need = _needed_meshes()
+    if only is not None:
+        need = [(n, c) for n, c in need if any(n == p or n.startswith(p + "_") for p in only)]
     missing = []
     for n, cat in need:
         pth = _asset_path(mesh_dir(cat), n)

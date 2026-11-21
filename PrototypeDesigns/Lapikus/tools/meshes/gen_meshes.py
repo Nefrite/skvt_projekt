@@ -1,6 +1,9 @@
 """gen_meshes.py - generator knihovnich meshi zriceniny a dostaveb (OBJ, cm, Z nahoru). Potrebuje numpy.
 
-    python tools/meshes/gen_meshes.py [vystupni slozka] [kategorie ...]
+    python tools/meshes/gen_meshes.py [vystupni slozka] [kategorie ...] [--only PREFIX,PREFIX ...]
+
+--only: zapise jen meshe s danym prefixem (SM_RuinCanvasTent -> SM_RuinCanvasTent_A.obj + .json); bez kategorii
+projde vsechny. Ostatni OBJ ve slozce zustanou, jak jsou. Kompletni podklady = bez --only.
 
 Kazda kategorie se zapise do <vystupni slozka>/<kategorie>/*.obj. Bez slozky do meshes/ v koreni
 (odtud je build sam naimportuje do UE, do /Game/Skvt/Lapikus/Ruin/<MESH_DIRS[kategorie]>).
@@ -13,7 +16,7 @@ Nova kategorie:
 
 Po zmene tvaru zvys verzi v zrlib/config.py -> STONE_MESH_VERSION, jinak UE stary mesh neprenacte.
 """
-import os, sys
+import inspect, os, shutil, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
@@ -32,7 +35,27 @@ CATEGORIES = {
 DEFAULT_OUT = os.path.normpath(os.path.join(HERE, "..", "..", "meshes"))      # = MESH_SRC v zrlib/config.py
 
 
-def main(out=None, cats=None):
+def _match(name, only):
+    """jmeno meshe (bez pripony) patri k nekteremu prefixu: <prefix> nebo <prefix>_<varianta>"""
+    return any(name == p or name.startswith(p + "_") for p in only)
+
+
+def _build_only(fn, d, only):
+    """kategorie jen s vybranymi meshi: modul s parametrem only ho dostane, jinak se generuje do docasne slozky
+    a prekopiruji se jen vybrane soubory (OBJ i .json)"""
+    if "only" in inspect.signature(fn).parameters:
+        return fn(d, only=only)
+    tmp = tempfile.mkdtemp(prefix="gen_meshes_")
+    try:
+        made = [m for m in fn(tmp) if _match(m[0], only)]
+        for f in os.listdir(tmp):
+            if _match(os.path.splitext(f)[0], only): shutil.copy2(os.path.join(tmp, f), os.path.join(d, f))
+        return made
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def main(out=None, cats=None, only=None):
     out = out or DEFAULT_OUT
     cats = list(cats) if cats else list(CATEGORIES)
     bad = [c for c in cats if c not in CATEGORIES]
@@ -42,12 +65,16 @@ def main(out=None, cats=None):
     for c in CATEGORIES:                      # vzdy v poradi CATEGORIES
         if c in cats:
             d = os.path.join(out, c); os.makedirs(d, exist_ok=True)
-            made += CATEGORIES[c](d)
+            made += CATEGORIES[c](d) if only is None else _build_only(CATEGORIES[c], d, only)
+    if only is not None and not made:
+        print("--only %s: zadny mesh neodpovida" % ",".join(only))
     for m in made: print("%-24s vrcholu %5d  trojuhelniku %5d" % m)
     return made
 
 
 if __name__ == "__main__":
-    a = sys.argv[1:]
+    a = sys.argv[1:]; only = None
+    if "--only" in a:
+        i = a.index("--only"); only = [p for p in ",".join(a[i + 1:]).split(",") if p]; a = a[:i]
     out = a.pop(0) if a and a[0] not in CATEGORIES else None
-    main(out, a)
+    main(out, a, only)

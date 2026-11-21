@@ -9,7 +9,7 @@ entity: "[[Lapikus]]"
 ---
 # Checklist: assety a podklady pro nové návrhy (11/2026)
 
-Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `new_designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 2, zapracované odpovědi Jirky (14. 11. 2026). Nic zatím není hotové, čeká na prioritizaci.**
+Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `new_designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 3 (21. 11. 2026).** Knihovní meshe kulatiny, textilu, výpletu a props kovárny a domu jsou hotové (☑). Zbývají props stanu, guesthouse a staveniště, část materiálů a typy staveb v 05. Pořadí prací je v kap. 11.
 
 ## 0. Zdroje a rozhodnutí
 
@@ -19,12 +19,12 @@ Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro n
 | [[navrh_palac_obydli_stred]] (+ `_etapa1.png`) | dům v prostřední místnosti; **staví se** (16. 11. 2026: plán po etapách v kap. 0, kamenné části hotové) | 1 = rozestavěno, 2 = hotovo |
 | [[navrh_palac_kovarna]] | vybraný návrh, **staví se** (15. 11. 2026: úprava 03, kostra přístřešku a výheň v koutě hotové; přehled v kap. 0 návrhu) | 1 i 2 |
 | [[navrh_brana_straz]] | rozestavěno (podesta 16. 11. 2026, kap. 0) | otevřené |
-| [[navrh_nadvori_stan]] | **možná bude**, v seznamu se drží | jen 1 |
+| [[navrh_nadvori_stan]] | **bude** (Jirka 21. 11. 2026), nepostaveno | jen 1 |
 
 **Rozhodnuto (Jirka, 14. 11. 2026):**
 - **Kulatina s kůrou i bez kůry**, podle stavby (kap. 2.1).
 - **Props vlastní**, ve stylu hradu (kap. 5).
-- **Stan** se drží v seznamu, položky jsou označené ⛺.
+- **Stan** se drží v seznamu, položky jsou označené ⛺. **21. 11. 2026: stan bude**, ⛺ už neznamená nízkou prioritu.
 - **Generátor meshí** se rozdělí podle typu materiálu, případně jeden společný s novým názvem (kap. 3).
 
 Značky: ☑ hotovo · ◐ rozpracováno (část hotová, zbytek přijde se stavbou) · 🆕 nový asset · ♻ existuje, jen použít / rozšířit · ⛺ jen pro stan · ❓ čeká na rozhodnutí · 🧩 skládá se z dílců · ✋ modeluje se jako samostatný tvar.
@@ -133,7 +133,7 @@ tools/meshes/
 | ☑ | 🆕 `SM_RuinSmokeHood_A–B` | dymník: zužující se koš z proutí s hlínou 140 × 120 → 50 × 50, výška 100 cm (škáluje se) | knihovní | ohniště obydlí, výheň kovárny |
 | ☑ | 🆕 `SM_RuinChimney_A–B` | komín z proutí a hlíny 60 × 60 cm, výška 100 cm (škáluje se) | knihovní | obydlí (vrch 5,3 m), kovárna (vrch 5,5 m) |
 | ◐ | 🆕 výplň spár srubu | tmavší pás mechu s hlínou mezi kulatinami | na míru | srub obydlí; **materiál hotový** (`MI_RuinChinking`), geometrie přijde s typem `log_wall` |
-| ☐ | ⛺ 🆕 plachta stanu do A | jeden díl přes hřeben, 2 štíty, odhrnutá chlopeň | na míru | `Nadvori_Stan` |
+| ☑ | ⛺ 🆕 plachta stanu do A | jeden díl přes hřeben, 2 štíty, odhrnutá chlopeň | na míru | `Nadvori_Stan` → `SM_RuinCanvasTent_A` (kap. 6.5, hotovo 21. 11. 2026, neověřeno v UE) |
 
 ---
 
@@ -169,7 +169,7 @@ tools/meshes/
 - dřevo z dílců kap. 2 kde to jde (🧩): hrubé opracování, ohlazené hrany, praskliny jako u `SM_RuinTimber`;
 - ✋ tvary, které z dílců nesložíš (kovadlina, měch, sud, nářadí), se modelují zvlášť, ❓ procedurálně v `mesh_props.py`, nebo v Blenderu;
 - žádné ostré „CAD“ hrany, všechno trochu nakřivo a ošoupané;
-- každý prop je samostatný actor (`loose`), pivot na zemi.
+- každý prop je samostatný actor (`loose`), **pivot ve středu bounding boxu** (výchozí, Jirka 21. 11. 2026; tak to dělá `mesh_props.py` a poloha v `06_furnishing` je střed bounding boxu). Pivot u země jen u kusů, kde to určí zadání (např. stavební dílce).
 
 ### 6.1 Kovárna (`06_furnishing`, `Palac_Kovarna_Vybaveni`) – stojí už v etapě 1; **rozmístěno 16. 11. 2026** (typ `props`, neověřeno v UE)
 
@@ -230,13 +230,17 @@ tools/meshes/
 
 ### 6.5 ⛺ Stan na nádvoří
 
+Rozdělení (Jirka 21. 11. 2026): **assety** = plachta, lůžko, truhlička, ranec (AssetGenerator). **Builder** skládá z hotových meshí stojky, hřeben, kolíky, šňůry (řetěz `SM_RuinRope`) v typu `tent` a stříšku v typu `bark_roof` (vidlice, tyče, krokvičky, kůra, přítlačné tyče, ovázání). Stružka je úprava terénu v levelu.
+
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
-| ☐ | lůžko z klád a tyčí (2×) | 2,0 × 0,7 × 0,25 m | 🧩 kulatina a tyče s kůrou |
-| ☐ | výplň kapradí / sláma + houně | – | ✋ |
+| ☑ | plachta stanu do A (díl přes hřeben, 2 štíty, odhrnutá chlopeň) | 2,4 × 2,2 × 1,9 m | na míru → 🆕 `SM_RuinCanvasTent_A` (`mesh_textile.canvas_tent`, OBJ + `.json` se středem, rozměrem, polohou tyčí a kolíků), ♻ `MI_RuinCanvas`. **Hotovo 21. 11. 2026**, náhled `05_constructions/Stan_plachta_nahled.png`, neověřeno v UE |
+| ☐ | lůžko z klád a tyčí (2×), výplň **sláma** + houně | 2,0 × 0,7 × 0,25 m; **v stanu blíž ke středu** (vnější okraj ~0,9 m od osy, plachta tam ~35 cm nad zemí; ulička ~0,4 m; Jirka 21. 11. 2026) | 🧩 jeden prop → 🆕 `SM_RuinCampBed` (2 klády Ø 15, 10 tyčí Ø 5 s kůrou, ♻ `MI_RuinStraw`, `MI_RuinWool`) |
 | ☑ | špalek k sezení | – | 🧩 (jako pod kovadlinu) → `SM_RuinStump` |
-| ☐ | zavěšené boty a zbraně | – | ✋ ❓ sdílet se zbrojí posádky |
-| ☐ | ranec, truhlička | – | ✋ textil, 🧩 prkna |
+| ☐ | ranec | – | ✋ plátno + lano → 🆕 `SM_RuinBundle` |
+| ☐ | truhlička | – | 🧩 prkna + ✋ kování → 🆕 `SM_RuinChestSmall` |
+| ☐ | zavěšené boty | – | **nedělá se** (Jirka 21. 11. 2026) |
+| ☐ | zavěšené zbraně | – | **odloženo** (Jirka 21. 11. 2026), ❓ sdílet se zbrojí posádky |
 
 ### 6.6 Sdílené props (vyrobit jednou, použít víckrát) – hotové 14. 11. 2026: `SM_RuinStump`, `SM_RuinWoodpile`, `SM_RuinBasket`, `SM_RuinLadder`, `SM_RuinWorkbench`
 
@@ -252,7 +256,7 @@ tools/meshes/
 
 ### 6.8 Guesthouse (obytná část u ostrohu, `06_furnishing`, skupina `Guesthouse_Vybaveni`) – zadání Jirky 21. 11. 2026; **graybox postele, stolu a stoličky** srovnaný v levelu (21. 11. 2026); graybox truhly, stojanů a zástupce pece rozmístěný (21. 11. 2026, k ověření v levelu)
 
-Pokoj pro hosta (inkvizitor řádu, klíč nosí na krku, [[Guest_on_hunt]]). Rám: `s` podél vnitřního líce `ZBudova_V` od jižního rohu k severu (0–12,36 m), `n` do místnosti k západu. První návrh půdorysu (před ověřením měřítka): `Attachments/navrh_guesthouse_vybaveni_pudorys.png`. Polohy grayboxu: `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`.
+Pokoj pro hosta (inkvizitor řádu, klíč nosí na krku, [[Guest_on_hunt]]). **Nábytek je kvalitnější než v domě** (Jirka 21. 11. 2026): pečlivější opracování a kování, pořád ve stylu hradu. Rám: `s` podél vnitřního líce `ZBudova_V` od jižního rohu k severu (0–12,36 m), `n` do místnosti k západu. První návrh půdorysu (před ověřením měřítka): `Attachments/navrh_guesthouse_vybaveni_pudorys.png`. Polohy grayboxu: `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`.
 
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
@@ -325,7 +329,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 - ☑ Žebříky (staveniště, půda): jen kulisa, pro postavu nepoužitelné (chybí animace; [[navrh_palac_obydli_stred]] kap. 0.1).
 - ☐ ❓ Stojí podesta brány v etapě 1? Určuje, jestli potřebuje přepínač `ETAPA`.
 - ☐ ❓ VFX ohně a kouře: v tomto kroku, nebo později s atmosférou?
-- ☐ ❓ Stan: rozhodnutí, jestli ve hře bude (do té doby ⛺ položky nízká priorita).
+- ☑ Stan: bude (Jirka 21. 11. 2026). Rozdělení assety / Builder v kap. 6.5.
 
 ---
 
@@ -344,3 +348,11 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | plátno + lano | `Vez_Pristresek`, stan ⛺ |
 | pásy kůry | přístřešek brány, stříška stanu ⛺ |
 | proutí + mazanina | stěna kovárny, dymníky, komíny |
+
+---
+
+## 11. Pořadí prací (Jirka 21. 11. 2026)
+
+1. **Stan (6.5):** `SM_RuinCanvasTent_A` → `SM_RuinCampBed` → `SM_RuinChestSmall` → `SM_RuinBundle`. Typy `tent` a `bark_roof` dělá Builder.
+2. **Guesthouse (6.8), všechno, kvalitnější provedení:** `SM_RuinBedLarge` → `SM_RuinChestLocked` → `SM_RuinDesk` → `SM_RuinShelfTall` → `SM_RuinWoodpileSmall` → stojan na brnění a stojan na zbraně (názvy ❓, pracovně `SM_RuinArmorStand`, `SM_RuinWeaponRack`). Pec dělá Builder ([[predani_guesthouse_kamna_stavitel]]).
+3. **Fronta, zatím ne:** staveniště (6.3: loupák, hromada hlíny a koš mechu, hromada kamene), materiály kap. 5 (saze, udusaná hlína, třísky), španělský jezdec (6.4), zbraně (6.5, 6.8), VFX.

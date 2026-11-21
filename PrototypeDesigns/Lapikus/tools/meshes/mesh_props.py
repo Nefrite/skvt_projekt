@@ -856,10 +856,11 @@ NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizu
 }
 
 
-def build(out):
-    """props do slozky out -> seznam (jmeno, vrcholu, trojuhelniku)"""
+def build(out, only=None):
+    """props do slozky out -> seznam (jmeno, vrcholu, trojuhelniku); only = prefixy (None = vsechny), seed se nemeni"""
     made = []
     for pref, fn, vs, desc in PROPS:
+        if only is not None and pref not in only: continue
         for vi, v in enumerate(vs):
             P, UV, G, F, S = fn(23000 + 97 * PROPS.index((pref, fn, vs, desc)) + vi * 13).arrays()
             used = sorted(set(S.tolist())); names = tuple(SLOTS[i] for i in used); remap = {s: i for i, s in enumerate(used)}
