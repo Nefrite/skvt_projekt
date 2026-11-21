@@ -2,6 +2,7 @@
 
 - `load_manifest`, `plan`: záznamy verzí (stará, nová] sečtené: automatické kroky v pevném pořadí
   `asset_index` → `hubs` → `doc_index` → `compose_role` (každý jednou), ruční úkoly, CR k ověření, migrace.
+- `with_compose`: `compose_role` při každé změně verze, jsou-li ve vaultu kompiláty (zadání 0.15.1).
 - `run_after` (`update_core --after-only`): běží vždy v **novém** core (`_core/` po výměně; řídicí skript ho po
   `--apply` spustí jako podproces). Spustí automatické kroky s `--apply`, pak `lint --all` a `audit` jen
   v dry-run se souhrnem; ruční úkoly zapíše do `queue.md` jako `T-…` s klíčem `update_core:<verze>:<id>`
@@ -97,6 +98,19 @@ def plan(core: Path, old: str, new: str) -> Plan:
                          "key": f"update_core:{e['version']}:{m['id']}"} for e in sel for m in e["manual"]],
                 crs=list(dict.fromkeys(c for e in sel for c in e["crs"])),
                 migrations=[str(e["migration"]) for e in sel if e.get("migration")])
+
+
+def has_compiled(vault: Vault) -> bool:
+    d = vault.root / "Roles" / "_compiled"
+    return d.is_dir() and any(d.glob("*_compiled.md"))
+
+
+def with_compose(pl: Plan, vault: Vault, old: str | None, new: str) -> Plan:
+    """`compose_role` při každé změně verze, jsou-li ve vaultu kompiláty, i bez záznamu v manifestu: hlavička
+    kompilátu nese verzi core (13 kap. 10.6, 10.6a; zadání 0.15.1, CR_2026-11-21_compose_role_po_kazde_aktualizaci)."""
+    if old and old != new and "compose_role" not in pl.after and has_compiled(vault):
+        pl.after = [s for s in AFTER_ORDER if s in pl.after or s == "compose_role"]
+    return pl
 
 
 def plan_lines(pl: Plan) -> list[str]:
@@ -234,6 +248,7 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
         pl = plan(core, since, current)
         if pl.missing:
             pl = Plan(after=list(AFTER_ORDER), missing=True)
+        with_compose(pl, vault, since, current)
     else:
         pl = Plan(after=list(AFTER_ORDER))
     day = today()

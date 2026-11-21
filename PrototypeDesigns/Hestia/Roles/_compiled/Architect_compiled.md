@@ -1,13 +1,13 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Architect | core: 0.14.0 | date: 2026-11-20 -->
-<!-- sources: Roles/Architect.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/spec_template.md -->
+<!-- role: Architect | core: 0.14.2 | date: 2026-11-21 -->
+<!-- sources: Roles/Architect.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/ue_lookup.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/spec_template.md -->
 # Architect – instrukce pro chat
 
 Kompilát pro režim `chat`: kontrakt (L0), moduly (L1) a profil role (L2) v jednom souboru. Soubory vaultu odsud neotevřeš; co k tasku potřebuješ, dostaneš v předání nebo na vyžádání. Platí verze ve vaultu, změny vracíš zápisem Hestia (modul `chat_entry`).
 
 Vynechané moduly (jen režim `vault`): `file_safety`, `metadata`, `asset_header`.
 
-Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: `lookup`, `file_info`, `completeness`, `canon_check`, `inbox_triage`, `ue_lookup`. Když nastane jejich spouštěč, předej věc Knihovníkovi (zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2).
+Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: `lookup`, `file_info`, `completeness`, `canon_check`, `inbox_triage`. Když nastane jejich spouštěč, předej věc Knihovníkovi (zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2).
 
 ## Kontrakt Hestia (L0)
 
@@ -190,6 +190,31 @@ Otázka v chatu; nezodpovězená otázka zaevidovaná v dokumentu; zodpovězená
 - Domýšlet odpověď a pokračovat bez upřesnění.
 - Zapsat otázku do `queue.md`. Otázka není nález údržby.
 - Nechat zodpovězenou otázku otevřenou nebo odpověď zapsat jen k otázce, ne do textu.
+
+## Modul `ue_lookup` (L1)
+
+### Kdy
+Potřebuješ vědět, co je v enginu skutečně postavené: otázka na realizaci (`lookup`), audit, ověření `depth_*`, nebo práce role, která stav v enginu potřebuje (zejména stavba a návrh staveb). Smí ho použít Knihovník, Auditor a projektové role, které ho mají v profilu (12 kap. 3b.8, 8).
+
+### Postup
+1. **Jen čtení.** Používej jen čtecí dotazy core (`hestia.py ue_query`, 13 kap. 10.11); nikdy nezapisuj do levelu ani assetů, nespouštěj obecný Python ani build. Bez `Maintenance/taxonomy_local/ue_map.yaml` se Unreal nečte; entita bez pravidla v něm nemá report.
+2. **Etapa 1** (skript v editoru):
+   - `python _core/scripts/hestia.py ue_query --emit --entity <Entita> --apply` (nebo `--all`) vygeneruje čtecí skript do `Maintenance/ue/`;
+   - GameDesigner ho spustí v editoru (*Tools → Execute Python Script*), skript zapíše surový výsledek vedle sebe;
+   - `ue_query --import --entity <Entita> --apply` (nebo `--all`) uloží report `Maintenance/reports/ue_<entita>.json`, pak `hubs --apply` obnoví blok `## Stav v UE` v hubu.
+   V chatu bez vaultu požádej GameDesignera o spuštění a o report.
+3. Když editor neběží, použij poslední report a uveď jeho datum; report starší než `ue_report_days` je v hubu označený jako starý.
+4. Report ukazuje jen měřitelné signály (actory podle třídy, zástupné meshe `/Engine/BasicShapes/`, výchozí materiály, fáze `stage:*`, rozsah, vlastní a za potomky). Úroveň realizace se automaticky neodhaduje: porovnej ji s `depth_*` podle vodítka (12 kap. 3b.8): jen polohy → blockout, rozměry a kolize → greybox, proxy meshe a tagy → whitebox, meshe a data → asset_data, Blueprint a logika v provozu → functional.
+5. Neshodu reportu s `depth_*` zapiš jako otázku nebo ji nech na auditu (G10). `depth_*` neměníš; mění ho ten, kdo realizoval, nebo GameDesigner.
+6. V chatu bez vaultu pracuj jen s reportem, který máš v balíčku kontextu.
+
+### Výstup
+Stav entity v Unrealu se zdrojem (report a jeho datum) a srovnání s `depth_*`; v odpovědi `lookup` řádek ve *Zdrojích*.
+
+### Známé pasti
+- Vydávat starý report za aktuální stav bez data.
+- „Opravit“ `depth_*` podle reportu; to je rozhodnutí realizátora nebo GameDesignera.
+- Spustit v editoru skript, který není čtecí dotaz core.
 
 ## Modul `handover_out` (L1)
 

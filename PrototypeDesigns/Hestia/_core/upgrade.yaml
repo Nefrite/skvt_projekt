@@ -1,7 +1,8 @@
 # Kroky po aktualizaci core v instanci (zadání 13 kap. 10.6a, 11 kap. 5).
 # Záznam přidává vývojář s každou vydanou verzí, i prázdný; test hlídá úplnost proti CHANGELOG.md.
 # update_core sečte záznamy verzí (stará, nová] a po výměně _core/ je provede novým core:
-#   after   automatické kroky (asset_index, hubs, doc_index, compose_role); pořadí určuje update_core
+#   after   automatické kroky (asset_index, hubs, doc_index, compose_role); pořadí určuje update_core;
+#           compose_role spouští update_core při každé změně verze sám (jsou-li kompiláty), uvádí se jen pro čitelnost
 #   manual  ruční úkoly do Maintenance/queue.md (T-…, klíč update_core:<verze>:<id>); id stabilní v rámci verze
 #   crs     change requesty implementované ve verzi; ověří je instance (in_pilot)
 #   migration  jen MAJOR: scripts/migrations/<verze>.py
@@ -40,3 +41,7 @@ versions:
     after: []
     manual: []
     crs: []
+  - version: 0.14.2
+    after: []
+    manual: []
+    crs: [CR_2026-11-21_compose_role_po_kazde_aktualizaci]

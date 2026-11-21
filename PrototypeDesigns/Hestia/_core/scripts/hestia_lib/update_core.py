@@ -331,8 +331,8 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
     notes = changelog_notes(new_core, old_v, new_v)
     overlaps = local_overlaps(vault, new_core)
     migrations = find_migrations(new_core, old_v, new_v)
-    upl = upgrade_mod.plan(new_core, old_v, new_v) if parse_version(new_v) > parse_version(old_v) \
-        else upgrade_mod.Plan()
+    upl = upgrade_mod.with_compose(upgrade_mod.plan(new_core, old_v, new_v), vault, old_v, new_v) \
+        if parse_version(new_v) > parse_version(old_v) else upgrade_mod.Plan()
     no_after = getattr(args, "no_after", False)
     dirty = gitinfo.changed_files(vault.project_root)
     warnings = []

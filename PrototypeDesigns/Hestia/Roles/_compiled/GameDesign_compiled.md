@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: GameDesign | core: 0.14.0 | date: 2026-11-20 -->
+<!-- role: GameDesign | core: 0.14.2 | date: 2026-11-21 -->
 <!-- sources: Roles/GameDesign.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/design_template.md -->
 # GameDesign – instrukce pro chat
 

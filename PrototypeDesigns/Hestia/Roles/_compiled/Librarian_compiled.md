@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Librarian | core: 0.14.0 | date: 2026-11-20 -->
+<!-- role: Librarian | core: 0.14.2 | date: 2026-11-21 -->
 <!-- sources: _core/agents/Librarian.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/lookup.md, _core/agents/modules/file_info.md, _core/agents/modules/completeness.md, _core/agents/modules/canon_check.md, _core/agents/modules/inbox_triage.md, _core/agents/modules/ue_lookup.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md -->
 # Librarian – instrukce pro chat
 

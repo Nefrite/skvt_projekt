@@ -5,6 +5,7 @@ Kompilát `Roles/_compiled/<Role>_compiled.md` (přípona kvůli jedinečnosti j
 nesleduje odkazy a modul si při spouštěči nedotáhne.
 
 - Profil: `Roles/<Role>.md`, jinak `_core/agents/<Role>.md` (Curator, Auditor); `type: role`.
+- Bez výčtu rolí: profily v `Roles/` a role core, jejichž kompilát už ve vaultu je (obnova po aktualizaci core).
 - `combines`: složené profily (do hloubky, bez cyklů); při rozporu platí přísnější role (12 kap. 2.2).
 - Moduly: core `_core/agents/modules/`, lokální `Roles/modules/` (kolize `module_id` = chyba konfigurace).
   Do kompilátu jdou **všechny moduly core s režimem `chat` a `compile: all`** (pořadí podle tabulky
@@ -130,6 +131,18 @@ def load_modules(vault: Vault, core_root: Path = CORE_ROOT) -> dict[str, Module]
 
 def list_profiles(vault: Vault) -> list[str]:
     return sorted(n.name for rel, n in vault.notes.items() if _ROLE_RE.match(rel) and n.type == "role")
+
+
+def default_roles(vault: Vault, core_root: Path = CORE_ROOT) -> list[str]:
+    """Role bez výčtu: profily v `Roles/` a role core (`_core/agents/<Role>.md`), jejichž kompilát už ve vaultu je,
+    aby `compose_role` po aktualizaci core obnovil všechny kompiláty (zadání 0.15.1; provizorní, otázka v předání)."""
+    roles = set(list_profiles(vault))
+    d = vault.root / COMPILED_DIR
+    for p in d.glob(f"*{COMPILED_SUFFIX}.md") if d.is_dir() else []:
+        role = p.stem.removesuffix(COMPILED_SUFFIX)
+        if (_agents_dir(core_root) / f"{role}.md").is_file():
+            roles.add(role)
+    return sorted(roles)
 
 
 def load_profile(vault: Vault, name: str, core_root: Path = CORE_ROOT) -> Part:
@@ -338,7 +351,7 @@ def _without_date(text: str) -> str:
 def plan(vault: Vault, roles: list[str] | None = None, today: dt.date | None = None,
          core_root: Path = CORE_ROOT) -> list[Item]:
     items = []
-    for role in (roles or list_profiles(vault)):
+    for role in (roles or default_roles(vault, core_root)):
         c = compose(vault, role, today, core_root)
         path = vault.root / c.rel
         if not path.exists():

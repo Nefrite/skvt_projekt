@@ -2,6 +2,15 @@
 
 Verze `MAJOR.MINOR.PATCH` podle zadání 11, kap. 5 (`hearthlore/zadani/11_vyvojovy_cyklus.md`). MAJOR verze nese migrační poznámku.
 
+## 0.14.2 – 2026-11-21
+
+`compose_role` po každé změně verze podle CR z pilotu (zadání 0.15.1, CR_2026-11-21_compose_role_po_kazde_aktualizaci, předání `predani_vyvoj_core_soubeh` položka 20); bez migrace, bez kroků v manifestu. Účinné od přechodu z 0.14.2 dál (kroky po aktualizaci spouští nový core); při přechodu na 0.14.2 se `compose_role` spustí také, protože kroky už běží kódem 0.14.2.
+
+- **`update_core --apply`** (13 kap. 10.6, 10.6a): když se mění verze core a ve vaultu jsou kompiláty (`Roles/_compiled/*_compiled.md`), přidá `compose_role` na konec automatických kroků i bez záznamu v `upgrade.yaml` (hlavička kompilátu nese verzi core; dřív audit po verzi bez `compose_role` hlásil všechny kompiláty jako G5). Dry-run i `--after-only` ho vypíšou v plánu; bez kompilátů se nespouští. V manifestu se `compose_role` dál smí uvádět, jen pro čitelnost.
+- **`compose_role` bez výčtu rolí** skládá kromě profilů v `Roles/` i role core (`_core/agents/`: Curator, Auditor, Librarian), jejichž kompilát už ve vaultu je; dřív by kompilát role core po aktualizaci zůstal starý (G5), i když `compose_role` proběhl. Provizorně, otázka v předání.
+- Upozornění na zastaralé kompiláty po `--apply` už nevzniká (kompiláty se obnoví); zůstává u `--no-after`.
+- Testy: 279 (přechod přes verze s prázdným záznamem: `compose_role` proběhne, hlavičky kompilátů nesou novou verzi, audit nainstalovaným core bez G5 u kompilátů; vault bez kompilátů ho nespouští; kompilát role core se obnoví; `--no-after` dál upozorní).
+
 ## 0.14.1 – 2026-11-20
 
 Oprava z prvního přechodu pilotu na 0.14.0 (pokyn GameDesignera 2026-11-20); bez migrace, bez kroků po aktualizaci.
