@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "ruin"))
 sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..")))          # zrlib
 from tower_spec import VEZ_F, VEZ_ST, spec as tower_spec
 from ostroh_spec import spec as ostroh_spec
-from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_kul, obydli as obydli_spec
+from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_kul, obydli as obydli_spec, obydli_stavenisko
 from brana_spec import straz as straz_spec
 from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, project_s, point_at
 
@@ -364,7 +364,20 @@ def palac(LAY):
         roof="Palac_Obydli_Krov", stage="base",
         lap=LG["lap"], half_w=LG["half_w"], jit=LG["jit"], walls=LG["walls"], gables=LG["gables"],
         finish=dict(logs="raw", gables="raw"))
-    return [pristresek, krov], [vyhen, stena, okap, kul, kamen, ohniste, srub]
+    # staveniste domu (etapa 1, sada site; navrh kap. 9.2, 9.2a): vzpery sloupu bez pozednice a zebrik (samostatne actory);
+    # hranice materialu na zbyvajici casti domu na nadvori pred Palac_S, kazda jako samostatna stavba = jeden actor (pile):
+    # v UE se posune / natoci jako celek a ulozi pres capture (Palac_Obydli_Stavenisko_Capture.py)
+    ST = obydli_stavenisko(LAY["walls"]); cs0, cs1, cn0, cn1 = ST["clear"]; G = ST["groups"]
+    site = lambda name, folder, items, pile=False: dict(name=name, type="props", folder="Stavby/Palac/Obydli/Stavenisko" + folder,
+                                                       origin=F["origin"], u=F["s"], v=F["n"], stage="site", items=items,
+                                                       **(dict(pile=True) if pile else {}))
+    stavenisko = [site("Palac_Obydli_Stavenisko", "", G["main"]),                       # vzpery V1-V4, zebrik
+                  site("Palac_Obydli_Stavenisko_Kulatina", "", G["logs"], True),        # S3 srubova kulatina sine
+                  site("Palac_Obydli_Stavenisko_Tramy", "", G["timber"], True),         # S4 krokve, pozednice, vaznice
+                  site("Palac_Obydli_Stavenisko_Prkna", "", G["boards"], True),         # S5 prkna krytiny
+                  site("Palac_Obydli_Stavenisko_Kozy", "", G["horses"], True)]          # S6 kozy s rozpracovanou kulatinou
+    stavenisko[0]["clear_poly"] = [P(cs0, cn0), P(cs1, cn0), P(cs1, cn1), P(cs0, cn1)]  # sut pod hranicemi na nadvori uklizena
+    return [pristresek, krov], [vyhen, stena, okap, kul, kamen, ohniste, srub] + stavenisko
 
 
 def brana(LAY):

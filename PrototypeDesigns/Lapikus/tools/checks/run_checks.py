@@ -448,7 +448,79 @@ def check_obydli(S):
             wb < 1.25 and all(s.stage == "final" for s in sr if "|G" in s.id) and all(s.stage == "base" for s in sr if "|P|" in s.id or "|E|" in s.id))
         pu = next(q for q in fr["supports"] if q["id"] == "VS")
         rep("svetla vyska pod stredni vaznici %.2f m (>= 2.7)" % (pu["top"] - pu["sec"][1]), pu["top"] - pu["sec"][1] >= 2.7)
-    for gname in ("Palac_Obydli_Kamen", "Palac_Obydli_Ohniste", "Palac_Obydli_Krov", "Palac_Obydli_Srub"):
+    # --- staveniste a etapa 1 (sestava base + site; navrh_palac_obydli_stred.md kap. 9.4)
+    SITE = lambda n: n.startswith("Palac_Obydli_Stavenisko")    # vzpery a zebrik + hranice na nadvori (kazda samostatna stavba)
+    sads = [a for a in S["data"].get("addons", []) if SITE(a["name"])]
+    sa = dict(items=[q for a in sads for q in a["items"]]) if sads else None
+    site = [s for n, g_ in groups.items() if SITE(n) for s in g_["stones"] + g_["loose"]]
+    if sa and site and fr and lw:
+        terr = S["terr"]; fb = lambda s: frame_box(s, O, U, V)
+        pile = lambda s: s.id.split("|")[1] if s.id.count("|") >= 2 else ""            # S3, S4, S5a, S5b; vzpery a zebrik ""
+        def zext(s):                                                # spodek a vrch dilce (m nad terenem pod jeho stredem)
+            sp, cp = abs(math.sin(math.radians(s.pitch))), abs(math.cos(math.radians(s.pitch)))
+            h = sp * s.sx / 2 + cp * s.sz / 2; zg = terr.z(s.x, s.y)
+            return (s.z - h - zg) / 100, (s.z + h - zg) / 100
+        ov = lambda a, b, m=0.0: a[0] < b[1] + m and a[1] > b[0] - m and a[2] < b[3] + m and a[3] > b[2] - m
+        hang = []
+        for s in site:
+            lo, _ = zext(s)
+            if abs(lo) <= 0.03: continue
+            if not any(q is not s and pile(q) == pile(s) != "" and ov(fb(s), fb(q)) and
+                       (lo - 0.03 <= zext(q)[1] <= lo + 0.06 or (abs(q.pitch) > 20 and zext(q)[0] < lo < zext(q)[1]))   # na kusu, nebo ve vidlici sikmych tyci (kozy)
+                       for q in site): hang.append(s.id.split("|", 1)[1])
+        rep("staveniste: nic nevisi (na terenu +-3 cm, na kusu sve hranice, ve vidlici koz) %s" % hang[:4], not hang)
+        VH = next(q for q in fr["supports"] if q["id"] == "VH"); hp = VH["post"] / 2; post_top = VH["top"] - VH["sec"][1]
+        free_posts = [ps for ps in VH["posts"] if not any(pc["stage"] == "base" and pc["span"][0] - 0.01 <= ps <= pc["span"][1] + 0.01 for pc in VH["pieces"])]
+        braces = [q for q in sa["items"] if q["id"].startswith("V") and "p0" in q]
+        def touches(q, ps):                                         # horni konec osy vzpery na lici sloupu (<= 2 cm), v jeho vysce
+            a, c, z = q["p0"]
+            if z > post_top: return False
+            on_n = abs(c - (VH["at"] + hp)) <= 0.02 and abs(a - ps) <= hp
+            on_s = abs(a - (ps + hp)) <= 0.02 and abs(c - VH["at"]) <= hp
+            return on_n or on_s
+        nbr = {ps: sum(1 for q in braces if touches(q, ps)) for ps in free_posts}
+        rep("vzpery: sloupy bez pozednice base %s maji po 2 vzperach na lici %s" % (free_posts, nbr), free_posts and all(v == 2 for v in nbr.values()))
+        others = [s for gname, g_ in groups.items() if not SITE(gname) for s in g_["stones"] + g_["loose"]
+                  if not (gname.startswith("Palac_Obydli") and s.stage != "base")]          # v etape 1 stoji jen base (a vse bez etap)
+        fu = S.get("furn") or {}                                    # vybaveni 06 (kovarna): skupiny jako u staveb
+        others += [s for g_ in (fu.values() if isinstance(fu, dict) else []) for s in g_.get("stones", []) + g_.get("loose", [])]
+        brace_post = lambda a, b: (a.id.split("|")[-1].startswith("V") and "|VH|P" in b.id)   # vzpera k lici sloupu = zamerny dotyk
+        c = common.collisions(site, ruin + others, 1.5, skip=brace_post)
+        rep("staveniste x zricenina, base, ostatni stavby a vybaveni: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        c = common.collisions(site, site, 1.0, skip=lambda a, b: pile(a) == pile(b) != "")
+        rep("staveniste mezi sebou (mimo styk vrstev v hranici): pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        zones = dict(sin=((10.95, 14.8), (3.2, 5.95)), zaprazi=((10.9, 21.4), (6.43, 8.8)), prulom=((14.5, 17.5), (8.8, 12.5)),
+                     portal=((3.2, 5.8), (10.2, 12.5)), dvere_V=((25.9, 28.1), (10.2, 12.5)))
+        blk = {k: [s.id.split("|", 1)[1] for s in site if ov(fb(s), (z[0][0], z[0][1], z[1][0], z[1][1])) and zext(s)[0] < 2.0] for k, z in zones.items()}
+        rep("trasy a volne pasy (>= 1.2 m) bez staveniste: %s" % {k: v[:2] for k, v in blk.items() if v}, not any(blk.values()))
+        piles = sorted(set(pile(s) for s in site) - {""}); tr = {}; nin = []
+        for pn in piles:
+            ps_ = [s for s in site if pile(s) == pn]; zs = []
+            for s in ps_:
+                for q in common.footprint(s): zs.append(terr.z(*q))
+            tr[pn] = round((max(zs) - min(zs)) / 100, 3)
+            if min(fb(s)[2] for s in ps_) < 10.25: nin.append(pn)
+        rep("hranice na nadvori: teren pod hranici %s m (<= 0.15), od lice Palac_S %s" % (tr, "OK" if not nin else nin), all(v <= 0.15 for v in tr.values()) and not nin)
+        RF = fr["rafters"]; want = dict(K=sum(q == "final" for q in RF["stages"]),
+                                        Pozednice=sum(pc["stage"] == "final" for pc in VH["pieces"]),
+                                        Vaznice=sum(pc["stage"] == "final" for pc in next(q for q in fr["supports"] if q["id"] == "VS")["pieces"]))
+        fl = sorted(round(sg["span"][1] - sg["span"][0], 2) for w in lw["walls"] for sg in w["segs"] if sg.get("stage") == "final"
+                    for k in range(sg["rows"][0], sg["rows"][1] + 1) if k not in w.get("half", []))
+        fh = sum(1 for w in lw["walls"] for sg in w["segs"] if sg.get("stage") == "final" for k in range(sg["rows"][0], sg["rows"][1] + 1) if k in w.get("half", []))
+        have = dict(K=sum(1 for s in site if "|S4|K" in s.id), Pozednice=sum(1 for s in site if s.id.endswith("|S4|Pozednice")),
+                    Vaznice=sum(1 for s in site if s.id.endswith("|S4|Vaznice")))
+        hl = sorted(round(s.sx / 100, 2) for s in site if "|S3|L" in s.id); hh = sum(1 for s in site if "|S3|H" in s.id)
+        bd = {pn: sum(1 for s in site if s.id.split("|")[1:2] == [pn] and s.id.split("|")[-1][:1] == "P" and s.id.split("|")[-1][1:2].isdigit()) for pn in piles if pn.startswith("S5")}
+        sys.path.insert(0, os.path.join(common.ROOT, "tools", "ruin")); import palac_spec
+        nrow = palac_spec.obydli_stavenisko(S["layout"]["walls"])["counts"]["boards"]      # prken v jedne rade krytiny po spadu
+        rep("pocty v hranicich = chybejici dilce final: %s, srub %d + %d pultramy (delky sedi: %s), prkna %s (kazda hranice >= %d)" % (have, len(hl), hh, hl == fl, bd, nrow),
+            have == want and hl == fl and hh == fh and bd and all(v >= nrow for v in bd.values()))
+        wrong = [s.id for s in site if s.stage != "site"] + [s.id for gname, g_ in groups.items() if not SITE(gname) for s in g_["stones"] + g_["loose"] if s.stage == "site"]
+        uh = [s.stage for s in hearth if s.id.endswith("|U")]
+        rep("etapa 2 (base + final) bez staveniste; uhli pod plotnou final %s" % uh, not wrong and uh == ["final"])
+    for gname in ("Palac_Obydli_Kamen", "Palac_Obydli_Ohniste", "Palac_Obydli_Krov", "Palac_Obydli_Srub", "Palac_Obydli_Stavenisko",
+                  "Palac_Obydli_Stavenisko_Kulatina", "Palac_Obydli_Stavenisko_Tramy", "Palac_Obydli_Stavenisko_Prkna",
+                  "Palac_Obydli_Stavenisko_Kozy"):
         st = groups.get(gname, {}).get("stones", []) + groups.get(gname, {}).get("loose", [])
         sets = sorted(set(str(s.stage) for s in st))
         rep("%s: sady etap %s" % (gname, ", ".join(sets)), st and all(s.stage in ("base", "final", "site") for s in st))

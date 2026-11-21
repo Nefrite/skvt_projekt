@@ -94,7 +94,7 @@ Přestavět část `Palac`. Zapsáno v `tools/ruin/gen_layout.py` (zeď `Palac_S
 1. ✅ Sady etap v build skriptu, `palac_spec.py` → `obydli`, `Palac_Obydli_Kamen`, základ `Palac_Obydli_Ohniste`.
 2. ✅ `Palac_Obydli_Krov` bez krytiny (rozšíření `pult_roof`: dělené pozednice, vaznice uložená na stěnách).
 3. ✅ `Palac_Obydli_Srub` se štíty a otvory (`log_wall`).
-4. **Staveniště a kontrola etapy 1** (kap. 9). Podmínkou je zamčená `base` (kap. 0.7).
+4. ◐ **Staveniště a kontrola etapy 1** (kap. 9). Podmínkou je zamčená `base` (kap. 0.7). Postaveno ve skriptech a ověřeno kontrolami mimo UE (21. 11. 2026, kap. 9.2a), čeká na vizuální kontrolu v UE.
 5. Krytina a lemování s prostupem komína, strop se zavěšením dymníku, podlaha, okap. (Pec s dymníkem a komínem už stojí, kap. 0.5b.)
 6. Vybavení (dveře, okenice, nábytek, zárubně).
 
@@ -198,6 +198,9 @@ Všechno je ve skriptech a prošlo kontrolami mimo Unreal, v UE zatím nic z toh
 - **Pec v etapě 1:** sokl, kamenné zdi pece, hliněná klenba a tmavý vnitřek pece jsou `base`. Sopouch, dymník, komín, železo a vrstva uhlí pod plotnou jsou `final`, protože v etapě 1 se pec ještě nepoužívá (Jirka 21. 11. 2026).
 - **Zamčená `base`:** dokončení domu nesmí změnit tyto hodnoty v `palac_spec.py`: `D_PLATE`, `D_PURLIN`, `D_RAFTER`, `D_STAGE_S`, `D_BRACE_LATHS`, `D_LOG` (včetně `west_base_rows`), `D_SILL`, `D_FILL_TOP`, `D_DOOR_N`, `D_DOOR_P`, okénko světnice v `D_WINDOWS`, `D_OVEN` a úpravy 03 v části `Palac`. Při změně kterékoli z nich znovu proběhnou kontroly etapy 1 (kap. 9.4) a polohy staveniště. Jediná schválená změna `base` před staveništěm: vrstva uhlí pod plotnou (box `U` v `Palac_Obydli_Ohniste`) přejde do `final`.
 - **Krytina nemění latě zavětrování** (`pre_laths`, `base`): v jejich řadách položí jen západní část latí.
+- **Každá hranice materiálu na nádvoří je samostatný objekt** (Jirka 21. 11. 2026): jeden actor na hranici. Jirka hranice v UE posune nebo natočí podle game designu a uloží přes capture. Jednotlivé kusy uvnitř hranice se nepřeskládávají.
+- **Prkna na krytinu jsou v jedné hranici** o 0,5 m vyšší (Jirka 21. 11. 2026). Počet prken nemusí vycházet na kusy krytiny. Varianta se dvěma hranicemi (S5a, S5b) zůstává v datech pro pozdější použití (`D_SITE` → `boards.variant = "two"`).
+- **Kozy s rozpracovanou kulatinou** patří na staveniště (Jirka 21. 11. 2026): kulatina na srub na dvou kozách, na jedné straně částečně oloupaná.
 
 
 ## 1. Zadání
@@ -510,6 +513,27 @@ Začátek léta, posádka dům teprve staví. Postup jde **od západu k východu
 - Náčrt slovy: kap. 9.6.
 ```
 
+### 9.2a Postavená verze a odchylky od 9.2 (21. 11. 2026)
+
+Postaveno ve skriptech, kontroly kap. 9.4 procházejí (`run_checks.py --only obydli`), v UE zatím neověřeno.
+
+- **Uhlí pod plotnou:** box `U` v `_obydli_pec` má příznak `top`, takže patří do sady `stage_top` (`final`). Typ `hearth` se neměnil, data kovárny jsou beze změny.
+- **Data:** `palac_spec.py` → `D_SITE` a funkce `obydli_stavenisko()`. Délky, průměry a počty kusů S3 a S4 se počítají z dat sady `final`: krokve 6 × 6,24 m (0,18 × 0,22), pozednice 5,2 m, vaznice 4,75 m, srub síně 4 × 5,76 m a 5 × 4,80 m (Ø 0,23), 1 × 3,92 m (Ø 0,25) a 2 pultramy 5,76 × 0,22 × 0,11 m. Počet prken S5 se počítá vzorcem z kap. 9.2: 2 × 44.
+- **Výšky** se měří od terénu v jednom bodě (nový klíč `ref` u položek typu `props`). Vzpěry a žebřík mají stejný ref jako krov a srub (střed domu), každá hranice svůj střed.
+- **Hranice jako samostatné objekty (Jirka 21. 11. 2026, mění 9.2 Ruční doladění):** staveniště jsou čtyři stavby ve složce `Stavby/Palac/Obydli/Stavenisko`: `Palac_Obydli_Stavenisko` (vzpěry V1–V4 a žebřík jako samostatné actory, úklid suti) a hranice `_Kulatina` (S3, 14 kusů), `_Tramy` (S4, 14 kusů) a `_Prkna` (S5, 134 kusů). Každá hranice je jeden actor (Instanced Static Mesh) s pivotem dole uprostřed. V UE se posune nebo natočí kolem svislé osy jako celek. `Palac_Obydli_Stavenisko_Capture.py` uloží polohu do `constructions_edits.json` (klíč `pile:<stavba>`) a ta má přednost před `D_SITE`. Náklon hranice se neukládá.
+- **Hranoly a prkna** umí typ `props` bez nového tvaru: dílec dřeva bez `shape` s rozměrem `size` dostane mesh `SM_RuinTimber` nebo `SM_RuinPlank` podle poměru stran.
+- **S3:** pultramy neleží v horní vrstvě, ale naplocho jako třetí vrstva nad žlábky horní vrstvy (do horní vrstvy se 4 kusy kulatiny a 2 pultramy nevešly). Výška hranice je 0,72 m.
+- **S4:** výška je 0,58 m, ne asi 0,7 m (4 krokve naplocho, proklady 5 cm, nahoře 2 krokve, pozednice a vaznice naplocho).
+- **S5 (Jirka 21. 11. 2026):** jedna hranice prken 3,4 m v s = 18,0–21,4; n = 12,0–13,45, o 0,5 m vyšší než původní: 15 vrstev po 5 prknech (75 kusů), proklady 4 v každé mezeře mezi vrstvami, 3 podkladky. Vrch je ve výšce 1,375 m. Šířky prken jsou náhodné v rozmezí 0,22–0,30 a v každé vrstvě srovnané na šířku hranice 1,45 m. Původní varianta: dvě hranice po 44 prknech (3,4 m a 3,2 m), výška 0,87 m, `D_SITE` → `boards.variant = "two"`.
+- **Žebřík:** pata v n = 3,13, vrchol n = 0,97 a z = 3,95, sklon 61,3°.
+- **S6 kozy s rozpracovanou kulatinou (Jirka 21. 11. 2026):** stavba `Palac_Obydli_Stavenisko_Kozy`, jeden objekt jako ostatní hranice. Je to doplněk navíc, kulatina na kozách se nepočítá do kusů S3.
+  - Kulatina 5,76 m Ø 0,23 m s kůrou, nahoře asi ve 2/3 délky oloupaná s nerovným okrajem kůry. Nový mesh `SM_RuinLogPeeling` (`mesh_log.py`, varianty A, B; oloupaná strana je +Z, nahoru).
+  - Dvě kozy do X z tyčí s kůrou Ø 11 cm v s = 19,3 a 23,1: paty 0,40 m od osy, křížení ve výšce 0,63 m, vrchy tyčí 1,17 m. Kulatina leží ve vidlicích, osa ve výšce 0,95 m.
+  - Pod kulatinou leží 5 pruhů kůry 55 × 16 cm (`SM_RuinBarkStrip`).
+  - Výchozí poloha je na původním místě hranice prken (s = 18,3–24,1; n ≈ 12,85), protože prkna Jirka přemístil na s ≈ 12, n ≈ 18 (natočení 10°). Rozměry: `D_SITE` → `horses`.
+- **Suť:** do obrysu S4 zasahoval kámen suti `Palac_S|R1` (s = 21,38; n = 10,63). Suť pod hranicemi je proto uklizená pomocí `clear_poly` (s = 8,4–25,1; n = 10,45–13,55). Suť nemá sady, chybí tedy v obou etapách.
+- **Terén** pod hranicemi je v datech levelu rovný (Z 3129 cm, rozdíl 0 cm).
+
 ### 9.3 Pohyb hráče
 
 - **Trasa:** nádvoří → průlom v `Palac_S` (s = 15,1–16,9) → zápraží → mezera vchodu (s = 13,4–14,4) → síň → dveře v příčce (n = 3,3–4,3) → světnice. Druhá trasa vede ze zápraží průchodem v `Palac_pricka_2` (n = 6,9–8,5) do dvorku kovárny. Všude po terénu, bez prahů.
@@ -536,10 +560,10 @@ Vizuální kontrola v UE (Jirka): `Palac_Obydli.py`, pak `Etapa.py` s `ETAPA = 1
 
 ### 9.5 Předpoklady a otevřené otázky
 
-- Předpoklad: nádvoří před `Palac_S` je v pásu n = 10,2–13,5 rovné a volné. Ověř z terénu levelu a s kovárnou nebo jinými stavbami na nádvoří. Když je pod hranicí rozdíl terénu přes 0,15 m, podlož podkladky nebo hranici posuň.
-- Předpoklad: props umí hranoly a prkna (SM_RuinTimber, SM_RuinPlank) a hranici jako jeden celek (9.2, Dílce a props).
+- Ověřeno (21. 11. 2026): nádvoří před `Palac_S` je pod hranicemi rovné (rozdíl 0 cm) a volné, jen jeden kámen suti byl uklizen (9.2a).
+- Ověřeno (21. 11. 2026): props umí hranoly a prkna (`SM_RuinTimber`, `SM_RuinPlank`). Hranici jako jeden celek posunout neumí, posouvá se v `D_SITE` (9.2a).
 - Kde v etapě 1 spí posádka, návrh staveniště neřeší. Bude to samostatný task (Jirka 21. 11. 2026).
-- Doplňky na později (zatím bez assetů): kozy s rozpracovanou kulatinou, hlína a mech na spáry, třísky a kůra, latě a lišty, kámen nebo proutí na komín. Nářadí má hotové meshe (`axe`, `broadaxe`, `crosscut_saw`, `mallet`), jde přidat kdykoli.
+- Doplňky na později (zatím bez assetů): hlína a mech na spáry, třísky, latě a lišty, kámen nebo proutí na komín. Kozy s rozpracovanou kulatinou a pruhy kůry jsou hotové (9.2a, S6). Nářadí má hotové meshe (`axe`, `broadaxe`, `crosscut_saw`, `mallet`), jde přidat kdykoli.
 - Zodpovězeno: žebřík je jen kulisa. Etapy se přepínají sadami actorů (kap. 0.1).
 
 ### 9.6 Náčrt slovy

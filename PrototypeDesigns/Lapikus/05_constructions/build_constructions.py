@@ -17,6 +17,9 @@ Stavi zvlast od zriceniny (03_ruin/blocks/build_ruin_blocks.py), takze se da lad
   - platenne pristresky (addons, typ canvas_shelter): kuly s rozsochou, hreben, okapova tyc, krokvove tyce, plachta a stit
     na miru, lana, ovazani, kameny (pristresek hlidky na vezi)
   - etapy: stavba se "stage" v datech stavi actory po sadach (base / final / site) s tagem stage:<sada> (zrlib/config.py)
+  - hranice materialu (data "pile": true): cela stavba je jeden actor s pivotem dole uprostred (tag pile:<jmeno>); posun a
+    natoceni kolem svisle osy v levelu ulozi capture do constructions_edits.json (moved["pile:<jmeno>"]) a build pak posune
+    celou hranici; naklon actoru se neuklada
   - prah dveri v dostavbe: samostatny actor (soucast Ostroh_Dostavba), vyska se doladi rucne a ulozi pres capture
   - volna sut na zemi u zdi (samostatne actory, lze posouvat a mazat); v obyvane casti u ostrohu uklizena
 Zricenina zustava ve 03: zdi, otvory, kapsy pro tramy, kamenna dlazba. Dostavby ji nemeni, jen na ni stoji.
@@ -25,7 +28,8 @@ Pouziti v UE: Tools -> Execute Python Script ->
   - stavby/<Stavba>.py      jen jedna stavba (Vez_Patra.py, Ostroh_Krov.py, Ostroh_Dostavba.py, Ostroh_Podlaha.py,
                             Palac_Kovarna_Pristresek.py, Palac_Kovarna_Vyhen.py, Palac_Kovarna_Stena.py, Palac_Kovarna_Okap.py,
                             Palac_Obydli_Kamen.py,
-                            Palac_Obydli_Ohniste.py, Palac_Obydli_Krov.py, Palac_Obydli_Srub.py, Sut.py) - ostatni se nesmazou ani neprestavi
+                            Palac_Obydli_Ohniste.py, Palac_Obydli_Krov.py, Palac_Obydli_Srub.py,
+                            Palac_Obydli_Stavenisko.py (+ _Capture.py), Sut.py) - ostatni se nesmazou ani neprestavi
   - build_constructions.py  vsechny stavby najednou
   - ../build_normal.py      cely hrad (03) + vsechny stavby; ../build_fullscope.py = oprava (smaze generovane actory a meshe, vse znovu)
   - MODE = "build"   postavit (smaze jen sve actory s tagem Zricenina_Stavby)
@@ -49,7 +53,7 @@ Kod (od 11/2026):
 Nova stavba: modul v zr_stavby s funkci build, zaznam v TYPES (+ REQUIRED), polozka v constructions.json,
 kopie launcheru ve stavby/ se jmenem stavby.
 """
-import json, os, sys
+import json, math, os, sys
 
 
 def _boot():
@@ -179,16 +183,38 @@ def compute(R, data, removed=(), moved=None, volumes=None):
                 if spec["stage"] not in STAGES: raise ValueError("%s: neznama sada etapy %s (STAGES v zrlib/config.py)" % (spec["name"], spec["stage"]))
                 for s in st: s.stage = s.stage or spec["stage"]
             st = [s for s in st if s.id not in removed]
+            pv = _pile(spec["name"], st, moved) if spec.get("pile") else None
             # loose = samostatne actory (rucne posunute se ulozi pres capture), jinak Instanced Static Mesh
             out[spec["name"]] = dict(folder=spec.get("folder", "Stavby"), stones=[s for s in st if not s.loose], loose=[s for s in st if s.loose])
+            if pv: out[spec["name"]]["pile"] = pv
     rb = data.get("rubble", {})
     if rb.get("enabled", True) and (not ONLY or "Sut" in ONLY):
         out.update(_rubble(R, data, rb, walls, P, terr, removed))
     for g in out.values():
+        if g.get("pile"): continue                                 # hranice se posouva jen jako celek (_pile)
         for s in g["stones"] + g["loose"]:
             m = moved.get(s.id)
             if m: s.x, s.y, s.z, s.roll, s.pitch, s.yaw = m
     return out, P
+
+
+PILE_KEY = "pile:"                       # klic v constructions_edits.json -> moved a tag actoru hranice materialu
+
+
+def _pile(name, sts, moved):
+    """hranice materialu (data "pile": true): vsechny kusy do jednoho actoru (Instanced Static Mesh) s pivotem dole uprostred.
+    Poloha z levelu moved["pile:<jmeno>"] = [x, y, z, roll, pitch, yaw] (ulozi capture) posune pivot a natoci celou hranici
+    kolem svisle osy (naklon se nebere). -> pivot [x, y, z, yaw] pro build"""
+    if not sts: return None
+    for s in sts: s.loose = False
+    px = sum(s.x for s in sts) / len(sts); py = sum(s.y for s in sts) / len(sts); pz = min(s.z - s.sz / 2 for s in sts)
+    m = moved.get(PILE_KEY + name)
+    if not m: return [round(px, 2), round(py, 2), round(pz, 2), 0.0]
+    x, y, z, yaw = m[0], m[1], m[2], m[5]; c, sn = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))
+    for s in sts:                                               # yaw UE: osa X k +Y (stejne jako s.yaw kusu)
+        dx, dy = s.x - px, s.y - py
+        s.x, s.y, s.z = x + c * dx - sn * dy, y + sn * dx + c * dy, s.z - pz + z; s.yaw += yaw
+    return [x, y, z, yaw]
 
 
 def _rubble(R, data, rb, walls, P, terr, removed):
@@ -228,7 +254,8 @@ def build_in_unreal():
             for (cat, stage), sts in sorted(bycat.items()):
                 label = "%s_%s%s" % (name, CNAME.get(cat, cat), "_" + stage.capitalize() if stage else "")
                 n += ue_actors.place_ism(unreal, eas, label, g["folder"], sts, cube, meshes, mats.get(cat), tag,
-                                         [st_tag] + ([STAGE_TAG + stage] if stage else []))
+                                         [st_tag] + ([STAGE_TAG + stage] if stage else []) + ([PILE_KEY + name] if g.get("pile") else []),
+                                         pivot=g.get("pile"))
             for s in g["loose"]:
                 act = ue_actors.spawn_loose(unreal, eas, s, cube, meshes, [tag, "RuinStone", "id:" + s.id, st_tag] + ([STAGE_TAG + s.stage] if s.stage else []),
                                             g["folder"], mats.get(s.cat))
@@ -263,7 +290,17 @@ def capture_edits():
     cube = unreal.load_asset(CUBE_MESH); meshes = R.ensure_stone_meshes(unreal)
     present, loose_now = ue_actors.scan_level(unreal, eas, CONSTR_TAG)
     n_rem = n_mov = 0
-    for g in groups.values():
+    for name, g in groups.items():
+        if g.get("pile"):                                          # hranice materialu: poloha celeho actoru, ne jednotlivych kusu
+            key = PILE_KEY + name
+            a = next((a for a in eas.get_all_level_actors() if key in [str(t) for t in a.tags]), None)
+            if a is None:                                          # hranice smazana
+                removed.update(s.id for s in g["stones"]); moved.pop(key, None); n_rem += len(g["stones"]); continue
+            l, r = a.get_actor_location(), a.get_actor_rotation(); pv = g["pile"]
+            cur = [round(l.x, 2), round(l.y, 2), round(l.z, 2), round(-r.roll, 2), round(r.pitch, 2), round(r.yaw, 2)]
+            if any(abs(p - q) >= 1.0 for p, q in zip(cur[:3], pv[:3])) or abs(((cur[5] - pv[3]) + 180) % 360 - 180) >= 0.5:
+                moved[key] = cur; n_mov += 1
+            continue
         for s in g["stones"]:
             if ue_actors.instance_key(unreal, s, cube, meshes) not in present: removed.add(s.id); n_rem += 1
         for s in g["loose"]:

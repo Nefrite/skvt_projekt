@@ -110,7 +110,7 @@ def obydli_scene(S, stage=2):
     O, U, V = fr["origin"], fr["u"], fr["v"]
     sn = lambda x, y: (((x - O[0]) * U[0] + (y - O[1]) * U[1]) / 100, ((x - O[0]) * V[0] + (y - O[1]) * V[1]) / 100)
     P = lambda s, n, z: ((O[0] + (U[0] * s + V[0] * n) * 100) / 100, (O[1] + (U[1] * s + V[1] * n) * 100) / 100, z)
-    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if -1.5 < sn(s.x, s.y)[0] < 25.5 and -3 < sn(s.x, s.y)[1] < 13]
+    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if -1.5 < sn(s.x, s.y)[0] < 27.5 and -3 < sn(s.x, s.y)[1] < 14]
     show = ("base", "site") if stage == 1 else ("base", "final")
     new = [s for n, g in S["groups"].items() if n.startswith("Palac_Obydli") for s in g.get("stones", []) + g.get("loose", []) if s.stage in show]
     z0 = S["terr"].z(*[c * 100 for c in P(*fr["ref"], 0)[:2]])
@@ -124,6 +124,10 @@ def obydli_scene(S, stage=2):
           dict(title="svetnice: pec od severovychodu", eye=P(19.4, 4.6, 1.7), target=P(16.8, 1.4, 1.2), fov=60),
           dict(title="ze zaprazi k pruchodu ke kovarne", eye=P(17.0, 7.9, 1.7), target=P(22.5, 7.6, 1.0), fov=68),
           dict(title="pudorys (sever nahore)", eye=P(15.75, 4.4, 40.0), target=P(15.75, 4.6, 0.0), ortho=15.0)]
+    if stage == 1:                                              # staveniste: vzpery v sini, hranice materialu na nadvori
+        V_ += [dict(title="sin: vzpery sloupu 11,1 a 13,0", eye=P(12.0, 5.6, 1.7), target=P(12.2, 0.9, 1.6), fov=70),
+               dict(title="nadvori: hranice materialu (od severu)", eye=P(16.0, 22.5, 4.5), target=P(16.5, 13.0, 0.4), fov=62),
+               dict(title="nadvori: kozy s rozpracovanou kulatinou", eye=P(22.6, 16.2, 1.8), target=P(21.0, 12.85, 0.9), fov=55)]
     return bx, V_
 
 

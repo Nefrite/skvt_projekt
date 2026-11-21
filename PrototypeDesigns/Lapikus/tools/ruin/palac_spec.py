@@ -150,6 +150,32 @@ D_DOOR_H = 2.2                   # vyska dveri (rada se vynecha, kdyz ma stred p
 D_GABLE = dict(t=0.035, board_w=(0.20, 0.28), lap=0.10, gap=0.02)   # prkenne stity: tloustka, sirka prken, prekryti vrchni rady
                                                            # srubu, mezera od lice srubu
 
+# staveniste domu (etapa 1, cela stavba sada site; navrh_palac_obydli_stred.md kap. 9.2). Vysky od terenu v ref (vzpery,
+# zebrik: stred domu; hranice: stred hranice), polohy v ramu palace. Delky a pocty kusu v hranicich S3, S4 se pocitaji
+# z dat sady final (srub sine, krokve, zapadni kusy pozednice a vaznice), ne rucne.
+D_SITE = dict(
+    brace=dict(d=0.10, top=2.6,                            # S1 vzpery sloupu bez pozednice: tyc s kurou, horni konec na lici sloupu
+               legs=((11.1, "n", 1.5), (11.1, "s", 1.5),   # (sloup s, smer od sloupu, vodorovny dosah od lice)
+                     (13.0, "n", 1.5), (13.0, "s", 1.3))), # V4 kratsi: pata 0.2 m pred podezdivkou pricky (s = 14.625)
+    ladder=dict(s=18.78, top=(0.97, 3.95), foot_n=3.13),   # S2 zebrik (kulisa) mezi krokvemi 18.273 a 19.282: vrchol o severni lic pozednice
+    sleeper_d=0.15, lath=(0.06, 0.05),                     # podkladky (kulatina s kurou), proklady z lati (sirka, vyska; lezi naplocho)
+    logs=dict(s=(8.5, 14.3), n=(10.6, 12.2), bottom=6, gap=0.02,          # S3 srubova kulatina sine (nadvori zapadne od prulomu)
+              sleepers=dict(s=(9.3, 13.5), len=1.8)),
+    timber=dict(s=(17.9, 24.15), n=(10.6, 11.65), bottom=4,               # S4 krokve, zapadni kus pozednice a vaznice (vychodne od prulomu)
+                sleepers=dict(s=(18.4, 21.0, 23.6), len=1.2)),
+    boards=dict(n=(12.0, 13.45), per_layer=5, gap=0.03, lath_step=4,      # S5 prkna krytiny: dve hranice podle delek prken
+                cover_s=(9.8, 21.7), board_w=(0.22, 0.30), board_gap=0.015, t=0.035,
+                variant="one",                                    # "one" = jedna vyssi hranice (Jirka 21. 11. 2026), "two" = puvodni dve
+                one=dict(id="S5", s=(18.0, 21.4), extra_h=0.5),   # prkna 3.4 m; o extra_h vys nez hranice pro jednu radu krytiny
+                piles=(dict(id="S5a", s=(18.0, 21.4)), dict(id="S5b", s=(21.8, 25.0))),   # varianta "two": 3.4 m a 3.2 m, kazda 1 rada
+                sleepers=dict(len=1.6, edge=0.2)),
+    horses=dict(id="S6", s=21.2, n=12.85, axis_z=0.95,    # S6 kozy s rozpracovanou kulatinou (Jirka 21. 11. 2026): stred, vyska osy
+                log=dict(len=5.76, d=0.232),               # kulatina na srub (zapadni stena sine), nahore castecne oloupana
+                legs=dict(d=0.11, foot=0.40, top=0.34, gap=0.06),   # kozy do X: tyce s kurou, pata / vrch od osy (napric), rozestup tyci
+                at=(-1.9, 1.9),                            # polohy koz od stredu kulatiny (podel s)
+                strips=((-1.2, -0.25, 20), (-0.4, 0.3, -35), (0.5, -0.35, 70), (1.3, 0.2, 5), (0.9, 0.45, -60))),   # kura pod kulatinou (ds, dn, yaw)
+    clear=(8.4, 25.1, 10.45, 13.55))                       # uklizena sut na nadvori pod hranicemi (s0, s1, n0, n1)
+
 
 def frame(walls):
     """ram palace z ruin_layout: origin (UE cm), s, n (jednotkove vektory), s_tower = s lice veze (m), n_in = n vnitrniho
@@ -222,7 +248,7 @@ def _obydli_pec(n0):
               dict(id="PE", a=[r(p1 - ck), p1], c=[q0, q1], h=PL["h"], course=PL["h"], base=zb)]
     zp = r(zb + PL["h"])
     boxes = [dict(id="V", cat="charcoal", a=[r(b0 + t), r(b1 - t)], c=[r(n0 + 0.02), r(bn1 - t)], z=[zb, r(zw - 0.02)]),   # tmavy vnitrek pece
-             dict(id="U", cat="charcoal", a=[r(p0 + ck), r(p1 - ck)], c=[r(q0 + 0.03), r(q1 - 0.03)], z=[zb, r(zb + 0.03)]),   # uhli pod plotnou
+             dict(id="U", cat="charcoal", top=True, a=[r(p0 + ck), r(p1 - ck)], c=[r(q0 + 0.03), r(q1 - 0.03)], z=[zb, r(zb + 0.03)]),   # uhli pod plotnou (final: v etape 1 se pec nepouziva)
              dict(id="I0", cat="iron", top=True, a=[r(O["s"] - mw - 0.15), r(O["s"] + mw + 0.15)], c=[r(bn1 - t), r(bn1 + 0.01)], z=[r(zw - 0.015), zw]),   # pas nad ustim
              dict(id="I2", cat="iron", top=True, loose=True, a=[r(p0 - 0.01), r(p1 + 0.01)], c=[r(q0 - 0.01), r(q1 + 0.01)], z=[zp, r(zp + PL["t"])])]                    # plotna
     # poklop usti: samostatny actor (mesh SM_RuinOvenDoor 45,9 x 8,6 x 41,9 cm: plech + drevena rukojet), opreny o celo pece
@@ -282,6 +308,130 @@ def _obydli_drevo(sw, se, n0):
                   pad=dict(D_PAD), brace_laths=dict(D_BRACE_LATHS)),
         log=dict(lap=D_LOG["lap"], half_w=D_LOG["half_w"], jit=D_LOG["jit"], walls=walls_, gables=gables),
         doors=dict(n=D_DOOR_N, p=D_DOOR_P, h=D_DOOR_H), windows=[dict(w) for w in D_WINDOWS])
+
+
+def obydli_stavenisko(walls):
+    """staveniste domu (typ props, sada site): S1 vzpery, S2 zebrik, S3-S5 hranice materialu -> dict(items, groups, ref, clear, counts).
+    groups: main (vzpery, zebrik: samostatne actory), logs (S3), timber (S4), boards (S5) = samostatne stavby; kazda hranice
+    je v UE jeden actor (data "pile"), ktery se posune nebo natoci jako celek a ulozi pres capture."""
+    D = obydli(walls); RO = D["roof"]; LG = D["log"]; T = D_SITE; r = lambda v: round(v, 3)
+    ref = [r((D["plan"]["s"][0] + D["plan"]["s"][1]) / 2), r((D["n0"] + D["n_north"]) / 2)]   # stejny ref jako krov a srub
+    it = []
+    # S1 vzpery: horni konec na lici sloupu ve vysce top, pata na terenu (sloupy bez pozednice sady base)
+    PL = RO["plate"]; hp = PL["post"] / 2; B = T["brace"]
+    for k, (ps, d, reach) in enumerate(B["legs"]):
+        p0 = (ps, r(PL["n"] + hp), B["top"]) if d == "n" else (r(ps + hp), PL["n"], B["top"])
+        p1 = (ps, r(p0[1] + reach), 0.0) if d == "n" else (r(p0[0] + reach), PL["n"], 0.0)
+        it.append(dict(id="V%d" % (k + 1), shape="round", d=B["d"], bark=True, p0=p0, p1=p1, ref=ref))
+    # S2 zebrik: stred bounding boxu v polovine osy, lokalni X od paty k vrcholu (k jihu), sklon pitch
+    L_ = T["ladder"]; (tn, tz), fn = L_["top"], L_["foot_n"]
+    it.append(dict(id="Zebrik", shape="ladder", a=L_["s"], c=r((tn + fn) / 2), zc=r(tz / 2), x=(0, -1),
+                   pitch=round(math.degrees(math.atan2(tz, fn - tn)), 2), ref=ref))
+    sd = T["sleeper_d"]; lw, lh = T["lath"]
+    def sleeper(pid, k, a, c0, c1, cref):                       # podkladek napric hranice (osa ve vysce sd / 2)
+        return dict(id="%s|Podklad%d" % (pid, k), shape="round", d=sd, bark=True, p0=(a, c0, sd / 2), p1=(a, c1, sd / 2), ref=cref, loose=False)
+    # S3 srubova kulatina sine: kazda rada useku final = jeden kus v cele delce useku (otvory se dorezavaji az ve stene)
+    pcs = []
+    for w in LG["walls"]:
+        hv = set(w.get("half", []))
+        for seg in w["segs"]:
+            if seg.get("stage") != "final": continue
+            for kk in range(seg["rows"][0], seg["rows"][1] + 1):
+                h = w["z"][kk + 1] - w["z"][kk]; L = seg["span"][1] - seg["span"][0]
+                pcs.append(dict(len=r(L), half=kk in hv, d=r(h + LG["lap"]), h=r(h), src="%s%d" % (w["id"], kk)))
+    S3 = T["logs"]; (s0, s1), (n0, n1) = S3["s"], S3["n"]; sm = (s0 + s1) / 2; nm = (n0 + n1) / 2; cref = [r(sm), r(nm)]
+    logs = sorted([q for q in pcs if not q["half"]], key=lambda q: -q["len"]); halves = [q for q in pcs if q["half"]]
+    sl = S3["sleepers"]
+    for k, a in enumerate(sl["s"]): it.append(sleeper("S3", k, a, r(nm - sl["len"] / 2), r(nm + sl["len"] / 2), cref))
+    nb = S3["bottom"]; low = logs[:nb]                          # spodni vrstva = nejdelsi kusy
+    dm = max(q["d"] for q in logs); step = dm + S3["gap"]; c_low = [r(nm + (i - (nb - 1) / 2) * step) for i in range(nb)]
+    z_low = sd + dm / 2
+    pos = sorted(range(nb), key=lambda i: abs(i - (nb - 1) / 2))           # nejdelsi kusy do stredu hranice, kratsi na kraje
+    lay0 = [None] * nb
+    for q, i in zip(low, pos): lay0[i] = q
+    for i, q in enumerate(lay0):
+        it.append(dict(id="S3|L0.%d" % i, shape="round", d=q["d"], bark=False, p0=(r(sm - q["len"] / 2), c_low[i], r(z_low)),
+                       p1=(r(sm + q["len"] / 2), c_low[i], r(z_low)), ref=cref, loose=False, src=q["src"]))
+    up = logs[nb:]; z_up = z_low + math.sqrt(max(dm ** 2 - (step / 2) ** 2, 0.0))   # v zlabku mezi dvema kusy spodni vrstvy
+    c_up = [r((c_low[i] + c_low[i + 1]) / 2) for i in range(len(up))]
+    for i, q in enumerate(up):
+        it.append(dict(id="S3|L1.%d" % i, shape="round", d=q["d"], bark=False, p0=(r(sm - q["len"] / 2), c_up[i], r(z_up)),
+                       p1=(r(sm + q["len"] / 2), c_up[i], r(z_up)), ref=cref, loose=False, src=q["src"]))
+    z_h = z_up + dm / 2                                         # pultramy naplocho na horni vrstve, nad zlabky mezi jejimi kusy
+    for i, q in enumerate(halves):
+        g = min(2 * i, len(c_up) - 2); cc = r((c_up[g] + c_up[g + 1]) / 2)
+        it.append(dict(id="S3|H%d" % i, cat="wood", a=r(sm), c=cc, z=r(z_h), size=(r(q["len"] * 100), r(LG["half_w"] * 100), r(q["h"] * 100)),
+                       ref=cref, loose=False, src=q["src"]))
+    # S4 tesane drevo krovu: krokve sady final, zapadni kusy pozednice a vaznice (spoj nad sloupem / prickou)
+    RA = RO["rafter"]; nrf = sum(1 for q in RA["stages"] if q == "final")
+    rl = r((RA["n"][1] - RA["n"][0]) * math.sqrt(1 + RO["slope"] ** 2)); (rw, rh) = RA["sec"]
+    PU = RO["purlin"]; r0 = RO["span"][0]
+    S4 = T["timber"]; (s0, s1), (n0, n1) = S4["s"], S4["n"]; sm = (s0 + s1) / 2; nm = (n0 + n1) / 2; cref = [r(sm), r(nm)]
+    for k, a in enumerate(S4["sleepers"]["s"]): it.append(sleeper("S4", k, a, r(nm - S4["sleepers"]["len"] / 2), r(nm + S4["sleepers"]["len"] / 2), cref))
+    nb = S4["bottom"]; slot = rh                                # krokve naplocho: sirka = vyska prurezu
+    gap = (n1 - n0 - nb * slot) / max(nb - 1, 1); cs = [r(n0 + slot / 2 + i * (slot + gap)) for i in range(nb)]
+    for i in range(min(nb, nrf)):
+        it.append(dict(id="S4|K0.%d" % i, cat="wood", a=r(sm), c=cs[i], z=sd, size=(r(rl * 100), r(rh * 100), r(rw * 100)), ref=cref, loose=False))
+    zl = sd + rw
+    for k, a in enumerate(S4["sleepers"]["s"]):                # proklady mezi vrstvami nad podkladky
+        it.append(dict(id="S4|Proklad%d" % k, cat="wood", a=a, c=r(nm), z=r(zl), size=(r((n1 - n0) * 100), lw * 100, lh * 100), x=(0, 1), ref=cref, loose=False))
+    zt = zl + lh; west = s0 + 0.05
+    top = [dict(id="S4|K1.%d" % i, len=rl, w=rh, h=rw, mid=True) for i in range(nrf - nb)]
+    top += [dict(id="S4|Pozednice", len=r(PL["joint"] - r0), w=PL["sec"][0], h=PL["sec"][1]),
+            dict(id="S4|Vaznice", len=r(PU["joint"] - r0), w=PU["sec"][1], h=PU["sec"][0])]   # vaznice naplocho (sirsi strana dolu)
+    for i, q in enumerate(top[:nb]):
+        a = sm if q.get("mid") else r(west + q["len"] / 2)
+        it.append(dict(id=q["id"], cat="wood", a=r(a), c=cs[i], z=r(zt), size=(r(q["len"] * 100), r(q["w"] * 100), r(q["h"] * 100)), ref=cref, loose=False))
+    # S5 prkna krytiny: pocet v kazde hranici = prken v jedne rade po spadu; 5 ve vrstve, proklady z lati mezi vrstvami
+    BO = T["boards"]; wmin, wmax = BO["board_w"]
+    nbd = int(math.ceil((BO["cover_s"][1] - BO["cover_s"][0]) / ((wmin + wmax) / 2 + BO["board_gap"]) - 1e-9))
+    (n0, n1) = BO["n"]; nm = (n0 + n1) / 2; pl = BO["per_layer"]; nl = int(math.ceil(nbd / pl))
+    import random
+    one = BO.get("variant", "two") == "one"
+    for P_ in ([BO["one"]] if one else BO["piles"]):
+        pid = P_["id"]; (s0, s1) = P_["s"]; L = s1 - s0; sm = (s0 + s1) / 2; cref = [r(sm), r(nm)]
+        nlp = nl + (int(math.ceil(P_["extra_h"] / (BO["t"] + lh) - 1e-9)) if one else 0)   # vyssi hranice: dalsi plne vrstvy
+        left = nbd if not one else nlp * pl
+        ss = (s0 + BO["sleepers"]["edge"], sm, s1 - BO["sleepers"]["edge"])
+        for k, a in enumerate(ss): it.append(sleeper(pid, k, r(a), r(nm - BO["sleepers"]["len"] / 2), r(nm + BO["sleepers"]["len"] / 2), cref))
+        rng = random.Random(pid); z = sd
+        lp = [r(s0 + 0.15 + (L - 0.3) * j / (BO["lath_step"] - 1)) for j in range(BO["lath_step"])]
+        for li in range(nlp):
+            m = min(pl, left); left -= m
+            ws = [rng.uniform(wmin, wmax) for _ in range(m)]; f = (n1 - n0 - (pl - 1) * BO["gap"]) / sum(ws) if m == pl else 1.0
+            x_ = n0 if m == pl else nm - (sum(ws) + (m - 1) * BO["gap"]) / 2
+            for j, w_ in enumerate(ws):
+                w_ *= f; it.append(dict(id="%s|P%d.%d" % (pid, li, j), cat="wood", a=r(sm), c=r(x_ + w_ / 2), z=r(z),
+                                        size=(r(L * 100), r(w_ * 100), r(BO["t"] * 100)), ref=cref, loose=False)); x_ += w_ + BO["gap"]
+            z += BO["t"]
+            if li < nlp - 1:
+                for j, a in enumerate(lp):
+                    it.append(dict(id="%s|Proklad%d.%d" % (pid, li, j), cat="wood", a=a, c=r(nm), z=r(z), size=(r((n1 - n0) * 100), lw * 100, lh * 100),
+                                   x=(0, 1), ref=cref, loose=False))
+                z += lh
+    # S6 kozy s rozpracovanou kulatinou: dve kozy do X z tyci s kurou, kulatina lezi ve vidlicich (osa ve vysce axis_z),
+    # oloupana strana nahoru (mesh SM_RuinLogPeeling); pod ni pasy kury na zemi
+    H = T["horses"]; L6 = H["log"]; LG_ = H["legs"]; sm, nm = H["s"], H["n"]; cref = [r(sm), r(nm)]
+    rl, rp, fo, to = L6["d"] / 2, LG_["d"] / 2, LG_["foot"], LG_["top"]
+    def axis(zt):                                              # vyska osy kulatiny pro vrch tyci zt (kulatina se dotyka obou tyci)
+        al = math.atan((fo + to) / zt); return zt * fo / (fo + to) + (rl + rp) / math.sin(al)
+    zt = 0.5
+    for _ in range(60): zt += (H["axis_z"] - axis(zt)) * 0.5
+    for k, da in enumerate(H["at"]):
+        a = sm + da; g = LG_["gap"] / 2
+        it.append(dict(id="S6|Koza%d.0" % k, shape="round", d=LG_["d"], bark=True, p0=(r(a - g), r(nm - fo), 0.0), p1=(r(a - g), r(nm + to), r(zt)), ref=cref))
+        it.append(dict(id="S6|Koza%d.1" % k, shape="round", d=LG_["d"], bark=True, p0=(r(a + g), r(nm + fo), 0.0), p1=(r(a + g), r(nm - to), r(zt)), ref=cref))
+    it.append(dict(id="S6|Kulatina", shape="peeling", d=L6["d"], bark=True, p0=(r(sm - L6["len"] / 2), nm, H["axis_z"]),
+                   p1=(r(sm + L6["len"] / 2), nm, H["axis_z"]), ref=cref))
+    for k, (ds, dn, yw) in enumerate(H["strips"]):
+        it.append(dict(id="S6|Kura%d" % k, shape="bark_strip", a=r(sm + ds), c=r(nm + dn), z=0.0, size=(55.0, 16.0, 3.0),
+                       x=(round(math.cos(math.radians(yw)), 4), round(math.sin(math.radians(yw)), 4)), ref=cref))
+    grp = dict(main=[], logs=[], timber=[], boards=[], horses=[]); key = dict(S3="logs", S4="timber", S6="horses")
+    for q in it:
+        q.pop("src", None); q.pop("loose", None)                 # hranice: build je da do jednoho actoru (pile)
+        grp[key.get(q["id"].split("|")[0], "boards" if q["id"].startswith("S5") else "main")].append(q)
+    return dict(items=it, groups=grp, ref=ref, clear=T["clear"],
+                counts=dict(rafters=nrf, plate=1, purlin=1, logs=len(logs), halves=len(halves), boards=nbd))
 
 
 def ruin_edits(walls):

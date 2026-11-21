@@ -50,7 +50,7 @@ depth_structures: 3
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py` | [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
+| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py`, `Palac_Obydli_Stavenisko_Capture.py` | [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
 
 <!-- hestia:generated:end -->
 
@@ -64,6 +64,8 @@ depth_structures: 3
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Krov.py` | entry | 05_constructions | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Ohniste.py` | entry | 05_constructions | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Srub.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Stavenisko.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Palac_Obydli_Stavenisko_Capture.py` | entry | 05_constructions | name |
 
 <!-- hestia:generated:end -->
 

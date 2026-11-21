@@ -1,5 +1,6 @@
 """mesh_log - kulatina (OBJ, cm, Z nahoru): loupana a s kurou, tyce, kuly, hlava rozsochy, zlab. Kategorie wood.
 
+SM_RuinLogPeeling: kulatina s kurou rozpracovana na kozach, na jedne strane (+Z) oloupana v casti delky.
 Kazdy mesh ma materialove sloty (usemtl, poradi SLOT_ORDER v mesh_common):
   Wood     = plast loupane kulatiny, holy povrch pod kurou, zaseknute spicky, vydlabany zlab -> material podle upravy dreva
   EndGrain = cela (letokruhy; UV polarni: u = uhel, v = vzdalenost od stredu v m)
@@ -18,6 +19,7 @@ WOOD, END, BARK = 0, 1, 2
 NOMINAL = {
     "SM_RuinLog":        (100.0, 20.0, 20.0),
     "SM_RuinLogBark":    (100.0, 20.0, 20.0),
+    "SM_RuinLogPeeling": (100.0, 20.0, 20.0),
     "SM_RuinPole":       (100.0, 8.0, 8.0),
     "SM_RuinPoleBark":   (100.0, 8.0, 8.0),
     "SM_RuinStake":      (200.0, 20.0, 20.0),
@@ -26,7 +28,7 @@ NOMINAL = {
     "SM_RuinGutter":     (100.0, 20.0, 11.0),
     "SM_RuinGutterBark": (100.0, 20.0, 11.0),
 }
-VARIANTS = {"SM_RuinStakeSmall": "AB", "SM_RuinForkHead": "AB", "SM_RuinGutter": "AB", "SM_RuinGutterBark": "AB"}      # ostatni ABC
+VARIANTS = {"SM_RuinLogPeeling": "AB", "SM_RuinStakeSmall": "AB", "SM_RuinForkHead": "AB", "SM_RuinGutter": "AB", "SM_RuinGutterBark": "AB"}      # ostatni ABC
 
 
 def _frame(T):
@@ -61,9 +63,10 @@ class Mesh:
 
 
 def tube(M, L, R, seed, bark, n_ar=48, step=4.0, path=None, taper=0.95, bark_t=0.9, strip=0.22, oval=0.035,
-         start=None, end=None, knots=3, peel=True, bow=0.5):
+         start=None, end=None, knots=3, peel=True, bow=0.5, bare=None):
     """kulatina podel stredove cary path(s) (s 0..1 -> bod), polomer dreva R (cm), kura bark_t navic.
-    start / end: dict(cut=uhel seknuti ve st.) nebo dict(tip=delka spicky, facets=pocet) - konce, vzdy s celem."""
+    start / end: dict(cut=uhel seknuti ve st.) nebo dict(tip=delka spicky, facets=pocet) - konce, vzdy s celem.
+    bare(s, th) -> bool pole: kde je kura uz oloupana (rozpracovana kulatina); tam stopy po loupaku"""
     rng = np.random.default_rng(seed)
     start = start or dict(cut=rng.uniform(1, 5)); end = end or dict(cut=rng.uniform(1, 5))
     if path is None:
@@ -96,12 +99,14 @@ def tube(M, L, R, seed, bark, n_ar=48, step=4.0, path=None, taper=0.95, bark_t=0
         for ks, kt, ka, kz in kn:                      # suky
             dx = x - ks * L; da = _angdiff(th, kt) * base
             rw = rw + ka * np.exp(-(dx * dx + da * da) / (kz * kz))
-        if not bark and peel:                          # stopy po loupaku: mele ploske pasy podel delky
-            rw = rw - 0.012 * R * (0.5 + 0.5 * np.cos(nf * th + pph + 0.8 * noise(q * [0.02, 1, 1], W1)))
+        bz = bare(S[i], th) if bare is not None else np.zeros(n_ar + 1, bool)
+        if (not bark and peel) or bz.any():            # stopy po loupaku: mele ploske pasy podel delky
+            mk = 0.012 * R * (0.5 + 0.5 * np.cos(nf * th + pph + 0.8 * noise(q * [0.02, 1, 1], W1)))
+            rw = rw - (mk if not bark else mk * bz)
         rt = rw.copy(); pres = np.zeros(n_ar + 1, bool)
         if bark:
             qa = q * np.array([0.12, 1.0, 1.0])
-            pres = mnz[i] > mth
+            pres = (mnz[i] > mth) & ~bz
             fur = (1 - np.abs(noise(qa, Wf))) ** 4
             rt = rw + bark_t * pres * (1 - 0.55 * fur)
         rf = rt.copy()
@@ -179,6 +184,21 @@ def finish(M, nominal):
 
 def make_log(seed, bark, R=10.0, L=100.0):
     return tube(Mesh(), L, R, seed, bark)
+
+
+def make_log_peeling(seed, R=10.0, L=100.0):
+    """rozpracovana kulatina: kura s kurou, nahore (+Z) oloupany pas asi pres 2/3 delky; okraj kury nerovny (pruhy po
+    loupaku ruzne dlouhe), jeden konec jeste cely s kurou"""
+    rng = np.random.default_rng(seed)
+    s0, s1 = rng.uniform(0.04, 0.10), rng.uniform(0.62, 0.74)          # oloupany usek (podil delky)
+    hw = rng.uniform(1.0, 1.2)                                         # polovicni sirka pasu (rad), asi 60-70 st.
+    nst = int(rng.integers(6, 9)); ends = rng.uniform(-0.08, 0.08, nst); wid = rng.uniform(-0.15, 0.15, 3)
+    def bare(s, th):
+        d = np.abs(_angdiff(th, math.pi / 2))                          # uhel od vrchu
+        k = np.clip(((th - math.pi / 2 + hw) / (2 * hw) * nst).astype(int), 0, nst - 1)   # pruh po loupaku
+        e1 = s1 + ends[k]; w = hw * (1 + wid[0] * math.sin(9 * s + wid[1]) + 0.1 * math.sin(23 * s + wid[2]))
+        return (d < w) & (s > s0 + 0.02 * np.cos(5 * th)) & (s < e1)
+    return tube(Mesh(), L, R, seed, True, bare=bare, strip=0.05)
 
 
 def make_pole(seed, bark):
@@ -283,6 +303,7 @@ def build(out):
         _write(out, "SM_RuinStake_" + v, make_stake(14000 + vi * 89), "kul s kurou, zaseknuta spicka", made)
     for vi, v in enumerate("AB"):
         _write(out, "SM_RuinStakeSmall_" + v, make_stake_small(14500 + vi * 97), "loupany kul, spicky na obou koncich", made)
+        _write(out, "SM_RuinLogPeeling_" + v, make_log_peeling(16000 + vi * 109), "kulatina s kurou, nahore castecne oloupana", made)
         _write(out, "SM_RuinForkHead_" + v, make_fork(15000 + vi * 101), "hlava rozsochy (vidlice)", made)
         _write(out, "SM_RuinGutter_" + v, make_gutter(15600 + vi * 107, bark=False), "vydlabany zlab loupany", made)
         _write(out, "SM_RuinGutterBark_" + v, make_gutter(15500 + vi * 103), "vydlabany zlab s kurou", made)

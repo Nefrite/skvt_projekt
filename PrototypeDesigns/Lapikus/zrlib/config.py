@@ -188,6 +188,7 @@ ROUND_MESHES = {
     "SM_RuinLog":        ((100.0, 20.0, 20.0), "ABC", ("wood", "endgrain")),   # loupana kulatina
     "SM_RuinLogBark":    ((100.0, 20.0, 20.0), "ABC", ("wood", "endgrain", "bark")),   # kulatina s kurou
     "SM_RuinPole":       ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain")),     # loupana tyc
+    "SM_RuinLogPeeling": ((100.0, 20.0, 20.0), "AB", ("wood", "endgrain", "bark")),    # rozpracovana: nahore (+Z) castecne oloupana
     "SM_RuinPoleBark":   ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain", "bark")),     # tyc s kurou
     "SM_RuinStake":      ((200.0, 20.0, 20.0), "ABC", ("wood", "endgrain", "bark")),   # kul s kurou, zaseknuta spicka na +X
     "SM_RuinStakeSmall": ((160.0, 7.0, 7.0), "AB", ("wood", "endgrain")),      # loupany kul, spicky na obou koncich
@@ -199,6 +200,7 @@ ROUND_SHAPES = {   # Stone.shape -> (prefix loupany, prefix s kurou); None = tva
     "round":  ("SM_RuinLog", "SM_RuinLogBark"),          # Pole / PoleBark, kdyz prumer <= POLE_MAX_D
     "stake":  ("SM_RuinStake", "SM_RuinStake"),
     "stake2": ("SM_RuinStakeSmall", "SM_RuinStakeSmall"),
+    "peeling": ("SM_RuinLogPeeling", "SM_RuinLogPeeling"),   # rozpracovana kulatina na kozach (oloupana strana nahoru: roll 0)
     "fork":   ("SM_RuinForkHead", "SM_RuinForkHead"),
     "gutter": ("SM_RuinGutter", "SM_RuinGutterBark"),
 }
@@ -294,7 +296,7 @@ LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePa
               "shutter": "SM_RuinShutter",
               "oven_door": "SM_RuinOvenDoor"}
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2,
-                      "SM_RuinLog": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2,       # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark
+                      "SM_RuinLog": 1, "SM_RuinLogPeeling": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2,       # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark
                       "SM_RuinBarkStrip": 1, "SM_RuinWattlePanel": 1, "SM_RuinSmokeHood": 1, "SM_RuinChimney": 1, "SM_RuinOvenDome": 1,
                       "SM_RuinRope": 1, "SM_RuinLashing": 1, "SM_RuinCanvasSample": 1, "SM_RuinCanvasVez": 1,
                       "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2, "SM_RuinBed": 1, "SM_RuinBedFolded": 1, "SM_RuinTable": 1, "SM_RuinChest": 1, "SM_RuinShelf": 1, "SM_RuinDoor": 1, "SM_RuinShutter": 1, "SM_RuinOvenDoor": 1}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)

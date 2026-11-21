@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-21
 # hra
 domain: structures
 depth: 4
@@ -173,10 +173,11 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
   - sady etap: nad světnicí a kolem ní `base` (stěny v plné výšce, východní kusy pozednice a vaznice, 6 krokví, latě), v síni `base` jen sloupy a spodní 3 řady severní stěny (1,16 m); zbytek `final`;
   - boční stěny a příčka začínají a končí půltrámem, v nárožích se tak kulatiny střídají se severní stěnou.
 - **Větší světnice (Jirka 16. 11. 2026):** příčka je v s = 14,85 (dřív 15,75), západně od středního sloupu krovu, který tak stojí ve světnici. Světnice má 5,63 m, síň 3,83 m. Vchod je v s = 13,4–14,4, okénko světnice v s = 17,5–18,1 (uprostřed stěny).
+- **Krok 4, staveniště (21. 11. 2026, sada `site`, ověřeno jen mimo UE):** 05 `Palac_Obydli_Stavenisko` (typ `props`): vzpěry V1–V4 (tyče s kůrou Ø 10 cm, z 2,6 m na líci sloupů 11,1 a 13,0 na terén), žebřík ve světnici v s = 18,78, na nádvoří před `Palac_S` hranice srubové kulatiny síně (s = 8,5–14,3), krokví, pozednice a vaznice (s = 17,9–24,15) a jedna hranice prken (s = 18,0–21,4; n = 12,0–13,45; vrch 1,375 m). Počty se počítají z dat sady `final`. Kozy s rozpracovanou, z jedné strany oloupanou kulatinou (mesh `SM_RuinLogPeeling`) a pruhy kůry. Hranice a kozy jsou samostatné stavby `Palac_Obydli_Stavenisko_Kulatina`, `_Tramy`, `_Prkna`, `_Kozy`, každá jako jeden actor (posun a natočení v UE uloží `Palac_Obydli_Stavenisko_Capture.py`). Uhlí pod plotnou je od teď `final`. Suť pod hranicemi uklizená.
 - **Přepnutí etapy v editoru:** `05_constructions/stavby/Etapa.py` (`ETAPA` 1 / 2 / 0), po buildu pustit znovu.
 - **Okap domu:** spád k západu (od kovárny), sud pod západním koncem, svod se nedělá (Jirka 16. 11. 2026). Zatím nepostavený.
-- **Spuštění v UE:** po změně zříceniny nejdřív `03_ruin/blocks/casti/Palac.py`, pak celý dům `05_constructions/stavby/Palac_Obydli.py` (se `SUT = True` i suť), jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py` a `Sut.py`. Navázání kamene potvrzené v UE (Jirka 16. 11. 2026), krov a srub jen mimo UE (`run_checks.py --only obydli`, náhledy `05_constructions/Stavby_palac_obydli_nahled.png` a `Stavby_palac_obydli_nahled_etapa1.png`).
-- **Zbývá:** krytina a lemování (s prostupem komína), strop (se zavěšením dymníku), podlaha, okap, vybavení (dveře, okenice, zárubně), staveniště.
+- **Spuštění v UE:** po změně zříceniny nejdřív `03_ruin/blocks/casti/Palac.py`, pak celý dům `05_constructions/stavby/Palac_Obydli.py` (se `SUT = True` i suť), jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py` (celé staveniště; uložení ručních úprav `Palac_Obydli_Stavenisko_Capture.py`) a `Sut.py`. Navázání kamene potvrzené v UE (Jirka 16. 11. 2026), krov a srub jen mimo UE (`run_checks.py --only obydli`, náhledy `05_constructions/Stavby_palac_obydli_nahled.png` a `Stavby_palac_obydli_nahled_etapa1.png`).
+- **Zbývá:** vizuální kontrola staveniště v UE (etapa 1 a 2), krytina a lemování (s prostupem komína), strop (se zavěšením dymníku), podlaha, okap, vybavení (dveře, okenice, zárubně).
 
 ## Brána – strážní stanoviště nad oblouky (11/2026)
 

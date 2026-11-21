@@ -39,25 +39,18 @@ Postup po změně čísel: `gen_constructions.py` (argumenty: `03_ruin/ruin_layo
 
 ## 4. Staveniště a etapa 1 (teď)
 
-- **Zadání:** nová stavba `Palac_Obydli_Stavenisko`, typ `props`, celá v sadě `site`. Specifikace je v [[navrh_palac_obydli_stred]] kap. 9.2. Obsah:
-  - vzpěry V1–V4,
-  - žebřík,
-  - hranice kulatiny na srub síně (S3),
-  - hranice krokví, pozednice a vaznice (S4),
-  - dvě hranice prken na krytinu (S5, doporučená varianta A).
-- **Nejdřív jediná změna `base`:** vrstva uhlí pod plotnou (box `U` v `_obydli_pec`, z = 0,64–0,67) přejde do sady `final`. Tmavý vnitřek pece (box `V`) zůstává `base`. Když typ `hearth` neumí sadu u jednotlivého boxu, doplň mu klíč `stage` tak, aby se data kovárny nezměnila (`run_checks.py --only palac`).
-- **Zamčená `base`:** potom během tohohle kroku ani po něm neměň hodnoty vyjmenované v návrhu kap. 0.7. Když to bude nutné, napiš Jirkovi a znovu projdi kontroly kap. 9.4.
-- **Počty kusů v hranicích S3 a S4 počítej z dat sady `final`** (krokve, západní kusy pozednice a vaznice, segmenty srubu síně), ne ručně. Prkna S5: 2 × 44 podle vzorce v kap. 9.2.
-- **Ověř před stavbou:**
-  - že `vybaveni.build_props` položí hranoly a prkna (`SM_RuinTimber`, `SM_RuinPlank`) a hranici jako jeden celek (předpoklad návrhu 9.5; když ne, doplň shape a napiš to do 9.2),
-  - terén nádvoří pod hranicemi (rozdíl ≤ 0,15 m).
-- **Kontroly** podle kap. 9.4 doplň do `check_obydli` (sestava `base` + `site`): nic nevisí, vzpěry u sloupů 11,1 a 13,0, trasy a volné pásy 1,2 m, kolize, počty, v etapě 2 nic ze `site`.
-- **Hotovo, když:**
-  - `run_checks.py --only obydli` i `--only palac` hlásí OK,
-  - náhled `preview3d.py obydli <out.png> --stage 1` je hotový,
-  - Jirka potvrdí vizuální kontrolu v UE podle kap. 9.4,
-  - stav je zapsaný v [[stav_palac_obydli]] a odchylky od kap. 9.2 v návrhu.
-- **Vyřešené body ze starší verze předání:** rozdělení sad po posunu příčky (zůstává podle dat) a pec v etapě 1 (klenba `base`, uhlí pod plotnou `final`) jsou v návrhu kap. 0.7. Kde v etapě 1 spí posádka, je samostatný task mimo staveniště (Jirka 21. 11. 2026).
+**Stav 21. 11. 2026:** postaveno ve skriptech, kontroly etapy 1 procházejí, náhled je hotový. Zbývá **vizuální kontrola v UE** (Jirka, kap. 7). Výsledek a odchylky od specifikace: [[navrh_palac_obydli_stred]] kap. 9.2a, stav: [[stav_palac_obydli]].
+
+- ✅ Uhlí pod plotnou (box `U`) je v sadě `final` (příznak `top`, typ `hearth` beze změny, data kovárny beze změny).
+- ✅ `Palac_Obydli_Stavenisko` (typ `props`, sada `site`): vzpěry V1–V4, žebřík; hranice S3, S4 a S5 jako samostatné stavby `_Kulatina`, `_Tramy`, `_Prkna`, každá jako jeden actor (Jirka 21. 11. 2026: rozmístí je podle game designu, uložení polohy a natočení `Palac_Obydli_Stavenisko_Capture.py`, `pile` v `build_constructions.py`; uložení polohy v UE zatím neověřené). Prkna jsou v jedné hranici o 0,5 m vyšší (75 kusů), původní dvě hranice zůstávají jako varianta v `D_SITE`. Jirka prkna přemístil a uložil (capture, 21. 11. 2026). Přibyly kozy s rozpracovanou kulatinou `_Kozy` (S6, nový mesh `SM_RuinLogPeeling`), návrh kap. 9.2a. Data: `palac_spec.py` → `D_SITE`, `obydli_stavenisko()`, generátor `palac()`, spouštěč `stavby/Palac_Obydli_Stavenisko.py`, v `STAVBY` za `Palac_Obydli_Srub`, tedy až po pecí.
+- ✅ Počty z dat sady `final`: krokve 6, pozednice 1, vaznice 1, srub síně 10 + 2 pultramy; prkna 75 (aspoň 44 = jedna řada krytiny).
+- ✅ Ověřeno: `props` umí hranoly a prkna. Terén pod hranicemi je rovný (rozdíl 0 cm).
+- ✅ Kontroly kap. 9.4 v `check_obydli`: nic nevisí, 2 vzpěry na líci sloupů 11,1 a 13,0, trasy a volné pásy, kolize se zříceninou, `base`, kovárnou, vybavením i mezi sebou, terén, počty a délky, v etapě 2 nic ze `site`. Zkoušeno i na záměrně pokažených datech: kontroly chybu chytí.
+- ✅ `run_checks.py --only obydli` OK. `--only palac` hlásí 4 chyby vybavení kovárny (06, polohy z levelu), které tam byly už před tímto krokem. Výstup je beze změny.
+- ✅ Náhled `05_constructions/Stavby_palac_obydli_nahled_etapa1.png` (přidané pohledy na vzpěry a hranice).
+- ☐ **Vizuální kontrola v UE** podle kap. 9.4 návrhu a kap. 7 tady. Vzhled schválil Jirka 21. 11. 2026, zbývá ověřit rozdělení na objekty.
+- ☐ **Rozmístění hranic** podle game designu (Jirka v UE), pak `Palac_Obydli_Stavenisko_Capture.py`, nový build a znovu `run_checks.py --only obydli` (kontroly berou polohy z levelu). Ověřit, že hranice po buildu zůstane, kde byla.
+- **Zamčená `base`:** od teď neměň hodnoty vyjmenované v návrhu kap. 0.7. Když to bude nutné, napiš Jirkovi a znovu projdi kontroly kap. 9.4.
 
 ## 5. Co zbývá do finálního stavu (po staveništi, v tomto pořadí)
 
@@ -115,8 +108,9 @@ Postup po změně čísel: `gen_constructions.py` (argumenty: `03_ruin/ruin_layo
 ## 7. Co spustit v UE (pořadí)
 
 1. `03_ruin/blocks/casti/Palac.py` (jen pokud od přesunu portálu a průchodu ke kovárně neběžel).
-2. `05_constructions/stavby/Palac_Obydli.py` (kámen, krov, pec, srub, staveniště, suť; všechny sady). `Palac_Obydli_Stavenisko` přidej do `STAVBY` za `Palac_Obydli_Ohniste`.
+2. `05_constructions/stavby/Palac_Obydli.py` (kámen, krov, pec, srub, staveniště, suť; všechny sady). `Palac_Obydli_Stavenisko` je v `STAVBY` (za srubem).
 3. `05_constructions/stavby/Etapa.py` s `ETAPA = 1`: kontrola staveniště. Pak `ETAPA = 2`: staveniště zmizí, dům je beze změny.
+4. Po posunu nebo natočení hranic v UE: `05_constructions/stavby/Palac_Obydli_Stavenisko_Capture.py` (uloží polohu hranic do `constructions_edits.json`). Bez toho je další build vrátí.
 
 Na co se v UE podívat: vzpěry na líci sloupů 11,1 a 13,0, žebřík mezi krokvemi 18,273 a 19,282, hranice na nádvoří (na terénu, mimo průlom, portál a dveře s = 27), v etapě 1 bez uhlí pod plotnou.
 
@@ -130,7 +124,7 @@ Na co se v UE podívat: vzpěry na líci sloupů 11,1 a 13,0, žebřík mezi kro
 - tento soubor: po každém dokončeném kroku přepiš kap. 4 a 5; stav zapiš do [[stav_palac_obydli]].
 
 ## Zbývá
-- kap. 4: staveniště a kontroly etapy 1 (teď),
+- kap. 4: vizuální kontrola staveniště a etapy 1 v UE (teď, Jirka),
 - kap. 5: finální stav domu (krytina, strop, podlaha, okap, vybavení).
 
 ## Otevřené otázky

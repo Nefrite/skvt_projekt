@@ -20,16 +20,21 @@ def _add_ism(unreal, sds, root):
     if not isinstance(comp, unreal.InstancedStaticMeshComponent): raise RuntimeError("komponenta nevznikla")
     return comp
 
-def _ism_actor(unreal, eas, name, folder, parts, material, tag):
+def _ism_actor(unreal, eas, name, folder, parts, material, tag, pivot=None):
     """Actor s InstancedStaticMeshComponent pro kazdy mesh v parts [(mesh, [Transform], sloty nebo None)].
-    Komponenty pres SubobjectDataSubsystem, jinak Blueprint BLOCK_BP (pak jeden actor na mesh)."""
+    Komponenty pres SubobjectDataSubsystem, jinak Blueprint BLOCK_BP (pak jeden actor na mesh).
+    pivot = (x, y, z, yaw): actor stoji v tomto bode (napr. hranice materialu, ktera se v levelu posouva jako celek),
+    instance jsou zadane ve svete; bez pivotu actor stoji v pocatku."""
     actors = []
+    loc = unreal.Vector(*pivot[:3]) if pivot else unreal.Vector(0, 0, 0)
+    rot = unreal.Rotator(roll=0.0, pitch=0.0, yaw=pivot[3]) if pivot else unreal.Rotator()
     try:
         actor, sds, root = _new_actor(unreal, eas)
         try:
             comps = [_add_ism(unreal, sds, root) for _ in parts]
         except Exception:
             eas.destroy_actor(actor); raise
+        if pivot: actor.set_actor_location_and_rotation(loc, rot, False, False)   # pred add_instances (instance ve svete)
         for comp, (mesh, trs, *mt) in zip(comps, parts):
             comp.set_static_mesh(mesh)
             apply_materials(unreal, comp, mesh, material, mt[0] if mt else None)
@@ -41,7 +46,7 @@ def _ism_actor(unreal, eas, name, folder, parts, material, tag):
             raise RuntimeError("Nejde pridat InstancedStaticMeshComponent (%s) a chybi Blueprint %s. "
                                "Vytvor ho podle README_bloky.md kap. 1." % (ex, BLOCK_BP))
         for mesh, trs, *mt in parts:
-            actor = eas.spawn_actor_from_object(bp, unreal.Vector(0, 0, 0), unreal.Rotator())
+            actor = eas.spawn_actor_from_object(bp, loc, rot)
             comp = actor.get_component_by_class(unreal.InstancedStaticMeshComponent)
             comp.set_static_mesh(mesh)
             apply_materials(unreal, comp, mesh, material, mt[0] if mt else None)
@@ -67,15 +72,16 @@ def destroy_tagged(eas, tag, keep=lambda a: True):
     return len(old)
 
 
-def place_ism(unreal, eas, label, folder, stones, cube, meshes, material, tag, extra_tags=()):
-    """kameny / dilce jedne skupiny -> actor(y) s Instanced Static Mesh (po meshich); vrati pocet kusu"""
+def place_ism(unreal, eas, label, folder, stones, cube, meshes, material, tag, extra_tags=(), pivot=None):
+    """kameny / dilce jedne skupiny -> actor(y) s Instanced Static Mesh (po meshich); vrati pocet kusu.
+    pivot = (x, y, z, yaw): poloha actoru (hranice materialu posouvana jako celek), jinak pocatek"""
     from .ue_assets import _resolve, stone_transform, mesh_slots
     bym = {}
     for s in stones:
         m, nom = _resolve(unreal, s, cube, meshes)
         g = bym.setdefault(m.get_path_name(), [m, [], None])
         g[1].append(stone_transform(unreal, s, m, nom)); g[2] = g[2] or (mesh_slots(s.mesh) if m is not cube else None)
-    for a_ in _ism_actor(unreal, eas, label, folder, [tuple(v) for _, v in sorted(bym.items())], material, tag) or []:
+    for a_ in _ism_actor(unreal, eas, label, folder, [tuple(v) for _, v in sorted(bym.items())], material, tag, pivot) or []:
         a_.tags = list(a_.tags) + [unreal.Name(t) for t in extra_tags]
     return len(stones)
 

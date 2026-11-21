@@ -2,7 +2,7 @@
 # orchestrace
 type: checklist
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-21
 # hra
 domain: structures
 entity: "[[Lapikus]]"
@@ -211,13 +211,13 @@ tools/meshes/
 
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
-| ☐ | tesařská koza (2×) | nese kulatinu 5,7 m | 🧩 kulatina s kůrou |
-| ☐ | rozpracovaná kulatina na kozách | 5,7 m, napůl loupaná | 🧩 ❓ mesh s přechodem kůra / loupané |
+| ☑ | tesařská koza (2×) | nese kulatinu 5,7 m | 🧩 kozy do X z tyčí s kůrou Ø 11 cm → `SM_RuinPoleBark` (21. 11. 2026) |
+| ☑ | rozpracovaná kulatina na kozách | 5,76 m, nahoře z 2/3 oloupaná | 🧩 nový mesh `SM_RuinLogPeeling` (`mesh_log.py`, A/B) + pruhy kůry `SM_RuinBarkStrip` |
 | ☑ | žebřík | 4,5 m | 🧩 ❓ použitelný pro postavu? → `SM_RuinLadder` |
-| ☐ | dočasné vzpěry sloupů | Ø 10 cm × 3 m | 🧩 tyč s kůrou |
-| ☐ | hromada kulatiny na srub | 11 ks Ø 22 × 5,7 m ve 2 vrstvách | 🧩 kulatina s kůrou |
-| ☐ | hromada krokví a vaznice | 6 × 6,3 m + 5,7 m | 🧩 trámy |
-| ☐ | hromada prken | asi 20 ks | 🧩 prkna |
+| ☑ | dočasné vzpěry sloupů | Ø 10 cm × 3 m | 🧩 tyč s kůrou → `SM_RuinPoleBark` (4 ks, 21. 11. 2026) |
+| ☑ | hromada kulatiny na srub | 10 ks loupané kulatiny + 2 pultramy ve 3 vrstvách na podkladcích (z dat sady `final`) | 🧩 kulatina → `SM_RuinLog`, `SM_RuinTimber` |
+| ☑ | hromada krokví a vaznice | 6 krokví 6,24 m, pozednice 5,2 m, vaznice 4,75 m | 🧩 trámy → `SM_RuinTimber` |
+| ☑ | hromada prken | jedna hranice 75 prken 3,4 m s proklady (varianta: 2 × 44) | 🧩 prkna → `SM_RuinPlank` |
 | ☐ | hromada kamene | asi 1 m³ | 🧩 kameny zříceniny |
 | ☐ | hromada hlíny + koš mechu | – | ✋ hlína, 🧩 proutěný koš |
 | ◐ | tesařské nářadí: sekera, širočina, pila, loupák, kladivo, palice | návrh je nezmiňuje, pro uvěřitelnost | ✋ kov + 🧩 topůrka → `SM_RuinAxe`, `SM_RuinBroadaxe`, `SM_RuinCrosscutSaw` (dvoumužná), `SM_RuinNailHammer`, `SM_RuinMallet`; chybí loupák |
@@ -249,6 +249,23 @@ tools/meshes/
 ### 6.7 Hlídka na věži
 
 - ☐ ❓ Ohniště a vybavení hlídky ve 2. patře: návrh je výslovně neřeší. Jen poznámka pro game designera.
+
+### 6.8 Guesthouse (obytná část u ostrohu, `06_furnishing`, skupina `Guesthouse_Vybaveni`) – zadání Jirky 21. 11. 2026; **graybox postele, stolu a stoličky** srovnaný v levelu (21. 11. 2026); graybox truhly, stojanů a zástupce pece rozmístěný (21. 11. 2026, k ověření v levelu)
+
+Pokoj pro hosta (inkvizitor řádu, klíč nosí na krku, [[Guest_on_hunt]]). Rám: `s` podél vnitřního líce `ZBudova_V` od jižního rohu k severu (0–12,36 m), `n` do místnosti k západu. První návrh půdorysu (před ověřením měřítka): `Attachments/navrh_guesthouse_vybaveni_pudorys.png`. Polohy grayboxu: `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`.
+
+| ☐ | Prop | Rozměr | Druh |
+|---|---|---|---|
+| ☐ | postel, **pohodlná** (východní zeď, s = 1,85–4,35; n = 0,39–1,48; graybox ověřený s postavou 180 cm, Jirka 21. 11. 2026) | 2,5 × 1,09 × 0,62 m | 🆕 větší lůžko (`SM_RuinBed` 2,0 × 0,87 nestačí; škálovat jen ❓ jako provizorium) → `SM_RuinBedLarge` |
+| ☐ | 🆕 pracovní stůl pro jednoho pod oknem (s = 9,76–11,01; n = 0,07–0,82; graybox) | 1,25 × 0,75 × 0,78 m | 🧩 prkna a trámky → 🆕 `SM_RuinDesk` (nový mesh, Jirka 21. 11. 2026; ne `SM_RuinTable`) |
+| ◐ | stolička ke stolu (n = 1,10–1,45; graybox) | 36 × 35 × 47 cm | ♻ `SM_RuinStool` (škála 1,035) |
+| ☐ | 🆕 stojan na brnění (u hradby na severozápadě, s = 9,70–10,55; n = 5,25–6,10; poloha Jirka 21. 11. 2026; graybox) | 0,6 × 0,6 × 1,75 m | 🧩 kříž z trámku na noze s podstavcem (hraněné dřevo, kap. 1); **zatím prázdný** (Jirka 21. 11. 2026), výstroj později |
+| ☐ | 🆕 stojan na zbraně (jiný objekt než stojan na brnění; u hradby naproti dveřím, s = 6,68–7,73; n = 6,47–7,04; poloha Jirka 21. 11. 2026; graybox) | 1,0 × 0,4 × 1,6 m, stojí u zdi | 🧩 rám z prken a trámků se zářezy; **zatím prázdný** (Jirka 21. 11. 2026), zbraně později (❓ sdílet se zbrojí posádky, kap. 6.5) |
+| ◐ | truhla s železným kováním a **zámkem** (v nohách postele, s = 4,46–5,00; n = 0,45–1,41; graybox) | 0,95 × 0,55 × 0,51 m | ♻ `SM_RuinChest` má kování a oko na zámek, zámek chybí → 🆕 visací zámek (✋ kov, `SM_RuinPadlock`, samostatný prop), ❓ nebo varianta `SM_RuinChestLocked` |
+| ☐ | výhřev: menší pec bez nístěje a plotny (po vzoru `Palac_Obydli_Ohniste`), zády k hradbě v jihozápadním klínu (střed s = 3,12; n = 4,10; v 06 dočasný kvádr `Pec_Zastupce` 1,0 × 0,9 × 1,2 m, po postavení pece se odebere) | asi 1,0 × 0,9 m | **05 → požadavek na stavitele ([[predani_guesthouse_kamna_stavitel]]):** pevná stavba (typ `hearth`, ♻ `SM_RuinOvenDome` škálovat, `SM_RuinChimney`), komín mezi trámy vějíře B0 a B1, prostup krytinou, **s dymníkem** nad ústím (Jirka 21. 11. 2026); poloha se srovná po ověření měřítka |
+| ☑ | poklop ústí pece (06) | 46 × 42 cm | ♻ `SM_RuinOvenDoor` |
+| ☐ | 🆕 regál na další věci (u severní zdi `ZBudova_S`, s = 11,90–12,30; n = 0,94–2,50; graybox `Regal`, rozměr Jirka 21. 11. 2026) | 1,56 × 0,4 × 2,0 m | 🧩 prkna a trámky → 🆕 `SM_RuinShelfTall` (vyšší a hlubší než `SM_RuinShelf` 1,0 × 0,28 × 0,9) |
+| ☐ | hromádka dřeva vedle pece (podél hradby, s = 3,37–4,20; n = 4,48–5,34; graybox `Drevo_Pec`) | 0,8 × 0,4 × 0,6 m | ♻ `SM_RuinWoodpile` škálovat (0,42 × 0,62 × 0,44), ❓ nebo 🆕 menší hromádka polen |
 
 ---
 
@@ -305,7 +322,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 - ☑ Props tvaru ✋: procedurálně v Pythonu (vizuální prototyp, 14. 11. 2026).
 - ◐ Plátno ve větru: připraveno v materiálu (`M_RuinCloth`, parametr `WindAmount`, výchozí 0 = staticky). Vítr ani napnutí plachet zatím řešené nejsou; prověšení dává `make_canvas` (`sag`).
 - ☑ Kovárna ve východní místnosti: potvrzeno (Jirka 15. 11. 2026). Svod se nedělá, žlab ústí do sudu. Saze, udusaná hlína, žhavé uhlí a VFX ohně se pro kovárnu zatím nedělají.
-- ☐ ❓ Žebříky (staveniště, půda): jen kulisa, nebo použitelné pro postavu?
+- ☑ Žebříky (staveniště, půda): jen kulisa, pro postavu nepoužitelné (chybí animace; [[navrh_palac_obydli_stred]] kap. 0.1).
 - ☐ ❓ Stojí podesta brány v etapě 1? Určuje, jestli potřebuje přepínač `ETAPA`.
 - ☐ ❓ VFX ohně a kouře: v tomto kroku, nebo později s atmosférou?
 - ☐ ❓ Stan: rozhodnutí, jestli ve hře bude (do té doby ⛺ položky nízká priorita).
