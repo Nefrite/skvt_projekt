@@ -30,20 +30,20 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - [[predani_brana_straz_striska_stavitel]] – [[Brana_Straz]]
 - [[predani_palac_obydli_stavitel]] – [[Palac_Obydli]]
 
-**Otevřené otázky:** do 14 dní 11 · starší 0 · bez data 0
+**Otevřené otázky:** do 14 dní 12 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-21 · agent pilotu · Scratch/Scratch_Unreal_napojeni.md · část 2 (napojení entit) označena jako zpracovaná odkazem na `ue_map.yaml` · předání pilotu P9
-- 2026-11-21 · agent pilotu · Maintenance/reports/ue_*.json (15 entit) · první čtení Unrealu (etapa 1, UE 5.8.3, `LapikusPrototypeMap`), `ue_query --import --all`; bloky `## Stav v UE` obnovil `hubs` · předání pilotu P6
-- 2026-11-21 · agent pilotu · Brana · otevřená otázka: `depth_structures: 4` bez actorů (zdi u Strazni_Vez) · předání pilotu P6
-- 2026-11-21 · agent pilotu · Les_Lapikus · otevřená otázka: v levelu žádné olše podle pravidla · předání pilotu P6
-- 2026-11-21 · agent pilotu · Lapikus · otevřená otázka: rampa `Ruin/Rampa` v levelu nenalezena · předání pilotu P6
-- 2026-11-21 · agent pilotu · Palac_Kovarna_Vybaveni · otevřená otázka: signály realizace (37 meshů z dat) vs. `depth_structures: 3` · předání pilotu P6
 - 2026-11-21 · agent pilotu · Palac_Kovarna_Vybaveni · `depth_structures` 3 → 4 (rozhodnutí GameDesignera po prvním čtení Unrealu) · chat GameDesigner, P6
 - 2026-11-21 · agent pilotu · Brana, Les_Lapikus, Lapikus, Palac_Kovarna_Vybaveni · otázky z P6 zodpovězeny a uzavřeny; u Brana nová otázka na hodnotu `depth_structures` · chat GameDesigner, P6
 - 2026-11-21 · agent pilotu · Maintenance/queue.md · úkol T-0020: ověřit rozsah a třídu actorů ISM v reportech Unrealu · P6
 - 2026-11-21 · agent pilotu · Brana · `depth_structures` 4 → 1 (poloha ve strážní věži; zdi jsou realizací Strazni_Vez, rozhodnutí GameDesignera) · chat GameDesigner, P6
+- 2026-11-21 · agent pilotu · Brana · otevřená otázka: `status: built` a `brana_spec.py` po změně `depth_structures` na 1 · P6
+- 2026-11-21 · agent pilotu · CLAUDE.md · vstupní soubor podle `tpl_entrypoint` (profily rolí core v `Hestia/_core/agents/`), úkol T-0021 · update_core 0.14.4 (ruční úkol), P11
+- 2026-11-21 · agent pilotu · Inbox/Guest_on_hunt.md, Inbox/Ranar.md, Inbox/Rad.md, Inbox/Palisada_nad_branou.md · `source_ref` z řádku Zdroj: (adresa stránky v Notion), úkol T-0022 · update_core 0.15.0 (ruční úkol), P11
+- 2026-11-21 · agent pilotu · Maintenance/import/notion_2026-11-21.json · export čtyř poznámek Lapikus z Notion (jen čtení zdroje) pro ověření `inbox_import`; dry-run: 4 přeskočeno jako duplicity · P11
+- 2026-11-21 · Architect · Palac_Obydli · staveniště a etapa 1 před dokončením domu; hranice sad podle dat, klenba pece base, uhlí pod plotnou final, zamčená base; specifikace Palac_Obydli_Stavenisko (návrh kap. 9); UE vizuálně ověřeno; předání přeřazeno (kap. 4 staveniště, kap. 5 finální stav) · chat:minimum staveniště Palac_Obydli
+- 2026-11-21 · Architect · Palac_Obydli · okénko síně zůstává v s = 11,8–12,3 (rozhodnutí Jirky); otázka v předání uzavřena · chat:minimum staveniště Palac_Obydli
 
 <!-- hestia:generated:end -->
 

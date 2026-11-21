@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 # hra
 domain: structures
@@ -34,10 +34,10 @@ Doplní se při rozpadu.
 Přesné rozměry a odchylky od původního návrhu: návrh kap. 0.5 (kámen), 0.5a (větší světnice), 0.5b (pec), 0.6 (krov a srub).
 
 ## Ověřeno v UE (ano/ne, kdy, kým)
-Všechno je ve skriptech a prošlo `tools/checks/run_checks.py` (`SOUHRN: ... obydli OK`). **V UE je potvrzené jen navázání kamene podezdívek** (Jirka 16. 11. 2026). Krov, srub, pec, posun příčky a nové meshe v UE zatím neběžely.
+Všechno je ve skriptech a prošlo `tools/checks/run_checks.py` (`SOUHRN: ... obydli OK`). **Kámen, krov, srub, pec, posun příčky a nové meshe jsou v UE postavené a Jirka je 21. 11. 2026 vizuálně zkontroloval: v pořádku, nic nechybí.** Čtení stavu v UE z téhož dne: 18 actorů, 12 `base`, 6 `final`.
 
 ## Co zbývá
-Viz [[predani_palac_obydli_stavitel]] kap. 4 (finální stav) a 5 (staveniště a etapa 1).
+Viz [[predani_palac_obydli_stavitel]] kap. 4 (staveniště a etapa 1, teď) a 5 (finální stav). Návrh staveniště: [[navrh_palac_obydli_stred]] kap. 9.
 
 ## Odkazy na návrh a předání
 - návrh: [[navrh_palac_obydli_stred]] (kap. 0: stav po krocích a rozměry)

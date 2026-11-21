@@ -81,3 +81,5 @@ updated: 2026-11-21
 | 2026-11-21 | agent pilotu | CLAUDE.md | vstupní soubor podle `tpl_entrypoint` (profily rolí core v `Hestia/_core/agents/`), úkol T-0021 | update_core 0.14.4 (ruční úkol), P11 |
 | 2026-11-21 | agent pilotu | Inbox/Guest_on_hunt.md, Inbox/Ranar.md, Inbox/Rad.md, Inbox/Palisada_nad_branou.md | `source_ref` z řádku Zdroj: (adresa stránky v Notion), úkol T-0022 | update_core 0.15.0 (ruční úkol), P11 |
 | 2026-11-21 | agent pilotu | Maintenance/import/notion_2026-11-21.json | export čtyř poznámek Lapikus z Notion (jen čtení zdroje) pro ověření `inbox_import`; dry-run: 4 přeskočeno jako duplicity | P11 |
+| 2026-11-21 | Architect | Palac_Obydli | staveniště a etapa 1 před dokončením domu; hranice sad podle dat, klenba pece base, uhlí pod plotnou final, zamčená base; specifikace Palac_Obydli_Stavenisko (návrh kap. 9); UE vizuálně ověřeno; předání přeřazeno (kap. 4 staveniště, kap. 5 finální stav) | chat:minimum staveniště Palac_Obydli |
+| 2026-11-21 | Architect | Palac_Obydli | okénko síně zůstává v s = 11,8–12,3 (rozhodnutí Jirky); otázka v předání uzavřena | chat:minimum staveniště Palac_Obydli |
