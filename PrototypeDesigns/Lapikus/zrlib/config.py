@@ -19,6 +19,7 @@ MAT_FRAME = None                         # osteni, oblouky (opracovany kamen)
 MAT_CROWN = None                         # koruna zdi: odkryte horni kameny (vic zvetrale, svetlejsi, s nadechem lisejniku)
 CROWN_WEATHER = True                     # odkryte kameny koruny = zvetrale tvary (SM_RuinStone_W_*) + material MI_RuinCrown
 MAT_DIR   = "/Game/Skvt/Lapikus/Ruin/Materials"
+MAT_GRAYBOX = "/Game/LevelPrototyping/Materials/MI_PrototypeGrid_Gray.MI_PrototypeGrid_Gray"   # graybox (cat "graybox": Cube, overeni meritka)
 # --- vlastni procedurni textury (tools/textures/gen_textures.py -> textures/*.png v koreni; skript je sam naimportuje)
 TEX_SRC = "textures"
 TEX_DIR = "/Game/Skvt/Lapikus/Ruin/Textures"
@@ -187,8 +188,8 @@ DRESSED_FRAMES = True                     # osteni, nadprazi, strilny z opracova
 ROUND_MESHES = {
     "SM_RuinLog":        ((100.0, 20.0, 20.0), "ABC", ("wood", "endgrain")),   # loupana kulatina
     "SM_RuinLogBark":    ((100.0, 20.0, 20.0), "ABC", ("wood", "endgrain", "bark")),   # kulatina s kurou
-    "SM_RuinPole":       ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain")),     # loupana tyc
     "SM_RuinLogPeeling": ((100.0, 20.0, 20.0), "AB", ("wood", "endgrain", "bark")),    # rozpracovana: nahore (+Z) castecne oloupana
+    "SM_RuinPole":       ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain")),     # loupana tyc
     "SM_RuinPoleBark":   ((100.0, 8.0, 8.0), "ABC", ("wood", "endgrain", "bark")),     # tyc s kurou
     "SM_RuinStake":      ((200.0, 20.0, 20.0), "ABC", ("wood", "endgrain", "bark")),   # kul s kurou, zaseknuta spicka na +X
     "SM_RuinStakeSmall": ((160.0, 7.0, 7.0), "AB", ("wood", "endgrain")),      # loupany kul, spicky na obou koncich
@@ -199,8 +200,8 @@ ROUND_MESHES = {
 ROUND_SHAPES = {   # Stone.shape -> (prefix loupany, prefix s kurou); None = tvar existuje jen v druhe variante
     "round":  ("SM_RuinLog", "SM_RuinLogBark"),          # Pole / PoleBark, kdyz prumer <= POLE_MAX_D
     "stake":  ("SM_RuinStake", "SM_RuinStake"),
-    "stake2": ("SM_RuinStakeSmall", "SM_RuinStakeSmall"),
     "peeling": ("SM_RuinLogPeeling", "SM_RuinLogPeeling"),   # rozpracovana kulatina na kozach (oloupana strana nahoru: roll 0)
+    "stake2": ("SM_RuinStakeSmall", "SM_RuinStakeSmall"),
     "fork":   ("SM_RuinForkHead", "SM_RuinForkHead"),
     "gutter": ("SM_RuinGutter", "SM_RuinGutterBark"),
 }

@@ -87,6 +87,27 @@ def check_ostroh(S):
                 if not any(BC.inside_poly(b, i, j) for b in boards): n_hole += 1
         print("ostroh: pokryti krytinou %.2f %% (nepokryto %d z %d bodu)" % (100 - 100 * n_hole / max(n_in, 1), n_hole, n_in))
         ok &= n_hole / max(n_in, 1) < 0.005
+    # vybaveni Guesthouse (06, Guesthouse_Vybaveni): pruniky, kusy na podlaze, volny pruchod u dveri
+    vg = S.get("furn", {}).get("Guesthouse_Vybaveni")
+    if vg:
+        V = vg["loose"]; others = [s for s in dost if s.cat != "core"] + krov
+        for name, A, B in (("vybaveni x zricenina", V, ruin), ("vybaveni x dostavba a krov", V, others)):
+            c = common.collisions(A, B, 1.0)
+            print("ostroh: %-26s %3d%s" % (name, len(c), "  " + str(c[:3]) if c else "")); ok &= not c
+        c = [x for x in common.collisions(V, V, 1.0) if x[1] < x[2]]
+        print("ostroh: %-26s %3d%s" % ("vybaveni mezi sebou", len(c), "  " + str(c[:3]) if c else "")); ok &= not c
+        ftop = max(s.z + s.sz / 2 for s in podl if "|K" not in s.id) if podl else None
+        planks = [s for s in podl if s.sz < 6]; ftop = max(s.z + s.sz / 2 for s in planks) if planks else ftop
+        if ftop is not None:
+            d_ = max(abs(s.z - s.sz / 2 - ftop) for s in V)
+            print("ostroh: vybaveni stoji na podlaze (odchylka nejvys %.1f cm)" % d_); ok &= d_ < 1.0
+        fl = next((a for a in S["data"].get("addons", []) if a["name"] == "Ostroh_Podlaha"), None)
+        if fl:
+            O, U, N = fl["outline"][0], fl["u"], fl["n"]
+            sn = lambda q: (((q[0] - O[0]) * U[0] + (q[1] - O[1]) * U[1]) / 100, ((q[0] - O[0]) * N[0] + (q[1] - O[1]) * N[1]) / 100)
+            bad = [s.id.split("|")[-1] for s in V for q in common.footprint(s) if 5.8 < sn(q)[0] < 8.1 and sn(q)[1] < 2.0]
+            print("ostroh: pruchod u dveri (s 5,8 - 8,1; n 0 - 2 m) volny %s" % ("OK" if not bad else "CHYBA " + str(sorted(set(bad)))))
+            ok &= not bad
     return ok
 
 

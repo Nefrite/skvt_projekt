@@ -4,7 +4,7 @@ type: step
 validity: valid
 aliases: [README_furnishing]
 step_kind: build
-updated: 2026-11-17
+updated: 2026-11-21
 # hra
 build_step: 06_furnishing
 domains: [structures]
@@ -36,6 +36,8 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 |---|---|
 | jen vybavení kovárny | `06_furnishing/vybaveni/Palac_Kovarna.py` |
 | celá kovárna včetně vybavení | `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
+| jen vybavení Guesthouse (graybox) | `06_furnishing/vybaveni/Guesthouse.py` |
+| uložit ruční úpravy Guesthouse | `06_furnishing/vybaveni/Guesthouse_Capture.py` |
 | uložit ruční úpravy | **`06_furnishing/vybaveni/Palac_Kovarna_Capture.py`**; jinak `Palac_Kovarna.py` s `MODE = "capture"`, nebo `Palac_Kovarna.py` v 05 s `MODE = "capture"` (uloží stavby do `constructions_edits.json` a vybavení do `furnishing.json`) |
 | všechno vybavení | `06_furnishing/build_furnishing.py` |
 | uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` (skupiny bez actorů v levelu přeskočí) |
@@ -70,10 +72,10 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 |---|---|
 | `build_furnishing.py` | build, capture, výpis a vrácení na spec v UE; mimo UE statistika (`python build_furnishing.py`), `list`, `reset [kusy]` |
 | `furn_data.py` | práce s `furnishing.json`: příznaky kusů, sloučení se specem (`merge`), vrácení na spec (`reset`), zápis se zálohou |
-| `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
-| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py` |
+| `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna), `Guesthouse.py` (pokoj hosta u ostrohu). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
+| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py`, `Guesthouse_Capture.py` |
 | `furnishing.json` | **jediný zdroj poloh vybavení.** Sestaví ho `tools/furnishing/gen_furnishing.py` ze speců, capture do něj zapisuje polohy z levelu. Předchozí verze vždy v `furnishing.json.bak`. Ručně ho upravovat jde, ale běžná cesta je level + capture. |
-| `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`) |
+| `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`, `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`) |
 | `..\05_constructions\zr_stavby\vybaveni.py` | typ `props` (rozmístění hotových meshí), společný s 05 (tam pro pevné kusy, např. kůl u dřeva) |
 
 ### 3. Skupiny
@@ -87,6 +89,13 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 - zvenku pod přesahem střechy tři hranice dřeva od kůlu (kůl je pevný, v 05 `Palac_Kovarna_Kul`) po sud pod žlabem (n = 2,26–6,4).
 
 Kontrola: `tools/checks/run_checks.py --only palac` (průniky se zříceninou, se stavbami kovárny i mezi sebou, výfučna v otvoru, vzdálenosti kovadlina – výheň – sud, průchody, dřevo pod přesahem). Náhled: `tools/checks/preview3d.py kovarna`.
+
+**`Guesthouse_Vybaveni`** – pokoj hosta v obytné části u ostrohu ([[navrh_guesthouse_vybaveni]], stav [[stav_guesthouse]]). Rám = rám podlahy `Ostroh_Podlaha` (`s` podél vnitřního líce `ZBudova_V` od jižního rohu, `n` do místnosti), výšky od vrchu prken podlahy (generátor ji spočítá z terénu; po změně terénu nebo podlahy přegenerovat). Konstanty `GH_*` a funkce `guesthouse_vybaveni()` v `tools/ruin/ostroh_spec.py`.
+
+- Zatím **graybox** (21. 11. 2026): 9 kvádrů (`cat = "graybox"` → Cube s materiálem `zrlib/config.py` → `MAT_GRAYBOX` = `MI_PrototypeGrid_Gray`): postel, stůl, stolička, truhla, stojan na brnění, stojan na zbraně, regál, hromádka dřeva a dočasný `Pec_Zastupce` (kamna jsou 05, staví stavitel).
+- Polohy postele, stolu, stoličky a stojanů jsou z levelu (capture, Jirka).
+
+Kontrola: `tools/checks/run_checks.py --only ostroh` (průniky se zříceninou, dostavbou, krovem a mezi sebou, kusy na podlaze, volný průchod u dveří s = 5,8–8,1; n = 0–2 m).
 
 ## Dopad na dokumentaci
 Doplní se při rozpadu.

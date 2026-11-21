@@ -4,7 +4,7 @@ type: scratch
 validity: valid
 intake: prepared
 source: manual
-updated: 2026-11-17
+updated: 2026-11-21
 # hra
 entity: "[[Lapikus]]"
 ---
@@ -54,6 +54,7 @@ Meshe props jsou ve sdílené knihovně (`zrlib/config.py` → `LIB_MESHES`, typ
 | Skupina | Kde | Stav | Obsah |
 |---|---|---|---|
 | `Palac_Kovarna_Vybaveni` | kovárna, východní místnost paláce | ✅ rozmístěno 16. 11. 2026, kontroly OK, v UE neověřeno | 28 kusů: kovadlina na špalku, kalicí sud, hřebovnice, měchy s pákou, šlapací brus se stoličkou, ponk, truhlík s uhlím a víkem, koš, lišta s nářadím, železné pruty, tři hranice dřeva pod přesahem |
+| `Guesthouse_Vybaveni` | pokoj hosta u ostrohu | ◐ graybox 21. 11. 2026, polohy z levelu, kontroly OK | 9 kvádrů: postel, stůl, stolička, truhla, stojany na brnění a zbraně, regál, dřevo, zástupce kamen (05); [[navrh_guesthouse_vybaveni]] |
 
 **Kandidáti na další skupiny** (meshe částečně hotové, viz [[CHECKLIST_assets_navrhy]] kap. 6):
 

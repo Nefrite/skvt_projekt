@@ -108,3 +108,49 @@ def spec(walls):
                 window_cut=dict(op="cut", wall=ENTRY[0], s0=round(ENTRY[1] + WINDOW["ds"] - WINDOW["w"] / 2 + WINDOW_CUT["inset"], 3),
                                 s1=round(ENTRY[1] + WINDOW["ds"] + WINDOW["w"] / 2 - WINDOW_CUT["inset"], 3), z0=WINDOW_CUT["z0"], z1=20.0,
                                 _="okno dostavby u ostrohu (ostroh_spec.py)"))
+
+
+# ------------------------------------------------------------------ vybaveni Guesthouse (06_furnishing, typ props)
+# Ram skupiny = ram podlahy Ostroh_Podlaha (constructions.json): a = s podel vnitrniho lice ZBudova_V od jizniho rohu
+# k severu (0 - 12,36 m), c = n do mistnosti k zapadu. Dvere s = 6,16 - 7,76, okno s = 9,74 - 10,99 (parapet 1,4 m).
+# Graybox (21. 11. 2026, overeni meritka s postavou): kvadry (Cube, MI_PrototypeGrid_Gray z LevelPrototyping), rozmery jako budouci meshe.
+GH_BED = dict(s=(1.847, 4.348), n0=0.39, size=(250.2, 109.0, 61.9))  # postel podel vychodni zdi, 39 cm od ni (pohodlna: Jirka 21. 11. 2026 podle postavy 180 cm)
+GH_DESK = dict(s=10.382, n0=0.07, size=(125.0, 75.0, 78.0))        # pracovni stul pro jednoho pod oknem (novy mesh SM_RuinDesk), vyska 78 cm
+GH_STOOL = dict(c=1.272, size=(36.1, 34.6, 47.0))                  # stolicka u stolu, sedatko 47 cm (SM_RuinStool skala 1,035)
+GH_CHEST = dict(a=4.73, c=0.93, size=(95.4, 54.6, 51.2))           # truhla v nohach postele, delsi strana kolmo ke zdi (SM_RuinChest + zamek)
+GH_ARMOR = dict(a=10.125, c=5.677, x=(0.766, -0.6428), size=(60.0, 60.0, 175.0))   # stojan na brneni u hradby na severozapade (prazdny; poloha Jirka 21. 11. 2026)
+GH_WEAPONS = dict(a=7.205, c=6.757, x=(-0.9848, -0.1736), size=(100.0, 40.0, 160.0))   # stojan na zbrane u hradby naproti dverim (prazdny; Jirka 21. 11. 2026)
+GH_SHELF = dict(a=12.10, c=1.719, size=(156.2, 40.0, 200.0))        # regal na dalsi veci u severni zdi ZBudova_S (misto stojanu na zbrane; rozmer a poloha Jirka 21. 11. 2026, 6 cm od kamenu zdi)
+GH_WOOD = dict(off=1.05, back=0.05, size=(80.0, 40.0, 60.0))       # hromadka dreva vedle pece podel hradby: posun od stredu pece po ose x (m),
+                                                                   # k hradbe (m; pec 0,9 m hluboka, hromadka 0,4 m), rozmery cm
+GH_OVEN = dict(a=3.12, c=4.10, x=(0.67, 0.74), size=(100.0, 90.0, 120.0))   # ZASTUPCE pece (05, stavitel): zady k hradbe
+                                                                   # v jihozapadnim klinu, komin mezi tramy vejire B0 a B1
+GH_REF = (6.96, 2.0)                                               # bod, od jehoz terenu se meri vysky (podlaha je vodorovna)
+
+
+def _wood_at():
+    """stred hromadky dreva vedle pece: po ose x pece (podel hradby, od postele), zady k hradbe"""
+    ox, oc = GH_OVEN["x"]; ln = (ox * ox + oc * oc) ** 0.5; ox, oc = ox / ln, oc / ln
+    nx, nc = oc, -ox                                                # do mistnosti (od hradby)
+    if nx < 0: nx, nc = -nx, -nc
+    a = GH_OVEN["a"] + ox * GH_WOOD["off"] - nx * GH_WOOD["back"]; c = GH_OVEN["c"] + oc * GH_WOOD["off"] - nc * GH_WOOD["back"]
+    return a, c
+
+
+def guesthouse_vybaveni(floor_z, graybox=True):
+    """vybaveni Guesthouse -> seznam kusu v ramu podlahy (m). floor_z = vrch prken podlahy v m nad terenem v bode GH_REF
+    (pocita gen_furnishing.py z Ostroh_Podlaha). graybox = kvadry bez meshe (cat "graybox" -> Cube, MAT_GRAYBOX)."""
+    fz = round(floor_z, 3)
+    def gb(id_, a, c, size):
+        return dict(id=id_, cat="graybox", a=round(a, 3), c=round(c, 3), z=fz, ref=list(GH_REF), size=list(size))
+    b = GH_BED; d = GH_DESK; s = GH_STOOL
+    return [gb("Postel", sum(b["s"]) / 2, b["n0"] + b["size"][1] / 200, b["size"]),
+            gb("Stul", d["s"], d["n0"] + d["size"][1] / 200, d["size"]),
+            gb("Stolicka", d["s"], s["c"], s["size"]),
+            dict(gb("Truhla", GH_CHEST["a"], GH_CHEST["c"], GH_CHEST["size"]), x=[0, 1]),
+            dict(gb("Stojan_Brneni", GH_ARMOR["a"], GH_ARMOR["c"], GH_ARMOR["size"]), x=list(GH_ARMOR["x"])),
+            dict(gb("Stojan_Zbrane", GH_WEAPONS["a"], GH_WEAPONS["c"], GH_WEAPONS["size"]), x=list(GH_WEAPONS["x"])),
+            dict(gb("Regal", GH_SHELF["a"], GH_SHELF["c"], GH_SHELF["size"]), x=[0, 1]),
+            dict(gb("Drevo_Pec", *_wood_at(), GH_WOOD["size"]), x=list(GH_OVEN["x"])),
+            # pec je pevna stavba (05): zde jen docasny kvadr pro rozvrzeni, po postaveni pece stavitelem se odebere
+            dict(gb("Pec_Zastupce", GH_OVEN["a"], GH_OVEN["c"], GH_OVEN["size"]), x=list(GH_OVEN["x"]))]

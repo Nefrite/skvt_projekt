@@ -41,7 +41,7 @@ def _boot():
         for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_stavby", "furn_data")]: del sys.modules[k]
 _boot()
 
-from zrlib.config import FURN_TAG, CONSTR_TAG, CUBE_MESH
+from zrlib.config import FURN_TAG, CONSTR_TAG, CUBE_MESH, MAT_GRAYBOX
 from zrlib import pipeline, ue_assets, ue_actors, validate
 from zr_stavby import vybaveni
 import importlib, furn_data
@@ -169,6 +169,8 @@ def build_in_unreal():
     eas = unreal.get_editor_subsystem(unreal.EditorActorSubsystem)
     groups = compute(R, data)
     cube = unreal.load_asset(CUBE_MESH); mats = ue_assets.all_materials(unreal); meshes = R.ensure_stone_meshes(unreal)
+    if unreal.EditorAssetLibrary.does_asset_exist(MAT_GRAYBOX.split(".")[0]): mats["graybox"] = unreal.load_asset(MAT_GRAYBOX)
+    else: _log("Vybaveni: graybox material %s v projektu neni, kvadry dostanou vychozi material." % MAT_GRAYBOX)
     tag = unreal.Name(FURN_TAG); n = 0
     names = set(ONLY or [g["name"] for g in data.get("groups", [])])
     with unreal.ScopedEditorTransaction("Build furnishing"):

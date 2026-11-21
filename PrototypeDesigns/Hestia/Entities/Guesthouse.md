@@ -27,7 +27,7 @@ depth_structures: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | 4 | – | build | bez cíle |
+| structures | 4 | 4 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -35,7 +35,13 @@ depth_structures: 4
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_guesthouse_vybaveni]] – design, depth 4, valid
+- [[stav_guesthouse]] – state, depth 2, valid
+- [[rozhodnuti_guesthouse_meshe_dlazba]] – decision, valid
+
+**Aktivní předání**
+- [[predani_guesthouse_kamna_stavitel]]
 
 <!-- hestia:generated:end -->
 
@@ -45,6 +51,7 @@ _Zatím žádné dokumenty._
 | Krok | Skripty | Dokumenty |
 |---|---|---|
 | [[05_constructions]] | `Ostroh_Dostavba.py`, `Ostroh_Krov.py`, `Ostroh_Podlaha.py` | – |
+| [[06_furnishing]] | `Guesthouse.py`, `Guesthouse_Capture.py` | [[navrh_guesthouse_vybaveni]], [[stav_guesthouse]] |
 
 <!-- hestia:generated:end -->
 
@@ -56,6 +63,8 @@ _Zatím žádné dokumenty._
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | 05_constructions | alias |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | 05_constructions | alias |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | 05_constructions | alias |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | 06_furnishing | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | 06_furnishing | name |
 
 <!-- hestia:generated:end -->
 
@@ -79,6 +88,7 @@ Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Guesthouse.json` · eta
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
+- [[navrh_guesthouse_vybaveni]]: Výstroj na stojanu na brnění a zbraně na stojanu na zbraně (které, sdílet se zbrojí posádky?) — Furnisher, 2026-11-21
 - Fronta F-0007 (G2, [[Guesthouse]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
 
 <!-- hestia:generated:end -->
