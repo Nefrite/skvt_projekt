@@ -5,16 +5,26 @@ trigger: návrh dostavby nebo herního místa
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-21
 ---
 <!-- Z AGENT_GameDesign_hrad.md kap. 7 (pilot Lapikus, B5). -->
 # design_template
 
 ## Kdy
-Game design píše návrh pro architekta nebo stavitele.
+Game design píše nebo doplňuje návrh dostavby nebo herního místa v `Docs/<doména>/`.
 
 ## Postup
-Návrh piš podle šablony:
+Obsah návrhu piš podle bodů níže a zapiš ho do sekcí doménového dokumentu (07 kap. 2):
+
+| Body šablony | Sekce dokumentu |
+|---|---|
+| Herní účel, Příběh, Priorita a náročnost | *Zadání / záměr* |
+| Kde | *Výchozí stav* |
+| Konstrukce, Vyžaduje úpravu 03, Varianty, Etapa, Vybavení, Náčrt slovy | *Návrh* |
+| Vazby | *Vazby a závislosti* |
+| Otevřené otázky | *Otevřené otázky* |
+
+Body:
 
 ```
 ### <Název návrhu>
@@ -33,6 +43,6 @@ Návrh piš podle šablony:
 ```
 
 ## Výstup
-Návrh jako text pro architekta nebo stavitele.
+Zapisuješ do `Docs/<doména>/` (existující dokumentaci entity doplníš, nový dokument jen když žádný není); navazující práci zadáš předáním v `Handovers/`.
 
 ## Známé pasti

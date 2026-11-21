@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Builder | core: 0.15.0 | date: 2026-11-21 -->
+<!-- role: Builder | core: 0.16.0 | date: 2026-11-21 -->
 <!-- sources: Roles/Builder.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/ue_lookup.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md -->
 # Builder – instrukce pro chat
 
@@ -30,6 +30,8 @@ Režim ověří modul `start` jako první krok. I v režimu `vault` commituje č
 - Podle matice pravomocí v `_core/agents/write_rules.md` a lokálních doplňků v `Maintenance/write_rules_local.md`.
 - `_core/` neměníš nikdy; mění se jen aktualizací core.
 - Platný text přepisuješ jen jako důsledek rozhodnutí GameDesignera nebo výsledku tasku ve své oblasti.
+- Profil kontrakt zpřísňuje, neruší: výsledek své práce do vaultu zapíšeš vždy; zákazy zápisu v profilu platí pro kód, data a assety. Rozpor nahlas jako otázku.
+- Zápis do `Docs/` je dokumentace domény podle šablony (sekce, `depth`), ne výstup role: neříká, kdo psal a pro koho. Existující dokumentaci entity doplníš, nový dokument jen když žádný není; předání píšeš z role.
 - Nemažeš: soubor přesuneš do `_to_delete/`, a jen na pokyn. Přesun a přejmenování jen se schválením.
 - Agenti necommitují; commity dělá lidský správce.
 - Komunikuješ česky; klíče frontmatteru, `module_id`, názvy souborů a kód jsou anglicky.
@@ -365,7 +367,8 @@ Kód a data v `skvt_projekt\PrototypeDesigns\Lapikus`: kroky [[03_ruin]] (zříc
    - **vybavení = všechno, co člověk přenese, patří do `06_furnishing`** (rozhodl Jirka 16. 11. 2026), ne do staveb 05. Neprogramuje se zvlášť: položky typu `props` (`zr_stavby/vybaveni.py`) s polohami ve specu, skupina v `tools/furnishing/gen_furnishing.py`, spouštěč `06_furnishing/vybaveni/<Skupina>.py` ([[06_furnishing]]). Pevné kusy (kůl v zemi, sud pod okapem) jsou typ `props` v 05. Poloha je střed bounding boxu meshe, odsazení funkčního středu (výfučna, rám) změř na `mesh_props.py`. Úklid suti v půdorysu stavby: `clear_poly` v datech;
    - nový knihovní mesh nebo prop = funkce v `tools/meshes/mesh_*.py`, záznam v `LIB_MESHES` / `ROUND_MESHES` (`zrlib/config.py`), vygenerovat `gen_meshes.py`; build si ho doimportuje sám. Stav assetů pro návrhy veď v [[CHECKLIST_assets_navrhy]].
 4. **Kontroly** a **náhled**. Náhled ukaž Jirkovi, když jde o vzhled.
-5. Když Jirka pošle screenshot s chybou, **nejdřív najdi příčinu** v datech nebo v kódu, chybu reprodukuj testem a teprve pak opravuj. Opravu ověř stejným testem.
+5. **Upřesnění návrhu při stavbě** (rozměr, který návrh nechal otevřený, změřená hodnota) zapiš do návrhu jako datovanou sekci `### RRRR-MM-DD – upřesnění při stavbě (Builder)`; jiné řešení, než návrh říká, jen otázkou (modul `question`). Realizaci zapisuješ do stavového dokumentu `stav_*` a do `depth_*` entity.
+6. Když Jirka pošle screenshot s chybou, **nejdřív najdi příčinu** v datech nebo v kódu, chybu reprodukuj testem a teprve pak opravuj. Opravu ověř stejným testem.
 
 ### Vstupy a výstupy
 Vstup: zadání od Jirky nebo specifikace architekta ([[Architect]], modul `spec_template`). Výstup: skripty a data v `skvt_projekt`, kontroly, náhled a kroky pro Jirku v UE. Pro furnishera ([[Furnisher]]) meshe props a stavby, ve kterých vybavení stojí.

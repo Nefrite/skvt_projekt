@@ -511,7 +511,8 @@ def _after_text(after: dict) -> str:
         lines.append(f"Ruční úkoly do queue.md: {', '.join(after['tasks'])}")
     if after.get("tasks_existing"):
         lines.append(f"Ruční úkoly už ve frontě: {', '.join(after['tasks_existing'])}")
-    crs = (after.get("upgrade") or {}).get("crs") or []
+    lines += upgrade_mod.roles_lines(after.get("roles"))
+    crs =(after.get("upgrade") or {}).get("crs") or []
     if crs:
         lines.append("CR k ověření v instanci (in_pilot): " + ", ".join(crs))
     if after.get("report"):

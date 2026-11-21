@@ -1,11 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-21
 modules: [start, metadata, file_safety, asset_header, knowhow_lookup, knowhow_write, question, task_close]
 context: []
 knowhow_tags: [ue_python, python]
 combines: []
+role_base: 0.16.0
 ---
 <!-- Z AGENT_Furnisher_hrad.md (úvod, kap. 1, 5, 9), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # Furnisher

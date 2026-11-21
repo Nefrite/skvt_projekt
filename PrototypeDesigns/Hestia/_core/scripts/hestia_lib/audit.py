@@ -13,6 +13,8 @@
 - Sekce *Unreal* a rozšíření G10 jen s `ue_map.yaml` (13 kap. 10.11): entita s pravidlem, `depth_d ≥ 2`
   v režimu build a v posledním reportu bez actora = G10; v sekci entity bez pravidla, bez reportu, staré reporty.
 - G5 i u balíčků kontextu (`Maintenance/context/`), které by nové složení změnilo; audit obnoví `doc_index.json`.
+- G5 u profilu `Roles/<Role>.md` bez `role_base` nebo se starším než poslední verze s příznakem `roles`
+  v manifestu běžícího core (zadání 0.17).
 Instance bez herní vrstvy: G1–G4, G10, G12 a zralost se nepočítají.
 """
 from __future__ import annotations
@@ -231,6 +233,26 @@ class Auditor:
                 self.add("G5", p.stem, self.v.project_rel(p),
                          "kompilát role je starší než zdroje (kontrakt, moduly, profil); spusť compose_role")
 
+    def role_base_checks(self) -> None:
+        """G5: profil projektové role nesrovnaný se základem rolí – `role_base` chybí nebo je starší než poslední
+        verze s příznakem `roles` v manifestu běžícího core (04 kap. 4, 13 kap. 10.6a; zadání 0.17)."""
+        from . import CORE_ROOT, core_version
+        from . import upgrade
+        try:
+            flagged = upgrade.roles_versions(CORE_ROOT, core_version())
+        except UsageError:
+            flagged = []
+        base = flagged[-1]["version"] if flagged else None
+        for p in upgrade.role_profiles(self.v):
+            if base is None:
+                why = None if p["role_base"] else "role_base chybí"
+            else:
+                why = upgrade.role_base_behind(p["role_base"], base)
+            if why:
+                self.add("G5", p["role"], self.v.project_rel(self.v.root / p["file"]),
+                         f"profil nesrovnaný se základem rolí: {why}"
+                         + (f" (základ {base}; ruční úkol update_core:{base}:role_base)" if base else ""))
+
     def ue_checks(self, files: list[dict]) -> None:
         """G10 rozšíření a sekce Unreal v reportu (13 kap. 10.11): jen s ue_map.yaml."""
         from . import ue
@@ -442,6 +464,7 @@ class Auditor:
             self.ue_checks(idx.files)
         self.stale_checks()
         self.compiled_checks()
+        self.role_base_checks()
         self.context_checks()
         self.orphan_checks()
         self.duplicate_checks()

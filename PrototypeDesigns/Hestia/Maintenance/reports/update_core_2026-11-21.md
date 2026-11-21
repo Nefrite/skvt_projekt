@@ -46,3 +46,52 @@ _Žádné._
 - CR_2026-11-21_knihovnik_pripojena_slozka (ověřit v instanci, do *Průběhu* `in_pilot`)
 - CR_2026-11-21_ue_query_cesty_ve_skriptu (ověřit v instanci, do *Průběhu* `in_pilot`)
 - CR_2026-11-21_inbox_import_notion (ověřit v instanci, do *Průběhu* `in_pilot`)
+
+## Přechod 0.15.0 → 0.16.0
+- Stav: dokončeno
+- Výměna `_core/`: starý core v `_to_delete/_core_0.15.0/`; řádek v `structure_version.md`.
+- Záznamy manifestu: 0.16.0.
+
+### Automatické kroky
+- `compose_role`: v pořádku
+  - změněné kompiláty: 5 z 5
+
+### Kontroly (dry-run)
+- lint: chyby 4, upozornění 0, informace 19
+- audit: chyby 4, upozornění 57, informace 42
+
+### Ruční úkoly
+- `update_core:0.16.0:role_base` (ve frontě): Srovnat profily projektových rolí se základem 0.16.0 (profil kontrakt zpřísňuje, neruší (zákazy zápisu jen pro kód, data a assety); zápis do Docs/ je dokumentace domény podle 07 kap. 2, existující dokumentace entity se doplňuje, předání se píše z role (12 kap. 2.1, 8); tpl_role s role_base); po schválení GameDesignerem nastavit role_base: 0.16.0 a spustit compose_role (12 kap. 2.1, 13 kap. 10.6a)
+
+### Základ projektových rolí
+- Změna v 0.16.0: profil kontrakt zpřísňuje, neruší (zákazy zápisu jen pro kód, data a assety); zápis do Docs/ je dokumentace domény podle 07 kap. 2, existující dokumentace entity se doplňuje, předání se píše z role (12 kap. 2.1, 8); tpl_role s role_base
+- Rozdíl `tpl_role`:
+
+```diff
+--- tpl_role (starý core)
++++ tpl_role (nový core)
+@@ -6,9 +6,13 @@
+ context: []             # dokumenty, které role načítá vždy (např. "[[Lore_<Prototyp>]]")
+ knowhow_tags: []
+ combines: []            # role, se kterými se profil skládá
++role_base: ""   # verze core z _core/VERSION, se kterou je profil srovnaný se základem rolí; doplní, kdo profil zakládá (12 kap. 2.1)
+ ---
+ <!-- Jen účel a hranice, vstupy a výstupy, postup role, styl hlášení (12, kap. 2.1).
+-     Žádné lore, stav, podklady, popis kódu, pasti, konvence ani pravidla návrhu. -->
++     Žádné lore, stav, podklady, popis kódu, pasti, konvence ani pravidla návrhu.
++     Profil kontrakt zpřísňuje, neruší: výsledek své práce role zapisuje do vaultu (princip 12, task_close);
++     zákazy zápisu jen pro kód, data a assety. Zápis do Docs/ je dokumentace domény podle 07 kap. 2, ne výstup role; existující dokumentaci entity
++     doplň, nový dokument jen když žádný není. Předání (Handovers/) píšeš z role. -->
+ # {{title}}
+ 
+ ## Co děláš a co ne
+```
+
+- Profily nesrovnané se základem 0.16.0 (ruční úkol `role_base`):
+  - `Roles/Architect.md`: role_base chybí
+  - `Roles/Builder.md`: role_base chybí
+  - `Roles/Furnisher.md`: role_base chybí
+  - `Roles/GameDesign.md`: role_base chybí
+
+### CR k ověření
+- CR_2026-11-21_zaklad_roli_v_instanci (ověřit v instanci, do *Průběhu* `in_pilot`)

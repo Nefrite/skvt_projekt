@@ -1,20 +1,32 @@
 ---
 type: agent_module
 module_id: spec_template
-trigger: specifikace stavby pro stavitele
+trigger: návrh stavby (dokumentace domény structures)
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-21
 ---
 <!-- Z AGENT_Architekt_hrad.md kap. 8 (pilot Lapikus, B5). -->
 # spec_template
 
 ## Kdy
-Architekt píše specifikaci stavby pro stavitele.
+Architekt píše nebo doplňuje návrh stavby v `Docs/structures/`.
 
 ## Postup
-Specifikaci piš podle šablony:
+Obsah návrhu piš podle bodů níže a zapiš ho do sekcí doménového dokumentu (07 kap. 2):
+
+| Body šablony | Sekce dokumentu |
+|---|---|
+| Zadání | *Zadání / záměr* |
+| Kde, Výchozí stav | *Výchozí stav* |
+| Cílová struktura, Úpravy 03, Dostavba 05, Dílce a props, Etapa, Ruční doladění, Varianty, Náčrt slovy | *Návrh* |
+| klíčové parametry, Sdílené rozměry (cesta, konstanty v `*_spec.py`, `constructions.json`) | *Souhrn specifikace* |
+| Vazby a kolize | *Vazby a závislosti* |
+| Ověření | *Ověření* |
+| Předpoklady a otevřené otázky | *Otevřené otázky* |
+
+Body:
 
 ```
 ### <Název stavby>
@@ -40,6 +52,6 @@ Specifikaci piš podle šablony:
 ```
 
 ## Výstup
-Specifikace jako text; do `Docs/structures/navrh_<část>_<stavba>.md` ji uloží stavitel nebo Jirka.
+Zapisuješ do `Docs/structures/navrh_<část>_<stavba>.md` (existující návrh doplníš, nový jen když žádný není); stavbu zadáš předáním v `Handovers/`.
 
 ## Známé pasti

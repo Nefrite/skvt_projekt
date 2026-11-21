@@ -16,6 +16,9 @@
   chybí-li (výměnu řídil starší core), založí ho. `--after-only` bez `--since` doplní oddíl posledního přechodu
   ze `structure_version.md` (report dne toho přechodu). Průběh kroků jde hned na stderr (flush).
 - `unfinished`: přechod ze `structure_version.md`, jehož oddíl v reportu není „dokončeno“ (dry-run ho ohlásí).
+- Příznak `roles` (zadání 0.17): verze, která mění základ projektových rolí, přidá ruční úkol
+  `update_core:<verze>:role_base`; oddíl reportu *Základ projektových rolí* nese text příznaku, rozdíl `tpl_role`
+  (starý core z `_to_delete/_core_<stará>/`) a profily v `Roles/` s `role_base` starším než verze příznaku.
 """
 from __future__ import annotations
 
@@ -60,11 +63,12 @@ class Plan:
     manual: list[dict] = field(default_factory=list)       # {version, id, text, key}
     crs: list[str] = field(default_factory=list)
     migrations: list[str] = field(default_factory=list)
+    roles: list[dict] = field(default_factory=list)       # {version, text}: změny základu rolí (zadání 0.17)
     missing: bool = False                                  # nový core manifest nemá (verze před 0.14.0)
 
     def as_dict(self) -> dict:
         return {"versions": self.versions, "after": self.after, "manual": self.manual, "crs": self.crs,
-                "migrations": self.migrations, "manifest_missing": self.missing}
+                "migrations": self.migrations, "roles": self.roles, "manifest_missing": self.missing}
 
 
 def load_manifest(core: Path) -> list[dict] | None:
@@ -91,9 +95,45 @@ def load_manifest(core: Path) -> list[dict] | None:
             if not isinstance(m, dict) or not m.get("id") or not str(m.get("text") or "").strip():
                 raise UsageError(f"{p}: verze {ver}: ruční úkol potřebuje id a text: {m!r}")
             manual.append({"id": str(m["id"]), "text": str(m["text"]).strip()})
+        roles = e.get("roles")
+        if roles is not None and not (isinstance(roles, str) and roles.strip()):
+            raise UsageError(f"{p}: verze {ver}: roles je krátký popis změny základu rolí (text): {roles!r}")
         out.append({"version": ver, "after": after, "manual": manual,
-                    "crs": [str(c) for c in e.get("crs") or []], "migration": e.get("migration")})
+                    "crs": [str(c) for c in e.get("crs") or []], "migration": e.get("migration"),
+                    "roles": roles.strip() if roles else None})
     return out
+
+
+ROLE_BASE_ID = "role_base"
+
+
+def roles_versions(core: Path, upto: str | None = None) -> list[dict]:
+    """Záznamy s příznakem `roles` (zadání 0.17, 13 kap. 10.6a), vzestupně; `upto` = nanejvýš tato verze."""
+    entries = load_manifest(core) or []
+    sel = [e for e in entries if e.get("roles") and (upto is None or vt(e["version"]) <= vt(upto))]
+    return [{"version": e["version"], "text": e["roles"]} for e in sorted(sel, key=lambda e: vt(e["version"]))]
+
+
+def role_profiles(vault: Vault) -> list[dict]:
+    """Profily projektových rolí `Roles/<Role>.md` (`type: role`) s hodnotou `role_base` (None = chybí)."""
+    out = []
+    for n in vault.notes.values():
+        if n.type != "role" or not re.fullmatch(r"Roles/[^/]+\.md", n.rel):
+            continue
+        raw = n.fm.get("role_base")
+        out.append({"role": n.name, "file": n.rel, "role_base": str(raw).strip() if raw not in (None, "") else None})
+    return sorted(out, key=lambda x: x["role"])
+
+
+def role_base_behind(value: str | None, version: str) -> str | None:
+    """Důvod, proč profil není srovnaný se základem `version`; None = srovnaný."""
+    if value is None:
+        return "role_base chybí"
+    if not VERSION_RE.match(value):
+        return f"role_base {value!r} není verze MAJOR.MINOR.PATCH"
+    if vt(value) < vt(version):
+        return f"role_base {value} je starší než {version}"
+    return None
 
 
 def plan(core: Path, old: str, new: str) -> Plan:
@@ -102,12 +142,22 @@ def plan(core: Path, old: str, new: str) -> Plan:
         return Plan(missing=True)
     lo, hi = vt(old), vt(new)
     sel = sorted((e for e in entries if lo < vt(e["version"]) <= hi), key=lambda e: vt(e["version"]))
+    manual = []
+    for e in sel:
+        manual += [{"version": e["version"], "id": m["id"], "text": m["text"],
+                    "key": f"update_core:{e['version']}:{m['id']}"} for m in e["manual"]]
+        if e.get("roles"):        # příznak roles: ruční úkol srovnat profily (13 kap. 10.6a, zadání 0.17)
+            manual.append({"version": e["version"], "id": ROLE_BASE_ID,
+                           "text": f"Srovnat profily projektových rolí se základem {e['version']} ({e['roles']}); "
+                                   f"po schválení GameDesignerem nastavit role_base: {e['version']} a spustit "
+                                   f"compose_role (12 kap. 2.1, 13 kap. 10.6a)",
+                           "key": f"update_core:{e['version']}:{ROLE_BASE_ID}"})
     return Plan(versions=[e["version"] for e in sel],
                 after=[s for s in AFTER_ORDER if any(s in e["after"] for e in sel)],
-                manual=[{"version": e["version"], "id": m["id"], "text": m["text"],
-                         "key": f"update_core:{e['version']}:{m['id']}"} for e in sel for m in e["manual"]],
+                manual=manual,
                 crs=list(dict.fromkeys(c for e in sel for c in e["crs"])),
-                migrations=[str(e["migration"]) for e in sel if e.get("migration")])
+                migrations=[str(e["migration"]) for e in sel if e.get("migration")],
+                roles=[{"version": e["version"], "text": e["roles"]} for e in sel if e.get("roles")])
 
 
 def has_compiled(vault: Vault) -> bool:
@@ -132,6 +182,9 @@ def plan_lines(pl: Plan) -> list[str]:
     if pl.manual:
         out.append("Ruční úkoly (do queue.md):")
         out += [f"  {m['key']}: {m['text']}" for m in pl.manual]
+    if pl.roles:
+        out.append("Změna základu projektových rolí: "
+                   + "; ".join(f"{r['version']}: {r['text']}" for r in pl.roles))
     if pl.crs:
         out.append("CR k ověření v instanci (in_pilot): " + ", ".join(pl.crs))
     return out
@@ -263,8 +316,60 @@ def find_trash(vault: Vault, old: str) -> str | None:
     return f"_to_delete/{best[1]}/" if best else None
 
 
+TPL_ROLE_REL = "templates/tpl_role.md"
+
+
+def roles_info(vault: Vault, core: Path, swap: str | None, pl: Plan) -> dict | None:
+    """Podklad k příznaku `roles` do reportu (13 kap. 10.6a): text příznaku, rozdíl `tpl_role` mezi starým
+    (`_to_delete/_core_<stará>/`) a novým core, profily v `Roles/` s `role_base` starším než verze příznaku."""
+    if not pl.roles:
+        return None
+    import difflib
+    target = pl.roles[-1]["version"]
+    old_tpl = vault.root / swap / TPL_ROLE_REL if swap else None
+    new_tpl = core / TPL_ROLE_REL
+    diff = None
+    if old_tpl is not None and old_tpl.is_file() and new_tpl.is_file():
+        diff = list(difflib.unified_diff(read_text(old_tpl).replace("\r\n", "\n").splitlines(),
+                                         read_text(new_tpl).replace("\r\n", "\n").splitlines(),
+                                         "tpl_role (starý core)", "tpl_role (nový core)", lineterm=""))
+    profiles = [dict(p, reason=why) for p in role_profiles(vault)
+                if (why := role_base_behind(p["role_base"], target))]
+    return {"version": target, "changes": pl.roles, "tpl_role_diff": diff, "profiles": profiles}
+
+
+def roles_md(info: dict) -> list[str]:
+    lines = ["", "### Základ projektových rolí"]
+    lines += [f"- Změna v {r['version']}: {r['text']}" for r in info["changes"]]
+    d = info["tpl_role_diff"]
+    if d is None:
+        lines.append("- Rozdíl `tpl_role`: starý core nenalezen, porovnej s `_core/templates/tpl_role.md` ručně.")
+    elif not d:
+        lines.append("- Rozdíl `tpl_role`: beze změny šablony.")
+    else:
+        lines += ["- Rozdíl `tpl_role`:", "", "```diff", *d, "```", ""]
+    if info["profiles"]:
+        lines.append(f"- Profily nesrovnané se základem {info['version']} (ruční úkol `role_base`):")
+        lines += [f"  - `{p['file']}`: {p['reason']}" for p in info["profiles"]]
+    else:
+        lines.append(f"- Profily v `Roles/`: všechny mají `role_base` {info['version']} nebo novější.")
+    return lines
+
+
+def roles_lines(info: dict | None) -> list[str]:
+    """Krátký textový výpis k příznaku `roles` (rozdíl `tpl_role` je jen v reportu)."""
+    if not info:
+        return []
+    out = [f"Změna základu projektových rolí ({info['version']}): "
+           + "; ".join(r["text"] for r in info["changes"]) + " (rozdíl tpl_role v reportu)"]
+    if info["profiles"]:
+        out.append("Profily nesrovnané se základem: "
+                   + ", ".join(f"{p['role']} ({p['reason']})" for p in info["profiles"]))
+    return out
+
+
 def section_md(old: str | None, new: str, state: str, swap: str | None, pl: Plan, steps: list[dict],
-               remaining: list[str], checks: dict | None, tasks: tuple | None) -> str:
+               remaining: list[str], checks: dict | None, tasks: tuple | None, roles: dict | None = None) -> str:
     """Oddíl přechodu v reportu; swap None = bez výměny (rozsah neznámý), "" = starý core nenalezen."""
     lines = [section_heading(old, new), f"- Stav: {state}"]
     if swap is not None:
@@ -294,6 +399,8 @@ def section_md(old: str | None, new: str, state: str, swap: str | None, pl: Plan
         lines.append("_Žádné._")
     if note:
         lines.append(f"- Upozornění: {note}")
+    if roles:
+        lines += roles_md(roles)
     lines += ["", "### CR k ověření", *([f"- {c} (ověřit v instanci, do *Průběhu* `in_pilot`)" for c in pl.crs]
                                         or ["_Žádné._"])]
     return "\n".join(lines) + "\n"
@@ -387,10 +494,11 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
 
     swap = (find_trash(vault, since) or "") if since else None
     steps, remaining = [], []
+    roles = roles_info(vault, core, swap, pl)
 
     def save(state: str, checks: dict | None = None, tasks: tuple | None = None) -> Path:
         return write_section(vault, rep_day, section_md(since, current, state, swap, pl, steps, remaining,
-                                                        checks, tasks))
+                                                        checks, tasks, roles))
 
     save("kroky probíhají")
     for s in pl.after:
@@ -420,7 +528,8 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
     rep = save(state, checks, (task_ids, dup, note))
     rep_rel = f"{REPORTS_REL}/{rep.name}"
     payload.update({"steps": steps, "remaining": remaining, "checks": checks, "tasks": task_ids,
-                    "tasks_existing": dup, "report": rep_rel, "report_section": section_heading(since, current)[3:]})
+                    "tasks_existing": dup, "report": rep_rel, "report_section": section_heading(since, current)[3:],
+                    "roles": roles})
     lines = [f"Kroky po aktualizaci (core {current}" + (f", od {since}" if since else "") + "):"]
     for s in steps:
         lines.append(f"  {s['step']}: {'v pořádku' if s['ok'] else 'selhal: ' + s['message']}")
@@ -434,6 +543,7 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
         lines.append(f"Ruční úkoly už ve frontě: {', '.join(dup)}")
     if note:
         lines.append(f"Upozornění: {note}")
+    lines += roles_lines(roles)
     if pl.crs:
         lines.append("CR k ověření v instanci (in_pilot): " + ", ".join(pl.crs))
     lines.append(f"Report: {rep_rel} (oddíl {section_heading(since, current)[3:]})")

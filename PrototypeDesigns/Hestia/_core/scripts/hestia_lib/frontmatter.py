@@ -64,7 +64,10 @@ def parse(text: str) -> tuple[dict | None, Split]:
     try:
         data = yaml.safe_load(sp.fm_text) if sp.fm_text.strip() else {}
     except yaml.YAMLError as exc:
-        raise FrontmatterError(f"neplatný YAML ve frontmatteru: {exc}".replace("\n", " ")) from exc
+        hint = ""
+        if "{{core_version}}" in sp.fm_text:      # tpl_role: plugin Templates proměnnou nevyplní (zadání 0.17)
+            hint = "; nevyplněné {{core_version}}: doplň verzi core z _core/VERSION (role_base)"
+        raise FrontmatterError(f"neplatný YAML ve frontmatteru: {exc}".replace("\n", " ") + hint) from exc
     if data is None:
         data = {}
     if not isinstance(data, dict):

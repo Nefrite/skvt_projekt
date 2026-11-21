@@ -2,6 +2,19 @@
 
 Verze `MAJOR.MINOR.PATCH` podle zadání 11, kap. 5 (`hearthlore/zadani/11_vyvojovy_cyklus.md`). MAJOR verze nese migrační poznámku.
 
+## 0.16.0 – 2026-11-21
+
+Základ projektových rolí podle CR z pilotu (zadání 0.17 a 0.17.1; CR_2026-11-21_zaklad_roli_v_instanci; předání `predani_vyvoj_core_soubeh` položka 24); bez migrace. Verze sama nese příznak `roles`: po aktualizaci `compose_role` a ruční úkol `update_core:0.16.0:role_base` (srovnat profily v `Roles/` se základem, pak `role_base: 0.16.0`). Do té doby `lint` hlásí u profilů chybějící `role_base` a audit G5.
+
+- **Profil kontrakt zpřísňuje, neruší** (12 kap. 2.1, 8): `CONTRACT.md` v *Kam smíš psát*: výsledek své práce role zapíše do vaultu vždy, zákazy zápisu v profilu platí pro kód, data a assety, rozpor = otázka; zápis do `Docs/` je dokumentace domény podle šablony (sekce, `depth`), ne výstup role; existující dokumentace entity se doplňuje, nový dokument jen když žádný není; předání se píše z role.
+- **`tpl_role`** (07 kap. 12, zadání 0.17.1): `role_base: ""` s komentářem (verzi z `_core/VERSION` doplní, kdo profil zakládá; `init` ani `update_core` šablonu nevyplňují) a komentář s pravidly výše.
+- **Pole `role_base`** (01 kap. 9.1): `fields.yaml` s novou podmínkou `required: project_role` (13 kap. 5: povinné u profilu projektové role `Roles/<Role>.md`, vyhodnotí `lint` podle cesty; role core v `_core/agents/` ho nemají), `types.yaml` (volitelné pole typu `role`). Chybějící i prázdná hodnota = G7 chyba s nápovědou „doplň verzi core z _core/VERSION“; stejnou nápovědu dostane neplatný YAML s nevyplněným `{{core_version}}` (návrh šablony ze zadání 0.17).
+- **Manifest, záznam 0.14.3:** do `crs` doplněn `CR_2026-11-21_claude_project_druh_a_pristup` (text `task_close`, vydaný v 0.14.3; nález pilotu P11).
+- **Příznak `roles` v manifestu** (13 kap. 10.6a): krátký text u verze, která mění základ rolí; `load_manifest` ho ověří (neprázdný text). `update_core` u verze s příznakem: ruční úkol `update_core:<verze>:role_base` do `queue.md`, v dry-run řádek „Změna základu projektových rolí“, v reportu oddíl *Základ projektových rolí* (text příznaku, rozdíl `tpl_role` mezi starým core v `_to_delete/_core_<stará>/` a novým, profily s `role_base` starším nebo chybějícím), totéž krátce ve výpisu a v JSON (`after.roles`).
+- **Audit G5** (04 kap. 4): profil `Roles/<Role>.md` bez `role_base`, s neplatnou hodnotou nebo starší než poslední verze s příznakem `roles` v manifestu běžícího core; zpráva odkazuje na ruční úkol.
+- Fixture `mini_lapikus`: `role_base: 0.16.0` u `Architect` a `Builder`, `Architect` „neměníš kód ani data projektu…; návrh zapisuješ do `Docs/`“. Očekávané kompiláty `Architect`, `Builder` vědomě srovnány (kontrakt, profil).
+- Testy: 308. Nové: formát příznaku a první verze s ním; změna `tpl_role` mezi vydanými verzemi (značky a pracovní strom) bez příznaku `roles` = chyba; `update_core` s příznakem (dry-run, úkol jednou, report s rozdílem `tpl_role` a profily, po srovnání profilů prázdný seznam) a bez něj; audit G5 (aktuální, starší, chybějící `role_base`; jen profily v `Roles/`); `lint` (chybějící a prázdný `role_base` s nápovědou, nápověda u `{{core_version}}`).
+
 ## 0.15.0 – 2026-11-21
 
 Import do inboxu podle CR z pilotu (zadání 0.16; CR_2026-11-21_inbox_import_notion; předání `predani_vyvoj_core_soubeh` položka 23); bez migrace. Po aktualizaci `doc_index` a `compose_role` (manifest) a ruční úkol `scratch_source_ref`: doplnit `source_ref` u scratch z ručního importu (v pilotu čtyři poznámky z P10, z řádku `Zdroj:`).

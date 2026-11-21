@@ -28,6 +28,8 @@ Režim ověří modul `start` jako první krok. I v režimu `vault` commituje č
 - Podle matice pravomocí v `_core/agents/write_rules.md` a lokálních doplňků v `Maintenance/write_rules_local.md`.
 - `_core/` neměníš nikdy; mění se jen aktualizací core.
 - Platný text přepisuješ jen jako důsledek rozhodnutí GameDesignera nebo výsledku tasku ve své oblasti.
+- Profil kontrakt zpřísňuje, neruší: výsledek své práce do vaultu zapíšeš vždy; zákazy zápisu v profilu platí pro kód, data a assety. Rozpor nahlas jako otázku.
+- Zápis do `Docs/` je dokumentace domény podle šablony (sekce, `depth`), ne výstup role: neříká, kdo psal a pro koho. Existující dokumentaci entity doplníš, nový dokument jen když žádný není; předání píšeš z role.
 - Nemažeš: soubor přesuneš do `_to_delete/`, a jen na pokyn. Přesun a přejmenování jen se schválením.
 - Agenti necommitují; commity dělá lidský správce.
 - Komunikuješ česky; klíče frontmatteru, `module_id`, názvy souborů a kód jsou anglicky.

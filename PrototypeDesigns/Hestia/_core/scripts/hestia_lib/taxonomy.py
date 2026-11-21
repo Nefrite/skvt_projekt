@@ -73,7 +73,7 @@ class Condition:
     def evaluate(self, fm: dict, type_id: str, domain: str | None = None, mode: str | None = None) -> bool:
         if self.kind == "always":
             return True
-        if self.kind == "no":
+        if self.kind in ("no", "project_role"):    # project_role závisí na cestě: vyhodnocuje validate
             return False
         fname = self.field.replace("<domain>", domain or "")
         actual = type_id if fname == "type" else fm.get(fname)
@@ -92,6 +92,8 @@ def parse_condition(text: str) -> Condition:
     text = normalize_required(text)
     if text in ("always", "no"):
         return Condition(text)
+    if text == "project_role":          # profil projektové role Roles/<Role>.md (zadání 0.17); podle cesty, lint
+        return Condition("project_role")
     m = _COND_IN.match(text)
     if m:
         vals = tuple(v.strip() for v in m.group(2).split(",") if v.strip())

@@ -5,6 +5,9 @@
 #           compose_role spouští update_core při každé změně verze sám (jsou-li kompiláty), uvádí se jen pro čitelnost
 #   manual  ruční úkoly do Maintenance/queue.md (T-…, klíč update_core:<verze>:<id>); id stabilní v rámci verze
 #   crs     change requesty implementované ve verzi; ověří je instance (in_pilot)
+#   roles   krátký popis změny základu projektových rolí (tpl_role, 12 kap. 2.1 a 8, kontrakt, moduly); bez změny
+#           klíč chybí. update_core pak založí ruční úkol update_core:<verze>:role_base a vypíše rozdíl tpl_role
+#           a profily se starším role_base; změna tpl_role bez roles je chyba testu (zadání 0.17)
 #   migration  jen MAJOR: scripts/migrations/<verze>.py
 # Záznamy do 0.13.0 doplněné zpětně podle CHANGELOG.md (od verze pilotu 0.10.2).
 upgrade: 1
@@ -48,7 +51,7 @@ versions:
   - version: 0.14.3
     after: [compose_role]
     manual: []
-    crs: [CR_2026-11-21_update_core_report_zmena_prirazeni, CR_2026-11-21_update_core_report_a_preruseni]
+    crs: [CR_2026-11-21_update_core_report_zmena_prirazeni, CR_2026-11-21_update_core_report_a_preruseni, CR_2026-11-21_claude_project_druh_a_pristup]
   - version: 0.14.4
     after: [compose_role]
     manual:
@@ -61,3 +64,8 @@ versions:
       - id: scratch_source_ref
         text: "Doplnit source_ref u scratch z ručního importu (adresa nebo ID položky ve zdroji z řádku Zdroj: v těle), aby je inbox_import poznal jako duplicitu (01 kap. 9.1, 13 kap. 10.12)"
     crs: [CR_2026-11-21_inbox_import_notion]
+  - version: 0.16.0
+    after: [compose_role]
+    roles: "profil kontrakt zpřísňuje, neruší (zákazy zápisu jen pro kód, data a assety); zápis do Docs/ je dokumentace domény podle 07 kap. 2, existující dokumentace entity se doplňuje, předání se píše z role (12 kap. 2.1, 8); tpl_role s role_base"
+    manual: []
+    crs: [CR_2026-11-21_zaklad_roli_v_instanci]

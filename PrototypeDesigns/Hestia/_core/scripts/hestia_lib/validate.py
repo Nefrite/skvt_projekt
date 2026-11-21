@@ -19,6 +19,7 @@ from .taxonomy import FieldDef, is_empty
 from .vault import Note, Vault
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+PROJECT_ROLE_RE = re.compile(r"Roles/[^/]+\.md")         # required: project_role (zadání 0.17)
 
 
 class Checker:
@@ -120,6 +121,11 @@ class Checker:
                     key = fd.name.replace("<domain>", d)
                     if fd.required.evaluate(fm, t, d, self.tx.target_mode(fm, d)) and is_empty(fm.get(key)):
                         self.add("G7", note, f"chybí povinné pole {key}")
+                continue
+            if fd.required.kind == "project_role" and PROJECT_ROLE_RE.fullmatch(note.rel):
+                if is_empty(fm.get(fd.name)):      # profil projektové role (01 kap. 9.1; zadání 0.17.1), role core ne
+                    what = f"chybí povinné pole {fd.name}" if fd.name not in fm else f"povinné pole {fd.name} je prázdné"
+                    self.add("G7", note, f"{what} (profil projektové role): doplň verzi core z _core/VERSION")
                 continue
             if not fd.required.evaluate(fm, t):
                 continue

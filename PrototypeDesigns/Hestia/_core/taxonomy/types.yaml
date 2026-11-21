@@ -123,7 +123,7 @@ items:
     description: Profil role agenta (L2)
     game_section: none
     required_fields: [type, validity, updated]
-    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, modules, knowhow_tags, context, combines]
+    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, modules, knowhow_tags, context, combines, role_base]
     zone: "Roles/"
     template: tpl_role.md
 

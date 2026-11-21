@@ -42,6 +42,7 @@ items:
   - {name: knowhow_tags,   section: orchestration, applies_to: [role],     value: list, items: "enum:tech", required: no}
   - {name: context,        section: orchestration, applies_to: [role],     value: wikilink_list,   required: no}
   - {name: combines,       section: orchestration, applies_to: [role],     value: list, items: text, required: no}
+  - {name: role_base,      section: orchestration, applies_to: [role],     value: text,            required: project_role}   # povinné u profilu Roles/<Role>.md, ne u rolí core (12 kap. 2.1, 13 kap. 10.6a)
   - {name: master,         section: orchestration, applies_to: [concept],  value: "enum:master",   required: no}
   - {name: module_id,      section: orchestration, applies_to: [agent_module], value: text,        required: always}
   - {name: trigger,        section: orchestration, applies_to: [agent_module], value: text,        required: always}
