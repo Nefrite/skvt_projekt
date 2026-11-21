@@ -57,6 +57,16 @@ _Žádné soubory._
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Hradby_a_Brana.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 53 vlastních, 18 za potomky (Brana, Brana_Straz, Strazni_Vez)
+- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 53
+- Zástupné meshe (`/Engine/BasicShapes/`): 16; výchozí materiály: 0
+- Fáze: –
+- Rozsah: 7264 × 3322 × 3781 cm
+- Pro srovnání `depth_*`: –; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky

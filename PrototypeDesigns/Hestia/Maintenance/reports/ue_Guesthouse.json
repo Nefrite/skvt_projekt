@@ -1,0 +1,526 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "stavba:Ostroh_*"
+   ]
+  },
+  {
+   "folders": [
+    "Ruin/ZapadniBudova"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 13,
+   "by_kind": {
+    "static_mesh": 1,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 12
+   },
+   "placeholder_meshes": 3,
+   "default_materials": 0,
+   "stages": {},
+   "bounds": {
+    "min": [
+     -4598.578156640326,
+     -1891.4289244340362,
+     -128.0
+    ],
+    "max": [
+     128.0,
+     128.0,
+     3587.6690964807594
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 0,
+   "entities": {}
+  }
+ },
+ "actors": [
+  {
+   "name": "Kamen_Ostroh_Dostavba_Prah",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_Old.MI_RuinWood_Old"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Ostroh_Dostavba|Prah",
+    "stavba:Ostroh_Dostavba"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -3589.6,
+     -1224.3,
+     3134.5
+    ],
+    "extent": [
+     38.825260231614266,
+     82.3852531075861,
+     10.5
+    ]
+   }
+  },
+  {
+   "name": "Ostroh_Dostavba_Drevo_Stare",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_Old.MI_RuinWood_Old"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Ostroh_Dostavba"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -1787.9621480016797,
+     -759.0746340788107,
+     1638.5931086016676
+    ],
+    "extent": [
+     1915.9621480016797,
+     887.0746340788107,
+     1766.5931086016676
+    ]
+   }
+  },
+  {
+   "name": "Ostroh_Dostavba_Kamen",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Ostroh_Dostavba"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -2002.3025486991537,
+     -836.5250303533604,
+     1699.0208572655338
+    ],
+    "extent": [
+     2130.3025486991537,
+     964.5250303533604,
+     1827.0208572655338
+    ]
+   }
+  },
+  {
+   "name": "Ostroh_Dostavba_Malta",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Ostroh_Dostavba"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -1995.6502940669093,
+     -827.3259095052058,
+     1696.1605863577488
+    ],
+    "extent": [
+     2123.6502940669093,
+     955.3259095052058,
+     1824.1605863577488
+    ]
+   }
+  },
+  {
+   "name": "Ostroh_Krov_Drevo_Dehet",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_B.SM_RuinPost_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_Tar.MI_RuinWood_Tar"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Ostroh_Krov"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -2235.289078320163,
+     -875.4070322842542,
+     1729.8345482403797
+    ],
+    "extent": [
+     2363.289078320163,
+     1003.4070322842542,
+     1857.8345482403797
+    ]
+   }
+  },
+  {
+   "name": "Ostroh_Podlaha_Drevo",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Ostroh_Podlaha"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -2116.592845346852,
+     -807.8208139525678,
+     1507.899645321918
+    ],
+    "extent": [
+     2244.592845346852,
+     935.8208139525678,
+     1635.899645321918
+    ]
+   }
+  },
+  {
+   "name": "Ostroh_Podlaha_Drevo_Dehet",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_Tar.MI_RuinWood_Tar"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Ostroh_Podlaha"
+   ],
+   "folder": "Stavby/Ostroh",
+   "bounds": {
+    "origin": [
+     -2115.8399959793255,
+     -794.2345232653836,
+     1505.5
+    ],
+    "extent": [
+     2243.8399959793255,
+     922.2345232653836,
+     1633.5
+    ]
+   }
+  },
+  {
+   "name": "ZBudova_S_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Ostroh",
+    "zed:ZBudova_S"
+   ],
+   "folder": "Ruin/ZapadniBudova",
+   "bounds": {
+    "origin": [
+     -1992.2884811889448,
+     -857.4172621792338,
+     1539.970558944151
+    ],
+    "extent": [
+     2120.288481188945,
+     985.4172621792338,
+     1667.970558944151
+    ]
+   }
+  },
+  {
+   "name": "ZBudova_S_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Ostroh",
+    "zed:ZBudova_S"
+   ],
+   "folder": "Ruin/ZapadniBudova",
+   "bounds": {
+    "origin": [
+     -1996.3429629556808,
+     -881.6294014110117,
+     1639.524859120147
+    ],
+    "extent": [
+     2124.342962955681,
+     1009.6294014110117,
+     1767.524859120147
+    ]
+   }
+  },
+  {
+   "name": "ZBudova_S_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Ostroh",
+    "zed:ZBudova_S"
+   ],
+   "folder": "Ruin/ZapadniBudova",
+   "bounds": {
+    "origin": [
+     -1996.6085790645293,
+     -881.7144622170181,
+     1639.7838447070585
+    ],
+    "extent": [
+     2124.6085790645293,
+     1009.7144622170181,
+     1767.7838447070585
+    ]
+   }
+  },
+  {
+   "name": "ZBudova_V_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Ostroh",
+    "zed:ZBudova_V"
+   ],
+   "folder": "Ruin/ZapadniBudova",
+   "bounds": {
+    "origin": [
+     -1787.8291241635898,
+     -847.2787780670226,
+     1586.859787163356
+    ],
+    "extent": [
+     1915.8291241635898,
+     975.2787780670226,
+     1714.859787163356
+    ]
+   }
+  },
+  {
+   "name": "ZBudova_V_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Ostroh",
+    "zed:ZBudova_V"
+   ],
+   "folder": "Ruin/ZapadniBudova",
+   "bounds": {
+    "origin": [
+     -1807.036833281656,
+     -851.8078621960108,
+     1604.7707217855004
+    ],
+    "extent": [
+     1935.036833281656,
+     979.8078621960108,
+     1732.7707217855004
+    ]
+   }
+  },
+  {
+   "name": "ZBudova_V_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Ostroh",
+    "zed:ZBudova_V"
+   ],
+   "folder": "Ruin/ZapadniBudova",
+   "bounds": {
+    "origin": [
+     -1808.8865565119663,
+     -852.9301391247252,
+     1587.9702194282754
+    ],
+    "extent": [
+     1936.8865565119663,
+     980.9301391247252,
+     1715.9702194282754
+    ]
+   }
+  }
+ ]
+}

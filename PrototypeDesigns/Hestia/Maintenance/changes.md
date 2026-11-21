@@ -68,3 +68,13 @@ updated: 2026-11-21
 | 2026-11-21 | agent pilotu | Maintenance/sources.md | řádek Notion 📥 Inbox (Project Lapikus): jednorázový import 2026-11-21 | import Notion |
 | 2026-11-21 | agent pilotu | Maintenance/taxonomy_local/ue_map.yaml | nový `ue_map` (mapa `/Game/Skvt/LapikusPrototypeMap`, defaults `stavba:`/`vybaveni:`, 10 jmenovitých položek, 15 entit s pravidlem), schválil GameDesigner | předání pilotu P5 |
 | 2026-11-21 | agent pilotu | Scratch/Scratch_Unreal_napojeni.md | část 2 (napojení entit) označena jako zpracovaná odkazem na `ue_map.yaml` | předání pilotu P9 |
+| 2026-11-21 | agent pilotu | Maintenance/reports/ue_*.json (15 entit) | první čtení Unrealu (etapa 1, UE 5.8.3, `LapikusPrototypeMap`), `ue_query --import --all`; bloky `## Stav v UE` obnovil `hubs` | předání pilotu P6 |
+| 2026-11-21 | agent pilotu | Brana | otevřená otázka: `depth_structures: 4` bez actorů (zdi u Strazni_Vez) | předání pilotu P6 |
+| 2026-11-21 | agent pilotu | Les_Lapikus | otevřená otázka: v levelu žádné olše podle pravidla | předání pilotu P6 |
+| 2026-11-21 | agent pilotu | Lapikus | otevřená otázka: rampa `Ruin/Rampa` v levelu nenalezena | předání pilotu P6 |
+| 2026-11-21 | agent pilotu | Palac_Kovarna_Vybaveni | otevřená otázka: signály realizace (37 meshů z dat) vs. `depth_structures: 3` | předání pilotu P6 |
+| 2026-11-21 | agent pilotu | Palac_Kovarna_Vybaveni | `depth_structures` 3 → 4 (rozhodnutí GameDesignera po prvním čtení Unrealu) | chat GameDesigner, P6 |
+| 2026-11-21 | agent pilotu | Brana, Les_Lapikus, Lapikus, Palac_Kovarna_Vybaveni | otázky z P6 zodpovězeny a uzavřeny; u Brana nová otázka na hodnotu `depth_structures` | chat GameDesigner, P6 |
+| 2026-11-21 | agent pilotu | Maintenance/queue.md | úkol T-0020: ověřit rozsah a třídu actorů ISM v reportech Unrealu | P6 |
+| 2026-11-21 | agent pilotu | Brana | `depth_structures` 4 → 1 (poloha ve strážní věži; zdi jsou realizací Strazni_Vez, rozhodnutí GameDesignera) | chat GameDesigner, P6 |
+| 2026-11-21 | agent pilotu | Brana | otevřená otázka: `status: built` a `brana_spec.py` po změně `depth_structures` na 1 | P6 |

@@ -1,0 +1,660 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "stavba:Palac_Obydli*"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 18,
+   "by_kind": {
+    "static_mesh": 7,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 11
+   },
+   "placeholder_meshes": 5,
+   "default_materials": 0,
+   "stages": {
+    "base": 12,
+    "final": 6
+   },
+   "bounds": {
+    "min": [
+     -1512.5914023598993,
+     -1183.735213671708,
+     -128.0
+    ],
+    "max": [
+     128.0,
+     128.0,
+     3659.0
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 0,
+   "entities": {}
+  }
+ },
+ "actors": [
+  {
+   "name": "Kamen_Palac_Obydli_Krov_VH_K0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Krov|VH|K0",
+    "stavba:Palac_Obydli_Krov",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -1285.3611000000003,
+     -375.3943,
+     3132.0
+    ],
+    "extent": [
+     21.221031664702195,
+     17.28236380510714,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Krov_VH_K1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Krov|VH|K1",
+    "stavba:Palac_Obydli_Krov",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -1099.9477000000002,
+     -416.8941,
+     3132.0
+    ],
+    "extent": [
+     21.221031664702195,
+     17.28236380510714,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Krov_VH_K2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Krov|VH|K2",
+    "stavba:Palac_Obydli_Krov",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -875.4999000000003,
+     -467.13070000000005,
+     3132.0
+    ],
+    "extent": [
+     21.221031664702195,
+     17.28236380510714,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Krov_VH_K3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Krov|VH|K3",
+    "stavba:Palac_Obydli_Krov",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -612.0176999999999,
+     -526.1041,
+     3132.0
+    ],
+    "extent": [
+     21.221031664702195,
+     17.28236380510714,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Krov_VH_K4",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Krov|VH|K4",
+    "stavba:Palac_Obydli_Krov",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -377.8113000000001,
+     -578.5249,
+     3132.0
+    ],
+    "extent": [
+     21.22103166470214,
+     17.28236380510714,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Ohniste_I2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Ohniste|I2",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -708.49002,
+     -627.4810600000001,
+     3215.6
+    ],
+    "extent": [
+     33.10501378866866,
+     27.802960344156986,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Ohniste_Poklop",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinOvenDoor_A.SM_RuinOvenDoor_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinOvenDoor_A.SM_RuinOvenDoor_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Ohniste|Poklop",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -797.9648559999998,
+     -578.556648,
+     3214.0
+    ],
+    "extent": [
+     23.335076695959515,
+     9.208891013959487,
+     20.950000762939453
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Kamen_Kamen_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Kamen",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -683.9432068168571,
+     -508.2597044574909,
+     1570.2380952742285
+    ],
+    "extent": [
+     811.9432068168571,
+     636.2597044574909,
+     1698.2380952742285
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Kamen_Malta_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Kamen",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -670.0862681413114,
+     -503.1324930573219,
+     1569.5
+    ],
+    "extent": [
+     798.0862681413114,
+     631.1324930573219,
+     1697.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Krov_Drevo_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_B.SM_RuinPost_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Krov",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -584.6519202651691,
+     -527.867606835854,
+     1712.2234515523835
+    ],
+    "extent": [
+     712.6519202651691,
+     655.867606835854,
+     1840.2234515523835
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Krov_Drevo_Final",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Krov",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -692.2957011799497,
+     -461.74095183585393,
+     1712.2234515523835
+    ],
+    "extent": [
+     820.2957011799497,
+     589.7409518358539,
+     1840.2234515523835
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Ohniste_Kamen_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -357.658218270911,
+     -266.1830841428103,
+     1550.29
+    ],
+    "extent": [
+     485.658218270911,
+     394.1830841428103,
+     1678.29
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Ohniste_Mazanina_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinOvenDome_A.SM_RuinOvenDome_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinDaub.MI_RuinDaub",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWattle.MI_RuinWattle"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -357.6002001041769,
+     -265.9722801041769,
+     1567.5
+    ],
+    "extent": [
+     485.6002001041769,
+     393.9722801041769,
+     1695.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Ohniste_Mazanina_Final",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A",
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinSmokeHood_B.SM_RuinSmokeHood_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinDaub.MI_RuinDaub",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWattle.MI_RuinWattle"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -356.8357438776417,
+     -262.5568312981568,
+     1765.5
+    ],
+    "extent": [
+     484.8357438776417,
+     390.5568312981568,
+     1893.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Ohniste_Uhli_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCharcoal.MI_RuinCharcoal"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -333.031321571892,
+     -260.4889960234398,
+     1549.5
+    ],
+    "extent": [
+     461.031321571892,
+     388.4889960234398,
+     1677.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Ohniste_Zelezo_Final",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -329.2001079926345,
+     -232.27015256791844,
+     1550.625
+    ],
+    "extent": [
+     457.2001079926345,
+     360.27015256791844,
+     1678.625
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Srub_Drevo_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_B.SM_RuinLog_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_C.SM_RuinLog_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Srub",
+    "stage:base"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -646.7647955787806,
+     -510.94085459479265,
+     1625.8
+    ],
+    "extent": [
+     774.7647955787806,
+     638.9408545947927,
+     1753.8
+    ]
+   }
+  },
+  {
+   "name": "Palac_Obydli_Srub_Drevo_Final",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_B.SM_RuinLog_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_C.SM_RuinLog_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Srub",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -691.9417265451559,
+     -506.8337357035999,
+     1710.534217949114
+    ],
+    "extent": [
+     819.9417265451559,
+     634.8337357035999,
+     1838.534217949114
+    ]
+   }
+  }
+ ]
+}

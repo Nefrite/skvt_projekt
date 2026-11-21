@@ -1,0 +1,569 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "stavba:Vez_Pristresek*"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 16,
+   "by_kind": {
+    "static_mesh": 13,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 3
+   },
+   "placeholder_meshes": 0,
+   "default_materials": 0,
+   "stages": {
+    "base": 16
+   },
+   "bounds": {
+    "min": [
+     -128.0,
+     -1478.6731414794942,
+     -128.0
+    ],
+    "max": [
+     1574.2295819035367,
+     128.0,
+     4440.008986313478
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 0,
+   "entities": {}
+  }
+ },
+ "actors": [
+  {
+   "name": "Kamen_Vez_Pristresek_A0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|A0",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     955.2352136864708,
+     -758.9862386898111,
+     4246.327477657674
+    ],
+    "extent": [
+     23.703584096659597,
+     19.764022354122176,
+     11.4399999999996
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_A1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|A1",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1550.525997806877,
+     -892.1360878872924,
+     4280.919812272509
+    ],
+    "extent": [
+     23.703584096659597,
+     19.764022354122176,
+     11.4399999999996
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P0",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     897.4641862204599,
+     -879.4213686811395,
+     4245.367728664532
+    ],
+    "extent": [
+     23.703583563179905,
+     19.764021510567773,
+     10.017562188887496
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P1a",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P1a",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     965.7762434146048,
+     -894.7008595726537,
+     4214.313710487778
+    ],
+    "extent": [
+     23.703584096659597,
+     19.764022354122176,
+     13.0
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P1b",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P1b",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     967.9472044121075,
+     -894.160620430418,
+     4240.906855243889
+    ],
+    "extent": [
+     21.333225206861925,
+     17.78761935951104,
+     14.656870546355094
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P2",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1209.7478762508367,
+     -949.2704698994903,
+     4244.875
+    ],
+    "extent": [
+     23.703584096659597,
+     19.764022354122176,
+     10.529999999999745
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P3",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1365.8897212660252,
+     -984.1950205086657,
+     4244.875
+    ],
+    "extent": [
+     23.703584096659597,
+     19.764022354122176,
+     10.529999999999745
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P4a",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P4a",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1453.7195090870687,
+     -1003.840080226327,
+     4213.437483849191
+    ],
+    "extent": [
+     23.703584096659597,
+     19.764022354122176,
+     13.260000000000218
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_P4b",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|P4b",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1455.8904700845715,
+     -1003.2998410840912,
+     4240.593741924596
+    ],
+    "extent": [
+     21.333225206861925,
+     17.78761935951104,
+     14.982508398420578
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_W0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|W0",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     936.9380233438825,
+     -886.1989142837326,
+     4286.16802
+    ],
+    "extent": [
+     20.598754629340874,
+     18.50012792507289,
+     13.516022037721086
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_W1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|W1",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1102.8387336725202,
+     -923.3062493059815,
+     4285.16802
+    ],
+    "extent": [
+     20.598754629340874,
+     18.50012792507289,
+     13.516022037721086
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_W2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|W2",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1249.2217133742595,
+     -956.0480155020834,
+     4285.16802
+    ],
+    "extent": [
+     20.598755064460875,
+     18.500128625326965,
+     13.516022292593334
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Vez_Pristresek_W3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Vez_Pristresek|W3",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     1415.1224237028973,
+     -993.1553505243323,
+     4285.16802
+    ],
+    "extent": [
+     20.598755064460875,
+     18.500128625326965,
+     13.516022292593334
+    ]
+   }
+  },
+  {
+   "name": "Vez_Pristresek_Drevo_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_B.SM_RuinForkHead_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_B.SM_RuinForkHead_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_C.SM_RuinLogBark_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_B.SM_RuinPoleBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     673.2734551047172,
+     -675.3365707397471,
+     2153.3467150518886
+    ],
+    "extent": [
+     801.2734551047172,
+     803.3365707397471,
+     2281.3467150518886
+    ]
+   }
+  },
+  {
+   "name": "Vez_Pristresek_canvas_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A",
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVez_A.SM_RuinCanvasVez_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCanvas.MI_RuinCanvas"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     673.1211151998456,
+     -624.5049067979016,
+     2154.537750152588
+    ],
+    "extent": [
+     801.1211151998456,
+     752.5049067979016,
+     2282.537750152588
+    ]
+   }
+  },
+  {
+   "name": "Vez_Pristresek_rope_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A",
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_B.SM_RuinLashing_B",
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_A.SM_RuinRope_A",
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_B.SM_RuinRope_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinRope.MI_RuinRope"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Vez_Pristresek",
+    "stage:base"
+   ],
+   "folder": "Stavby/Vez",
+   "bounds": {
+    "origin": [
+     709.7697221895389,
+     -623.4682601125766,
+     2156.004493156739
+    ],
+    "extent": [
+     837.7697221895389,
+     751.4682601125766,
+     2284.004493156739
+    ]
+   }
+  }
+ ]
+}

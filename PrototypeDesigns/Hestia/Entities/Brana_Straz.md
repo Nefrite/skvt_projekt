@@ -69,6 +69,16 @@ depth_structures: 3
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Brana_Straz.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 4 vlastních
+- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 4
+- Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
+- Fáze: base 3, final 1
+- Rozsah: 2915 × 3488 × 3893 cm
+- Pro srovnání `depth_*`: structures 3; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky

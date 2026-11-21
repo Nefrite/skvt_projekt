@@ -71,6 +71,16 @@ depth_structures: 3
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Obydli.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 18 vlastních
+- Třídy: StaticMesh 7, Blueprint 0, BSP 0, ostatní 11
+- Zástupné meshe (`/Engine/BasicShapes/`): 5; výchozí materiály: 0
+- Fáze: base 12, final 6
+- Rozsah: 1641 × 1312 × 3787 cm
+- Pro srovnání `depth_*`: structures 3; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky

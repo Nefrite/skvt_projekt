@@ -62,6 +62,16 @@ depth_structures: 4
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Vez_Pristresek.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 16 vlastních
+- Třídy: StaticMesh 13, Blueprint 0, BSP 0, ostatní 3
+- Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
+- Fáze: base 16
+- Rozsah: 1702 × 1607 × 4568 cm
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky

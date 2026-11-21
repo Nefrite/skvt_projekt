@@ -34,16 +34,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-19 · migrace · Attachments/Zricenina_rozpad_hmota.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Zricenina_rozpad_hmota.png · migrace
-- 2026-11-19 · migrace · Attachments/Zricenina_rozpad_pohledy.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Zricenina_rozpad_pohledy.png · migrace
-- 2026-11-19 · migrace · Attachments/navrh_hradba_strilny.png · přesun z PrototypeDesigns/Lapikus/03_ruin/navrh_hradba_strilny.png · migrace
-- 2026-11-19 · migrace · Attachments/navrh_koruna_zvetrala.png · přesun z PrototypeDesigns/Lapikus/03_ruin/navrh_koruna_zvetrala.png · migrace
-- 2026-11-19 · migrace · Attachments/ZBudova_V_podpora.png · přesun z PrototypeDesigns/Lapikus/03_ruin/ZBudova_V_podpora.png · migrace
-- 2026-11-19 · migrace · Attachments/Hradba_Z_S_zaobleni.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Hradba_Z_S_zaobleni.png · migrace
-- 2026-11-19 · migrace · Attachments/Hradba_V_zlomy_pred_po.png · přesun z PrototypeDesigns/Lapikus/03_ruin/Hradba_V_zlomy_pred_po.png · migrace
-- 2026-11-19 · migrace · Attachments/navrh_ostroh_tramy.png · přesun z PrototypeDesigns/Lapikus/05_constructions/navrh_ostroh_tramy.png · migrace
-- 2026-11-20 · agent HearthLore · Scratch/Scratch_Unreal_napojeni.md · nový tematický scratch: zapnutí Unreal MCP v 5.8 (neověřeno), konvence actorů v levelu a návrh napojení entit na Unreal · chat
-- 2026-11-20 · agent HearthLore · Scratch/Scratch_Unreal_napojeni.md · uzavřena otázka: agent smí číst Unreal sám, jen čtecími dotazy (Auditor, Builder, Architect, Knihovník); zadání HearthLore 0.14 · chat
+- 2026-11-21 · agent pilotu · Scratch/Scratch_Unreal_napojeni.md · část 2 (napojení entit) označena jako zpracovaná odkazem na `ue_map.yaml` · předání pilotu P9
+- 2026-11-21 · agent pilotu · Maintenance/reports/ue_*.json (15 entit) · první čtení Unrealu (etapa 1, UE 5.8.3, `LapikusPrototypeMap`), `ue_query --import --all`; bloky `## Stav v UE` obnovil `hubs` · předání pilotu P6
+- 2026-11-21 · agent pilotu · Brana · otevřená otázka: `depth_structures: 4` bez actorů (zdi u Strazni_Vez) · předání pilotu P6
+- 2026-11-21 · agent pilotu · Les_Lapikus · otevřená otázka: v levelu žádné olše podle pravidla · předání pilotu P6
+- 2026-11-21 · agent pilotu · Lapikus · otevřená otázka: rampa `Ruin/Rampa` v levelu nenalezena · předání pilotu P6
+- 2026-11-21 · agent pilotu · Palac_Kovarna_Vybaveni · otevřená otázka: signály realizace (37 meshů z dat) vs. `depth_structures: 3` · předání pilotu P6
+- 2026-11-21 · agent pilotu · Palac_Kovarna_Vybaveni · `depth_structures` 3 → 4 (rozhodnutí GameDesignera po prvním čtení Unrealu) · chat GameDesigner, P6
+- 2026-11-21 · agent pilotu · Brana, Les_Lapikus, Lapikus, Palac_Kovarna_Vybaveni · otázky z P6 zodpovězeny a uzavřeny; u Brana nová otázka na hodnotu `depth_structures` · chat GameDesigner, P6
+- 2026-11-21 · agent pilotu · Maintenance/queue.md · úkol T-0020: ověřit rozsah a třídu actorů ISM v reportech Unrealu · P6
+- 2026-11-21 · agent pilotu · Brana · `depth_structures` 4 → 1 (poloha ve strážní věži; zdi jsou realizací Strazni_Vez, rozhodnutí GameDesignera) · chat GameDesigner, P6
 
 <!-- hestia:generated:end -->
 

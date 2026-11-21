@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 # hra
 kind: structure
@@ -16,7 +16,7 @@ status: built
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
-depth_structures: 4
+depth_structures: 1
 ---
 # Brana
 
@@ -27,7 +27,7 @@ depth_structures: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | 4 | – | build | bez cíle |
+| structures | – | 1 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -61,10 +61,22 @@ _Zatím žádné dokumenty._
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Brana.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 0 vlastních
+- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
+- Fáze: –
+- Pro srovnání `depth_*`: structures 1; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
+- [ ] Po změně na `depth_structures: 1` (2026-11-21): brána má dál `status: built` a skript `tools/ruin/brana_spec.py` (krok 03_ruin, přiřazený jménem k Brana; audit G10). Změnit `status` (např. `in_progress` / `planned`) a patří `brana_spec.py` spíš [[Strazni_Vez]] (zdi brány)? — agent pilotu, 2026-11-21
+- [x] Jakou hodnotu `depth_structures` má brána mít: 1 (blockout – má polohu ve strážní věži) nebo 0 (vlastní realizace žádná)? Dnes 4 — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: 1; zapsáno `depth_structures: 1`
+- [x] Unreal (report `ue_Brana.json`, 2026-11-21): bráně nepatří žádný actor, zdi `Ruin/Brana` jsou podle `ue_map` u [[Strazni_Vez]] (brány jsou otvory ve zdech, GameDesigner 2026-11-21). Odpovídá tomu `depth_structures: 4` u brány, nebo se realizace vede jen u strážní věže? — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: ne – zdi brány jsou realizací strážní věže; brána sama je dána polohou v ní, její podoba (zátaras, vrata apod.) je teprve na game designu. Nová hodnota `depth_structures` čeká na potvrzení GameDesignera (otázka níže)
 <!-- hestia:generated:start -->
 
 - Fronta F-0002 (G2, [[Brana]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures

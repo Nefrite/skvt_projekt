@@ -1,0 +1,206 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "stavba:Brana_Straz*"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 4,
+   "by_kind": {
+    "static_mesh": 0,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 4
+   },
+   "placeholder_meshes": 0,
+   "default_materials": 0,
+   "stages": {
+    "base": 3,
+    "final": 1
+   },
+   "bounds": {
+    "min": [
+     -128.0,
+     -3360.2986173780773,
+     -128.0
+    ],
+    "max": [
+     2786.666866512858,
+     128.0,
+     3764.9948158506254
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 0,
+   "entities": {}
+  }
+ },
+ "actors": [
+  {
+   "name": "Brana_Straz_Kamen_Kamen_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Brana_Straz_Kamen",
+    "stage:base"
+   ],
+   "folder": "Stavby/Brana",
+   "bounds": {
+    "origin": [
+     1270.6856511309811,
+     -1579.7137947934798,
+     1711.90249014661
+    ],
+    "extent": [
+     1398.6856511309811,
+     1707.7137947934798,
+     1839.90249014661
+    ]
+   }
+  },
+  {
+   "name": "Brana_Straz_Kryty_Drevo_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_A.SM_RuinStake_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_B.SM_RuinStake_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_C.SM_RuinStake_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Brana_Straz_Kryty",
+    "stage:base"
+   ],
+   "folder": "Stavby/Brana",
+   "bounds": {
+    "origin": [
+     1329.333433256429,
+     -1603.6670118863658,
+     1818.4974079253127
+    ],
+    "extent": [
+     1457.333433256429,
+     1731.6670118863658,
+     1946.4974079253127
+    ]
+   }
+  },
+  {
+   "name": "Brana_Straz_Kryty_Drevo_Final",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_C.SM_RuinLogBark_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_A.SM_RuinStake_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_B.SM_RuinStake_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_C.SM_RuinStake_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Brana_Straz_Kryty",
+    "stage:final"
+   ],
+   "folder": "Stavby/Brana",
+   "bounds": {
+    "origin": [
+     1317.8573146915764,
+     -1616.1493086890387,
+     1818.4924717396702
+    ],
+    "extent": [
+     1445.8573146915764,
+     1744.1493086890387,
+     1946.4924717396702
+    ]
+   }
+  },
+  {
+   "name": "Brana_Straz_Podesta_Drevo_Base",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_B.SM_RuinLog_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_C.SM_RuinLog_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Brana_Straz_Podesta",
+    "stage:base"
+   ],
+   "folder": "Stavby/Brana",
+   "bounds": {
+    "origin": [
+     1280.328140410022,
+     -1583.2505089827173,
+     1726.5
+    ],
+    "extent": [
+     1408.328140410022,
+     1711.2505089827173,
+     1854.5
+    ]
+   }
+  }
+ ]
+}

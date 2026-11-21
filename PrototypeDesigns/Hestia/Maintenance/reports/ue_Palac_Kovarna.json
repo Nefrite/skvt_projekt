@@ -1,0 +1,543 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "stavba:Palac_Kovarna*"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 15,
+   "by_kind": {
+    "static_mesh": 7,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 8
+   },
+   "placeholder_meshes": 2,
+   "default_materials": 0,
+   "stages": {},
+   "bounds": {
+    "min": [
+     -128.0,
+     -1365.5329223101708,
+     -128.0
+    ],
+    "max": [
+     634.4830322849095,
+     128.0000000000001,
+     3679.0
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 37,
+   "entities": {
+    "Palac_Kovarna_Vybaveni": 37
+   }
+  }
+ },
+ "actors": [
+  {
+   "name": "Kamen_Palac_Kovarna_Kul_Kul",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_A.SM_RuinStake_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_A.SM_RuinStake_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Kul|Kul",
+    "stavba:Palac_Kovarna_Kul"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     73.80097999999953,
+     -817.94706,
+     3184.0
+    ],
+    "extent": [
+     5.000000000000028,
+     5.0,
+     95.0
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Okap_S",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBarrel_A.SM_RuinBarrel_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBarrel_A.SM_RuinBarrel_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWater.MI_RuinWater",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Okap|S",
+    "stavba:Palac_Kovarna_Okap"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     -78.39280000000008,
+     -1255.2664,
+     3169.15
+    ],
+    "extent": [
+     30.827246305702843,
+     30.876872070474974,
+     40.150001525878906
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Pristresek_VE_K0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Pristresek|VE|K0",
+    "stavba:Palac_Kovarna_Pristresek"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     534.8547419999995,
+     -1146.585974,
+     3132.0
+    ],
+    "extent": [
+     22.356808384716942,
+     22.356808384716942,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Pristresek_VE_K1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Pristresek|VE|K1",
+    "stavba:Palac_Kovarna_Pristresek"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     495.53914199999963,
+     -1322.240774,
+     3132.0
+    ],
+    "extent": [
+     22.35680838471697,
+     22.356808384716942,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Pristresek_VW_K0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Pristresek|VW|K0",
+    "stavba:Palac_Kovarna_Pristresek"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     152.9403000000002,
+     -702.4431000000001,
+     3132.0
+    ],
+    "extent": [
+     22.356809328754792,
+     22.35680932875482,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Pristresek_VW_K1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Pristresek|VW|K1",
+    "stavba:Palac_Kovarna_Pristresek"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     95.0590000000002,
+     -961.0459999999999,
+     3132.0
+    ],
+    "extent": [
+     22.356809328754792,
+     22.35680932875482,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Pristresek_VW_K2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Kovarna_Pristresek|VW|K2",
+    "stavba:Palac_Kovarna_Pristresek"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     37.177700000000186,
+     -1219.6489,
+     3132.0
+    ],
+    "extent": [
+     22.356808384717,
+     22.356808384716942,
+     7.2800000000002
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Okap_Drevo",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_A.SM_RuinForkHead_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_A.SM_RuinForkHead_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutter_A.SM_RuinGutter_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_C.SM_RuinLogBark_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Okap"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     0.0,
+     -564.7916175668421,
+     1610.673996551295
+    ],
+    "extent": [
+     128.0,
+     692.7916175668421,
+     1738.673996551295
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Pristresek_Drevo",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_B.SM_RuinLog_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_C.SM_RuinLog_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_B.SM_RuinPost_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_C.SM_RuinPost_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Pristresek"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     253.24151614245477,
+     -618.7664611550854,
+     1740.1754158555664
+    ],
+    "extent": [
+     381.24151614245477,
+     746.7664611550854,
+     1868.1754158555664
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Stena_Drevo",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Stena"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     5.164551619326062,
+     -503.86597161932605,
+     1608.5
+    ],
+    "extent": [
+     133.16455161932606,
+     631.865971619326,
+     1736.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Stena_Mazanina",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A",
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_B.SM_RuinWattlePanel_B",
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_C.SM_RuinWattlePanel_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinDaub.MI_RuinDaub",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWattle.MI_RuinWattle"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Stena"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     16.55145258761479,
+     -541.6258522699482,
+     1605.5
+    ],
+    "extent": [
+     144.5514525876148,
+     669.6258522699482,
+     1733.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Vyhen_Drevo",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Vyhen"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     250.62119242894266,
+     -391.3647760276232,
+     1713.7462703174738
+    ],
+    "extent": [
+     378.62119242894266,
+     519.3647760276232,
+     1841.7462703174738
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Vyhen_Kamen",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Vyhen"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     252.49862089126782,
+     -403.87805040506976,
+     1560.35
+    ],
+    "extent": [
+     380.4986208912678,
+     531.8780504050698,
+     1688.35
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Vyhen_Mazanina",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A",
+    "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinSmokeHood_B.SM_RuinSmokeHood_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinDaub.MI_RuinDaub",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWattle.MI_RuinWattle"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Vyhen"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     252.3992592146198,
+     -391.42086456874665,
+     1775.5
+    ],
+    "extent": [
+     380.3992592146198,
+     519.4208645687468,
+     1903.5
+    ]
+   }
+  },
+  {
+   "name": "Palac_Kovarna_Vyhen_Uhli",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCharcoal.MI_RuinCharcoal"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Kovarna_Vyhen"
+   ],
+   "folder": "Stavby/Palac",
+   "bounds": {
+    "origin": [
+     221.98939002604396,
+     -366.4432900260442,
+     1539.0
+    ],
+    "extent": [
+     349.98939002604396,
+     494.4432900260442,
+     1667.0
+    ]
+   }
+  }
+ ]
+}

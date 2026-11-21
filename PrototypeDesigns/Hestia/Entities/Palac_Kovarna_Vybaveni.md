@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 # hra
 kind: object
@@ -16,7 +16,7 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
-depth_structures: 3
+depth_structures: 4
 ---
 # Palac_Kovarna_Vybaveni
 
@@ -27,7 +27,7 @@ depth_structures: 3
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | 3 | – | build | bez cíle |
+| structures | 4 | 4 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
@@ -60,10 +60,21 @@ _Žádné soubory._
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Kovarna_Vybaveni.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 37 vlastních
+- Třídy: StaticMesh 37, Blueprint 0, BSP 0, ostatní 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
+- Fáze: –
+- Rozsah: 625 × 600 × 372 cm
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
+- [x] Unreal (report `ue_Palac_Kovarna_Vybaveni.json`, 2026-11-21): 37 actorů StaticMesh z dat (`furnishing.json`), žádný zástupný mesh ani výchozí materiál; podle vodítka (meshe a data → asset_data) by realizace odpovídala spíš 4 než `depth_structures: 3`. Ponechat 3, nebo zvýšit? (rozhoduje realizátor nebo GameDesigner) — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: zvýšit na 4; zapsáno `depth_structures: 4`
 <!-- hestia:generated:start -->
 
 - Fronta F-0017 (G2, [[Palac_Kovarna_Vybaveni]]): očekávaná doména gameplay (kind object) bez target_gameplay; očekávaná doména structures (kind object) bez target_structures

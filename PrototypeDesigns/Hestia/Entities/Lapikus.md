@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 # hra
 kind: location
@@ -140,10 +140,20 @@ _Potomci nemají cíle._
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Lapikus.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 0 vlastních, 208 za potomky (Brana, Brana_Straz, Guesthouse, Hradby_a_Brana, Nadvori_Stan, Palac, Palac_Kovarna, Palac_Kovarna_Vybaveni, Palac_Obydli, Palac_Treti, Strazni_Vez, Vez, Vez_Pristresek)
+- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
+- Fáze: –
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
+- [x] Unreal (report `ue_Lapikus.json`, 2026-11-21): vlastní pravidlo `Ruin/Rampa` (rampa `Rampa_SZ` z `ruin_layout.json`) nenašlo žádný actor; hrad má 208 actorů za potomky. Je rampa v levelu (jiná složka, nebo ji blokový build zříceniny nestaví)? — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: rampa v levelu zatím není; pravidlo `Ruin/Rampa` zůstává
 <!-- hestia:generated:start -->
 
 - [[Pravidla_zabydleni]]: **Etapy:** jak se ve hře přepnou (dvě verze levelu, skrytí a zobrazení sad actorů)? Stojí podesta brány už v etapě 1? — z AGENT_GameDesign_hrad, 2026-11-17

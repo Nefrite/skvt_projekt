@@ -1,0 +1,34 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "vybaveni:Nadvori_Stan*"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 0,
+   "by_kind": {
+    "static_mesh": 0,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 0
+   },
+   "placeholder_meshes": 0,
+   "default_materials": 0,
+   "stages": {},
+   "bounds": null
+  },
+  "descendants": {
+   "actors": 0,
+   "entities": {}
+  }
+ },
+ "actors": []
+}

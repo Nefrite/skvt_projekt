@@ -1,0 +1,2158 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "folders": [
+    "Ruin/Hradba"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 53,
+   "by_kind": {
+    "static_mesh": 0,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 53
+   },
+   "placeholder_meshes": 16,
+   "default_materials": 0,
+   "stages": {},
+   "bounds": {
+    "min": [
+     -4544.423726957575,
+     -3194.0577729223014,
+     -128.0
+    ],
+    "max": [
+     2720.022676182083,
+     128.0,
+     3653.3974045929544
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 18,
+   "entities": {
+    "Brana": 0,
+    "Brana_Straz": 4,
+    "Strazni_Vez": 14
+   }
+  }
+ },
+ "actors": [
+  {
+   "name": "Hradba_V_01_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1270.9470210698726,
+     -1190.670258095849,
+     1644.3050759361931
+    ],
+    "extent": [
+     1398.9470210698726,
+     1318.670258095849,
+     1772.3050759361931
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_01_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1290.5692016013413,
+     -1194.4246664815803,
+     1694.7869119686889
+    ],
+    "extent": [
+     1418.5692016013413,
+     1322.4246664815803,
+     1822.7869119686889
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_01_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1290.7740887155278,
+     -1194.4720637433093,
+     1678.7033075621016
+    ],
+    "extent": [
+     1418.7740887155278,
+     1322.4720637433093,
+     1806.7033075621016
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_02_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1276.1513890858703,
+     -747.897670434179,
+     1694.80689045286
+    ],
+    "extent": [
+     1404.1513890858703,
+     875.897670434179,
+     1822.80689045286
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_02_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1295.5201170111125,
+     -747.468276862481,
+     1708.3025546374222
+    ],
+    "extent": [
+     1423.5201170111125,
+     875.468276862481,
+     1836.3025546374222
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_02_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1295.993892002486,
+     -750.5377465499146,
+     1695.5080752565814
+    ],
+    "extent": [
+     1423.993892002486,
+     878.5377465499146,
+     1823.5080752565814
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_03_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1275.7102828697493,
+     -695.2610699964365,
+     1678.5893550119777
+    ],
+    "extent": [
+     1403.7102828697493,
+     823.2610699964365,
+     1806.5893550119777
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_03_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1287.1817729471675,
+     -691.855230071299,
+     1694.8709147892887
+    ],
+    "extent": [
+     1415.1817729471675,
+     819.855230071299,
+     1822.8709147892887
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_03_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1296.0113380910416,
+     -692.1543395111119,
+     1694.7566537841208
+    ],
+    "extent": [
+     1424.0113380910416,
+     820.1543395111119,
+     1822.7566537841208
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_04_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1247.5321285875607,
+     -644.7957142659616,
+     1659.6097571120908
+    ],
+    "extent": [
+     1375.5321285875607,
+     772.7957142659616,
+     1787.6097571120908
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_04_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1264.261780120635,
+     -642.3657765267035,
+     1678.3364897450788
+    ],
+    "extent": [
+     1392.261780120635,
+     770.3657765267035,
+     1806.3364897450788
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_04_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1265.038351228864,
+     -651.9965718387909,
+     1659.7645920878363
+    ],
+    "extent": [
+     1393.038351228864,
+     779.9965718387909,
+     1787.7645920878363
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_05_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1189.9568033962935,
+     -594.0616967634828,
+     1678.5989897450786
+    ],
+    "extent": [
+     1317.9568033962935,
+     722.0616967634828,
+     1806.5989897450786
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_05_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1202.230015035787,
+     -606.7598906034947,
+     1694.8373969216748
+    ],
+    "extent": [
+     1330.230015035787,
+     734.7598906034947,
+     1822.8373969216748
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_05_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1203.2837618948429,
+     -607.7956481660187,
+     1679.6703264182893
+    ],
+    "extent": [
+     1331.2837618948429,
+     735.7956481660187,
+     1807.6703264182893
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_06_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1107.3606533525733,
+     -547.9636577419919,
+     1678.454939826131
+    ],
+    "extent": [
+     1235.3606533525733,
+     675.9636577419919,
+     1806.454939826131
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_06_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1115.696421871883,
+     -562.0780300868789,
+     1694.4631878936198
+    ],
+    "extent": [
+     1243.696421871883,
+     690.0780300868789,
+     1822.4631878936198
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_06_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1116.6933333002983,
+     -565.0422709458426,
+     1660.6406641670687
+    ],
+    "extent": [
+     1244.6933333002983,
+     693.0422709458426,
+     1788.6406641670687
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_07_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1000.3035327045307,
+     -506.950545385891,
+     1628.018132175975
+    ],
+    "extent": [
+     1128.3035327045307,
+     634.950545385891,
+     1756.018132175975
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_07_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1005.8394489686339,
+     -523.8043820780573,
+     1644.8067401158214
+    ],
+    "extent": [
+     1133.8394489686339,
+     651.8043820780573,
+     1772.8067401158214
+    ]
+   }
+  },
+  {
+   "name": "Hradba_V_07_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_V"
+   ],
+   "folder": "Ruin/Hradba/Hradba_V",
+   "bounds": {
+    "origin": [
+     1006.7299568144931,
+     -524.9808984429599,
+     1628.6165977847459
+    ],
+    "extent": [
+     1134.729956814493,
+     652.9808984429599,
+     1756.6165977847459
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_01_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1355.2380826662402,
+     -70.87712914014452,
+     1669.8001340864062
+    ],
+    "extent": [
+     1483.2380826662402,
+     198.87712914014452,
+     1797.8001340864062
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_01_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1357.3722509863458,
+     -88.11271137516093,
+     1683.7244580533402
+    ],
+    "extent": [
+     1485.3722509863458,
+     216.11271137516093,
+     1811.7244580533402
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_01_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1362.2602314696796,
+     -89.06196955507596,
+     1650.677241665402
+    ],
+    "extent": [
+     1490.2602314696796,
+     217.06196955507596,
+     1778.677241665402
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_02_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1933.3013936742482,
+     -269.5658386564752,
+     1683.511821869422
+    ],
+    "extent": [
+     2061.301393674248,
+     397.5658386564752,
+     1811.511821869422
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_02_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1941.3186789800684,
+     -286.9142922914324,
+     1712.2104510317604
+    ],
+    "extent": [
+     2069.3186789800684,
+     414.9142922914324,
+     1840.2104510317604
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_02_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1942.1475245590846,
+     -286.40981652888655,
+     1698.8758460403756
+    ],
+    "extent": [
+     2070.1475245590846,
+     414.40981652888655,
+     1826.8758460403756
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_03_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2163.1162376458924,
+     -463.0737002152514,
+     1634.8847011743883
+    ],
+    "extent": [
+     2291.1162376458924,
+     591.0737002152514,
+     1762.8847011743883
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_03_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2173.0359029248984,
+     -466.8875954865149,
+     1650.372731067539
+    ],
+    "extent": [
+     2301.0359029248984,
+     594.8875954865149,
+     1778.372731067539
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_03_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2180.770387052504,
+     -472.2687733826921,
+     1634.913696923401
+    ],
+    "extent": [
+     2308.770387052504,
+     600.2687733826921,
+     1762.913696923401
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_03_Osteni",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_A.SM_RuinDressed_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_B.SM_RuinDressed_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_A.SM_RuinDressed_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_B.SM_RuinDressed_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_A.SM_RuinDressed_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_B.SM_RuinDressed_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFrame.MI_RuinFrame"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2105.0398897971827,
+     -418.6800936387415,
+     1619.6599137237613
+    ],
+    "extent": [
+     2233.0398897971827,
+     546.6800936387415,
+     1747.6599137237613
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_04_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2188.7849252904753,
+     -661.7545112802638,
+     1634.97927175117
+    ],
+    "extent": [
+     2316.7849252904753,
+     789.7545112802638,
+     1762.97927175117
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_04_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2207.822025587121,
+     -661.3488285405747,
+     1650.3727310675388
+    ],
+    "extent": [
+     2335.822025587121,
+     789.3488285405747,
+     1778.3727310675388
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_04_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2208.2118634787876,
+     -669.4665863094898,
+     1634.913696923401
+    ],
+    "extent": [
+     2336.2118634787876,
+     797.4665863094898,
+     1762.913696923401
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_04_Osteni",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_A.SM_RuinDressed_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_B.SM_RuinDressed_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_A.SM_RuinDressed_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_B.SM_RuinDressed_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_A.SM_RuinDressed_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_B.SM_RuinDressed_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFrame.MI_RuinFrame"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2207.132836470828,
+     -624.0686278442372,
+     1619.6599137237613
+    ],
+    "extent": [
+     2335.132836470828,
+     752.0686278442372,
+     1747.6599137237613
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_05_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2167.9100941981014,
+     -937.9601526220717,
+     1697.9037346667596
+    ],
+    "extent": [
+     2295.9100941981014,
+     1065.9601526220717,
+     1825.9037346667596
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_05_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2185.964543096653,
+     -954.9797407909944,
+     1712.0151188510354
+    ],
+    "extent": [
+     2313.964543096653,
+     1082.9797407909941,
+     1840.0151188510354
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_05_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2186.873595780191,
+     -955.6496803523844,
+     1698.0567420101424
+    ],
+    "extent": [
+     2314.873595780191,
+     1083.6496803523844,
+     1826.0567420101424
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_06_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1831.9518685465227,
+     -1098.738659641322,
+     1744.1926268161606
+    ],
+    "extent": [
+     1959.9518685465227,
+     1226.738659641322,
+     1872.1926268161606
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_06_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1840.7819960868546,
+     -1117.8425232617494,
+     1762.6987022964772
+    ],
+    "extent": [
+     1968.7819960868546,
+     1245.8425232617494,
+     1890.6987022964772
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_06_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1841.412043969336,
+     -1118.6174817518627,
+     1744.072836236292
+    ],
+    "extent": [
+     1969.412043969336,
+     1246.6174817518627,
+     1872.072836236292
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_06_Osteni",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_A.SM_RuinDressed_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_B.SM_RuinDressed_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_A.SM_RuinDressed_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_B.SM_RuinDressed_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_A.SM_RuinDressed_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_B.SM_RuinDressed_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFrame.MI_RuinFrame"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1655.4781630359416,
+     -1080.6500668070148,
+     1743.9669114365265
+    ],
+    "extent": [
+     1783.4781630359416,
+     1208.6500668070148,
+     1871.9669114365265
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_07_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1290.0345779583188,
+     -1124.7579478961952,
+     1698.1756414857068
+    ],
+    "extent": [
+     1418.0345779583188,
+     1252.7579478961952,
+     1826.1756414857068
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_07_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1292.4008836840708,
+     -1143.922877000376,
+     1712.466038905558
+    ],
+    "extent": [
+     1420.4008836840708,
+     1271.922877000376,
+     1840.466038905558
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_07_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -1293.2561103778235,
+     -1143.5887154592015,
+     1698.314552159713
+    ],
+    "extent": [
+     1421.2561103778235,
+     1271.5887154592015,
+     1826.314552159713
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_07_Osteni",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_A.SM_RuinDressed_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_B.SM_RuinDressed_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_A.SM_RuinDressed_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_B.SM_RuinDressed_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_A.SM_RuinDressed_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_B.SM_RuinDressed_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFrame.MI_RuinFrame"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -531.6512526688209,
+     -1136.0439068260976,
+     1619.6599137237613
+    ],
+    "extent": [
+     659.6512526688209,
+     1264.0439068260976,
+     1747.6599137237613
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_08_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     88.51318894353716,
+     -1269.904115819305,
+     1698.0786218921548
+    ],
+    "extent": [
+     509.67543401107434,
+     1397.904115819305,
+     1826.0786218921548
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_08_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     94.05158085988688,
+     -1288.5721372761027,
+     1712.6874160485977
+    ],
+    "extent": [
+     515.1775197702068,
+     1416.5721372761027,
+     1840.6874160485977
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_08_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     92.30705204891649,
+     -1288.7202467287966,
+     1698.9500977040807
+    ],
+    "extent": [
+     518.5362101330307,
+     1416.7202467287966,
+     1826.9500977040807
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_08_Osteni",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_A.SM_RuinDressed_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_B.SM_RuinDressed_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_A.SM_RuinDressed_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_B.SM_RuinDressed_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_A.SM_RuinDressed_R34_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_B.SM_RuinDressed_R34_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFrame.MI_RuinFrame"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     -2.5430263052742816,
+     -1247.1824077285683,
+     1619.6599137237613
+    ],
+    "extent": [
+     400.2068423302126,
+     1375.1824077285683,
+     1747.6599137237613
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_09_Jadro",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCore.MI_RuinCore"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     909.7549573809936,
+     -1513.0275660844568,
+     1634.8847011743883
+    ],
+    "extent": [
+     1037.7549573809936,
+     1641.0275660844568,
+     1762.8847011743883
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_09_Koruna",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCrown.MI_RuinCrown"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     915.6149557497351,
+     -1533.0288864611507,
+     1651.1823882998183
+    ],
+    "extent": [
+     1043.6149557497351,
+     1661.0288864611507,
+     1779.1823882998183
+    ]
+   }
+  },
+  {
+   "name": "Hradba_Z_S_09_Lic",
+   "class": "Actor",
+   "kind": "other",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C",
+    "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinFace.MI_RuinFace"
+   ],
+   "tags": [
+    "Zricenina_Ruin",
+    "RuinBlocks",
+    "cast:Obvod",
+    "zed:Hradba_Z_S"
+   ],
+   "folder": "Ruin/Hradba/Hradba_Z_S",
+   "bounds": {
+    "origin": [
+     916.7908678714641,
+     -1532.5297708625376,
+     1635.7135619355945
+    ],
+    "extent": [
+     1044.7908678714641,
+     1660.5297708625376,
+     1763.7135619355945
+    ]
+   }
+  }
+ ]
+}

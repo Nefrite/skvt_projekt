@@ -63,6 +63,16 @@ _Zatím žádné dokumenty._
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Guesthouse.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 13 vlastních
+- Třídy: StaticMesh 1, Blueprint 0, BSP 0, ostatní 12
+- Zástupné meshe (`/Engine/BasicShapes/`): 3; výchozí materiály: 0
+- Fáze: –
+- Rozsah: 4727 × 2019 × 3716 cm
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky

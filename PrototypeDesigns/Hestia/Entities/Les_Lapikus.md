@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-21
 aliases: []
 # hra
 kind: place
@@ -74,10 +74,20 @@ depth_environment: 1
 
 ## Stav v UE
 <!-- hestia:generated:start -->
+
+Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Les_Lapikus.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+
+- Actory: 0 vlastních
+- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
+- Fáze: –
+- Pro srovnání `depth_*`: environment 1; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+
 <!-- hestia:generated:end -->
 
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
+- [x] Unreal (report `ue_Les_Lapikus.json`, 2026-11-21): v levelu není žádný actor s tagem `Zricenina_Alder` ve složce `Forest/Alders` (`04_forest/place_alders.py`). Olše nejsou rozmístěné, nebo jsou jinde (jiná složka, PCG)? Podle toho upravit pravidlo v `ue_map.yaml`; `depth_environment: 1` beze změny — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: les v levelu ještě neexistuje, je jen návrh game designu; pravidlo v `ue_map.yaml` zůstává pro budoucí realizaci
 <!-- hestia:generated:start -->
 
 - Fronta F-0010 (G2, [[Les_Lapikus]]): očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths

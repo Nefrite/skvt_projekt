@@ -1,0 +1,1193 @@
+{
+ "generated": "2026-11-21T12:17:30",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "map": "/Game/Skvt/LapikusPrototypeMap",
+ "path": "etapa 1 (skript v editoru)",
+ "query": [
+  {
+   "tags": [
+    "vybaveni:Palac_Kovarna_Vybaveni*"
+   ]
+  }
+ ],
+ "truncated": false,
+ "summary": {
+  "own": {
+   "actors": 37,
+   "by_kind": {
+    "static_mesh": 37,
+    "blueprint": 0,
+    "bsp": 0,
+    "other": 0
+   },
+   "placeholder_meshes": 0,
+   "default_materials": 0,
+   "stages": {},
+   "bounds": {
+    "min": [
+     -49.65105629718847,
+     -1257.2211957251227,
+     3127.6999994823072
+    ],
+    "max": [
+     575.5649033358923,
+     -656.9669427596309,
+     3499.8891767856817
+    ]
+   }
+  },
+  "descendants": {
+   "actors": 0,
+   "entities": {}
+  }
+ },
+ "actors": [
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Brus",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinGrindstoneTreadle_A.SM_RuinGrindstoneTreadle_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinGrindstoneTreadle_A.SM_RuinGrindstoneTreadle_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinSandstone.MI_RuinSandstone",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWater.MI_RuinWater",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Brus",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     146.94131799999968,
+     -1186.6257260000002,
+     3181.65
+    ],
+    "extent": [
+     73.78276612873884,
+     70.59546972512248,
+     52.650001525878906
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Drevo0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Drevo0",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     57.41947999999956,
+     -891.13656,
+     3197.2
+    ],
+    "extent": [
+     46.786616297188175,
+     74.4344824638024,
+     68.19999694824219
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Drevo1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Drevo1",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     27.277519999999633,
+     -1025.8052400000001,
+     3191.744
+    ],
+    "extent": [
+     46.786616297188175,
+     74.4344824638024,
+     62.74399719238272
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Drevo2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Drevo2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     -2.864440000000286,
+     -1160.47392,
+     3195.154
+    ],
+    "extent": [
+     46.78661629718818,
+     74.4344824638024,
+     66.15399703979483
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Hrebovnice",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinNailHeader_A.SM_RuinNailHeader_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinNailHeader_A.SM_RuinNailHeader_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Hrebovnice",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     500.75802399999975,
+     -1008.196568,
+     3184.75
+    ],
+    "extent": [
+     7.869930942998053,
+     12.629026525198583,
+     1.0
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_KaliciSud",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBarrel_A.SM_RuinBarrel_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBarrel_A.SM_RuinBarrel_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWater.MI_RuinWater",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|KaliciSud",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     427.3986759999998,
+     -1081.8523519999999,
+     3168.65
+    ],
+    "extent": [
+     36.59357694598043,
+     36.55570571354042,
+     40.150001525878906
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik0",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     270.6250759999998,
+     -710.030792,
+     3279.0
+    ],
+    "extent": [
+     2.774302989616615,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik0_2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     273.68230200000016,
+     -711.022494,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166718,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_2_2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik0_2_2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     254.70834000000013,
+     -706.05836,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166718,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik0_3",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     293.6279059999997,
+     -718.970922,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166718,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_4",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik0_4",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     311.6548799999996,
+     -719.0092599999999,
+     3279.0
+    ],
+    "extent": [
+     2.774302989616615,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_5",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik0_5",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     251.67295599999943,
+     -704.9690720000001,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166433,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik1",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     337.4817039999998,
+     -725.4047479999999,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166718,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1_2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik1_2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     353.54252199999974,
+     -727.3599340000001,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166718,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1_3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik1_3",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     330.54287999999997,
+     -723.4417800000001,
+     3279.0
+    ],
+    "extent": [
+     2.7743029896166718,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1_4",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kolik1_4",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     360.5570899999998,
+     -729.44233,
+     3279.0
+    ],
+    "extent": [
+     2.774302989616615,
+     6.182788365249735,
+     1.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kos",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBasket_A.SM_RuinBasket_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBasket_A.SM_RuinBasket_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWattle.MI_RuinWattle"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kos",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     211.12763199999927,
+     -819.273684,
+     3147.25
+    ],
+    "extent": [
+     26.03006428117692,
+     26.21942333276661,
+     18.25
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Kovadlina",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinAnvil_A.SM_RuinAnvil_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinAnvil_A.SM_RuinAnvil_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Kovadlina",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     410.4183199999993,
+     -964.50974,
+     3200.85
+    ],
+    "extent": [
+     30.467909707066724,
+     12.77198011520079,
+     12.149999618530273
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Lista",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Lista",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     306.2644019999998,
+     -718.827494,
+     3279.0
+    ],
+    "extent": [
+     66.1432431751623,
+     15.963094503891853,
+     5.0
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Mechy",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBellows_A.SM_RuinBellows_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBellows_A.SM_RuinBellows_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinLeather.MI_RuinLeather",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Mechy",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     510.9182159999996,
+     -1003.0924719999999,
+     3198.5
+    ],
+    "extent": [
+     64.6466873358927,
+     111.98644237432802,
+     69.5
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Mechy_Lano",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_B.SM_RuinRope_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_B.SM_RuinRope_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinRope.MI_RuinRope"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Mechy_Lano",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     490.4304199999997,
+     -1094.62814,
+     3285.0
+    ],
+    "extent": [
+     2.063269228643719,
+     5.076782024128306,
+     19.206011383802434
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi0",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinTongs_A.SM_RuinTongs_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinTongs_A.SM_RuinTongs_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Naradi0",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     539.2850559999997,
+     -794.8595119999999,
+     3210.0
+    ],
+    "extent": [
+     20.937176855628422,
+     18.173496604988145,
+     2.0380454905962324
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinTongs_A.SM_RuinTongs_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinTongs_A.SM_RuinTongs_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Naradi1",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     310.87878599999976,
+     -722.934542,
+     3280.9
+    ],
+    "extent": [
+     2.5990459114175337,
+     1.8794816450906637,
+     25.100000381469727
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinHammer_A.SM_RuinHammer_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinHammer_A.SM_RuinHammer_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Naradi2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     333.8886459999999,
+     -727.2648820000001,
+     3267.2
+    ],
+    "extent": [
+     5.8368037861499715,
+     3.2993928334533393,
+     18.200000762939453
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinHammer_A.SM_RuinHammer_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinHammer_A.SM_RuinHammer_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Naradi3",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     431.8470219999999,
+     -953.0124940000001,
+     3212.4
+    ],
+    "extent": [
+     13.943726137075373,
+     18.557780104477388,
+     2.399167208878225
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi4",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChisel_A.SM_RuinChisel_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChisel_A.SM_RuinChisel_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Naradi4",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     271.51956800000016,
+     -713.8176159999999,
+     3272.7
+    ],
+    "extent": [
+     1.6719866110133808,
+     1.6719866110133808,
+     10.300000190734863
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi5",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChisel_A.SM_RuinChisel_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChisel_A.SM_RuinChisel_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIronClean.MI_RuinIronClean"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Naradi5",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     161.03846599999997,
+     -890.1448419999999,
+     3215.9
+    ],
+    "extent": [
+     10.300047426733613,
+     1.6723452457052872,
+     1.6720542431712602
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Paka",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Paka",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     439.66599999999994,
+     -989.5015,
+     3296.5
+    ],
+    "extent": [
+     54.400240175322324,
+     102.76247205246693,
+     10.493487190781252
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Paka_Lano",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_B.SM_RuinRope_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_B.SM_RuinRope_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinRope.MI_RuinRope"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Paka_Lano",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     417.5075039999997,
+     -946.113888,
+     3396.5945883928407
+    ],
+    "extent": [
+     1.0,
+     1.0,
+     103.29458839284098
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Ponk",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWorkbench_A.SM_RuinWorkbench_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWorkbench_A.SM_RuinWorkbench_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Ponk",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     161.63580199999979,
+     -946.537174,
+     3171.6
+    ],
+    "extent": [
+     66.10287702011269,
+     117.45704584233908,
+     42.599998474121094
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Pruty",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinIronBars_A.SM_RuinIronBars_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinIronBars_A.SM_RuinIronBars_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Pruty",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     509.1889059999994,
+     -728.790422,
+     3191.1
+    ],
+    "extent": [
+     15.642621467164531,
+     6.414564345984672,
+     50.33352734215396
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Pruty_2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinIronBars_A.SM_RuinIronBars_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinIronBars_A.SM_RuinIronBars_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinIron.MI_RuinIron"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Pruty_2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     503.2373699999998,
+     -669.76505,
+     3195.1
+    ],
+    "extent": [
+     14.802415466622506,
+     12.798107240369063,
+     50.33352734215396
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Spalek",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_B.SM_RuinStump_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_B.SM_RuinStump_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Spalek",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     416.85158999999976,
+     -963.69521,
+     3159.388285
+    ],
+    "extent": [
+     28.08764361239247,
+     29.77091405424835,
+     31.688285517692748
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Spalek2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_B.SM_RuinStump_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_B.SM_RuinStump_B"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Spalek2",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     500.75802399999975,
+     -1008.1965679999998,
+     3156.5
+    ],
+    "extent": [
+     22.106438030082614,
+     21.07253821517469,
+     27.500000449268555
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Stolicka",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStool_A.SM_RuinStool_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStool_A.SM_RuinStool_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Stolicka",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     221.6964939999998,
+     -1122.300138,
+     3151.7
+    ],
+    "extent": [
+     20.676268083013838,
+     20.108190928244767,
+     22.700000762939453
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Truhlik",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBox_A.SM_RuinCoalBox_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBox_A.SM_RuinCoalBox_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCharcoal.MI_RuinCharcoal",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Truhlik",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     218.61296399999992,
+     -747.372208,
+     3169.0
+    ],
+    "extent": [
+     67.597553214914,
+     52.48670190647442,
+     40.0
+    ]
+   }
+  },
+  {
+   "name": "Kamen_Palac_Kovarna_Vybaveni_Truhlik_Viko",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBoxLid_A.SM_RuinCoalBoxLid_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBoxLid_A.SM_RuinCoalBoxLid_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood"
+   ],
+   "tags": [
+    "Zricenina_Vybaveni",
+    "id:Palac_Kovarna_Vybaveni|Truhlik_Viko",
+    "vybaveni:Palac_Kovarna_Vybaveni"
+   ],
+   "folder": "Vybaveni/Palac/Kovarna",
+   "bounds": {
+    "origin": [
+     183.81666399999995,
+     -733.435508,
+     3265.3
+    ],
+    "extent": [
+     44.727651327628706,
+     48.45862204274249,
+     57.82231773148533
+    ]
+   }
+  }
+ ]
+}
