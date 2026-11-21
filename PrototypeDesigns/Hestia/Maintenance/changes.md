@@ -66,3 +66,5 @@ updated: 2026-11-21
 | 2026-11-21 | agent pilotu | Inbox/Rad.md | nový scratch `intake: raw` z Notion 📥 Inbox (Řád) | import Notion |
 | 2026-11-21 | agent pilotu | Inbox/Palisada_nad_branou.md | nový scratch `intake: raw` z Notion 📥 Inbox (Palisáda nad bránou) | import Notion |
 | 2026-11-21 | agent pilotu | Maintenance/sources.md | řádek Notion 📥 Inbox (Project Lapikus): jednorázový import 2026-11-21 | import Notion |
+| 2026-11-21 | agent pilotu | Maintenance/taxonomy_local/ue_map.yaml | nový `ue_map` (mapa `/Game/Skvt/LapikusPrototypeMap`, defaults `stavba:`/`vybaveni:`, 10 jmenovitých položek, 15 entit s pravidlem), schválil GameDesigner | předání pilotu P5 |
+| 2026-11-21 | agent pilotu | Scratch/Scratch_Unreal_napojeni.md | část 2 (napojení entit) označena jako zpracovaná odkazem na `ue_map.yaml` | předání pilotu P9 |

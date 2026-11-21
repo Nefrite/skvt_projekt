@@ -1,0 +1,23 @@
+# Napojení entit Hestia na actory v levelu (13 kap. 10.11). Schválil GameDesigner 2026-11-21 (P5).
+# Zdroj konvencí: kód Lapikus (zrlib/config.py, ue_actors.py, build_constructions.py, build_furnishing.py,
+# build_ruin*.py, place_alders.py) a Scratch_Unreal_napojeni.
+# Shoda: tag podle vzoru (* = libovolný konec), složka v Outlineru včetně podsložek; actor patří entitě
+# s nejdelší shodou; jmenovitá položka entity nahrazuje defaults podle kind.
+# Bez pravidla (rozhodnutí 2026-11-21): Lapikus_Region, Udoli_Reky (landscape a spline řeky bez tagu a složky),
+# Ostroh, Nadvori, Pristup_JV, Characters, Characters_Animace_Sezeni.
+map: /Game/Skvt/LapikusPrototypeMap
+stage_tag_prefix: "stage:"
+defaults:
+  structure: {tags: ["stavba:{entity}*"]}
+  object:    {tags: ["vybaveni:{entity}*"]}
+items:
+  - {entity: Vez,            folders: [Ruin/Vez]}            # zdi Vez_J/V/S/Z, Vez_Dlazba (03)
+  - {entity: Vez,            tags: ["stavba:Vez_Patra*"]}    # patra (05)
+  - {entity: Palac,          folders: [Ruin/Palac]}          # zdi paláce (03)
+  - {entity: Palac,          tags: ["stavba:Palac*"]}        # Kovarna a Obydli mají delší vzor (defaults)
+  - {entity: Strazni_Vez,    folders: [Ruin/Brana]}          # zdi Brana_V/S/J/Jih; brány jsou otvory ve zdech
+  - {entity: Guesthouse,     tags: ["stavba:Ostroh_*"]}      # Ostroh_Krov, _Dostavba, _Podlaha (aliasy hubu)
+  - {entity: Guesthouse,     folders: [Ruin/ZapadniBudova]}  # zdi ZBudova_V/S (část „Ostroh“); jméno entity se může změnit podle lore
+  - {entity: Hradby_a_Brana, folders: [Ruin/Hradba]}         # Hradba_Z_S, Hradba_V
+  - {entity: Lapikus,        folders: [Ruin/Rampa]}          # rampa Rampa_SZ
+  - {entity: Les_Lapikus,    tags: [Zricenina_Alder], folders: [Forest/Alders]}

@@ -5,7 +5,7 @@ validity: valid
 intake: prepared
 source: chat
 captured_by: agent HearthLore
-updated: 2026-11-20
+updated: 2026-11-21
 # hra
 category: []
 entity: ""
@@ -27,6 +27,8 @@ entity: ""
 - Po prvním ověření v praxi (zapnutí, spojení z Claude Code) přepsat jako know-how (`knowhow_kind: tool`, `scope: engine`, `engine_version: 5.8`).
 
 ### 2026-11-20 – Napojení entit Hestia na actory v levelu (agent HearthLore)
+
+> **Zpracováno 2026-11-21 (P5, agent pilotu):** pravidla napojení jsou v `Maintenance/taxonomy_local/ue_map.yaml` (schválil GameDesigner); generovaný blok `## Stav v UE` přinese první čtení (P6). Část 1 (zapnutí Unreal MCP) zůstává do etapy 2.
 
 **Zjištěno z kódu Lapikus** (`zrlib/config.py`, `zrlib/ue_actors.py`, `05_constructions/build_constructions.py`, `06_furnishing/build_furnishing.py`):
 - mapa `LapikusPrototypeMap`;
