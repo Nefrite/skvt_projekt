@@ -1,9 +1,9 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: GameDesign | core: 0.14.2 | date: 2026-11-21 -->
+<!-- role: GameDesign | core: 0.15.0 | date: 2026-11-21 -->
 <!-- sources: Roles/GameDesign.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/design_template.md -->
 # GameDesign – instrukce pro chat
 
-Kompilát pro režim `chat`: kontrakt (L0), moduly (L1) a profil role (L2) v jednom souboru. Soubory vaultu odsud neotevřeš; co k tasku potřebuješ, dostaneš v předání nebo na vyžádání. Platí verze ve vaultu, změny vracíš zápisem Hestia (modul `chat_entry`).
+Kompilát pro režim `chat`: kontrakt (L0), moduly (L1) a profil role (L2) v jednom souboru. Vidíš-li vault (`Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce), přepni do režimu `vault` podle modulu `start` a tento kompilát dál neber jako zdroj. Kompilát je pro relaci bez přístupu k vaultu: co k tasku potřebuješ, dostaneš v předání nebo na vyžádání, platí verze ve vaultu a změny vracíš zápisem Hestia (modul `chat_entry`).
 
 Vynechané moduly (jen režim `vault`): `file_safety`, `metadata`, `asset_header`.
 
@@ -14,8 +14,15 @@ Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: `looku
 ### Co je Hestia
 Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u toho, kdo pracuje: během tasku a při jeho uzavření. Hlavním orchestrátorem je **GameDesigner** (člověk v chatu): zadává tasky, rozhoduje, odpovídá na otázky a schvaluje.
 
+### Režim práce
+Režim určuje přístup k vaultu, ne prostředí:
+- **`vault`**: relace vidí soubory projektu (Claude Code ve složce projektu, chat nebo Cowork s připojenou složkou); zapisuješ přímo podle matice pravomocí. Platí, i když relace začala s kompilátem role.
+- **`chat`**: relace bez přístupu k vaultu (chat bez připojené složky, jen dokumenty Claude Projectu); na konci tasku vydáš zápis Hestia.
+
+Režim ověří modul `start` jako první krok. I v režimu `vault` commituje člověk.
+
 ### Start
-1. Přečti tento kontrakt a profil své role (`Roles/<Role>.md`); v chatu máš obojí v kompilátu role.
+1. Přečti tento kontrakt a profil své role: projektové role v `Roles/<Role>.md`, role core (Curator, Auditor, Librarian) v `_core/agents/<Role>.md`. V režimu `chat` máš obojí v kompilátu role.
 2. Postupuj podle modulu `start`: načti jen to, co task potřebuje, nic „pro jistotu“.
 3. Zdroj pravdy: u prototypování skripty, data a stav v enginu, u lore a příběhu finální dokumentace v `Docs/`. Předání a zadání v chatu jsou jen instrukce.
 
@@ -39,15 +46,16 @@ Hestia je samodokumentující vault projektu (`Hestia/`). Dokumentace vzniká u 
 | otázka na obsah dokumentace (odpověď s citacemi) | `lookup` |
 | pokyn k zápisu: kam patří, náležitosti, soulad s kánonem | `file_info`, `completeness`, `canon_check` |
 | položky inboxu `intake: raw` (třídění s GameDesignerem) | `inbox_triage` |
+| pokyn k importu z externího zdroje do `Inbox/` | `inbox_import` |
 | otázka na realizaci v Unrealu (jen čtení) | `ue_lookup` |
 | zápis do souborů projektu | `file_safety` |
 | zápis frontmatteru | `metadata` |
 | nový nebo změněný skript | `asset_header` |
 | předání jiné roli nebo další relaci | `handover_out` |
-| práce v režimu chat (bez přístupu k vaultu) | `chat_entry` |
+| práce v režimu chat (relace bez přístupu k vaultu; s přístupem platí režim vault) | `chat_entry` |
 | konec tasku | `task_close` |
 
-Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Výjimka: moduly Knihovníka (`compile: listed`) používá jen role, která je má v profilu nebo skládá `Librarian`; ostatní předají věc Knihovníkovi (zápis Hestia), nebo se zeptají GameDesignera. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
+Modul načti, když nastane jeho spouštěč, i když ho profil role neuvádí. Výjimka: moduly s `compile: listed` (moduly Knihovníka, `inbox_import`) používá jen role, která je má v profilu nebo ji skládá; ostatní předají věc roli, která modul má (Knihovníkovi zápisem Hestia, import Curatorovi), nebo se zeptají GameDesignera. Moduly core jsou v `_core/agents/modules/`, lokální moduly instance v `Roles/modules/`.
 
 ### Uzavření tasku je povinné
 Každý task, který změnil návrh, stav, kód nebo data, končí modulem `task_close`: výsledek do finální dokumentace, archivace předání, metadata, know-how, otázky, řádek do `changes.md`, kontrola a krátké hlášení GameDesignerovi. Dokud to neproběhne, task není hotový. V režimu `chat` místo zápisu do vaultu vydáš zápis Hestia (modul `chat_entry`).
@@ -58,7 +66,9 @@ Každý task, který změnil návrh, stav, kód nebo data, končí modulem `task
 Na začátku každého tasku a při pokračování v nové relaci.
 
 ### Postup
-Načti v tomto pořadí a nic navíc:
+0. **Režim podle přístupu** (12 kap. 1.1): ověř, zda vidíš `Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce. Když ano, pracuješ v režimu `vault`, i když jsi začal s kompilátem role: načti kontrakt a profil z vaultu (projektové role v `Hestia/Roles/`, role core v `Hestia/_core/agents/`) a kompilát dál neber jako zdroj. Když ne, pracuješ v režimu `chat` s kompilátem.
+
+Pak načti v tomto pořadí a nic navíc:
 1. kontrakt a profil své role, případně složené profily (`combines`);
 2. zadání tasku: chat nebo aktivní předání v `Handovers/`;
 3. huby entit, kterých se task týká, a jejich `state`;
@@ -74,6 +84,7 @@ Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, o
 Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého stavu vycházíš a co je nejasné. Nejasnost řeš modulem `question` dřív, než začneš.
 
 ### Známé pasti
+- Pracovat podle kompilátu (balíčky, zápis Hestia), když relace vault vidí, třeba přes připojenou složku; hlavní práce pak běží nad ručně přenášenými výňatky.
 - Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným.
 - Brát předání nebo starou kopii v chatu jako zdroj pravdy. Platí vault, u prototypování skripty a stav v enginu.
 - Přehlédnout `superseded` u předání nebo hubu a pracovat podle neplatného zadání.
@@ -219,7 +230,7 @@ Aktivní předání v `Handovers/`, archivované předchozí předání, aktuál
 ## Modul `chat_entry` (L1)
 
 ### Kdy
-Pracuješ v chatu bez přístupu k vaultu a končíš task (místo kroků 1–10 modulu `task_close`).
+Pracuješ v režimu `chat`, tedy v relaci bez přístupu k vaultu, a končíš task (místo kroků 1–10 modulu `task_close`). Chat s připojenou složkou projektu, ve které vidíš vault, je režim `vault`: zapisuješ přímo podle pravidel role a modulu `task_close` (12 kap. 1.1).
 
 ### Postup
 Na konci tasku vydej strukturovaný blok. Prázdné sekce vynech.
@@ -268,7 +279,7 @@ Na konci každého tasku, který změnil návrh, stav, kód nebo data. **Task ne
 | # | Krok | Kam |
 |---|---|---|
 | 1 | **Přenos do finální dokumentace**: výsledek tasku ze zadání (chat, předání) do doménového dokumentu nebo `state`; rozhodnutí jako fakta (modul `decision`); odchylky od návrhu do `state` (*Co se liší od návrhu*). Nemá-li entita `state`, založ ho. Změnil-li se spec, aktualizuj *Souhrn specifikace* | `Docs/<domain>/` |
-| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; předání z chatové verze se odstraní z Claude Projectu | `Handovers/` |
+| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; předání z chatové verze se odstraní z Claude Projectu: odstraní ho jen relace připojená k tomuto projektu, jinak připrav seznam souborů k odebrání pro GameDesignera | `Handovers/` |
 | 3 | **Uzavření cest**: alternativy, zodpovězené otázky → `decision` | `Docs/` |
 | 4 | **Metadata**: `updated`, `validity` dokumentů; `depth_*`, `status` hubu (modul `metadata`) | frontmatter |
 | 5 | **Know-how**: nové ověřené pasti a postupy (modul `knowhow_write`) | `KnowHow/` |

@@ -9,6 +9,8 @@
   přesune do `_to_delete/_core_<verze>/`; řádek do `structure_version.md`; z `taxonomy_local` se odstraní
   hodnoty nově v core a zapíší do `changes.md`; funkční nastavení `.obsidian` se nemění (02 kap. 7.1).
 - Na konci upozornění, jsou-li kompiláty rolí starší než nový core.
+- Report (zadání 0.15.3): po výměně `_core/` hned oddíl přechodu v reportu dne (`upgrade.start_section`), kroky
+  ho doplní; průběh na stderr hned. Dry-run ohlásí nedokončený přechod a doporučí `--after-only --apply`.
 - Migrace MAJOR verzí: `scripts/migrations/<verze>.py` v novém core s funkcí `migrate(vault, apply)`;
   spustí se v dry-run a s `--apply` po schválení. Ve fázi 3 jen kostra bez migrací.
 - Snippety core `.obsidian/snippets/hestia-*.css` (02 kap. 7.1) srovná při každém běhu: chybějící doplní,
@@ -289,18 +291,29 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     return _run(args, vault, Path(args.source).resolve(), "")
 
 
-def run_after_subprocess(vault: Vault, old_v: str) -> tuple[int, dict | None, str]:
-    """Kroky po aktualizaci novým core (13 kap. 10.6): podproces _core/scripts/hestia.py --after-only."""
-    env = dict(os.environ, PYTHONIOENCODING="utf-8")
-    r = subprocess.run([sys.executable, "-I", str(vault.root / "_core" / "scripts" / "hestia.py"), "update_core",
-                        "--vault", str(vault.root), "--after-only", "--since", old_v, "--apply", "--json"],
-                       capture_output=True, text=True, encoding="utf-8", env=env)
+def run_after_subprocess(vault: Vault, old_v: str, quiet: bool = False) -> tuple[int, dict | None, str]:
+    """Kroky po aktualizaci novým core (13 kap. 10.6): podproces _core/scripts/hestia.py --after-only.
+    Průběh (stderr podprocesu) se předává hned dál (zadání 0.15.3); JSON výsledku jde přes dočasný soubor."""
+    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1")
+    cmd = [sys.executable, "-I", str(vault.root / "_core" / "scripts" / "hestia.py"), "update_core",
+           "--vault", str(vault.root), "--after-only", "--since", old_v, "--apply", "--json"]
+    if quiet:
+        cmd.append("--quiet")
+    err_lines: list[str] = []
+    with tempfile.TemporaryFile(mode="w+", encoding="utf-8") as out:
+        proc = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE, text=True, encoding="utf-8", env=env)
+        for line in proc.stderr:
+            err_lines.append(line)
+            print(line, end="", file=sys.stderr, flush=True)
+        code = proc.wait()
+        out.seek(0)
+        stdout = out.read()
     try:
-        data = json.loads(r.stdout)
+        data = json.loads(stdout)
     except (json.JSONDecodeError, TypeError):
-        tail = [l for l in (r.stderr or r.stdout or "").splitlines() if l.strip()]
-        return r.returncode or 1, None, tail[-1] if tail else f"návratový kód {r.returncode}"
-    return r.returncode, data, ""
+        tail = [l for l in ("".join(err_lines) or stdout or "").splitlines() if l.strip()]
+        return code or 1, None, tail[-1] if tail else f"návratový kód {code}"
+    return code, data, ""
 
 
 def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
@@ -334,6 +347,7 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
     upl = upgrade_mod.with_compose(upgrade_mod.plan(new_core, old_v, new_v), vault, old_v, new_v) \
         if parse_version(new_v) > parse_version(old_v) else upgrade_mod.Plan()
     no_after = getattr(args, "no_after", False)
+    pending = None if args.apply else upgrade_mod.unfinished(vault, old_v)
     dirty = gitinfo.changed_files(vault.project_root)
     warnings = []
     if dirty:
@@ -365,6 +379,10 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
                                                               f"aktualizace z {old_v} ({how})",
                                                               ", ".join(upl.crs)])], today=day),
                          expected_hash=file_hash(sv))
+        # oddíl přechodu v reportu hned po výměně (zadání 0.15.3); kroky ho doplní, přerušení ho nechá viditelný
+        upgrade_mod.start_section(vault, old_v, new_v, upl)
+        if not getattr(args, "quiet", False):
+            print(f"update_core: _core/ vyměněn {old_v} -> {new_v}", file=sys.stderr, flush=True)
         removed_local = []
         local = vault.root / "Maintenance" / "taxonomy_local"
         by_file: dict[str, tuple[str, set]] = {}
@@ -417,7 +435,7 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
 
     after, after_code, after_err = None, EXIT_OK, ""
     if applied and not no_after:
-        after_code, after, after_err = run_after_subprocess(vault, old_v)
+        after_code, after, after_err = run_after_subprocess(vault, old_v, getattr(args, "quiet", False))
 
     stale = stale_compiled(vault, new_v)
     payload = {"command": "update_core", "applied": applied, "from": old_v, "to": new_v, "source": tag or None,
@@ -426,7 +444,8 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
                "changelog": [{"version": v, "note": n} for v, n in notes],
                "taxonomy_local_in_core": [{"file": f, "key": k, "value": v} for f, k, v in overlaps],
                "migrations": migr_out, "stale_compiled": stale, "warnings": warnings, "views": view_rels,
-               "resumed": resumed, "snippets": [{"action": a, "file": n} for a, n in snippets]}
+               "resumed": resumed, "snippets": [{"action": a, "file": n} for a, n in snippets],
+               "unfinished": pending}
     if unchanged:
         lines = [f"update_core: core {old_v} je aktuální, beze změny"]
     else:
@@ -470,6 +489,8 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
     if stale and not (after and "compose_role" in [s["step"] for s in after.get("steps") or [] if s["ok"]]):
         lines.append(f"Upozornění: kompiláty rolí jsou starší než core {new_v}: {', '.join(stale)}; "
                      f"spusť compose_role --apply")
+    if pending:
+        lines.append("Upozornění: " + upgrade_mod.unfinished_line(pending))
     lines += [f"Upozornění: {w}" for w in warnings]
     if resumed:
         lines.insert(0, resumed)
@@ -480,8 +501,11 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
 def _after_text(after: dict) -> str:
     """Textový souhrn výsledku --after-only z podprocesu (JSON)."""
     lines = [f"Kroky po aktualizaci (core {after.get('version')}):"]
-    lines += [f"  {s['step']}: {'v pořádku' if s['ok'] else 'selhal: ' + s['message']}"
-              for s in after.get("steps") or []] or ["  žádné automatické kroky"]
+    for s in after.get("steps") or []:
+        lines.append(f"  {s['step']}: {'v pořádku' if s['ok'] else 'selhal: ' + s['message']}")
+        lines += [f"    {d}" for d in s.get("details") or []]
+    if not after.get("steps"):
+        lines.append("  žádné automatické kroky")
     lines += [f"  {x}" for x in upgrade_mod.check_text(after.get("checks") or {})]
     if after.get("tasks"):
         lines.append(f"Ruční úkoly do queue.md: {', '.join(after['tasks'])}")

@@ -78,3 +78,6 @@ updated: 2026-11-21
 | 2026-11-21 | agent pilotu | Maintenance/queue.md | úkol T-0020: ověřit rozsah a třídu actorů ISM v reportech Unrealu | P6 |
 | 2026-11-21 | agent pilotu | Brana | `depth_structures` 4 → 1 (poloha ve strážní věži; zdi jsou realizací Strazni_Vez, rozhodnutí GameDesignera) | chat GameDesigner, P6 |
 | 2026-11-21 | agent pilotu | Brana | otevřená otázka: `status: built` a `brana_spec.py` po změně `depth_structures` na 1 | P6 |
+| 2026-11-21 | agent pilotu | CLAUDE.md | vstupní soubor podle `tpl_entrypoint` (profily rolí core v `Hestia/_core/agents/`), úkol T-0021 | update_core 0.14.4 (ruční úkol), P11 |
+| 2026-11-21 | agent pilotu | Inbox/Guest_on_hunt.md, Inbox/Ranar.md, Inbox/Rad.md, Inbox/Palisada_nad_branou.md | `source_ref` z řádku Zdroj: (adresa stránky v Notion), úkol T-0022 | update_core 0.15.0 (ruční úkol), P11 |
+| 2026-11-21 | agent pilotu | Maintenance/import/notion_2026-11-21.json | export čtyř poznámek Lapikus z Notion (jen čtení zdroje) pro ověření `inbox_import`; dry-run: 4 přeskočeno jako duplicity | P11 |

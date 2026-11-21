@@ -19,7 +19,7 @@ items:
     description: Nezpracovaný nápad nebo brainstorm; z inboxu nebo psaný přímo
     game_section: optional
     required_fields: [type, validity, updated, intake, source]
-    optional_fields: [superseded_by, derived_from, alternative_to, captured_by, reviewed, aliases, tags, category, entity]
+    optional_fields: [superseded_by, derived_from, alternative_to, source_ref, captured_by, reviewed, aliases, tags, category, entity]
     zone: "Scratch/"
     template: tpl_scratch.md
 

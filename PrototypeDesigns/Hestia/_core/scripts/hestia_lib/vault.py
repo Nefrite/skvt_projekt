@@ -16,7 +16,8 @@ VAULT_DIRNAME = "Hestia"
 SKIP_DIRS = {".obsidian", ".trash", ".git", "__pycache__"}
 # Poznámky, které lint nekontroluje (core je jen ke čtení, kompiláty generované, koš).
 # _core/ ověřují akceptační testy, lint ho nekontroluje (13 kap. 2).
-LINT_EXCLUDE_PREFIXES = ("_core/", "_to_delete/", "Roles/_compiled/", "Maintenance/context/")
+LINT_EXCLUDE_PREFIXES = ("_core/", "_to_delete/", "Roles/_compiled/", "Maintenance/context/",
+                         "Maintenance/import/")      # soubory výměny importu (13 kap. 10.12, zadání 0.16)
 
 
 def find_vault(start: Path | None = None) -> Path:

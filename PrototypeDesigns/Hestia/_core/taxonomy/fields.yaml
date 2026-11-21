@@ -30,6 +30,7 @@ items:
   - {name: alternative_to, section: orchestration, applies_to: *documents_entity, value: wikilink_list, required: no}
   - {name: intake,         section: orchestration, applies_to: [scratch],  value: "enum:intake",   required: always}
   - {name: source,         section: orchestration, applies_to: [scratch],  value: "enum:source",   required: always}
+  - {name: source_ref,     section: orchestration, applies_to: [scratch],  value: text,            required: no}   # inbox_import, 13 kap. 10.12
   - {name: captured_by,    section: orchestration, applies_to: [scratch],  value: text,            required: "source in [agent, chat]"}
   - {name: knowhow_kind,   section: orchestration, applies_to: [knowhow],  value: "enum:knowhow_kind", required: always}
   - {name: tech,           section: orchestration, applies_to: [knowhow],  value: list, items: "enum:tech", required: always}

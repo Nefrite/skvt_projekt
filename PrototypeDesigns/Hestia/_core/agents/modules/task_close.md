@@ -5,7 +5,7 @@ trigger: konec tasku
 requires: [decision, idea_capture, question, knowhow_write, metadata]
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-18
+updated: 2026-11-21
 ---
 # Uzavření tasku
 
@@ -16,7 +16,7 @@ Na konci každého tasku, který změnil návrh, stav, kód nebo data. **Task ne
 | # | Krok | Kam |
 |---|---|---|
 | 1 | **Přenos do finální dokumentace**: výsledek tasku ze zadání (chat, předání) do doménového dokumentu nebo `state`; rozhodnutí jako fakta (modul `decision`); odchylky od návrhu do `state` (*Co se liší od návrhu*). Nemá-li entita `state`, založ ho. Změnil-li se spec, aktualizuj *Souhrn specifikace* | `Docs/<domain>/` |
-| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; předání z chatové verze se odstraní z Claude Projectu | `Handovers/` |
+| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; předání z chatové verze se odstraní z Claude Projectu: odstraní ho jen relace připojená k tomuto projektu, jinak připrav seznam souborů k odebrání pro GameDesignera | `Handovers/` |
 | 3 | **Uzavření cest**: alternativy, zodpovězené otázky → `decision` | `Docs/` |
 | 4 | **Metadata**: `updated`, `validity` dokumentů; `depth_*`, `status` hubu (modul `metadata`) | frontmatter |
 | 5 | **Know-how**: nové ověřené pasti a postupy (modul `knowhow_write`) | `KnowHow/` |

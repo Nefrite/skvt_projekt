@@ -3,6 +3,7 @@
 type: scratch
 intake: raw
 source: notion
+source_ref: "https://app.notion.com/p/419636aed784818a8583ff0ef8b4e092"
 validity: valid
 updated: 2026-11-21
 # hra

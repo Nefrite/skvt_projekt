@@ -1,16 +1,16 @@
 ---
 type: agent_module
 module_id: chat_entry
-trigger: práce v režimu chat (bez přístupu k vaultu)
+trigger: práce v režimu chat (relace bez přístupu k vaultu)
 requires: []
 modes: [chat]
 validity: valid
-updated: 2026-11-20
+updated: 2026-11-21
 ---
 # Zápis Hestia (režim chat)
 
 ## Kdy
-Pracuješ v chatu bez přístupu k vaultu a končíš task (místo kroků 1–10 modulu `task_close`).
+Pracuješ v režimu `chat`, tedy v relaci bez přístupu k vaultu, a končíš task (místo kroků 1–10 modulu `task_close`). Chat s připojenou složkou projektu, ve které vidíš vault, je režim `vault`: zapisuješ přímo podle pravidel role a modulu `task_close` (12 kap. 1.1).
 
 ## Postup
 Na konci tasku vydej strukturovaný blok. Prázdné sekce vynech.

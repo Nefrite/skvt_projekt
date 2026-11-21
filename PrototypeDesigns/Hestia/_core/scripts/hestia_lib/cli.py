@@ -1,6 +1,7 @@
 """Rozhraní příkazové řádky: python hestia.py <příkaz> [argumenty] (zadání 13, kap. 3).
 
-Společné argumenty: --vault PATH, --apply, --force, --json, --quiet.
+Společné argumenty: --vault PATH, --apply, --force, --json, --quiet; platí před příkazem i za ním a zadané
+na obou místech se sčítají (zadání 0.15.3; dřív hodnota podpříkazu přepsala hlavní a `--apply` před příkazem zmizelo).
 Návratové kódy: 0 v pořádku, 1 nálezy úrovně chyba / odmítnutý zápis, 2 chybné použití
 nebo konfigurace, 3 neočekávaná chyba.
 """
@@ -10,16 +11,18 @@ import argparse
 import json
 import sys
 import traceback
+from pathlib import Path
 
 from . import core_version
-from .errors import EXIT_UNEXPECTED, EXIT_USAGE, HestiaError
+from .errors import EXIT_UNEXPECTED, EXIT_USAGE, HestiaError, UsageError
 
 COMMANDS_LATER: dict[str, int] = {}
 # příkaz -> modul s funkcí run(args, vault)
 VAULT_COMMANDS = {"lint": "lint", "compose_role": "compose", "asset_index": "asset_index", "hubs": "hubs",
                   "audit": "audit", "task_close": "task_close", "frontmatter": "migrate",
                   "update_core": "update_core", "export_cr": "export_cr", "doc_index": "doc_index",
-                  "compose_context": "context", "ue_query": "ue"}
+                  "compose_context": "context", "ue_query": "ue",
+                  "inbox_import": "inbox_import"}
 
 
 class _Parser(argparse.ArgumentParser):
@@ -29,19 +32,44 @@ class _Parser(argparse.ArgumentParser):
         raise SystemExit(EXIT_USAGE)
 
 
-def _common() -> argparse.ArgumentParser:
+COMMON_FLAGS = ("apply", "force", "json", "quiet")
+GLOBAL_PREFIX = "global_"
+
+
+def _common(prefix: str = "") -> argparse.ArgumentParser:
+    """Společné argumenty; hlavní parser je ukládá pod `global_<jméno>`, aby je podpříkaz nepřepsal."""
     p = argparse.ArgumentParser(add_help=False)
-    p.add_argument("--vault", metavar="PATH", help="vault Hestia/ (výchozí: nejbližší Hestia/ od pracovní složky)")
-    p.add_argument("--apply", action="store_true", help="zapsat změny (bez něj dry-run)")
-    p.add_argument("--force", action="store_true", help="přepsat existující hodnotu, kde to příkaz umí")
-    p.add_argument("--json", action="store_true", help="strojový výstup na stdout")
-    p.add_argument("--quiet", action="store_true", help="bez textového výstupu")
+    p.add_argument("--vault", dest=f"{prefix}vault", metavar="PATH",
+                   help="vault Hestia/ (výchozí: nejbližší Hestia/ od pracovní složky)")
+    p.add_argument("--apply", dest=f"{prefix}apply", action="store_true", help="zapsat změny (bez něj dry-run)")
+    p.add_argument("--force", dest=f"{prefix}force", action="store_true",
+                   help="přepsat existující hodnotu, kde to příkaz umí")
+    p.add_argument("--json", dest=f"{prefix}json", action="store_true", help="strojový výstup na stdout")
+    p.add_argument("--quiet", dest=f"{prefix}quiet", action="store_true", help="bez textového výstupu")
     return p
+
+
+def merge_common(args: argparse.Namespace, parser: argparse.ArgumentParser | None = None) -> argparse.Namespace:
+    """Sloučí společné argumenty před příkazem a za ním: přepínače OR; `--vault` na obou místech jen se shodnou
+    cestou, různé cesty = chyba použití (kód 2), tichá přednost by zapisovala jinam, než uživatel čeká (0.15.4)."""
+    for name in COMMON_FLAGS:
+        setattr(args, name, bool(getattr(args, name, False)) or bool(getattr(args, GLOBAL_PREFIX + name, False)))
+    after, before = getattr(args, "vault", None), getattr(args, GLOBAL_PREFIX + "vault", None)
+    if after and before and Path(after).resolve() != Path(before).resolve():
+        msg = f"--vault před příkazem ({before}) a za ním ({after}) se liší; zadej jednu cestu"
+        if parser is None:
+            raise UsageError(msg)
+        parser.error(msg)
+    args.vault = after or before
+    for name in (*COMMON_FLAGS, "vault"):
+        if hasattr(args, GLOBAL_PREFIX + name):
+            delattr(args, GLOBAL_PREFIX + name)
+    return args
 
 
 def build_parser() -> argparse.ArgumentParser:
     common = _common()
-    parser = _Parser(prog="hestia.py", description=f"Hestia core {core_version()}", parents=[common])
+    parser = _Parser(prog="hestia.py", description=f"Hestia core {core_version()}", parents=[_common(GLOBAL_PREFIX)])
     parser.add_argument("--version", action="version", version=core_version())
     sub = parser.add_subparsers(dest="command", metavar="<příkaz>", parser_class=_Parser)
 
@@ -102,6 +130,11 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--entity", help="entita s pravidlem v ue_map.yaml (čtou se i její potomci)")
     p.add_argument("--all", action="store_true", help="všechny entity s pravidlem (jedno spuštění editoru)")
 
+    p = sub.add_parser("inbox_import", parents=[common],
+                       help="import položek ze souboru výměny do Inbox/ (13 kap. 10.12)")
+    p.add_argument("--from", dest="source_file", required=True, metavar="SOUBOR",
+                   help="soubor výměny, typicky Maintenance/import/<zdroj>_RRRR-MM-DD.json")
+
     p = sub.add_parser("update_core", parents=[common], help="aktualizace _core/ na novou verzi")
     src = p.add_mutually_exclusive_group()
     src.add_argument("--from", dest="source", metavar="HESTIA_DIR", help="cesta k novému hestia/")
@@ -137,7 +170,7 @@ def main(argv: list[str] | None = None) -> int:
         except (AttributeError, ValueError):
             pass
     parser = build_parser()
-    args = parser.parse_args(argv)
+    args = merge_common(parser.parse_args(argv), parser)
     if not args.command:
         parser.print_help()
         return EXIT_USAGE

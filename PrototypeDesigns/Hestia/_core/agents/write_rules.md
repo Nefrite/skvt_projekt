@@ -1,7 +1,7 @@
 ---
 type: reference
 validity: valid
-updated: 2026-11-20
+updated: 2026-11-21
 ---
 # Pravidla zápisu (výchozí, core)
 
@@ -30,6 +30,7 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 | `doc_index.json`, `context/` (index dokumentů, balíčky kontextu) | – | ✔ (skripty `doc_index`, `hubs`, `compose_context`) | ✔ (skript `audit` obnoví index) | ✘ |
 | `ue/`, `reports/ue_*.json` (čtení Unrealu, jen čtecí dotazy core) | ✔ (spouští skript v editoru) | ✔ (skript `ue_query`) | ✔ (skript `ue_query`) | ✔ (skript `ue_query`, role s `ue_lookup` v profilu) |
 | `outbox/` (change requesty) | odesílá | ✔ (připravuje) | ✘ | ✘ |
+| `Maintenance/import/` (soubory výměny importu) | ✔ | ✔ (modul `inbox_import`; zůstávají jako záznam původu) | ✘ | ✘ |
 | `Roles/` (profily, lokální moduly) | ✔ | ✘ | ✘ | ✘ |
 | `Roles/_compiled/` | – | ✔ (skript `compose_role`) | ✘ | ✘ |
 | Kód, data, assety projektu | ✔ | ✘ | ✘ | ✔ (stavitel, furnisher …) |

@@ -6,6 +6,8 @@
   `Maintenance/ue/ue_query_<id>.py` (pracovní složka, přepisuje se). GameDesigner ho spustí v editoru
   (*Execute Python Script*); skript přes `_core/scripts/hestia_ue.py` zapíše surový výsledek
   `Maintenance/ue/ue_result_<id>.json`. U `--entity` se čtou i potomci s pravidlem (součet za potomky).
+  Skript je přenosný (zadání 0.15.4): cesty k `_core/scripts` a k výsledku odvozuje z `__file__`, absolutní cestu
+  stroje, kde běží core, neobsahuje; výpis pro editor uvádí cestu relativně ke kořeni projektu.
 - `ue_query --import [soubor]`: ověří výsledek, doplní souhrn (vlastní actory, za potomky) a uloží report na entitu
   `Maintenance/reports/ue_<entita>.json`. Novější report starším nepřepíše.
 Pravidla: jmenovité položky (`items`) mají přednost před `defaults` podle `kind` (`{entity}` = ID entity); actor
@@ -19,7 +21,6 @@ import datetime as _dt
 import json
 from pathlib import Path
 
-from . import CORE_ROOT
 from .changeset import ChangeSet
 from .errors import EXIT_OK, UsageError
 from .fileio import read_text, to_posix
@@ -143,23 +144,41 @@ def request(vault: Vault, m: Model, entity: str | None, all_: bool) -> dict:
             "limit": LIMIT, "path": PATH_STAGE1, "targets": targets, "rules": rmap}
 
 
-def script_text(req: dict, result: Path) -> str:
-    scripts = (CORE_ROOT / "scripts").resolve()
+def script_text(req: dict, result_name: str) -> str:
+    """Přenosný skript (zadání 0.15.4, CR_2026-11-21_ue_query_cesty_ve_skriptu): žádná absolutní cesta stroje, kde
+    běží core; `_core/scripts` a výsledek odvodí ze svého umístění `<Hestia>/Maintenance/ue/` (`__file__`)."""
     return "\n".join([
         "# hestia:ue_query – vygenerovaný čtecí skript, needitovat (zadání 13, kap. 10.11). Jen čtení.",
         f"# Entita: {req['id']}. Spusť v editoru Unreal: Tools → Execute Python Script. Výsledek načti:",
         f"#   python <Hestia>/_core/scripts/hestia.py ue_query --import --"
         + ("all" if req["id"] == "all" else f"entity {req['id']}") + " --apply",
+        "# Cesty se odvozují z umístění skriptu (<Hestia>/Maintenance/ue/); skript je přenosný mezi stroji.",
         "import json",
         "import sys",
+        "from pathlib import Path",
         "",
-        f"sys.path.insert(0, {str(scripts)!r})",
+        "try:",
+        "    HERE = Path(__file__).resolve().parent",
+        "except NameError:",
+        "    raise SystemExit('hestia:ue_query: skript spusť jako soubor (Execute Python Script), chybí __file__')",
+        "VAULT = HERE.parents[1]",
+        "sys.path.insert(0, str(VAULT / '_core' / 'scripts'))",
         "import hestia_ue  # noqa: E402",
         "",
         f"REQUEST = json.loads({json.dumps(req, ensure_ascii=False)!r})",
-        f"hestia_ue.run(REQUEST, {str(result.resolve())!r})",
+        f"hestia_ue.run(REQUEST, str(HERE / {result_name!r}))",
         "",
     ])
+
+
+def editor_path(vault: Vault, path: Path) -> str:
+    """Cesta pro pokyn do editoru relativně ke kořeni projektu (bez absolutní cesty stroje, kde běží core)."""
+    for base in (vault.project_root, vault.root.parent):
+        try:
+            return to_posix(path.resolve().relative_to(base.resolve()))
+        except ValueError:
+            continue
+    return f"{vault.root.name}/{to_posix(path.relative_to(vault.root))}"
 
 
 def build_reports(vault: Vault, m: Model, raw: dict) -> tuple[dict[str, dict], list[str]]:
@@ -207,16 +226,23 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         req = request(vault, m, args.entity, args.all)
         script = vault.root / UE_DIR / f"ue_query_{req['id']}.py"
         result = vault.root / UE_DIR / f"ue_result_{req['id']}.json"
-        cs.write(script, script_text(req, result))
+        cs.write(script, script_text(req, result.name))
         if args.apply and not cs.empty:
             cs.apply()
+        warnings = []
+        if not (vault.root / "_core" / "scripts" / "hestia_ue.py").is_file():
+            warnings.append("ve vaultu chybí _core/scripts/hestia_ue.py; skript v editoru ho nenajde (aktualizuj core)")
+        rel = editor_path(vault, script)
         verb = "zapsán" if args.apply else "zapsal by se (dry-run, zapiš s --apply)"
         lines = [f"ue_query --emit {req['id']}: čtecí skript {verb} → {UE_DIR}/{script.name} "
                  f"({len(req['targets'])} entit: {', '.join(req['targets'])})",
-                 f"V editoru Unreal: Tools → Execute Python Script → {to_posix(script.resolve())}",
+                 f"V editoru Unreal: Tools → Execute Python Script → {rel} (relativně ke kořeni projektu; "
+                 "v dialogu ho vyber ve složce projektu)",
                  f"Pak: hestia.py ue_query --import --{'all' if req['id'] == 'all' else 'entity ' + req['id']} --apply"]
+        lines += [f"upozornění: {w}" for w in warnings]
         payload = {"command": "ue_query", "mode": "emit", "applied": bool(args.apply), "id": req["id"],
-                   "script": f"{UE_DIR}/{script.name}", "result": f"{UE_DIR}/{result.name}", "targets": req["targets"]}
+                   "script": f"{UE_DIR}/{script.name}", "result": f"{UE_DIR}/{result.name}", "editor_path": rel,
+                   "targets": req["targets"], "warnings": warnings}
         return EXIT_OK, payload, "\n".join(lines)
 
     src = _result_file(vault, args.import_file, args.entity, args.all)

@@ -135,7 +135,7 @@ def list_profiles(vault: Vault) -> list[str]:
 
 def default_roles(vault: Vault, core_root: Path = CORE_ROOT) -> list[str]:
     """Role bez výčtu: profily v `Roles/` a role core (`_core/agents/<Role>.md`), jejichž kompilát už ve vaultu je,
-    aby `compose_role` po aktualizaci core obnovil všechny kompiláty (zadání 0.15.1; provizorní, otázka v předání)."""
+    aby `compose_role` po aktualizaci core obnovil všechny kompiláty (zadání 0.15.1, pravidlo 12 kap. 2 od zadání 0.15.2; nový kompilát role core jen výslovně)."""
     roles = set(list_profiles(vault))
     d = vault.root / COMPILED_DIR
     for p in d.glob(f"*{COMPILED_SUFFIX}.md") if d.is_dir() else []:
@@ -300,15 +300,18 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
         f"# {role} – instrukce pro chat",
         "",
         "Kompilát pro režim `chat`: kontrakt (L0), moduly (L1) a profil role (L2) v jednom souboru. "
-        "Soubory vaultu odsud neotevřeš; co k tasku potřebuješ, dostaneš v předání nebo na vyžádání. "
-        "Platí verze ve vaultu, změny vracíš zápisem Hestia (modul `chat_entry`).",
+        "Vidíš-li vault (`Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce), přepni do režimu "
+        "`vault` podle modulu `start` a tento kompilát dál neber jako zdroj. "
+        "Kompilát je pro relaci bez přístupu k vaultu: co k tasku potřebuješ, dostaneš v předání nebo na vyžádání, "
+        "platí verze ve vaultu a změny vracíš zápisem Hestia (modul `chat_entry`).",
     ]
     if len(profiles) > 1:
         lines += ["", f"Složené role: {_join(n for n, _ in profiles)}. "
                       "Při rozporu mají přednost pravidla přísnější role (zadání 12, kap. 2.2)."]
     if skipped:
         lines += ["", f"Vynechané moduly (jen režim `vault`): {_join(f'`{m}`' for m in skipped)}."]
-    omitted = [m for m in not_listed if m not in included]
+    # modul listed jen pro vault (inbox_import, zadání 0.16) do kompilátu nepatří žádné roli; neuvádí se jako vynechaný
+    omitted = [m for m in not_listed if m not in included and "chat" in modules[m].modes]
     if omitted:
         lines += ["", f"Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: "
                       f"{_join(f'`{m}`' for m in omitted)}. Když nastane jejich spouštěč, předej věc Knihovníkovi "

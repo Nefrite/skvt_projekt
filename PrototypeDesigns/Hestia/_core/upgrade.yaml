@@ -45,3 +45,19 @@ versions:
     after: []
     manual: []
     crs: [CR_2026-11-21_compose_role_po_kazde_aktualizaci]
+  - version: 0.14.3
+    after: [compose_role]
+    manual: []
+    crs: [CR_2026-11-21_update_core_report_zmena_prirazeni, CR_2026-11-21_update_core_report_a_preruseni]
+  - version: 0.14.4
+    after: [compose_role]
+    manual:
+      - id: entrypoint_core_roles
+        text: "Srovnat vstupní soubor CLAUDE.md v kořeni dokumentované složky podle šablony _core/templates/tpl_entrypoint.md: profil role core (Curator, Auditor, Librarian) je v Hestia/_core/agents/ (12 kap. 7, 07)"
+    crs: [CR_2026-11-21_knihovnik_pripojena_slozka, CR_2026-11-21_ue_query_cesty_ve_skriptu]
+  - version: 0.15.0
+    after: [doc_index, compose_role]
+    manual:
+      - id: scratch_source_ref
+        text: "Doplnit source_ref u scratch z ručního importu (adresa nebo ID položky ve zdroji z řádku Zdroj: v těle), aby je inbox_import poznal jako duplicitu (01 kap. 9.1, 13 kap. 10.12)"
+    crs: [CR_2026-11-21_inbox_import_notion]

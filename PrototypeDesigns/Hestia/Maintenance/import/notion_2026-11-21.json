@@ -1,0 +1,43 @@
+{
+  "source": "notion",
+  "source_query": "collection://a0bd1854-d4bf-4fe9-a296-d91f1c78b97b (📥 Inbox): Project = Lapikus, Status = In Hestia (ověření P11; import P10 šel s Status = Not started)",
+  "exported": "2026-11-21",
+  "items": [
+    {
+      "ref": "https://app.notion.com/p/418636aed784816a9357f50f6c493c0e",
+      "title": "Guest on hunt",
+      "created": "2026-11-14T10:33:21.614Z",
+      "type": "Dialogue",
+      "tags": [],
+      "content": "- cut sceen:\n  <ul>\n  <li>\n  Leader: Vaše věci jsou zde v bezpečí\n\n  - Guest: jsou protože si beru klíč s sebou (visí mu na krku)\n  </li>\n  <li></li>\n  <li>\n  Guest: Pche koroptve, já chci vysokou\n\n  <ul>\n  <li>\n  srny chodí pít k potoku, ale u strže pozor, skála bývá kluzká \n\n  - nejsem debil, umím se o sebe postarat\n  </li>\n  </ul>\n  </li>\n  <li>\n  Guest: odchází \n\n  <ul>\n  <li>\n  Muscle: jak dlouho tu tenhle ještě zůstane, ještě chvíli a podřízmu mu krk sám \n\n  <ul>\n  <li>\n  Leader: Kroť se ..., inkvizitoři z řádu by zatočili s námi se všemi. \n  </li>\n  <li>\n  Woman: Brr, Slyšela jsem, že drží člověka dlouhé dny v agónii a nenechají ho umřít.\n  </li>\n  <li>\n  Muscle: ...smrt má být rychlá \n  </li>\n  <li>\n  Leader: ...a tu by ti nedopřáli! Zaplatil si čtyři dny, budeš to muset vydržet.\n  </li>\n  <li>\n  Muscle: ...hmmm (bručivé, nespokojené)\n  </li>\n  </ul>\n  </li>\n  </ul>\n  </li>\n  </ul>",
+      "content_format": "notion-md"
+    },
+    {
+      "ref": "https://app.notion.com/p/419636aed784818a8583ff0ef8b4e092",
+      "title": "Ranař",
+      "created": "2026-11-15T16:26:48.439Z",
+      "type": "Character",
+      "tags": [],
+      "content": "Syn řezníka, krev a smrt pro něj byla od malička součástí života, pro jako nejmladšího pro něj nezbylo v podniku místo a tak se dal k armádě.\n\nPostupem času se z něj stal profesionální žoldák, zabíjení ke pro něj práce, kterou odvádí s perfektní precizností, čistě.\n\nK řádu se dostal jako bodyguard, vždycky ale spíš dbal na vlastní přežití a když odmítl obětovat život místo svého chráněnce byl za trest odvelen na stanoviště.\n\nŘád jako celek uznává, ale nesnáší jeho inkvizici, dle jeho hesla má být směr rychlá.",
+      "content_format": "notion-md"
+    },
+    {
+      "ref": "https://app.notion.com/p/41b636aed78481bdb307e67345724422",
+      "title": "Řád",
+      "created": "2026-11-17T09:17:41.071Z",
+      "type": "Lore",
+      "tags": [],
+      "content": "<ul>\n<li>\nVznikl po zničení Templářů přímými přeživšími masakru ve Francii a těm, co se povedlo zachránit něco, ze svývh majetků \n</li>\n<li>\nPrima reakce na chování církve, které považovali za mocenský boj a proto se stáhli do ústraní a začali operovat na hranici ilegality\n</li>\n<li>\nJejich prvotní účel bylo vymýcení korupce a nadvlády jedince v církvi. Později se stáhli do stínů zcela, jejich cíli se stali ti, kdo se považovali nad zákon. Stali se z nich headhunteři\n</li>\n<li>\nO historii se hráč dozvídá postupně, na samém začátku je prostě naverbován svým dědem po smrti otce.\n</li>\n</ul>",
+      "content_format": "notion-md"
+    },
+    {
+      "ref": "https://app.notion.com/p/41b636aed784816e8c60cd73456547c8",
+      "title": "Palisáda nad bránou",
+      "created": "2026-11-17T09:52:54.950Z",
+      "type": "Location",
+      "tags": [],
+      "content": "<b>Smart location: patrolling</b>\n\n<ul>\n<li>\niddle mode\n\n<ul>\n<li>\nfletching - tichá aktivita, stále slyší okolí, ale zabaví se\n</li>\n<li>\npatrol - dojde ke stěně, chvíli se rozhlíží daným směrem\n\n<ul>\n<li>\nvýchodní směr \n</li>\n<li>\njih nebo sever\n</li>\n<li>\ndruhá strana J/S\n</li>\n<li>\nzpět východ\n</li>\n</ul>\n</li>\n<li>\njen tak sedí a kouká, co se děje v hradě, poslouchá okolí \n</li>\n</ul>\n</li>\n<li>\nattention mode\n\n- trigger: něco zaslechl, zahlédl pohyb (bez identifikace zdroje / hráče)\n- full patrol - přechází od stěny ke stěně a prohlíží si okolí, občas koukne do hradu\n- exit: colddown do iddle\n</li>\n<li>\nalert mode\n\n<ul>\n<li>\ntrigger: \n\n- zahlédl hráče\n- V attention znovu zaslechl (potřetí) podezřelý zvuk\n</li>\n<li>\nzburcovaní okolí (ti se posouvají o stupeň výše)\n</li>\n<li>\nspot patrol: \n\n<ul>\n<li>\nvelká pozornost ke směru \n</li>\n<li>\nobčasná kontrola ostatních směrů \n</li>\n</ul>\n</li>\n<li>\nexit: colddown do attention\n</li>\n</ul>\n</li>\n<li>\nfight mode \n\n<ul>\n<li>\ntrigger:\n\n- vidí hráče\n- byl zraněn\n</li>\n<li>\nzburcovaní okolí (do fight nejbližší, patrol ostatní alert)\n</li>\n<li>\nattack\n\n<ul>\n<li>\nzbraň, jež má k dispozici vzhledem ke vzdálenosti hráče \n</li>\n<li>\nluk/kuše - dokud je hráč v range, zůstává na podestě a střílí \n</li>\n<li>\nchladné zbraně - pokud se hráč dostal na podestu, nebo je moc blízko \n</li>\n</ul>\n</li>\n<li>\nexit: \n\n- hráč opustil trigger area -> alert mode\n- těžké zranění s ranged -> hideout mode\n</li>\n</ul>\n</li>\n<li>\nhideout mode \n\n- trigger: těžké zranění s ranged\n- krytí za palisádou směrem odkud jde útok\n- exit:\n  - další zranění -> fight\n  - recovery -> fight nebo alert\n</li>\n</ul>",
+      "content_format": "notion-md"
+    }
+  ]
+}
