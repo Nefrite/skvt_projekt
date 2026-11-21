@@ -36,6 +36,7 @@ TEXTURES = {   # kandidati (BaseColor, Normal) - pouzije se prvni existujici
     "daub":     [(TEX_DIR + "/T_RuinDaub_D", TEX_DIR + "/T_RuinDaub_N")],
     "chinking": [(TEX_DIR + "/T_RuinDaub_D", TEX_DIR + "/T_RuinDaub_N")],       # vypln spar srubu = mazanina, jiny tint
     "canvas":   [(TEX_DIR + "/T_RuinCanvas_D", TEX_DIR + "/T_RuinCanvas_N")],
+    "sackcloth": [(TEX_DIR + "/T_RuinCanvas_D", TEX_DIR + "/T_RuinCanvas_N")],   # vak: stejne platno, jiny tint a vic skvrn
     "iron":     [(TEX_DIR + "/T_RuinIron_D", TEX_DIR + "/T_RuinIron_N")],              # s patinou rzi
     "ironclean": [(TEX_DIR + "/T_RuinIronClean_D", TEX_DIR + "/T_RuinIronClean_N")],   # bez rzi (naradi, kovadlina)
     "leather":  [(TEX_DIR + "/T_RuinLeather_D", TEX_DIR + "/T_RuinLeather_N")],
@@ -101,6 +102,9 @@ MAT_LOOK = {
     # lnene platno (M_RuinCloth, oboustranne): zasedle, skvrny; WindAmount = pohyb ve vetru v cm (0 = staticke)
     "canvas":   dict(TintA=(0.60, 0.56, 0.48), TintB=(0.74, 0.70, 0.61), Tiling=4.0, Roughness=0.9,
                      WindAmount=0.0, WindSpeed=0.6, WindScale=0.01, MacroAmount=0.6, MacroTiling=0.25),
+    # pouzivany vak (M_RuinCloth): zazloutle hrube platno, husti skvrny (makro dlazdice 0,4 m), zaprasene
+    "sackcloth": dict(TintA=(0.60, 0.51, 0.34), TintB=(0.75, 0.65, 0.45), Tiling=4.0, Roughness=0.95,
+                      WindAmount=0.0, WindSpeed=0.6, WindScale=0.01, MacroAmount=1.0, MacroTiling=2.5),
     # props (barva zeleza a kuze je v texture -> tint skoro bily); Metallic = kovovy lesk (parametr M_RuinStone, jinak 0)
     "iron":     dict(TintA=(0.85, 0.85, 0.85), TintB=(1.0, 1.0, 1.0), Tiling=2.0, Roughness=0.7, Metallic=0.5),    # s patinou rzi (kovani, obruce, pruty)
     "ironclean": dict(TintA=(0.85, 0.85, 0.85), TintB=(1.0, 1.0, 1.0), Tiling=2.0, Roughness=0.5, Metallic=0.8),   # bez rzi (naradi, kovadlina)
@@ -131,6 +135,7 @@ MAT_TOP = {
     "daub":     dict(TopTint=(1.08, 1.06, 1.00), TopStart=0.55, TopSharp=3.0, TopAmount=0.3),     # vrch vymyty destem
     "chinking": dict(TopTint=(0.90, 1.05, 0.80), TopStart=0.5, TopSharp=3.0, TopAmount=0.4),      # mech nahore
     "canvas":   dict(TopTint=(1.05, 1.05, 1.00), TopStart=0.6, TopSharp=3.0, TopAmount=0.25),
+    "sackcloth": dict(TopTint=(1.08, 1.05, 0.96), TopStart=0.5, TopSharp=2.5, TopAmount=0.4),       # vrch zapraseny
     "iron":     dict(TopTint=(1.10, 1.05, 1.00), TopStart=0.6, TopSharp=3.0, TopAmount=0.15),
     "ironclean": dict(TopTint=(1.05, 1.05, 1.05), TopStart=0.6, TopSharp=3.0, TopAmount=0.1),
     "leather":  dict(TopTint=(1.10, 1.08, 1.05), TopStart=0.6, TopSharp=3.0, TopAmount=0.2),
@@ -212,7 +217,7 @@ SLOT_MI = {"bark": "MI_RuinBark", "endgrain": "MI_RuinWood_EndGrain", "rope": "M
            "daub": "MI_RuinDaub", "chinking": "MI_RuinChinking", "iron": "MI_RuinIron", "ironclean": "MI_RuinIronClean", "leather": "MI_RuinLeather",
            "sandstone": "MI_RuinSandstone", "water": "MI_RuinWater", "charcoal": "MI_RuinCharcoal",
            "straw": "MI_RuinStraw", "wool": "MI_RuinWool"}
-CLOTH_MI = {"canvas": "MI_RuinCanvas"}   # na M_RuinCloth: oboustranny, posun ve vetru (WindAmount, vychozi 0 = staticke)
+CLOTH_MI = {"canvas": "MI_RuinCanvas", "sackcloth": "MI_RuinSackcloth"}   # na M_RuinCloth: oboustranny, posun ve vetru (WindAmount, vychozi 0 = staticke)
 CLOTH_VERSION = 2                        # vyssi nez v projektu -> skript prestavi graf M_RuinCloth
 # dalsi knihovni meshe: prefix -> (jmenovity rozmer cm, varianty, kategorie (MESH_DIRS), sloty v poradi v OBJ, zakladni cat).
 # Dilec: Stone.shape z LIB_SHAPES, Stone.cat = material slotu wood / jednoho slotu (napr. "rope", "canvas").
@@ -261,6 +266,10 @@ LIB_MESHES = {
     "SM_RuinDoor": ((101.8, 9.3, 219.3), "A", "props", ('wood', 'iron'), "wood"),   # dvere 1,0 x 2,2
     "SM_RuinShutter": ((61.4, 8.4, 59.2), "A", "props", ('wood', 'endgrain', 'iron'), "wood"),   # okenice 60 x 60 (50 x 50 = skala 0,83)
     "SM_RuinOvenDoor": ((45.9, 8.6, 41.9), "A", "props", ('wood', 'endgrain', 'iron'), "wood"),   # poklop usti pece: plech v XZ, drevena rukojet na -Y (stred plechu +3.56 cm v Y od stredu)
+    "SM_RuinCampBed": ((198.8, 76.2, 28.8), "A", "props", ('wood', 'endgrain', 'bark', 'straw', 'wool'), "wood"),   # luzko ve stanu (klady, tyce s kurou, slama, houne pres slamu), hlava na -X
+    "SM_RuinCampBedFolded": ((200.0, 76.5, 32.1), "A", "props", ('wood', 'endgrain', 'bark', 'straw', 'wool'), "wood"),   # luzko ve stanu, houne slozena v nohach
+    "SM_RuinChestSmall": ((59.3, 38.0, 31.7), "A", "props", ('wood', 'iron'), "wood"),   # truhlicka 55 x 35 x 32 (s drzadly 59,3), oko na zamek na -Y
+    "SM_RuinBundle": ((76.0, 43.4, 22.5), "A", "props", ('rope', 'sackcloth'), "sackcloth"),   # vak z platna lezici na boku: dno -X, hrdlo stazene lanem +X, popruh na +Y
 }
 LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePanel", "smoke_hood": "SM_RuinSmokeHood",
               "chimney": "SM_RuinChimney", "oven_dome": "SM_RuinOvenDome", "rope": "SM_RuinRope", "lashing": "SM_RuinLashing",
@@ -297,12 +306,16 @@ LIB_SHAPES = {"bark_strip": "SM_RuinBarkStrip", "wattle_panel": "SM_RuinWattlePa
               "shelf": "SM_RuinShelf",
               "door": "SM_RuinDoor",
               "shutter": "SM_RuinShutter",
-              "oven_door": "SM_RuinOvenDoor"}
+              "oven_door": "SM_RuinOvenDoor",
+              "camp_bed": "SM_RuinCampBed",
+              "camp_bed_folded": "SM_RuinCampBedFolded",
+              "chest_small": "SM_RuinChestSmall",
+              "bundle": "SM_RuinBundle"}
 STONE_MESH_VERSION = {"SM_RuinStone_W_": 2, "SM_RuinTimber_": 2, "SM_RuinPlank_": 2, "SM_RuinPost_": 2,
                       "SM_RuinLog": 1, "SM_RuinLogPeeling": 1, "SM_RuinPole": 1, "SM_RuinStake": 1, "SM_RuinForkHead": 1, "SM_RuinGutter": 2,       # Gutter 2: SM_RuinGutter je loupany, s kurou SM_RuinGutterBark
                       "SM_RuinBarkStrip": 1, "SM_RuinWattlePanel": 1, "SM_RuinSmokeHood": 1, "SM_RuinChimney": 1, "SM_RuinOvenDome": 1,
                       "SM_RuinRope": 1, "SM_RuinLashing": 1, "SM_RuinCanvasSample": 1, "SM_RuinCanvasVez": 1, "SM_RuinCanvasTent": 1,
-                      "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2, "SM_RuinBed": 1, "SM_RuinBedFolded": 1, "SM_RuinTable": 1, "SM_RuinChest": 1, "SM_RuinShelf": 1, "SM_RuinDoor": 1, "SM_RuinShutter": 1, "SM_RuinOvenDoor": 1}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
+                      "SM_RuinStump": 1, "SM_RuinAnvil": 3, "SM_RuinBellows": 5, "SM_RuinBarrel": 3, "SM_RuinGrindstone": 6, "SM_RuinWorkbench": 3, "SM_RuinTongs": 2, "SM_RuinHammer": 5, "SM_RuinChisel": 2, "SM_RuinNailHeader": 3, "SM_RuinCoalBox": 4, "SM_RuinWoodpile": 1, "SM_RuinIronBars": 2, "SM_RuinBasket": 3, "SM_RuinLadder": 1, "SM_RuinGrindstoneTreadle": 2, "SM_RuinStool": 1, "SM_RuinCoalBoxLid": 2, "SM_RuinMallet": 2, "SM_RuinNailHammer": 3, "SM_RuinBroadaxe": 3, "SM_RuinAxe": 3, "SM_RuinCrosscutSaw": 2, "SM_RuinBed": 1, "SM_RuinBedFolded": 1, "SM_RuinTable": 1, "SM_RuinChest": 1, "SM_RuinShelf": 1, "SM_RuinDoor": 1, "SM_RuinShutter": 1, "SM_RuinOvenDoor": 1, "SM_RuinCampBed": 1, "SM_RuinCampBedFolded": 1, "SM_RuinChestSmall": 1, "SM_RuinBundle": 2}   # meshe s nizsi verzi v projektu se naimportuji znovu (prefix -> verze)
 MAT_WOOD = ["/Game/StarterContent/Materials/M_Wood_Oak.M_Wood_Oak", "/Game/StarterContent/Materials/M_Wood_Pine.M_Wood_Pine"]   # zaloha, kdyz chybi textury dreva pro MI_RuinWood
 MAT_WOOD_MI = None                       # vlastni material neosetreneho dreva (cesta); None = MI_RuinWood (vytvori skript)
 # druhy dreva (Stone.cat): "wood" bez upravy (MI_RuinWood), "wood_tar" dehtovane, "wood_oil" morene olejem,

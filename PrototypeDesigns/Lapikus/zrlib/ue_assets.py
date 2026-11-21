@@ -629,7 +629,7 @@ def mesh_slots(mesh_name):
 def is_multi_slot(mesh_name):
     return mesh_slots(mesh_name) is not None
 
-_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "straw", "wool", "wood")
+_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "sackcloth", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "straw", "wool", "wood")
 
 def apply_materials(unreal, comp, mesh, material, slots=None):
     """material na komponentu meshe. slots = poradi slotu v OBJ (mesh_slots) nebo None (jeden slot = material dilce).

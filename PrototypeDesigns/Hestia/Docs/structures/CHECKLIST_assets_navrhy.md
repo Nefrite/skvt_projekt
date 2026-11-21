@@ -145,6 +145,7 @@ tools/meshes/
 | ☑   | 🆕 `MI_RuinWood_Peeled` (finish `peeled`)                            | čerstvě loupané dřevo: světlé, nažloutlé, stopy po loupáku                             | loupaná kulatina v etapě 1                    |
 | ☑   | 🆕 `MI_RuinWood_EndGrain`                                            | čela s letokruhy, světlejší, s prasklinami                                             | čela všech kulatin                            |
 | ☑   | 🆕 `MI_RuinCanvas`                                                   | lněné plátno, **oboustranné**, zašedlé, místy záplaty a skvrny; ❓ pohyb ve větru (WPO) | přístřešek věže, stan ⛺                       |
+| ☑   | 🆕 `MI_RuinSackcloth` (na `M_RuinCloth`, textura plátna) | používaný vak: zažloutlé hrubé plátno, hustší skvrny (makro dlaždice 0,4 m), zaprášený vršek (Jirka 22. 11. 2026); neověřeno v UE | vak `SM_RuinBundle` |
 | ☑   | 🆕 `MI_RuinRope`                                                     | konopné lano, světle béžové, vláknité                                                  | lana, ovázání, šňůry                          |
 | ☑   | 🆕 `MI_RuinDaub`                                                     | mazanina: hlína na proutí, praskliny                                                   | stěna kovárny, dymníky, komíny                |
 | ☑   | 🆕 `MI_RuinWattle`                                                   | samotné proutí                                                                         | okraje výpletu, koš na staveništi             |
@@ -232,13 +233,15 @@ tools/meshes/
 
 Rozdělení (Jirka 21. 11. 2026): **assety** = plachta, lůžko, truhlička, ranec (AssetGenerator). **Builder** skládá z hotových meshí stojky, hřeben, kolíky, šňůry (řetěz `SM_RuinRope`) v typu `tent` a stříšku v typu `bark_roof` (vidlice, tyče, krokvičky, kůra, přítlačné tyče, ovázání). Stružka je úprava terénu v levelu.
 
+**Rozmístění ve stanu (Jirka 22. 11. 2026):** ve stanu je **jen jedno lůžko**, na straně se zavřenou (spuštěnou) chlopní vchodu (−Y v osách plachty). Lůžko je **hlavou k zadnímu štítu** (Jirka 22. 11. 2026). **Truhlička** leží vedle lůžka u hlavy, **ranec** pohozený o kus vedle. Polohy doplní Builder / Furnisher.
+
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
 | ☑ | plachta stanu do A (díl přes hřeben, 2 štíty, odhrnutá chlopeň) | 2,4 × 2,2 × 1,9 m | na míru → 🆕 `SM_RuinCanvasTent_A` (`mesh_textile.canvas_tent`, OBJ + `.json` se středem, rozměrem, polohou tyčí a kolíků), ♻ `MI_RuinCanvas`. **Hotovo 21. 11. 2026**, náhled `05_constructions/Stan_plachta_nahled.png`, neověřeno v UE |
-| ☐ | lůžko z klád a tyčí (2×), výplň **sláma** + houně | 2,0 × 0,7 × 0,25 m; **v stanu blíž ke středu** (vnější okraj ~0,9 m od osy, plachta tam ~35 cm nad zemí; ulička ~0,4 m; Jirka 21. 11. 2026) | 🧩 jeden prop → 🆕 `SM_RuinCampBed` (2 klády Ø 15, 10 tyčí Ø 5 s kůrou, ♻ `MI_RuinStraw`, `MI_RuinWool`) |
+| ☑ | lůžko z klád a tyčí (**1×**, Jirka 22. 11. 2026; návrh 2×), výplň **sláma** + houně | 2,0 × 0,76 × 0,29 m (složená houně 0,32 m); **ve stanu blíž ke středu** (vnější okraj ~0,9 m od osy, plachta tam ~35 cm nad zemí; ulička ~0,4 m; Jirka 21. 11. 2026) | 🧩 jeden prop → 🆕 `SM_RuinCampBed` (houně přes slámu) a `SM_RuinCampBedFolded` (houně složená v nohách), `mesh_props.camp_bed`; 2 klády Ø 15, 10 tyčí Ø 5 s kůrou, ♻ `MI_RuinStraw`, `MI_RuinWool`; hlava na −X. **Hotovo 22. 11. 2026**, náhled `05_constructions/Stan_luzko_nahled.png`, neověřeno v UE |
 | ☑ | špalek k sezení | – | 🧩 (jako pod kovadlinu) → `SM_RuinStump` |
-| ☐ | ranec | – | ✋ plátno + lano → 🆕 `SM_RuinBundle` |
-| ☐ | truhlička | – | 🧩 prkna + ✋ kování → 🆕 `SM_RuinChestSmall` |
+| ☑ | ranec: válcový vak (pytel na záda přes rameno), pohozený na boku | 76 × 43 × 23 cm (vak ~62 × Ø 30, hrdlo s okrajem, popruh) | ✋ plátno + lano → 🆕 `SM_RuinBundle` (`mesh_props.bundle`, sloty `Sackcloth` + `Rope`, materiál `MI_RuinSackcloth`: dno −X, hrdlo stažené lanem +X, popruh volně po zemi na +Y; Jirka 22. 11. 2026). **Hotovo 22. 11. 2026**, náhled `05_constructions/Stan_vak_nahled.png`, neověřeno v UE |
+| ☑ | truhlička | 55 × 35 × 32 cm (s držadly 59 × 38) | 🧩 prkna + ✋ kování → 🆕 `SM_RuinChestSmall` (`mesh_props.chest_small`: 2 železné pásy, závěs s okem na zámek na −Y, držadla na ±X). **Hotovo 22. 11. 2026**, náhled `05_constructions/Stan_truhlicka_nahled.png`, neověřeno v UE |
 | ☐ | zavěšené boty | – | **nedělá se** (Jirka 21. 11. 2026) |
 | ☐ | zavěšené zbraně | – | **odloženo** (Jirka 21. 11. 2026), ❓ sdílet se zbrojí posádky |
 
@@ -353,6 +356,6 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 
 ## 11. Pořadí prací (Jirka 21. 11. 2026)
 
-1. **Stan (6.5):** `SM_RuinCanvasTent_A` → `SM_RuinCampBed` → `SM_RuinChestSmall` → `SM_RuinBundle`. Typy `tent` a `bark_roof` dělá Builder.
+1. **Stan (6.5):** ☑ `SM_RuinCanvasTent_A`, `SM_RuinCampBed` (+ `Folded`), `SM_RuinChestSmall`, `SM_RuinBundle` (hotovo 22. 11. 2026, neověřeno v UE; ukázka `tools/meshes/ukazka/Ukazka_Stan.py`). Typy `tent` a `bark_roof` a rozmístění dělá Builder / Furnisher.
 2. **Guesthouse (6.8), všechno, kvalitnější provedení:** `SM_RuinBedLarge` → `SM_RuinChestLocked` → `SM_RuinDesk` → `SM_RuinShelfTall` → `SM_RuinWoodpileSmall` → stojan na brnění a stojan na zbraně (názvy ❓, pracovně `SM_RuinArmorStand`, `SM_RuinWeaponRack`). Pec dělá Builder ([[predani_guesthouse_kamna_stavitel]]).
 3. **Fronta, zatím ne:** staveniště (6.3: loupák, hromada hlíny a koš mechu, hromada kamene), materiály kap. 5 (saze, udusaná hlína, třísky), španělský jezdec (6.4), zbraně (6.5, 6.8), VFX.

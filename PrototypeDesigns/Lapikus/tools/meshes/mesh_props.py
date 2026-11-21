@@ -3,7 +3,7 @@
 Procedurni modely z primitiv (hranol s nerovnostmi, valec, rotacni teleso, vytazeny profil) a kulatiny (mesh_log.tube).
 Vse trochu nakrivo a osoupane, zadne ostre "CAD" hrany. Pivot ve stredu bounding boxu, bounding box = NOMINAL.
 Sloty (podle potreby kazdeho meshe, poradi SLOTS): Wood (material podle upravy dilce), EndGrain, Bark, Iron, Leather,
-Sandstone, Water, Charcoal, Wattle, IronClean, Straw, Wool - materialy SLOT_MI v zrlib/config.py.
+Sandstone, Water, Charcoal, Wattle, IronClean, Straw, Wool, Canvas (MI_RuinCanvas, CLOTH_MI), Rope, Sackcloth (MI_RuinSackcloth: pouzivany vak) - materialy SLOT_MI v zrlib/config.py.
 Zelezo: Iron = s patinou rzi (kovani, obruce, osy, pruty), IronClean = bez rzi (naradi a kovadlina).
 
 Kovarna: SM_RuinAnvil (kovadlina), SM_RuinBellows (mech na ramu s vyfucnou), SM_RuinBarrel (kalici sud s vodou),
@@ -15,6 +15,9 @@ SM_RuinBasket (proutny kos), SM_RuinLadder (zebrik z tyci s kurou).
 Tesarske naradi: SM_RuinMallet (palice), SM_RuinNailHammer (kladivo na hrebiky), SM_RuinBroadaxe (sirocina),
 SM_RuinAxe (sekera na stipani), SM_RuinCrosscutSaw (dvoumuzna pila).
 Obydli: SM_RuinBed (A houne pres slamu, B slozena), SM_RuinTable, SM_RuinChest, SM_RuinShelf, SM_RuinDoor, SM_RuinShutter.
+Stan: SM_RuinCampBed (luzko z klad a tyci s kurou, slama, houne pres slamu), SM_RuinCampBedFolded (houne slozena),
+SM_RuinChestSmall (truhlicka 55 x 35 x 32, kovani, oko na zamek na -Y, drzadla na +-X),
+SM_RuinBundle (valcovy vak z platna lezici na boku, dno -X, hrdlo stazene lanem +X, popruh z lana na +Y).
 """
 import math, os
 import numpy as np
@@ -22,8 +25,8 @@ import numpy as np
 from mesh_common import waves, noise, smooth_normals, write_obj_slots
 import mesh_log
 
-SLOTS = ("Wood", "EndGrain", "Bark", "Iron", "Leather", "Sandstone", "Water", "Charcoal", "Wattle", "IronClean", "Straw", "Wool")
-WOOD, END, BARK, IRON, LEATHER, SAND, WATER, COAL, WATTLE, CLEAN, STRAW, WOOL = range(12)      # IRON = s patinou rzi, CLEAN = bez rzi (naradi)
+SLOTS = ("Wood", "EndGrain", "Bark", "Iron", "Leather", "Sandstone", "Water", "Charcoal", "Wattle", "IronClean", "Straw", "Wool", "Canvas", "Rope", "Sackcloth")
+WOOD, END, BARK, IRON, LEATHER, SAND, WATER, COAL, WATTLE, CLEAN, STRAW, WOOL, CANVAS, ROPE, SACK = range(15)      # IRON = s patinou rzi, CLEAN = bez rzi (naradi)
 
 
 def rot(yaw=0.0, pitch=0.0, roll=0.0):
@@ -582,6 +585,66 @@ def bed(seed, folded=False):
     return M
 
 
+def _pole(M, p0, p1, R_, seed, bark=True, bow=(0.0, 0.0), n_ar=12, step=5.0, knots=2):
+    """tyc / klada z p0 do p1 s prohnutim bow = (do strany, svisle) uprostred delky (cm)"""
+    p0 = np.asarray(p0, float); p1 = np.asarray(p1, float); L = np.linalg.norm(p1 - p0)
+    t = (p1 - p0) / L; y, z = _frame(t); b = y * bow[0] + z * bow[1]
+    T = mesh_log.tube(mesh_log.Mesh(), L, R_, seed, bark, n_ar=n_ar, step=step, path=lambda s: p0 + (p1 - p0) * s + b * 4 * s * (1 - s),
+                      taper=0.93, knots=knots, bark_t=min(0.8, 0.12 * R_), strip=0.15, start=dict(cut=4.0), end=dict(cut=4.0))
+    M.merge(T, LOGMAP)
+
+
+def camp_bed(seed, folded=False):
+    """luzko ve stanu 200 x 70 x ~26 (navrh_nadvori_stan kap. 4.2): 2 pricne klady s kurou O 15 x 75 cm, na nich
+    10 tyci s kurou O 5 x 200 cm, vrstva slamy (pod hlavou vys) a vlnena houne (A pres slamu s previsem do stran,
+    B slozena v nohach). Hlava na -X."""
+    M = PM(); r = np.random.default_rng(seed); L, W = 200.0, 70.0; RL, RP = 7.5, 2.5
+    xl = (-L / 2 + 26, L / 2 - 24)
+    for k, x in enumerate(xl):                                                    # pricne klady (lezi na zemi)
+        _pole(M, (x + r.uniform(-1, 1), -37.5, RL), (x + r.uniform(-1, 1), 37.5, RL), RL, seed + 1 + k, bark=True,
+              bow=(r.uniform(-1, 1), 0.0), n_ar=28, step=4.0)
+    ztop = 2 * RL                                                                 # vrch klad
+    ys = np.linspace(-W / 2 + RP + 1, W / 2 - RP - 1, 10)
+    for k, y in enumerate(ys):                                                    # tyce podel X
+        dz = r.uniform(-0.3, 0.3); x0 = -L / 2 + r.uniform(0, 4); x1 = L / 2 - r.uniform(0, 4)
+        _pole(M, (x0, y + r.uniform(-1, 1), ztop + RP + dz), (x1, y + r.uniform(-1, 1), ztop + RP + dz), RP, seed + 10 + k,
+              bow=(r.uniform(-1.5, 1.5), -r.uniform(0.2, 0.8)))
+    zp = ztop + 2 * RP                                                            # vrch tyci (~20 cm)
+    Ls, Ws = L - 16, W - 8                                                        # vrstva slamy
+    W1 = waves(seed + 3, 12, 5, 30)
+    def top(x, y):
+        q = np.stack([x, y, np.zeros_like(x)], -1).reshape(-1, 3)
+        e = np.clip(1 - np.maximum(np.abs(x) / (Ls / 2), np.abs(y) / (Ws / 2)), 0, 1)
+        head = 3.0 * np.exp(-((x + L / 2 - 28) / 20) ** 2)                       # pod hlavou vic slamy
+        return zp - 1.0 + (4.5 + head) * np.minimum(1, e * 6) ** 0.6 + 1.0 * noise(q, W1).reshape(np.shape(x))
+    nx, ny = 34, 14; xs = np.linspace(-Ls / 2, Ls / 2, nx + 1); yv = np.linspace(-Ws / 2, Ws / 2, ny + 1)
+    X, Y = np.meshgrid(xs, yv, indexing="ij")
+    E = np.clip(1 - np.maximum(np.abs(X) / (Ls / 2), np.abs(Y) / (Ws / 2)), 0, 1)
+    jag = 3.0 * (0.5 + 0.5 * noise(np.stack([X, Y, np.zeros_like(X)], -1).reshape(-1, 3) * 3, W1).reshape(X.shape)) * (E < 0.05)
+    Xo = X + np.sign(X) * jag * (np.abs(X) / (Ls / 2) > 0.95); Yo = Y + np.sign(Y) * jag * (np.abs(Y) / (Ws / 2) > 0.9)
+    Z = top(X, Y)
+    i0 = M.verts(np.stack([Xo, Yo, Z], -1), np.stack([X, Y], -1) / 50)        # okraj slamy roztrepeny
+    for i in range(nx):
+        for j in range(ny):
+            a = i0 + i * (ny + 1) + j; b = a + ny + 1
+            M.tri(a, b, b + 1, STRAW, (0, 0, 1)); M.tri(a, b + 1, a + 1, STRAW, (0, 0, 1))
+    if folded:                                                                    # slozena houne v nohach
+        zf = float(top(np.array(L / 2 - 40), np.array(0.0)))
+        add_box(M, (L / 2 - 40, 0, zf + 2.0), (42, W - 14, 5), WOOL, R=rot(r.uniform(-4, 4)), sub=4, rough=0.6, round_=2.0, seed=seed + 60)
+        add_box(M, (L / 2 - 40 + r.uniform(-2, 2), r.uniform(-2, 2), zf + 6.0), (38, W - 20, 3.5), WOOL, R=rot(r.uniform(-6, 6)), sub=4, rough=0.6, round_=1.5, seed=seed + 61)
+    else:                                                                         # houne pres slamu, previs do stran
+        W2 = waves(seed + 5, 10, 4, 18)
+        su = np.linspace(-L / 2 + 45, L / 2 - 10, 26); sv = np.linspace(-W / 2 - 12, W / 2 + 12, 22)
+        U, V = np.meshgrid(su, sv, indexing="ij"); yc = np.clip(V, -Ws / 2 + 1, Ws / 2 - 1)
+        over = np.maximum(np.abs(V) - (Ws / 2 - 1), 0)
+        Zt = top(U, np.clip(yc, -Ws / 2 + 4, Ws / 2 - 4)) + 2.5
+        q = np.stack([U, V, np.zeros_like(U)], -1).reshape(-1, 3); wr = noise(q, W2).reshape(U.shape)
+        hang = np.minimum(over, 3) / 3
+        Pg = np.stack([U, yc + np.sign(V) * (3.0 * hang + 0.6 * wr * hang), Zt - over * 0.9 + 0.4 * wr], -1)
+        add_sheet(M, Pg, 1.2, WOOL)
+    return M
+
+
 def table(seed):
     """stul 120 x 70 x 76: deska ze 3 prken, 4 nohy mirne rozkrocene, luby pod deskou, prickove spojeni dole (H)"""
     M = PM(); r = np.random.default_rng(seed); L, W, H = 120.0, 70.0, 76.0
@@ -624,6 +687,97 @@ def chest(seed):
         x = sx * (L / 2 + 0.4); add_box(M, (x, 0, 38), (0.6, 8, 4), IRON, sub=2, rough=0.02, round_=0.15, seed=seed + 50 + sx)
         pts = [(x + sx * 0.5, -4, 37), (x + sx * 1.5, -4.2, 33), (x + sx * 1.8, 0, 31.5), (x + sx * 1.5, 4.2, 33), (x + sx * 0.5, 4, 37)]
         for a, b in zip(pts[:-1], pts[1:]): add_cyl(M, a, b, 0.5, 0.5, IRON, n=8)
+    return M
+
+
+def chest_small(seed):
+    """truhlicka 55 x 35 x 32 (stan): steny ze dvou prken, dno na dvou listach, zavrene viko s presahem, dva zelezne
+    pasy pres viko a celo, zaves s okem na zamek (celo -Y), zelezna drzadla na bocich (+-X)"""
+    M = PM(); r = np.random.default_rng(seed); L, W = 55.0, 35.0; t = 2.0; zf = 3.0; Hw = 26.0
+    for y in (-W / 2 + t / 2, W / 2 - t / 2):                                     # podelne steny (2 prkna)
+        for k in range(2):
+            add_box(M, (0, y, zf + Hw / 4 + k * Hw / 2), (L, t, Hw / 2 - 0.3), WOOD, R=rot(r.uniform(-0.3, 0.3)), sub=4, rough=0.2,
+                    round_=0.4, seed=seed + k + int(y))
+    for x in (-L / 2 + t / 2, L / 2 - t / 2):                                     # cela
+        add_box(M, (x, 0, zf + Hw / 2), (t, W - 2 * t, Hw), WOOD, sub=4, rough=0.2, round_=0.4, seed=seed + 10 + int(x))
+    add_box(M, (0, 0, zf + 1.0), (L - 2 * t, W - 2 * t, 2.0), WOOD, sub=3, rough=0.15, round_=0.3, seed=seed + 15)      # dno
+    for x in (-L / 2 + 6, L / 2 - 6):                                             # listy pod dnem
+        add_box(M, (x, 0, zf / 2), (5, W - 2, zf), WOOD, sub=3, rough=0.2, round_=0.4, seed=seed + 18 + int(x))
+    zl = zf + Hw                                                                  # spodek vika
+    add_box(M, (0, 0, zl + 1.25), (L + 1.5, W + 1.5, 2.5), WOOD, R=rot(r.uniform(-0.4, 0.4)), sub=4, rough=0.2, round_=0.5, seed=seed + 20)
+    for x in (-L / 2 + 9, L / 2 - 9):                                             # pasy pres viko, celo a zada
+        add_box(M, (x, 0, zl + 2.7), (3, W + 1.9, 0.4), IRON, sub=3, rough=0.02, round_=0.12, seed=seed + 30 + int(x))
+        add_box(M, (x, -W / 2 - 0.2, zf + Hw / 2 + 1), (3, 0.4, Hw - 2), IRON, sub=3, rough=0.02, round_=0.12, seed=seed + 31 + int(x))
+        add_box(M, (x, W / 2 + 0.2, zf + Hw / 2 + 1), (3, 0.4, Hw - 2), IRON, sub=3, rough=0.02, round_=0.12, seed=seed + 32 + int(x))
+    add_box(M, (0, -W / 2 - 0.65, zl - 1.5), (3.5, 0.5, 8), IRON, sub=3, rough=0.02, round_=0.12, seed=seed + 40)     # zaves (z vika pres celo)
+    add_cyl(M, (0, -W / 2 - 0.8, zl - 4.5), (0, -W / 2 - 2.1, zl - 4.5), 0.7, 0.7, IRON, n=10)                      # oko na zamek
+    for sx in (-1, 1):                                                            # drzadla na bocich
+        x = sx * (L / 2 + 0.25); add_box(M, (x, 0, zf + Hw - 6), (0.5, 6, 3), IRON, sub=2, rough=0.02, round_=0.12, seed=seed + 50 + sx)
+        pts = [(x + sx * 0.4, -3, zf + Hw - 7), (x + sx * 1.2, -3.2, zf + Hw - 10), (x + sx * 1.5, 0, zf + Hw - 11.2),
+               (x + sx * 1.2, 3.2, zf + Hw - 10), (x + sx * 0.4, 3, zf + Hw - 7)]
+        for a, b in zip(pts[:-1], pts[1:]): add_cyl(M, a, b, 0.4, 0.4, IRON, n=8)
+    return M
+
+
+def _rope(M, pts, R=0.75, seed=0, k=12):
+    """lano (mesh_textile._sweep, 3 prameny) podel hladke krivky body pts (Catmull-Rom), slot ROPE"""
+    import mesh_textile
+    pts = np.asarray(pts, float); seg = []
+    P_ = np.vstack([pts[0], pts, pts[-1]])
+    for i in range(1, len(P_) - 2):
+        p0, p1, p2, p3 = P_[i - 1], P_[i], P_[i + 1], P_[i + 2]
+        n = max(2, int(np.linalg.norm(p2 - p1) / 1.5))
+        for tt in np.linspace(0, 1, n, endpoint=False):
+            seg.append(0.5 * (2 * p1 + (-p0 + p2) * tt + (2 * p0 - 5 * p1 + 4 * p2 - p3) * tt ** 2 + (-p0 + 3 * p1 - 3 * p2 + p3) * tt ** 3))
+    seg.append(pts[-1]); path = np.array(seg)
+    P, UV, F = mesh_textile._sweep(path, R, k, 3.0)
+    i0 = M.verts(P, UV)
+    c = P[F].mean(1); d = ((c[:, None, :] - path[None, :, :]) ** 2).sum(-1); near = path[np.argmin(d, 1)]
+    for f, t in zip(F, c - near): M.tri(*(f + i0), ROPE, t)
+
+
+def bundle(seed):
+    """valcovy vak (pytel na zada) z platna, lezi pohozeny na boku: dno na -X, hrdlo na +X stazene lanem,
+    nad uvazem roztrepeny okraj, popruh z lana pres rameno od hrdla ke dnu (lezi volne na zemi na strane +Y)"""
+    M = PM(); r = np.random.default_rng(seed)
+    L, R0, Rn = 62.0, 15.0, 3.2                                                    # delka tela, polomer, hrdlo
+    s = np.concatenate([np.linspace(0, 0.1, 10, endpoint=False), np.linspace(0.1, 1.0, 46)])
+    xs = s * (L + 14)                                                              # telo + hrdlo + okraj
+    xb, xn0, xt, xe = 0.1 * (L + 14), L - 4, L + 4.5, L + 14                      # konec dna, zacatek hrdla, uvaz, okraj
+    def radius(x):
+        rb = R0 * np.sqrt(np.clip(1 - ((xb - x) / xb) ** 2, 0, 1)) if x < xb else R0
+        if x < xb: return max(rb, 0.6)
+        if x < xn0: return R0 * (1 + 0.04 * math.sin(math.pi * (x - xb) / (xn0 - xb)))
+        if x < xt: tt = (x - xn0) / (xt - xn0); return Rn + (R0 - Rn) * (1 - tt) ** 2.2 * (1 + tt)
+        tt = (x - xt) / (xe - xt); return Rn + 4.5 * tt ** 0.7
+    th = np.linspace(0, 2 * math.pi, 49)
+    W1 = waves(seed + 1, 10, 6, 25); ph = r.uniform(0, 2 * math.pi)
+    G = np.zeros((len(xs), len(th), 3)); C = np.zeros((len(xs), 3))
+    for i, x in enumerate(xs):
+        R = radius(x)
+        pl = 0.0 if x < xn0 - 10 else min(1.0, (x - (xn0 - 10)) / 14) * (0.14 if x < xt else 0.28)   # zahyby u hrdla
+        rr = R * (1 + pl * np.cos(9 * th + ph + 0.15 * x))
+        flat = 0.72 if x < xn0 else 0.72 + 0.28 * min(1, (x - xn0) / (xt - xn0))          # lezi -> splosteny
+        cz = flat * R if x < xn0 else max(flat * R, Rn + 1.7)                        # hrdlo nad zemi (uvaz)
+        y = rr * np.cos(th) * (1.12 if x < xn0 else 1.0); z = cz + rr * np.sin(th) * flat
+        z = np.maximum(z, 0.15 + 0.3 * (1 - np.cos(th * 2)) * (z < 1.0))                  # dosedne na zem
+        q = np.stack([np.full_like(th, x), y, z], 1)
+        G[i] = q + (0.35 * noise(q, W1))[:, None] * np.stack([np.zeros_like(th), np.cos(th), np.sin(th)], 1)
+        C[i] = (x, 0.0, cz)
+    UV = np.stack(np.meshgrid(xs / 100, th * R0 / 100, indexing="ij"), -1)
+    i0 = M.verts(G, UV); n2 = len(th)
+    for i in range(len(xs) - 1):
+        for j in range(len(th) - 1):
+            a = i0 + i * n2 + j; b = a + n2; tgt = (G[i, j] + G[i + 1, j + 1]) / 2 - (C[i] + C[i + 1]) / 2
+            M.tri(a, b, b + 1, SACK, tgt); M.tri(a, b + 1, a + 1, SACK, tgt)
+    czt = Rn + 1.7                                                                 # uvaz: 2 zavity lana kolem hrdla
+    for k in range(2):
+        a = np.linspace(0, 2 * math.pi, 25); xr = xt - 1.0 + 1.6 * k + 0.4 * np.sin(a)
+        _rope(M, np.stack([xr, (Rn + 0.9) * np.cos(a), czt + (Rn + 0.9) * np.sin(a)], 1), R=0.6, seed=seed + 20 + k)
+    zt = 2 * 0.72 * R0                                                             # popruh: od uvazu volne po zemi ke dnu
+    pts = [(xt, Rn + 1.0, czt + 1.0), (xt - 6, 10, 1.1), (L * 0.75, 21 + r.uniform(-2, 2), 1.1), (L * 0.45, 25 + r.uniform(-2, 2), 1.1),
+           (L * 0.2, 22, 1.1), (xb * 0.6, R0 * 1.1 + 1.5, 4.0), (xb * 0.9, R0 * 0.75, zt * 0.62)]
+    _rope(M, pts, R=0.75, seed=seed + 30)
     return M
 
 
@@ -820,6 +974,10 @@ PROPS = [  # (jmeno, funkce, varianty, popis)
     ("SM_RuinDoor", door, "A", "dvere"),
     ("SM_RuinShutter", shutter, "A", "okenice"),
     ("SM_RuinOvenDoor", oven_door, "A", "poklop usti pece s drevenou rukojeti"),
+    ("SM_RuinCampBed", lambda s: camp_bed(s, folded=False), "A", "luzko ve stanu z klad a tyci, houne pres slamu"),
+    ("SM_RuinCampBedFolded", lambda s: camp_bed(s, folded=True), "A", "luzko ve stanu, houne slozena v nohach"),
+    ("SM_RuinChestSmall", chest_small, "A", "truhlicka s kovanim a okem na zamek"),
+    ("SM_RuinBundle", bundle, "A", "valcovy vak z platna s popruhem pres rameno"),
 ]
 NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizuje. Stejna cisla v LIB_MESHES (zrlib/config.py)
     "SM_RuinStump": (53.6, 49.7, 46.7),
@@ -853,6 +1011,10 @@ NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizu
     "SM_RuinDoor": (101.8, 9.3, 219.3),
     "SM_RuinShutter": (61.4, 8.4, 59.2),
     "SM_RuinOvenDoor": (45.9, 8.6, 41.9),
+    "SM_RuinCampBed": (198.8, 76.2, 28.8),
+    "SM_RuinCampBedFolded": (200.0, 76.5, 32.1),
+    "SM_RuinChestSmall": (59.3, 38.0, 31.7),
+    "SM_RuinBundle": (76.0, 43.4, 22.5),
 }
 
 
