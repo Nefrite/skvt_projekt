@@ -37,6 +37,7 @@ depth_structures: 4
 
 **structures**
 - [[navrh_vez_pristresek]] – design, depth 3, valid, in_progress
+- [[stav_vez_pristresek]] – state, depth 3, valid
 
 <!-- hestia:generated:end -->
 
@@ -45,7 +46,7 @@ depth_structures: 4
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[05_constructions]] | `Vez_Pristresek.py` | [[navrh_vez_pristresek]] |
+| [[05_constructions]] | `Vez_Pristresek.py` | [[navrh_vez_pristresek]], [[stav_vez_pristresek]] |
 
 <!-- hestia:generated:end -->
 

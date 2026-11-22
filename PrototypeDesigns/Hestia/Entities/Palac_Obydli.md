@@ -37,6 +37,7 @@ depth_structures: 3
 
 **structures**
 - [[navrh_palac_obydli]] – design, depth 2, valid, rejected
+- [[navrh_palac_obydli_stavenisko]] – design, depth 4, valid, in_progress
 - [[navrh_palac_obydli_stred]] – design, depth 4, valid, in_progress
 - [[stav_palac_obydli]] – state, depth 3, valid
 
@@ -50,7 +51,7 @@ depth_structures: 3
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py`, `Palac_Obydli_Stavenisko_Capture.py` | [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
+| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py`, `Palac_Obydli_Stavenisko_Capture.py` | [[navrh_palac_obydli_stavenisko]], [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
 
 <!-- hestia:generated:end -->
 

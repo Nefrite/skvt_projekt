@@ -27,7 +27,7 @@ depth_structures: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | 4 | – | build | bez cíle |
+| structures | 3 | 4 | – | build | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
 
 Agregace z potomků (04 kap. 3):
@@ -39,7 +39,8 @@ _Potomci nemají cíle._
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_vez_skody]] – design, depth 3, valid, in_progress
 
 <!-- hestia:generated:end -->
 
@@ -48,6 +49,7 @@ _Zatím žádné dokumenty._
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
+| [[03_ruin]] | – | [[navrh_vez_skody]] |
 | [[05_constructions]] | `Vez.py`, `Vez_Patra.py`, `vez.py` | – |
 
 <!-- hestia:generated:end -->
