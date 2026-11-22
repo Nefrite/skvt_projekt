@@ -7,7 +7,8 @@ type, tags, content, content_format}`. Příkaz z něj deterministicky zapíše 
 - jméno souboru z `title` (bez diakritiky, mezery → `_`, jen `[A-Za-z0-9_]`); kolize s existující poznámkou vaultu →
   přípona `_<source>`, kolize v dávce → `_2`, `_3`; prázdný titul → `<source>_<datum vytvoření>`;
 - `category` z `type` i `tags` přes `tag_map` (sjednocení bez duplicit); nenamapovaná hodnota = upozornění;
-- `content_format: notion-md` se převede (`notion_md_to_markdown`), `markdown` se zapíše beze změny;
+- `content_format: notion-md` se převede (`notion_md.notion_md_to_markdown`, zadání 0.17.2; kontejnery, tabulka
+  převodů, kontrola věrnosti `struktura`), `markdown` se zapíše beze změny;
 - duplicita = `ref` už nese `source_ref` některé poznámky (nebo se v souboru opakuje) → přeskočit a vypsat;
 - po `--apply`: `lint` zapsaných souborů (chyba = kód 1, soubory zůstanou), `doc_index`, řádek `changes.md`.
 Výstup: `written`, `skipped`, `unmapped`, `needs_review`, `errors`; podle `written` agent mění stav ve zdroji.
@@ -26,6 +27,7 @@ from .errors import EXIT_FINDINGS, EXIT_OK, UsageError
 from .fileio import read_text, to_posix
 from .frontmatter import format_value
 from .logs import append_lines, format_line
+from .notion_md import FENCE, notion_md_to_markdown  # noqa: F401  (převod 13 kap. 10.12, zadání 0.17.2)
 from .util import as_date, as_list, today
 from .vault import Vault
 
@@ -34,143 +36,6 @@ IMPORT_DIR = "Maintenance/import"
 CHANGES_REL = "Maintenance/changes.md"
 ROLE = "Curator"                          # import do Inbox/ dělá Curator (05 kap. 3, zadání 0.16)
 FORMATS = ("markdown", "notion-md")
-FENCE = "notion-md"
-
-# ---------------------------------------------------------------- převod notion-md → Markdown
-
-_TAG_RE = re.compile(r"<(/?)([A-Za-z][\w-]*)((?:\s[^<>]*?)?)(/?)>")
-_LIST_TAG_RE = re.compile(r"<(/?)(ul|ol|li)(?:\s[^<>]*)?>", re.I)
-_INLINE = {"b": "**", "strong": "**", "i": "*", "em": "*"}
-_A_RE = re.compile(r"""<a\s+[^<>]*?href=(["'])(.*?)\1[^<>]*>(.*?)</a>""", re.I | re.S)
-_EMPTY_BLOCK_RE = re.compile(r"^\s*<empty-block\s*/>\s*$")
-# druhy nepřevedených bloků pro výstup (needs_review); neznámý tag = jeho jméno
-_KINDS = {"img": "image", "image": "image", "video": "video", "audio": "audio", "file": "file", "pdf": "file",
-          "table": "table", "tr": "table", "td": "table", "details": "toggle", "summary": "toggle",
-          "callout": "callout", "database": "database", "data-source": "database", "page": "page",
-          "columns": "columns", "column": "columns", "embed": "embed", "synced_block": "synced_block"}
-_SUPPORTED = {"ul", "ol", "li", "b", "strong", "i", "em", "a"}
-
-
-def _kind(tag: str) -> str:
-    tag = tag.lower()
-    if tag.startswith("mention"):
-        return "mention"
-    return _KINDS.get(tag, tag)
-
-
-def _segments(lines: list[str]) -> list[tuple[bool, list[str]]]:
-    """Úseky obsahu: (je_úsek, řádky). Úsek = řádky mezi prázdnými řádky; neuzavřený blokový tag (seznam, tabulka,
-    toggle …) úsek prodlužuje i přes prázdný řádek. Prázdné řádky mimo úseky zůstávají, jak jsou."""
-    out: list[tuple[bool, list[str]]] = []
-    cur: list[str] = []
-    depth = 0
-    for line in lines:
-        if not line.strip() and depth <= 0:
-            if cur:
-                out.append((True, cur))
-                cur = []
-            out.append((False, [line]))
-            continue
-        cur.append(line)
-        for m in _TAG_RE.finditer(line):
-            closing, name, _attrs, selfclose = m.groups()
-            name = name.lower()
-            if name in _INLINE or name in ("a", "span", "u", "s", "code", "br", "img") or name.startswith("mention") \
-                    or selfclose:
-                continue
-            depth += -1 if closing else 1
-    if cur:
-        out.append((True, cur))
-    return out
-
-
-def _inline(text: str) -> str:
-    text = _A_RE.sub(lambda m: f"[{m.group(3)}]({m.group(2)})", text)
-    for tag, mark in _INLINE.items():
-        text = re.sub(rf"</?{tag}>", mark, text, flags=re.I)
-    return text
-
-
-def _lists(text: str) -> list[str]:
-    """Seznamy `<ul>`, `<ol>`, `<li>` (i vnořené) na odrážky s odsazením dvou mezer; prázdná položka zůstane."""
-    out: list[str] = []
-    stack: list[list] = []                  # [druh, počítadlo]
-    item: list[str] | None = None           # text rozpracované položky
-    item_prefix = ""
-
-    def flush_item() -> None:
-        nonlocal item
-        if item is not None:
-            body = " ".join(part.strip() for part in "".join(item).split("\n") if part.strip())
-            out.append((item_prefix + " " + body).rstrip())
-            item = None
-
-    def text_out(chunk: str) -> None:
-        if item is not None:
-            item.append(chunk)
-        else:
-            out.extend(line for line in chunk.split("\n") if line.strip())
-
-    pos = 0
-    for m in _LIST_TAG_RE.finditer(text):
-        text_out(text[pos:m.start()])
-        pos = m.end()
-        closing, tag = m.group(1), m.group(2).lower()
-        if tag in ("ul", "ol"):
-            flush_item()
-            if closing:
-                if stack:
-                    stack.pop()
-            else:
-                stack.append([tag, 0])
-        elif not closing:                    # <li>
-            flush_item()
-            depth = max(len(stack) - 1, 0)
-            if stack and stack[-1][0] == "ol":
-                stack[-1][1] += 1
-                marker = f"{stack[-1][1]}."
-            else:
-                marker = "-"
-            item_prefix = "  " * depth + marker
-            item = []
-        else:                                # </li>
-            flush_item()
-    text_out(text[pos:])
-    flush_item()
-    return out
-
-
-def notion_md_to_markdown(content: str) -> tuple[str, list[str]]:
-    """Převod Notion-flavored Markdownu (13 kap. 10.12). Odstavce, nadpisy, tučné, kurzíva, odkazy a vnořené seznamy;
-    text bez značek zůstane znak po znaku stejný. Úsek s jiným blokem (obrázek, soubor, tabulka, toggle, callout,
-    zmínka, databáze …) se nepřevádí: zapíše se v původní podobě v ohrazení ```notion-md a vrátí se jeho druh."""
-    lines = content.replace("\r\n", "\n").replace("\r", "\n").split("\n")
-    out: list[str] = []
-    kinds: list[str] = []
-    for is_seg, seg in _segments(lines):
-        if not is_seg:
-            out.extend(seg)
-            continue
-        text = "\n".join(seg)
-        if all(_EMPTY_BLOCK_RE.match(line) for line in seg):   # prázdný odstavec Notion
-            out.extend("" for _ in seg)
-            continue
-        found = sorted({_kind(m.group(2)) for m in _TAG_RE.finditer(text) if m.group(2).lower() not in _SUPPORTED})
-        if re.search(r"!\[[^\]]*\]\(", text):
-            found = sorted(set(found) | {"image"})
-        if found:
-            kinds.extend(k for k in found if k not in kinds)
-            out += [f"```{FENCE}", *seg, "```"]
-            continue
-        if not _TAG_RE.search(text):
-            out.extend(seg)                                     # beze značek: beze změny
-            continue
-        out.extend(_lists(_inline(text)) if _LIST_TAG_RE.search(text) else _inline(text).split("\n"))
-    while out and not out[-1].strip():
-        out.pop()
-    return "\n".join(out), kinds
-
-
 # ---------------------------------------------------------------- plán importu
 
 def slug(title: str) -> str:

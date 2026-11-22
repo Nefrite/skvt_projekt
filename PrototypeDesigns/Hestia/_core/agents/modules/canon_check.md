@@ -6,7 +6,7 @@ requires: [lookup]
 modes: [vault, chat]
 compile: listed
 validity: valid
-updated: 2026-11-20
+updated: 2026-11-21
 ---
 # Soulad s kánonem
 
@@ -27,7 +27,7 @@ Před každým zápisem (modul `file_info`) a u odpovědi `lookup`, kterou sklá
    - u podstatné změny (svět, varianta, uzavření cesty) `decision` s důvodem;
    - staré tvrzení nemaž: `validity: outdated` s odkazem, nebo `nahradit:` (stará verze zůstane v historii);
    - řádek `changes.md`, jehož sloupec *co se změnilo* začíná `změna kánonu:` a obsahuje odkaz na rozhodnutí:
-     `| RRRR-MM-DD | librarian | <entita> | změna kánonu: <co> ([[<rozhodnutí>]]) | <zdroj> |`;
+     `| RRRR-MM-DD | Librarian | <entita> | změna kánonu: <co> ([[<rozhodnutí>]]) | <zdroj> |`;
    - vypiš dokumenty, které staré tvrzení opakují (index dokumentů, glosář), a navrhni jejich úpravu ke schválení; sám nic nepřepisuj, neupravené nech jako otázky.
 5. Bez potvrzení zůstává rozpor otázkou k dotčenému dokumentu (modul `question`), u rozporu mezi dokumenty i položka fronty.
 

@@ -1,4 +1,4 @@
-# Nálezy G1–G13 (zadání 04, kap. 4). informace = info, upozornění = warning, chyba = error.
+# Nálezy G1–G14 (zadání 04, kap. 4). informace = info, upozornění = warning, chyba = error.
 taxonomy: findings
 spec: "04 kap. 4"
 items:
@@ -15,3 +15,4 @@ items:
   - {code: G11, severity: warning, label: "Nezdokumentovaná změna kódu nebo dat"}
   - {code: G12, severity: warning, label: "Povinný dokument instance chybí nebo má prázdnou povinnou sekci"}
   - {code: G13, severity: info,    label: "Připraveno ke stavbě: režim build, hloubka návrhu ≥ target_x, realizace depth_x < target_x"}
+  - {code: G14, severity: info,    label: "Dlouhý dokument: bez ## Souhrn nad doc_summary_chars, nad doc_split_chars rozdělit, předání nad handover_max_chars"}

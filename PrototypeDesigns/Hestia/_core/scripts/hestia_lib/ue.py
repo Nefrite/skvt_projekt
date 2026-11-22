@@ -83,6 +83,33 @@ def total_actors(rep: dict) -> int:
     return int((s.get("own") or {}).get("actors") or 0) + int((s.get("descendants") or {}).get("actors") or 0)
 
 
+def state_behind(m: Model, entity: str, rep: dict) -> tuple | None:
+    """`state` za reportem (G10, zadání 0.19): entita má v reportu aspoň jednoho actora a nejnovější platný `state`
+    má `updated` starší než `generated` reportu → (state, datum state, datum reportu). Porovnávají se jen data (po
+    dnech), text `state` se nečte; entita bez platného `state` → None (řeší G4)."""
+    rdate = report_date(rep)
+    if rdate is None or total_actors(rep) == 0:
+        return None
+    states = []
+    for n in m.notes:
+        if n.type == "state" and (n.fm or {}).get("validity") == "valid" and entity in m.entities_of(n):
+            try:
+                d = _dt.date.fromisoformat(str(n.fm.get("updated") or "")[:10])
+            except ValueError:
+                d = None
+            states.append((d or _dt.date.min, n))
+    if not states:
+        return None
+    sdate, note = max(states, key=lambda x: (x[0], x[1].rel))
+    return (note, sdate, rdate) if sdate < rdate else None
+
+
+def state_behind_text(behind: tuple) -> str:
+    note, sdate, rdate = behind
+    s = sdate.isoformat() if sdate != _dt.date.min else "bez data"
+    return f"`state` {note.name} ({s}) je starší než čtení z UE ({rdate.isoformat()}); ověř § *V levelu*"
+
+
 def hub_block(vault: Vault, m: Model, entity: str, rule_map: dict, day: _dt.date | None = None) -> str:
     """Obsah generovaného bloku v `## Stav v UE`; bez pravidla nebo reportu prázdný (13 kap. 10.3, 10.11)."""
     rep = load_report(vault, entity) if entity in rule_map else None
@@ -118,6 +145,10 @@ def hub_block(vault: Vault, m: Model, entity: str, rule_map: dict, day: _dt.date
               if fm.get(f"depth_{dom}") not in (None, "") and m.mode(entity, dom) == "build"]
     lines.append("- Pro srovnání `depth_*`: " + (", ".join(depths) if depths else "–")
                  + "; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)")
+    behind = state_behind(m, entity, rep)
+    if behind:                                          # G10, zadání 0.19: jen data, text state se nečte
+        lines.append(f"- Pozor: {state_behind_text(behind)}; report potvrzuje jen „v levelu je“, vzhled a funkci "
+                     "§ *Vizuálně ověřeno*")
     return "\n".join(lines)
 
 

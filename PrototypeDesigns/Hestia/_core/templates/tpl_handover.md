@@ -3,6 +3,7 @@
 type: handover
 validity: valid
 superseded_by:           # volitelně: finální dokument; po zapracování validity: archived a přesun do Handovers/_archive/ (12, kap. 5)
+for_role: []             # pro které role (jména profilů); prázdné = kdokoli (zadání 0.21)
 updated: {{date:YYYY-MM-DD}}
 # hra
 domain:

@@ -15,6 +15,8 @@ nesleduje odkazy a modul si při spouštěči nedotáhne.
   Moduly bez režimu `chat` se vynechají a vyjmenují (12 kap. 2, zadání 0.9.5).
 - Nadpisy částí se posunou o úroveň níž, frontmatter a HTML komentáře se vynechají.
 - Kompilát nese verzi core a datum; zapisuje se jen při změně obsahu (datum samo změnu nedělá).
+- Výstup (text i `--json`) uvádí kompiláty `changed` (nový obsah) a `unchanged`; do Claude Projectu se nahrávají
+  jen `changed` (12 kap. 7.1, 13 kap. 10.13; zadání 0.21).
 """
 from __future__ import annotations
 
@@ -383,12 +385,20 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     items = plan(vault, args.roles or None)
     if args.apply:
         apply(vault, items)
-    payload = {"applied": bool(args.apply), "roles": [
+    # changed = nový obsah (nový nebo změněný kompilát); jen ty se nahrávají do Claude Projectu (12 kap. 7.1, 0.21)
+    changed = [i.rel for i in items if i.status != "unchanged"]
+    unchanged = [i.rel for i in items if i.status == "unchanged"]
+    payload = {"applied": bool(args.apply), "changed": changed, "unchanged": unchanged, "roles": [
         {"role": i.role, "path": i.rel, "status": i.status, "modules": i.compiled.modules,
          "skipped": i.compiled.skipped, "sources": i.compiled.sources} for i in items]}
     out = []
     if not items:
         out.append("Žádné profily rolí v Roles/.")
+    else:
+        verb = "" if args.apply else " (dry-run)"
+        out.append(f"changed{verb}: " + (_join(changed) if changed else "žádný")
+                   + (" – do Claude Projectu nahraj jen tyto" if changed else " – v Claude Projectu nic neměň"))
+        out.append("unchanged: " + (_join(unchanged) if unchanged else "žádný"))
     for i in items:
         out.append(f"{i.role}: {STATUS_TEXT[i.status]} → {i.rel}")
         if i.status == "new" and not args.apply:

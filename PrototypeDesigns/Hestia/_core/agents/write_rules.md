@@ -1,11 +1,19 @@
 ---
 type: reference
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 ---
 # Pravidla zápisu (výchozí, core)
 
 Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap. 4–5 a 12, kap. 8. Instance je doplňuje v `Maintenance/write_rules_local.md` (např. které role smějí měnit `target_*`, chráněné soubory); lokální doplněk pravidla zpřísňuje nebo upřesňuje, core pravidla neruší.
+
+## Zásady zápisu
+
+- Platný text přepisuješ jen jako důsledek rozhodnutí GameDesignera nebo výsledku tasku ve své oblasti (12 kap. 6.1, `nahradit:`).
+- Profil kontrakt zpřísňuje, neruší: výsledek své práce zapíšeš do vaultu vždy; zákazy zápisu v profilu platí pro kód, data a assety (12 kap. 2.1).
+- Zápis do `Docs/` je dokumentace domény podle šablony (sekce, `depth`), ne výstup role: neříká, kdo psal a pro koho. Před zápisem najdi existující dokumentaci entity a doplň ji; nový dokument jen když žádný není. Předání (`Handovers/`) píšeš z role (12 kap. 8).
+- Přesun a přejmenování jen se schválením; mazání jen přesunem do `_to_delete/` na pokyn (05 kap. 5).
+- Problém s Hestií jako nástrojem neřešíš CR ani zápisem do `structure_log.md`: modul `hestia_feedback` (12 kap. 4.5).
 
 ## Matice pravomocí
 
@@ -24,12 +32,12 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 | Hub: `target_*` | ✔ | navrhuje | ✘ | ✔ (určená role, např. game design; zápis do `changes.md`) |
 | Generované sekce hubů | – | ✔ (skript `hubs`) | ✘ | ✘ |
 | `taxonomy_local/`, `structure_version` | schvaluje | ✔ | ✘ | ✘ |
-| `reports/`, `queue.md` | ✔ | ✔ | ✔ | ✘ |
-| `changes.md`, `structure_log.md` (jen připisovat na konec) | ✔ | ✔ | ✔ (návrhy) | ✔ (`changes.md`) |
+| `reports/`, `queue.md` | ✔ | ✔ | ✔ | jen podnět pro Hestii do `queue.md` (`proposal`, `code: hestia`, 12 kap. 4.5) |
+| `changes.md`, `structure_log.md` (jen připisovat na konec) | ✔ | ✔ (i podněty rolí z `queue.md`) | ✔ (návrhy) | ✔ (`changes.md`; `structure_log.md` ✘, podnět přes `queue.md`) |
 | `asset_index.md` | – | ✔ (skript) | ✘ | ✘ |
 | `doc_index.json`, `context/` (index dokumentů, balíčky kontextu) | – | ✔ (skripty `doc_index`, `hubs`, `compose_context`) | ✔ (skript `audit` obnoví index) | ✘ |
 | `ue/`, `reports/ue_*.json` (čtení Unrealu, jen čtecí dotazy core) | ✔ (spouští skript v editoru) | ✔ (skript `ue_query`) | ✔ (skript `ue_query`) | ✔ (skript `ue_query`, role s `ue_lookup` v profilu) |
-| `outbox/` (change requesty) | odesílá | ✔ (připravuje) | ✘ | ✘ |
+| `outbox/` (change requesty) | odesílá | ✔ (připravuje) | ✘ | ✘ (podnět přes `queue.md`, 12 kap. 4.5) |
 | `Maintenance/import/` (soubory výměny importu) | ✔ | ✔ (modul `inbox_import`; zůstávají jako záznam původu) | ✘ | ✘ |
 | `Roles/` (profily, lokální moduly) | ✔ | ✘ | ✘ | ✘ |
 | `Roles/_compiled/` | – | ✔ (skript `compose_role`) | ✘ | ✘ |
@@ -46,12 +54,13 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 | `Dashboard/Glossary.md` | ✔ (změna významu = změna kánonu) |
 | `Inbox/`, `Scratch/` | ✔ *Předzpracování*, `intake`; přesun do `Scratch/` a do `_to_delete/` podle rozhodnutí GameDesignera v třídění |
 | Sekce `## Otevřené otázky` | ✔ přidat; uzavřít po zapracování odpovědi |
-| `queue.md` | ✔ položka k rozporu mezi dokumenty (pro Auditora) |
+| `queue.md` | ✔ položka k rozporu mezi dokumenty (pro Auditora); podnět pro Hestii (`proposal`, `code: hestia`, 12 kap. 4.5) |
+| `structure_log.md`, `outbox/` | ✘ (kolize pojmů a chybějící náležitosti jako podnět přes `queue.md`, zadání 0.18) |
 | `ue/`, `reports/ue_*.json` | ✔ skript `ue_query` (jen čtení Unrealu) |
-| `changes.md` | ✔ jen připisovat na konec (příznak **změna kánonu**: sloupec *co se změnilo* začíná `změna kánonu:`) |
+| `changes.md` | ✔ jen připisovat na konec (příznak **změna kánonu**: sloupec *co se změnilo* začíná `změna kánonu:`), skriptem `task_close` po vlastním zápisu (12 kap. 3b.1, zadání 0.18.1) |
 | Ostatní oblasti matice | ✘ |
 
-Projektová role zapisuje tělo dokumentů jen ve své oblasti (včetně přenosu z předání), do `## Otevřené otázky` přidává a uzavírá položky, nový scratch zakládá jen na pokyn GameDesignera a do `changes.md` jen připisuje na konec. Orchestrační agent má práva projektové role v rozsahu zápisu Hestia.
+Projektová role zapisuje tělo dokumentů jen ve své oblasti (včetně přenosu z předání), do `## Otevřené otázky` přidává a uzavírá položky, nový scratch zakládá jen na pokyn GameDesignera, do `changes.md` jen připisuje na konec a do `queue.md` jen podnět pro Hestii (change request nezakládá, 12 kap. 4.5 a 8). Orchestrační agent má práva projektové role v rozsahu zápisu Hestia.
 
 ## Schvalování
 

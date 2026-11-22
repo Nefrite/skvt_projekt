@@ -9,9 +9,10 @@
 - Téma: dokumenty kategorie nebo domény (`valid` a `draft`, platnost je u zdroje); `inbox` = nezpracované položky (`intake: raw`) a k nim kandidátní
   dokumenty.
 - Otázka (zadání 0.14.1): hledá se v indexu dokumentů (název, `aliases`, nadpisy kromě pevných nadpisů šablon,
-  entita) a v glosáři, ne v celých textech; bez ohledu na velikost písmen a diakritiku, podle začátku slova (aspoň 4 znaky). Pojem
+  entita, cesta) a v glosáři; bez ohledu na velikost písmen a diakritiku, podle začátku slova (aspoň 4 znaky). Pojem
   z glosáře (i alias a zakázaná varianta) → hlavní dokument nebo hub; shoda s entitou → hub a platné dokumenty.
-  Řazení podle počtu shod; když index nic nenajde, záložně celé texty (uvedeno v hlavičce). U kandidáta důvod.
+  Stejné hledání jako příkaz `find` (`search.py`, zadání 0.21): když index najde méně než 3 výsledky, doplní je
+  hledání v textu (důvod „v textu“, v hlavičce „doplněno“ nebo „záložně“, když index nenašel nic). U kandidáta důvod.
 - Limit `context_max_chars` (`config.yaml`) platí pro celý balíček kromě seznamu *Nevešlo se*: části se berou
   v pořadí celé, jinak výňatek (začátky sekcí); co se nevejde, je v *Nevešlo se* jako odkaz s jednou větou.
 Zastaralý balíček (nové složení by ho změnilo) hlásí audit jako G5; lint balíčky nekontroluje.
@@ -37,16 +38,8 @@ from .vault import Note, Vault
 CONTEXT_DIR = "Maintenance/context"
 SUFFIX = "_context"
 DEFAULT_MAX_CHARS = 60000
-ENTITY_TYPES = ("decision", "design", "spec", "state")
-TYPE_ORDER = {t: i for i, t in enumerate(["entity", "decision", "design", "spec", "state", "concept", "crosscut",
-                                          "reference", "handover", "guide", "checklist", "step", "knowhow",
-                                          "scratch"])}
 MAX_CANDIDATES = 5
-# Pevné nadpisy šablon (hub_sections, templates/tpl_*) nic o obsahu neříkají (každý hub má ## Domény, každý
-# návrh ## Výchozí stav); při hledání se neporovnávají.
-TEMPLATE_HEADINGS = {"Otevřené otázky", "Předzpracování (doplní Knihovník)", "Předzpracování (doplní Curator)"}
 _REQ_RE = re.compile(r"^<!-- request: (.*) \| core: [^|]* \| date: \d{4}-\d{2}-\d{2} -->$")
-_WORD_RE = re.compile(r"[a-z0-9]+")
 
 
 # ---------------------------------------------------------------- požadavek
@@ -85,106 +78,9 @@ class Request:
         return cls(**{key: value})
 
 
-# ---------------------------------------------------------------- hledání
-
-def fold(text: str) -> str:
-    """Malá písmena bez diakritiky."""
-    return "".join(ch for ch in unicodedata.normalize("NFKD", str(text).lower()) if not unicodedata.combining(ch))
-
-
-def words(text: str, min_len: int = 4) -> list[str]:
-    return [w for w in _WORD_RE.findall(fold(text)) if len(w) >= min_len]
-
-
-def word_match(q: str, w: str) -> bool:
-    """Shoda podle začátku slova (skloňování): společný začátek aspoň 4 znaky a nejvýš o 2 kratší než kratší slovo."""
-    if q == w:
-        return True
-    n = 0
-    for a, b in zip(q, w):
-        if a != b:
-            break
-        n += 1
-    return n >= max(4, min(len(q), len(w)) - 2)
-
-
-def matched(qwords: list[str], text: str) -> set[str]:
-    tokens = set(_WORD_RE.findall(fold(text)))
-    return {q for q in qwords if any(word_match(q, t) for t in tokens)}
-
-
-@dataclass
-class Candidate:
-    note: Note
-    words: set[str] = field(default_factory=set)
-    reasons: list[str] = field(default_factory=list)
-
-    def add(self, ws: set[str], reason: str) -> None:
-        if ws:
-            self.words |= ws
-            if reason not in self.reasons:
-                self.reasons.append(reason)
-
-
-class Finder:
-    def __init__(self, vault: Vault, m: Model, terms: list[glossary.Term]):
-        self.v, self.m, self.terms = vault, m, terms
-        self.records = doc_index.build(vault, m)
-        self.fixed = TEMPLATE_HEADINGS | {str(s.get("heading")) for s in vault.taxonomy.hub_sections}
-        for tpl in sorted((CORE_ROOT / "templates").glob("tpl_*.md")):     # nadpisy šablon dokumentů
-            self.fixed |= {h for lvl, h, _ in headings(read_text(tpl)) if lvl in (2, 3)}
-
-    def _cand(self, out: dict, note: Note) -> Candidate:
-        return out.setdefault(note.rel, Candidate(note))
-
-    def search(self, text: str, exclude=lambda n: False) -> tuple[list[Candidate], bool]:
-        """Kandidáti k otázce seřazení podle počtu shod; druhá hodnota True = záložně v celých textech."""
-        q = words(text)
-        out: dict[str, Candidate] = {}
-        for r in self.records:
-            n = self.v.notes[r["path"]]
-            if exclude(n):
-                continue
-            c = Candidate(n)
-            c.add(matched(q, n.name.replace("_", " ")) | matched(q, r["title"]), f"název {n.name}")
-            for a in r["aliases"]:
-                c.add(matched(q, a), f"alias {a}")
-            for h in r["headings"]:
-                if h not in self.fixed:
-                    c.add(matched(q, h), f"nadpis {h}")
-            for e in r["entity"]:
-                c.add(matched(q, e.replace("_", " ")), f"entita {e}")
-            if c.words:
-                prev = self._cand(out, n)
-                prev.words |= c.words
-                prev.reasons += [x for x in c.reasons if x not in prev.reasons]
-        for t in self.terms:
-            ws = set().union(*(matched(q, name) for name in t.names)) if t.names else set()
-            target = self.v.note_by_name(t.main) if t.main else None
-            if ws and target is not None and target.fm and not exclude(target):
-                self._cand(out, target).add(ws, f"glosář {t.term}")
-        for name, hub in self.m.entities.items():                 # shoda s entitou: hub a platné dokumenty
-            ws = matched(q, name.replace("_", " "))
-            if not ws or exclude(hub):
-                continue
-            for n in [hub] + self.entity_docs(name):
-                if not exclude(n):
-                    self._cand(out, n).add(ws, f"entita {name}")
-        fallback = False
-        if not out:
-            fallback = True
-            for r in self.records:
-                n = self.v.notes[r["path"]]
-                if not exclude(n):
-                    self._cand(out, n).add(matched(q, n.body), "celý text")
-            out = {k: c for k, c in out.items() if c.words}
-        ranked = sorted(out.values(), key=lambda c: (-len(c.words), c.note.type != "entity",
-                                                     TYPE_ORDER.get(c.note.type, 99), c.note.name))
-        return ranked, fallback
-
-    def entity_docs(self, name: str) -> list[Note]:
-        return [n for n in self.m.docs_of(name, include_inactive=False)
-                if n.type in ENTITY_TYPES and n.fm.get("validity") == "valid" and n.fm.get("status") != "rejected"]
+# hledání: společné s příkazem find (search.py, 13 kap. 10.13)
+from .search import (ENTITY_TYPES, TEMPLATE_HEADINGS, TYPE_ORDER, Candidate, Finder, fold,  # noqa: E402,F401
+                     matched, word_match, words, _WORD_RE)
 
 
 # ---------------------------------------------------------------- skládání
@@ -324,9 +220,11 @@ def compose(vault: Vault, req: Request, today: dt.date | None = None, core_root=
         else:
             raise UsageError(f"compose_context: téma {req.topic} není kategorie, doména ani inbox")
     else:
-        ranked, fallback = finder.search(req.query)
-        if fallback:
+        ranked, mode = finder.search(req.query)
+        if mode == "záložně":
             notes_line.append("hledání: záložně v celých textech (index nic nenašel)")
+        elif mode == "doplněno":
+            notes_line.append("hledání: index našel méně než 3, doplněno hledáním v textu")
         parts += [Part(c.note, extra=[f"Shoda: {', '.join(c.reasons)} ({len(c.words)})"]) for c in ranked]
 
     # výběr do limitu (celý text kromě seznamu Nevešlo se): celé, jinak výňatek, jinak odkaz

@@ -351,7 +351,7 @@ Oddělit jde líc, koruna, jádro i ostění (`CATS`). Za odpadlým lícem je hn
 | `/PrototypeDesigns/Lapikus/tools/ruin/layout_from_level.json` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/massing.py` | entry | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | [[Ostroh]] | – |
-| `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | [[Palac]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | [[Palac]] | [[navrh_palac_obydli_stred]] |
 | `/PrototypeDesigns/Lapikus/tools/ruin/tower_spec.py` | spec | [[Lapikus]] | [[navrh_vez_pristresek]] |
 
 <!-- hestia:generated:end -->

@@ -2,9 +2,11 @@
 
 1. Dotčené entity se odvodí samy: změněné soubory (git, nebo zadané argumentem) -> `asset_index.json`
    (kód, data) a pole `entity` změněných poznámek; plus `--entity`.
-2. Řádek do `changes.md` za každou entitu (`--change ENTITA="text"` má přednost před `--note`);
+2. Řádek do `changes.md` za každou entitu (`--change ENTITA="text"` má přednost před `--note`); řádek, který už
+   v souboru je (datum, role bez ohledu na velikost písmen, entita, text), se znovu nepřidá (zadání 0.18.1, 0.19.1);
    `updated` u změněných poznámek; `--archive-handover` archivuje splněné předání bez otevřených otázek (jinak jen s `--force`).
-3. [R5] `hubs` pro dotčené entity, `lint` změněných souborů, G11 pro dotčené entity.
+3. [R5] `hubs` pro dotčené entity, `doc_index` (jen při změně dokumentů, zadání 0.18.1), `lint` změněných souborů,
+   G11 pro dotčené entity.
 4. Kontrolní seznam toho, co skript neudělá, ale nesmí se zapomenout.
 Dry-run vypíše diff a výsledky kontrol; `--apply` zapíše (změny, pak huby nad novým stavem).
 Návratový kód 1, když lint najde chybu ve změněných souborech (task není hotový, 13 kap. 3); upozornění 0.
@@ -15,6 +17,7 @@ import re
 from pathlib import Path
 
 from . import asset_index as ai
+from . import doc_index
 from . import gitinfo
 from .audit import Auditor, load_state
 from .blocks import strip_generated
@@ -59,6 +62,7 @@ class TaskClose:
         self.index = ai.load_json(vault)
         self.warnings: list[str] = []
         self.checklist: list[str] = []
+        self.skipped: list[str] = []                 # řádky changes.md, které už v souboru jsou
 
     # ------------------------------------------------------------ 1. dotčené soubory a entity
     def changed(self) -> tuple[list, list[Path]]:
@@ -119,11 +123,21 @@ class TaskClose:
                  for e in entities]
         for name in self.args.archive_handover:
             lines.append(self.plan_archive(cs, name))
-        from .logs import append_lines
+        from .logs import append_lines, log_entries, split_row
         cpath = self.v.root / CHANGES_REL
         text = cs.current(cpath)
         if text is None:
             raise UsageError(f"{CHANGES_REL} neexistuje")
+        # řádek, který už v changes.md je (datum, role, entita, text), se nezdvojí: druhé uzavření téhož stavu
+        # (Knihovník, pak orchestrační agent) s jiným zdrojem (12 kap. 5, 13 kap. 10.5; zadání 0.18.1); roli porovná
+        # bez ohledu na velikost písmen, aby se sloučily i starší ruční řádky `librarian` (zadání 0.19.1)
+        def key(row: list[str]) -> tuple:
+            row = (row + [""] * 4)[:4]
+            return (row[0], row[1].casefold(), row[2], row[3])
+
+        present = {key(row) for row in log_entries(text)}
+        self.skipped = [ln for ln in lines if key(split_row(ln)) in present]
+        lines = [ln for ln in lines if ln not in self.skipped]
         cs.write(cpath, append_lines(text, lines, today=self.day))
         for n in notes:
             if n.fm is None or str(n.fm.get("updated")) == self.day.isoformat():
@@ -222,15 +236,25 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         hres = Hubs(vault2).plan(hcs, [e for e in entities if e in Model(vault2).entities])
         hcs.apply()
         hubs_changed = hres.changed
+        # doc_index nad novým stavem: zapíše se jen při novém, změněném nebo přejmenovaném dokumentu (zadání 0.18.1)
+        vault3 = Vault.load(vault.root)
+        dcs = ChangeSet(vault3.project_root)
+        index_changed = doc_index.plan(vault3, dcs)
+        dcs.apply()
         lint_f, g11 = tc.checks(vault2, notes2, code, entities, None)
     else:
         hcs = ChangeSet(vault.project_root)
         hres = Hubs(vault).plan(hcs, entities)
         hubs_changed = hres.changed
+        # dry-run: index už teď neodpovídá dokumentům (nový, přejmenovaný); `updated` z tohoto běhu se projeví až
+        # při --apply
+        index_changed = doc_index.plan(vault, ChangeSet(vault.project_root))
         lint_f, g11 = tc.checks(vault, notes, code, entities, changes_text)
     payload = {"command": "task_close", "applied": bool(args.apply), "entities": entities, "changes": lines,
+               "changes_present": tc.skipped,
                "files": [to_posix(vault.project_rel(n.path)) for n in notes] + [vault.project_rel(p) for p in code],
-               "writes": cs.summary(), "hubs": hubs_changed, "lint": [f.as_dict() for f in lint_f],
+               "writes": cs.summary(), "hubs": hubs_changed, "doc_index": index_changed,
+               "lint": [f.as_dict() for f in lint_f],
                "g11": [f.as_dict() for f in g11], "checklist": tc.checklist, "warnings": tc.warnings}
     out = [f"task_close: dotčené entity: {', '.join(entities) or '–'}"]
     if args.apply:
@@ -238,8 +262,11 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         out.append(f"Zapsáno: {', '.join(written)}" if written else "Zápisy: beze změny (už uzavřeno)")
     else:
         out += ["Změny (dry-run, zapiš s --apply):", diff.rstrip()]
+    out += [f"changes.md: řádek už je v souboru, nezdvojuje se: {ln}" for ln in tc.skipped]
     out.append(f"hubs: {', '.join(hubs_changed) if hubs_changed else 'beze změny'}"
                + ("" if args.apply or not hubs_changed else " (dry-run)"))
+    out.append("doc_index: " + (("obnoven" if args.apply else "obnoví se (dry-run)") if index_changed
+                                else "beze změny"))
     out += ["lint změněných souborů:", "  " + to_text(lint_f).replace("\n", "\n  ")]
     out.append("G11 dotčených entit: " + ("bez nálezů" if not g11 else ""))
     out += [f"  {f.target}: {f.message}" for f in g11]

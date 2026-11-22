@@ -185,6 +185,7 @@ Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Lapikus.json` · etapa 
 - Fronta T-0011 (–, [[FURNISHING]]): sloučit s [[06_furnishing]] (M08)
 - Fronta T-0012 (–, [[Kod_spousteni_kontroly_z_roli]]): zařadit do `Steps/` a `Steps/shared/` podle *Předzpracování* (B7)
 - Fronta T-0013 (–, [[Namety_dostavby]]): GameDesigner rozhodne, co dál (B7)
+- Fronta T-0024 (props:grain_long, [[Katalog_props]]): Uplatnit pravidlo směru let dřeva (léta podél nejdelšího rozměru dílu) na všechny props: v `tools/meshes/mesh_props.py` přepnout `GRAIN_DEFAULT = "long"`, přegenerovat props (`gen_meshes.py props`), zvednout `STONE_MESH_VERSION` u 31 props se změněným UV (mimo jiné nohy stolu, lůžek a stoličky, topůrka nářadí, dveře, okenice, truhly, bočnice a čela `SM_RuinBedLarge`), kontrola md5 tvarů beze změny a ukázka po tématech v UE (Jirka 22. 11. 2026: odloženo; hotové jsou `SM_RuinArmorStand` a sloupky `SM_RuinBedLarge`)
 - Scratch: [[FURNISHING]] (prepared)
 - Scratch: [[Kod_spousteni_kontroly_z_roli]] (prepared)
 - Scratch: [[Namety_dostavby]] (prepared)

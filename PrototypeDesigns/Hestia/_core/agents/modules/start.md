@@ -5,7 +5,7 @@ trigger: začátek tasku
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 ---
 # Start tasku
 
@@ -14,6 +14,12 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 ## Postup
 0. **Režim podle přístupu** (12 kap. 1.1): ověř, zda vidíš `Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce. Když ano, pracuješ v režimu `vault`, i když jsi začal s kompilátem role: načti kontrakt a profil z vaultu (projektové role v `Hestia/Roles/`, role core v `Hestia/_core/agents/`) a kompilát dál neber jako zdroj. Když ne, pracuješ v režimu `chat` s kompilátem.
+
+**Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
+
+**Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
+
+**Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka, `inbox_import`) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi), nebo se zeptej GameDesignera.
 
 Pak načti v tomto pořadí a nic navíc:
 1. kontrakt a profil své role, případně složené profily (`combines`);
@@ -27,11 +33,18 @@ Ověř, že předání a hub nemají `validity: superseded` (jinak pokračuj pod
 
 Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, otázka na GameDesignera. V režimu `chat` ti stejný výběr připraví orchestrační agent jako kontext tasku.
 
+**Čtení** (12 kap. 3; zadání 0.21):
+- Dokument delší než `doc_summary_chars` (výchozí 6 000 znaků; velikost je v `doc_index`, pole `chars`) nečti celý: nejdřív osnova `hestia.py section <dokument> --list`, pak *Souhrn*, je-li, a jen sekce, které task potřebuje (`hestia.py section <dokument> "<nadpis>"`). Celý ho čti, jen když task mění jeho strukturu.
+- Soubory hledej příkazem `hestia.py find "<dotaz>"`, ne `find -name` ani `grep -r` přes vault.
+- Logy (`changes.md`, `queue.md`, `structure_log.md`), reporty a `CHANGELOG.md` čti výběrem: konec, filtr podle entity nebo data, CHANGELOG po verzích (`section`).
+- Když skript core spustit nejde, čti `doc_index.json` a dokumenty přímo, ale stejně výběrem, a v hlášení uveď, že skript neběžel.
+
 ## Výstup
 Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého stavu vycházíš a co je nejasné. Nejasnost řeš modulem `question` dřív, než začneš.
 
 ## Známé pasti
 - Pracovat podle kompilátu (balíčky, zápis Hestia), když relace vault vidí, třeba přes připojenou složku; hlavní práce pak běží nad ručně přenášenými výňatky.
-- Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným.
+- Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným. Totéž dlouhý dokument celý místo osnovy a sekcí.
+- Hlásit „beze změny“ po aktualizaci podle části souboru místo `role_diff`.
 - Brát předání nebo starou kopii v chatu jako zdroj pravdy. Platí vault, u prototypování skripty a stav v enginu.
 - Přehlédnout `superseded` u předání nebo hubu a pracovat podle neplatného zadání.

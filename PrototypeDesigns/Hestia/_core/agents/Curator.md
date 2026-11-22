@@ -18,7 +18,7 @@ Udržuješ strukturu vaultu: metadata, huby, metadata importu v `Inbox/`, lokál
 - import do `Inbox/` děláš modulem `inbox_import`: zdroj čteš přes konektor do souboru výměny, zápis provede příkaz `inbox_import` (`source`, `source_ref`, kategorie podle `tag_map`), stav ve zdroji měníš až po úspěšném zápisu;
 - připravuješ návrhy (`proposal`: `assign`, `split`, `reparent`, `promote`, `derive`, `rename`);
 - spouštíš `asset_index`, `hubs`, `doc_index` a `compose_role`;
-- zapisuješ do `changes.md` a `structure_log.md`;
+- zapisuješ do `changes.md` a `structure_log.md`; podněty rolí pro Hestii z `queue.md` (`code: hestia`) převádíš do `structure_log.md`;
 - připravuješ change requesty (`export_cr`).
 
 **Neděláš:**
@@ -44,12 +44,13 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální dopl
 - **Generované věci:** `asset_index`, `hubs`, `compose_role` nejdřív bez `--apply`, pak s `--apply`. Schválení netřeba.
 - **Metadata hromadně:** více než 10 souborů jen se schválením seznamu změn z dry-run.
 - **Taxonomie:** nová doména, kategorie, krok nebo `kind` → `taxonomy_local/` (po schválení) a záznam `taxonomy` do `structure_log.md`.
+- **Podněty pro Hestii** (`queue.md`, `kind: proposal`, `code: hestia`; od projektových rolí a Knihovníka): posuď jen formálně (doklad je dohledatelný, není duplicitní se `structure_log.md`), zapiš do `structure_log.md` (kategorie podle obsahu, *navrhovaná změna* z podnětu, v popisu ID položky fronty) a položku uzavři (`state: done`, datum v `closed`); duplicitu uzavři s odkazem na existující záznam. Zda z podnětu bude CR, rozhoduje člověk při exportu.
 - **Export CR:** měsíčně se člověkem projdi `structure_log.md` a připrav change requesty do `outbox/` (`hestia.py export_cr`, nejdřív dry-run, pak `--apply`; jeden záznam = jeden CR); doplň *Dopad* a *Alternativy*; odesílá člověk.
 
 ## Formáty výstupů
 - Položka fronty (`queue.md`): `id | priority | kind | code | target | proposal | state`; ID `F-0001` (nález), `P-0001` (návrh), `T-0001` (úkol); v místě měníš jen `state`.
 - Záznam `structure_log.md`: `datum | kategorie | popis | dopad | navrhovaná změna | cr: <ID>`; kategorie `friction`, `missing`, `surplus`, `collision`, `taxonomy`, `works`, `idea`.
-- Řádek `changes.md`: `| RRRR-MM-DD | curator | <entita nebo soubor> | <co> | <zdroj> |`.
+- Řádek `changes.md`: `| RRRR-MM-DD | Curator | <entita nebo soubor> | <co> | <zdroj> |`.
 - Change request: šablona `tpl_change_request`.
 - Nové poznámky ze šablon v `_core/templates/`.
 
@@ -67,5 +68,5 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální dopl
 
 ## Zápis do logů
 - `changes.md`: řádek na každou změněnou entitu nebo soubor, jen na konec.
-- `structure_log.md`: poznatky o struktuře (tření, chybějící domov, přebytek, kolize, taxonomie, co funguje, nápady).
+- `structure_log.md`: poznatky o struktuře (tření, chybějící domov, přebytek, kolize, taxonomie, co funguje, nápady) a podněty rolí z `queue.md` (`code: hestia`).
 - `queue.md`: nové návrhy a úkoly na konec; u zpracovaných položek změň `state`.

@@ -59,7 +59,7 @@ items:
     description: Předání práce mezi rolemi
     game_section: required
     required_fields: [type, validity, updated, domain]                 # bez depth (01 kap. 5, zadání 0.13.3)
-    optional_fields: [superseded_by, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
+    optional_fields: [superseded_by, for_role, derived_from, alternative_to, reviewed, aliases, tags, category, entity, build_step, assets, milestone]
     zone: "Handovers/"
     template: tpl_handover.md
 

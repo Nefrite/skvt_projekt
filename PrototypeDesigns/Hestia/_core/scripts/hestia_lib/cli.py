@@ -22,7 +22,8 @@ VAULT_COMMANDS = {"lint": "lint", "compose_role": "compose", "asset_index": "ass
                   "audit": "audit", "task_close": "task_close", "frontmatter": "migrate",
                   "update_core": "update_core", "export_cr": "export_cr", "doc_index": "doc_index",
                   "compose_context": "context", "ue_query": "ue",
-                  "inbox_import": "inbox_import"}
+                  "inbox_import": "inbox_import", "section": "section", "find": "search",
+                  "role_diff": "instructions", "agenda": "agenda"}
 
 
 class _Parser(argparse.ArgumentParser):
@@ -122,6 +123,26 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--entity", help="entita (hub, dokumenty, master lore, předání)")
     p.add_argument("--topic", help="kategorie, doména nebo inbox")
     p.add_argument("--query", help="otázka (hledání v indexu dokumentů a glosáři)")
+
+    p = sub.add_parser("section", parents=[common],
+                       help="osnova dokumentu nebo jen zadané sekce s čísly řádků (13 kap. 10.13)")
+    p.add_argument("document", metavar="DOKUMENT", help="cesta, jméno, titul nebo alias poznámky")
+    p.add_argument("headings", nargs="*", metavar="NADPIS", help="nadpisy sekcí (bez ohledu na velikost písmen)")
+    p.add_argument("--list", action="store_true", help="osnova a Souhrn (výchozí bez nadpisu)")
+
+    p = sub.add_parser("find", parents=[common], help="hledání poznámek v indexu se zálohou v textu (13 kap. 10.13)")
+    p.add_argument("query", metavar="DOTAZ")
+    p.add_argument("--type", help="typ poznámky (i víc, oddělené čárkou)")
+    p.add_argument("--entity", help="entita (hub a dokumenty k ní)")
+    p.add_argument("--for-role", dest="for_role", help="předání pro roli (pole for_role)")
+    p.add_argument("--text", action="store_true", help="hledat vždy i v textu poznámek")
+
+    p = sub.add_parser("role_diff", parents=[common], help="změny instrukcí a profilu role od verze (13 kap. 10.13)")
+    p.add_argument("role", metavar="ROLE")
+    p.add_argument("--since", metavar="VERZE", help="výchozí: verze před poslední aktualizací (structure_version.md)")
+
+    p = sub.add_parser("agenda", parents=[common], help="co čeká na roli: předání podle for_role (13 kap. 10.13)")
+    p.add_argument("--role", required=True, metavar="ROLE")
 
     p = sub.add_parser("ue_query", parents=[common], help="čtení stavu v Unrealu, etapa 1 (jen čtení; 13 kap. 10.11)")
     p.add_argument("--emit", action="store_true", help="vygenerovat čtecí skript do Maintenance/ue/")

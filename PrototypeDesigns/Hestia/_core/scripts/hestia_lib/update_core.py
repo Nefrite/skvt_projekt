@@ -10,7 +10,8 @@
   hodnoty nově v core a zapíší do `changes.md`; funkční nastavení `.obsidian` se nemění (02 kap. 7.1).
 - Na konci upozornění, jsou-li kompiláty rolí starší než nový core.
 - Report (zadání 0.15.3): po výměně `_core/` hned oddíl přechodu v reportu dne (`upgrade.start_section`), kroky
-  ho doplní; průběh na stderr hned. Dry-run ohlásí nedokončený přechod a doporučí `--after-only --apply`.
+  ho doplní; průběh na stderr hned. Oddíl *Změny instrukcí* (zadání 0.21, modul `instructions`) se spočte před
+  výměnou ze starého a nového core; kroky po aktualizaci ho obnoví ze starého core v `_to_delete/`. Dry-run ohlásí nedokončený přechod a doporučí `--after-only --apply`.
 - Migrace MAJOR verzí: `scripts/migrations/<verze>.py` v novém core s funkcí `migrate(vault, apply)`;
   spustí se v dry-run a s `--apply` po schválení. Ve fázi 3 jen kostra bez migrací.
 - Snippety core `.obsidian/snippets/hestia-*.css` (02 kap. 7.1) srovná při každém běhu: chybějící doplní,
@@ -361,6 +362,8 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
         staging = vault.root / "_core.new"
         if staging.exists():
             raise UsageError(f"{staging} už existuje (přerušená aktualizace?); zkontroluj a přesuň ho ručně")
+        # Změny instrukcí se spočtou dřív, než se _core/ přepíše (starý a nový core vedle sebe; zadání 0.21)
+        instr = upgrade_mod.instruction_lines(vault, cur_core if cur_core.is_dir() else None, new_core)
         shutil.copytree(new_core, staging, ignore=shutil.ignore_patterns(*EXCLUDE_DIRS, "*.pyc"))
         trash = vault.root / "_to_delete" / f"_core_{old_v}"
         n = 2
@@ -380,7 +383,7 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
                                                               ", ".join(upl.crs)])], today=day),
                          expected_hash=file_hash(sv))
         # oddíl přechodu v reportu hned po výměně (zadání 0.15.3); kroky ho doplní, přerušení ho nechá viditelný
-        upgrade_mod.start_section(vault, old_v, new_v, upl)
+        upgrade_mod.start_section(vault, old_v, new_v, upl, instr)
         if not getattr(args, "quiet", False):
             print(f"update_core: _core/ vyměněn {old_v} -> {new_v}", file=sys.stderr, flush=True)
         removed_local = []

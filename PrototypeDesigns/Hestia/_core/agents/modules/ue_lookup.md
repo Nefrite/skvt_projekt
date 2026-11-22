@@ -23,7 +23,8 @@ Potřebuješ vědět, co je v enginu skutečně postavené: otázka na realizaci
 3. Když editor neběží, použij poslední report a uveď jeho datum; report starší než `ue_report_days` je v hubu označený jako starý.
 4. Report ukazuje jen měřitelné signály (actory podle třídy, zástupné meshe `/Engine/BasicShapes/`, výchozí materiály, fáze `stage:*`, rozsah, vlastní a za potomky). Úroveň realizace se automaticky neodhaduje: porovnej ji s `depth_*` podle vodítka (12 kap. 3b.8): jen polohy → blockout, rozměry a kolize → greybox, proxy meshe a tagy → whitebox, meshe a data → asset_data, Blueprint a logika v provozu → functional.
 5. Neshodu reportu s `depth_*` zapiš jako otázku nebo ji nech na auditu (G10). `depth_*` neměníš; mění ho ten, kdo realizoval, nebo GameDesigner.
-6. V chatu bez vaultu pracuj jen s reportem, který máš v balíčku kontextu. **Bez balíčku** řekni přesně, který potřebuješ: `hestia.py compose_context --entity <Entita> --apply` (hub entity s blokem `## Stav v UE`, tedy souhrn posledního reportu a jeho datum), nebo přístup k vaultu. Ve vaultu čti report `Maintenance/reports/ue_<entita>.json` přímo.
+6. **Report a `state`:** při odpovědi o realizaci porovnej report se `state` entity. Je-li report novější a stavbu ukazuje, platí „v levelu je“ (s datem reportu), i když starší `state` píše „neověřeno“ nebo „neběželo“; rozpor řekni a starší text nepřebírej. Report nepotvrzuje vzhled ani funkci: ty platí jen z § *Vizuálně ověřeno* ve `state` (kdo, kdy). Když `state` měníš, doplň § *V levelu* podle reportu (stavby, datum reportu, odkaz). Hub to připomene v bloku `## Stav v UE`, audit jako G10 (12 kap. 3b.8, zadání 0.19).
+7. V chatu bez vaultu pracuj jen s reportem, který máš v balíčku kontextu. **Bez balíčku** řekni přesně, který potřebuješ: `hestia.py compose_context --entity <Entita> --apply` (hub entity s blokem `## Stav v UE`, tedy souhrn posledního reportu a jeho datum), nebo přístup k vaultu. Ve vaultu čti report `Maintenance/reports/ue_<entita>.json` přímo.
 
 ## Výstup
 Stav entity v Unrealu se zdrojem (report a jeho datum) a srovnání s `depth_*`; v odpovědi `lookup` řádek ve *Zdrojích*.
@@ -31,4 +32,5 @@ Stav entity v Unrealu se zdrojem (report a jeho datum) a srovnání s `depth_*`;
 ## Známé pasti
 - Vydávat starý report za aktuální stav bez data.
 - „Opravit“ `depth_*` podle reportu; to je rozhodnutí realizátora nebo GameDesignera.
+- Převzít ze starého `state` „neověřeno“, když novější report stavbu ukazuje; nebo naopak brát report jako vizuální potvrzení.
 - Spustit v editoru skript, který není čtecí dotaz core.

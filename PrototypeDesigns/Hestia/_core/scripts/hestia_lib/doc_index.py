@@ -3,7 +3,8 @@
 `Maintenance/doc_index.json` (generovaný, needitovat): záznam na poznámku vaultu mimo `_core/`, `Maintenance/`,
 `Roles/_compiled/` (a `_to_delete/`). Pole: `path`, `title`, `aliases`, `type`, `validity`, `status`, `updated`,
 `entity`, `domain`, `domains`, `depth`, `build_step`, `master`, `headings` (`##` a `###`), `links_out` (existující
-poznámky, na které dokument odkazuje). Index obnovují i `hubs` a `audit`; zapisuje se jen při změně obsahu
+poznámky, na které dokument odkazuje), `chars` (znaky těla) a `sections` (`{heading, level, line, end_line, chars}`
+pro `##` a `###`, řádky souboru od 1, `end_line` včetně; zadání 0.21, příkaz `section`). Index obnovují i `hubs` a `audit`; zapisuje se jen při změně obsahu
 (čas `generated` změnu nedělá).
 """
 from __future__ import annotations
@@ -17,6 +18,7 @@ from .errors import EXIT_OK
 from .fileio import read_text
 from .links import extract_links, headings, links_in_value
 from .model import Model
+from .section import body_chars, outline
 from .util import as_date, as_list, today
 from .vault import Vault
 
@@ -50,6 +52,7 @@ def record(vault: Vault, m: Model, note) -> dict:
         "depth": fm.get("depth"), "build_step": fm.get("build_step"), "master": fm.get("master"),
         "headings": [t for lvl, t, _ in headings(note.body) if lvl in (2, 3)],
         "links_out": sorted(dict.fromkeys(links)),
+        "chars": body_chars(note), "sections": outline(note),
     }
 
 

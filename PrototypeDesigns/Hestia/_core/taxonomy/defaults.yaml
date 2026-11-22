@@ -20,3 +20,6 @@ required_docs: [lore_master]
 protected_files: []
 context_max_chars: 60000           # limit balíčku compose_context (13 kap. 10.10)
 ue_report_days: 14                 # report z Unrealu starší než práh = starý (13 kap. 10.11)
+doc_summary_chars: 6000            # nad prahem čtení po sekcích a povinný Souhrn (G14a, 13 kap. 10.13; zadání 0.21)
+doc_split_chars: 20000             # nad prahem doporučení rozdělit dokument (G14b)
+handover_max_chars: 4000           # předání nad prahem obsahuje víc než zadání (G14c)

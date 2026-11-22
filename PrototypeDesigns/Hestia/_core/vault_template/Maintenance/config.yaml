@@ -12,3 +12,6 @@ prototypes:
     lore: Lore_{{prototype}}
 engine_version: {{engine_version}}
 protected_files: []                # soubory, které skripty nepřepisují (file_safety, write_rules)
+# doc_summary_chars: 6000          # nad prahem čtení po sekcích a povinný ## Souhrn (G14a); výchozí z defaults.yaml
+# doc_split_chars: 20000           # nad prahem doporučení rozdělit dokument (G14b)
+# handover_max_chars: 4000         # předání nad prahem obsahuje víc než zadání a odkazy (G14c)

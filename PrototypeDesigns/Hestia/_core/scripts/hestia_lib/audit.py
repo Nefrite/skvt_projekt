@@ -1,4 +1,4 @@
-"""Příkaz audit: G1–G13, zralost; report a fronta jako seznam úkolů (zadání 04 kap. 3–4, 13 kap. 7 a 10.4).
+"""Příkaz audit: G1–G14, zralost; report a fronta jako seznam úkolů (zadání 04 kap. 3–4, 13 kap. 7 a 10.4).
 
 - Nálezy: G6/G7 z lintu a z hlaviček kódu, G1–G5, G8–G12 podle 04 kap. 4 a 10 kap. 9.
 - Report `Maintenance/reports/audit_RRRR-MM-DD.md` (šablona 07 kap. 7) + `.json` ([{code, severity, target,
@@ -11,10 +11,14 @@
 - Sekce *Knihovník* (13 kap. 10.10, 12 kap. 3b.9): změny kánonu v `changes.md` (předpona `změna kánonu:`),
   `Inbox/` `raw` (počet, průměrné stáří), `Scratch/` zařazené za období (od posledního auditu).
 - Sekce *Unreal* a rozšíření G10 jen s `ue_map.yaml` (13 kap. 10.11): entita s pravidlem, `depth_d ≥ 2`
-  v režimu build a v posledním reportu bez actora = G10; v sekci entity bez pravidla, bez reportu, staré reporty.
+  v režimu build a v posledním reportu bez actora = G10; entita s actory v reportu a platným `state` s `updated`
+  starším než `generated` reportu = G10 (zadání 0.19, jen data); v sekci entity bez pravidla, bez reportu, staré reporty.
 - G5 i u balíčků kontextu (`Maintenance/context/`), které by nové složení změnilo; audit obnoví `doc_index.json`.
 - G5 u profilu `Roles/<Role>.md` bez `role_base` nebo se starším než poslední verze s příznakem `roles`
   v manifestu běžícího core (zadání 0.17).
+- G14 dlouhý dokument (informace, jen report; zadání 0.21): (a) dokument v `Docs/` nad `doc_summary_chars` bez
+  `## Souhrn`, (b) poznámka nad `doc_split_chars` → rozdělit, (c) aktivní předání nad `handover_max_chars`; znaky
+  těla bez frontmatteru a generovaných bloků, `Maintenance/` a `Dashboard/` se nepočítají.
 Instance bez herní vrstvy: G1–G4, G10, G12 a zralost se nepočítají.
 """
 from __future__ import annotations
@@ -34,6 +38,7 @@ from .fileio import read_text, to_posix
 from .links import extract_links, links_in_value, section_text
 from .logs import QueueItem, log_entries, next_id, parse_queue, upgrade_queue, write_queue
 from .model import DOC_TYPES, INACTIVE_VALIDITY, Model
+from .section import content_chars, summary
 from .util import as_date, today, trailing_date
 from .validate import run_checks
 from .vault import Note, Vault
@@ -42,7 +47,7 @@ REPORTS = "Maintenance/reports"
 STATE_REL = f"{REPORTS}/state.json"
 QUEUE_REL = "Maintenance/queue.md"
 CHANGES_REL = "Maintenance/changes.md"
-REPORT_ONLY = {"G1", "G9", "G10", "G13"}             # [R3]; G13 informace (04 kap. 4)
+REPORT_ONLY = {"G1", "G9", "G10", "G13", "G14"}      # [R3]; G13, G14 informace (04 kap. 4)
 PRIORITY = {"error": "high", "warning": "medium"}
 LORE_REQUIRED = ["Svět a doba", "Místo", "Časové vrstvy", "Obyvatelé a postavy"]     # 12 kap. 3a
 ORPHAN_ZONES = ("Docs/", "Steps/")                    # osiřelá poznámka (G6): dokumenty bez jediného odkazu
@@ -191,6 +196,30 @@ class Auditor:
                          f"bez změny od {stale[0].isoformat()} (déle než {self.doc_days} dní), "
                          f"entita {stale[2]} se od té doby změnila ({stale[1].isoformat()}, changes.md)")
 
+    def long_doc_checks(self) -> None:
+        """G14 dlouhý dokument (04 kap. 4, 13 kap. 10.13; zadání 0.21)."""
+        cfg = self.v.config
+        summ, split_, hand = (int(cfg.get(k) or d) for k, d in (("doc_summary_chars", 6000),
+                                                                 ("doc_split_chars", 20000),
+                                                                 ("handover_max_chars", 4000)))
+        for n in self.m.notes:
+            if n.rel.startswith(("Maintenance/", "Dashboard/", "Roles/_compiled/"))                     or n.fm.get("validity") in INACTIVE_VALIDITY:
+                continue
+            chars = content_chars(n)
+            if n.type == "handover":
+                if self.m.is_active_handover(n) and chars > hand:
+                    self.add("G14", n.name, self.file_of(n),
+                             f"předání má {chars} znaků (handover_max_chars {hand}): obsahuje víc než zadání a odkazy; "
+                             f"rozhodnutí a výsledky přenes do Docs/, navazující kroky do dalších předání (12 kap. 1)")
+                continue
+            if n.rel.startswith("Docs/") and n.type in DOC_TYPES and chars > summ and summary(n) is None:
+                self.add("G14", n.name, self.file_of(n),
+                         f"{chars} znaků (doc_summary_chars {summ}) bez sekce ## Souhrn hned za titulem (07 kap. 2)")
+            if chars > split_:
+                self.add("G14", n.name, self.file_of(n),
+                         f"{chars} znaků (doc_split_chars {split_}): rozdělit tematicky, po částech entity nebo po "
+                         f"krocích (01 kap. 9.2)")
+
     @property
     def doc_days(self) -> int:
         return int(self.th.get("stale_doc_days") or 90)
@@ -277,6 +306,9 @@ class Auditor:
                 continue
             if ue.is_stale(self.v, rep, self.day):
                 stale.append(f"{name} ({str(rep.get('generated') or '–')[:10]})")
+            behind = ue.state_behind(self.m, name, rep)          # state za reportem (zadání 0.19)
+            if behind:
+                self.add("G10", name, self.file_of(behind[0]), ue.state_behind_text(behind))
             if ue.total_actors(rep) == 0:
                 for d in self.tx.domains:
                     depth = self.m.num(n.fm, f"depth_{d}")
@@ -463,6 +495,7 @@ class Auditor:
             self.maturity_table()
             self.ue_checks(idx.files)
         self.stale_checks()
+        self.long_doc_checks()
         self.compiled_checks()
         self.role_base_checks()
         self.context_checks()

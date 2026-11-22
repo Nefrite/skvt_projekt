@@ -368,8 +368,17 @@ def roles_lines(info: dict | None) -> list[str]:
     return out
 
 
+def instruction_lines(vault: Vault, old_core: Path | None, new_core: Path) -> list[str]:
+    """Oddíl *Změny instrukcí* (13 kap. 10.6, zadání 0.21): změněné sekce instrukcí a role, které je používají."""
+    from . import instructions
+    changes = instructions.changes_between(old_core, new_core)
+    roles = instructions.usage(vault, new_core, changes) if changes else None
+    return instructions.section_md(changes, roles)
+
+
 def section_md(old: str | None, new: str, state: str, swap: str | None, pl: Plan, steps: list[dict],
-               remaining: list[str], checks: dict | None, tasks: tuple | None, roles: dict | None = None) -> str:
+               remaining: list[str], checks: dict | None, tasks: tuple | None, roles: dict | None = None,
+               instr: list[str] | None = None) -> str:
     """Oddíl přechodu v reportu; swap None = bez výměny (rozsah neznámý), "" = starý core nenalezen."""
     lines = [section_heading(old, new), f"- Stav: {state}"]
     if swap is not None:
@@ -401,6 +410,8 @@ def section_md(old: str | None, new: str, state: str, swap: str | None, pl: Plan
         lines.append(f"- Upozornění: {note}")
     if roles:
         lines += roles_md(roles)
+    if instr:
+        lines += instr
     lines += ["", "### CR k ověření", *([f"- {c} (ověřit v instanci, do *Průběhu* `in_pilot`)" for c in pl.crs]
                                         or ["_Žádné._"])]
     return "\n".join(lines) + "\n"
@@ -426,10 +437,12 @@ def write_section(vault: Vault, day: str, text: str) -> Path:
     return p
 
 
-def start_section(vault: Vault, old: str, new: str, pl: Plan) -> Path:
-    """Řídicí skript hned po výměně `_core/`: oddíl přechodu se stavem „kroky po aktualizaci neproběhly“."""
+def start_section(vault: Vault, old: str, new: str, pl: Plan, instr: list[str] | None = None) -> Path:
+    """Řídicí skript hned po výměně `_core/`: oddíl přechodu se stavem „kroky po aktualizaci neproběhly“;
+    `instr` = oddíl *Změny instrukcí* spočtený před výměnou (starý a nový core vedle sebe)."""
     return write_section(vault, today().isoformat(),
-                         section_md(old, new, STATE_NOT_RUN, find_trash(vault, old) or "", pl, [], [], None, None))
+                         section_md(old, new, STATE_NOT_RUN, find_trash(vault, old) or "", pl, [], [], None, None,
+                                    instr=instr))
 
 
 def unfinished(vault: Vault, current: str) -> dict | None:
@@ -495,10 +508,11 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
     swap = (find_trash(vault, since) or "") if since else None
     steps, remaining = [], []
     roles = roles_info(vault, core, swap, pl)
+    instr = instruction_lines(vault, vault.root / swap if swap else None, core) if swap is not None else None
 
     def save(state: str, checks: dict | None = None, tasks: tuple | None = None) -> Path:
         return write_section(vault, rep_day, section_md(since, current, state, swap, pl, steps, remaining,
-                                                        checks, tasks, roles))
+                                                        checks, tasks, roles, instr))
 
     save("kroky probíhají")
     for s in pl.after:

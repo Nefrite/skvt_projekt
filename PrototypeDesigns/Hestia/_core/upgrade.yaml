@@ -69,3 +69,26 @@ versions:
     roles: "profil kontrakt zpřísňuje, neruší (zákazy zápisu jen pro kód, data a assety); zápis do Docs/ je dokumentace domény podle 07 kap. 2, existující dokumentace entity se doplňuje, předání se píše z role (12 kap. 2.1, 8); tpl_role s role_base"
     manual: []
     crs: [CR_2026-11-21_zaklad_roli_v_instanci]
+  - version: 0.17.0
+    after: [doc_index, compose_role]
+    roles: "projektové role a Knihovník CR nezakládají: podnět ke změně Hestie na konec queue.md (proposal, code: hestia), Curator ho převede do structure_log (12 kap. 4.5, 8); hlášení task_close (krok 11) uvádí podněty, zápis Hestia má sekci Podněty pro Hestii; Knihovník uzavírá vlastní zápis skriptem task_close (12 kap. 3b.1)"
+    manual: []
+    crs: [CR_2026-11-21_inbox_import_seznamy_v_li, CR_2026-11-21_podnety_roli_pres_frontu]
+  - version: 0.18.0
+    after: [hubs, compose_role]
+    manual: []
+    crs: [CR_2026-11-21_ue_cteni_vs_state]
+  - version: 0.19.0
+    after: [compose_role]
+    roles: "kontrakt L0 rozdělen (12 kap. 2): zásady zápisu v write_rules.md, oddíl Zásady zápisu (12 kap. 8); podnět ke změně Hestie v novém modulu hestia_feedback (12 kap. 4.5); výjimka compile: listed v modulu start; profil, který odkazuje na oddíl kontraktu Kam smíš psát, odkáže na write_rules.md, Zásady zápisu"
+    manual: []
+    crs: [CR_2026-11-21_kontrakt_rozdeleni]
+  - version: 0.20.0
+    after: [doc_index, compose_role]
+    roles: "čtení výběrem (12 kap. 3, modul start): dokument nad doc_summary_chars po sekcích (section), hledání příkazem find, bez zadání agenda --role, po aktualizaci role_diff; předání je jeden task pro jednu roli s for_role (12 kap. 1, handover_out); jeden dokument, jedno téma a Souhrn nad prahem (01 kap. 9.2, file_info, task_close krok 1); do Claude Projectu jen kompiláty changed (12 kap. 7.1, task_close krok 2)"
+    manual: []
+    crs: []
+  - version: 0.20.1
+    after: []
+    manual: []
+    crs: []

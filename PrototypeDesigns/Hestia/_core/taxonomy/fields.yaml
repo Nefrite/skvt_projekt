@@ -26,6 +26,7 @@ items:
   - {name: type,           section: orchestration, applies_to: *all,       value: "enum:type",     required: always}
   - {name: validity,       section: orchestration, applies_to: *documents, value: "enum:validity", required: always}
   - {name: superseded_by,  section: orchestration, applies_to: *documents, value: wikilink,        required: "validity == superseded"}
+  - {name: for_role,       section: orchestration, applies_to: [handover], value: list,            required: no}   # jména profilů rolí; agenda, 13 kap. 10.13 (zadání 0.21)
   - {name: derived_from,   section: orchestration, section_entity: game, applies_to: *documents_entity, value: wikilink_list, required: no}
   - {name: alternative_to, section: orchestration, applies_to: *documents_entity, value: wikilink_list, required: no}
   - {name: intake,         section: orchestration, applies_to: [scratch],  value: "enum:intake",   required: always}

@@ -16,6 +16,8 @@ assets: []
 ---
 # {{title}}
 
+## Souhrn
+<!-- Povinný nad doc_summary_chars (výchozí 6 000 znaků, zadání 0.21): co platí, hlavní rozhodnutí, odkazy na sekce; nejvýš kolem 1 500 znaků. Drž ho aktuální se změnou dokumentu. -->
 ## Zadání / záměr
 ## Výchozí stav
 ## Návrh
