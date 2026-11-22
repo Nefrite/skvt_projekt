@@ -1,14 +1,16 @@
 ---
 # orchestrace
 type: handover
-validity: valid
-updated: 2026-11-21
+validity: archived
+updated: 2026-11-23
 # hra
 domain: structures
 entity: "[[Palac_Obydli]]"
 build_step: 05_constructions
 ---
 # Dům posádky v paláci (Palac_Obydli) – předání staviteli
+
+> Archivováno 2026-11-23: rozděleno na frontu předání `predani_palac_obydli_1_…` až `_7_…`, know-how do [[predani_builder_knowhow_dum]] (G14c, návrh Knihovníka).
 
 Stav: 21. 11. 2026. Předává architekt (session s Jirkou), přebírá stavitel. Cíl: nejdřív **staveniště a kontrola etapy 1** (kap. 4), potom **finální stav domu** (kap. 5). Pořadí určil Jirka 21. 11. 2026, viz [[navrh_palac_obydli_stred]] kap. 0.4 a 0.7.
 

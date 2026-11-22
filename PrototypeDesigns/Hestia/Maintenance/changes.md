@@ -136,3 +136,9 @@ updated: 2026-11-22
 | 2026-11-22 | Librarian | Vez | nový navrh_vez_skody (škody z dobývání, z navrh_vez_pristresek kap. 3) | Handovers/predani_knihovnik_rozdeleni.md |
 | 2026-11-22 | Librarian | Lapikus | Zricenina_03_ruin_stav: kapitoly kovárna, dům, brána a věž nahrazeny odkazy na stavy (G14b) | Handovers/predani_knihovnik_rozdeleni.md |
 | 2026-11-22 | Librarian | Palac_Obydli | navrh_palac_obydli_stred rozdělen: postavené do stav_palac_obydli, kap. 9 do navrh_palac_obydli_stavenisko, 0.5a/0.5b do kap. 4, kap. 3 odpadla, připravenost odkazem na CHECKLIST; stav doplněn z předání staviteli (G14b, G14c) | Handovers/predani_knihovnik_rozdeleni.md |
+| 2026-11-23 | agent pilotu (Steward) | Handovers/predani_palac_obydli_1_etapa1_ue.md … _7_vybaveni.md | fronta předání domu posádky (6× Builder, 1× Furnisher) ze zkrácení předání (G14c) | předání Knihovníka predani_G14bc_steward_curator |
+| 2026-11-23 | agent pilotu (Steward) | Handovers/predani_palac_obydli_stavitel.md | archivováno do `_archive/` (nahrazeno frontou předání) | G14c |
+| 2026-11-23 | agent pilotu (Steward) | Handovers/predani_builder_rozdeleni_05.md, predani_builder_rozdeleni_03.md, predani_builder_knowhow_dum.md | předání Builderovi: rozdělení kroků 05 a 03 (G14b), pasti z kódu domu do KnowHow | předání Knihovníka predani_G14bc_steward_curator |
+| 2026-11-23 | agent pilotu (Steward) | Handovers/predani_curator_scratch_kod.md, predani_curator_fronta_t0006.md | předání Curatorovi: rozdělení scratch (T-0012), uzavření T-0006–T-0008 | předání Knihovníka predani_G14bc_steward_curator |
+| 2026-11-23 | agent pilotu (Steward) | Palac_Obydli | `stav_palac_obydli`: odkazy na zbývající práci vedou na frontu předání | G14c |
+| 2026-11-23 | agent pilotu (Steward) | Handovers/_archive/predani_G14bc_steward_curator.md | předání Knihovníka pro Stewarda a Curatora uloženo jako zpracované | pokyn GameDesignera |

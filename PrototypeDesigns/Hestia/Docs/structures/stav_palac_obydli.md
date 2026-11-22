@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 aliases: []
 # hra
 domain: structures
@@ -18,7 +18,7 @@ Stav stavby domu posádky k 21. 11. 2026 proti návrhu [[navrh_palac_obydli_stre
 - **Co je hotové:** tabulka staveb a sad, podrobnosti kroků 1–3.
 - **Specifikace:** rozměry v `tools/ruin/palac_spec.py`, data, spouštěče, kontroly a náhled (sekce *Souhrn specifikace*, *Spuštění v UE*).
 - **Odchylky:** od kap. 4 návrhu a od návrhu staveniště (sekce *Co se liší od návrhu*).
-- **Zbývá:** vizuální kontrola staveniště v UE, pak krytina, strop, podlaha, okap a vybavení ([[predani_palac_obydli_stavitel]]).
+- **Zbývá:** vizuální kontrola staveniště v UE, pak krytina, strop, podlaha, okap, zárubně a vybavení (fronta předání [[predani_palac_obydli_1_etapa1_ue]] až [[predani_palac_obydli_7_vybaveni]]).
 
 ## Co je hotové
 | Stavba | Typ, modul | Obsah | Sady |
@@ -147,8 +147,8 @@ Všechno je ve skriptech a prošlo `tools/checks/run_checks.py` (`SOUHRN: ... ob
 - **Spuštění v UE:** po změně zříceniny nejdřív `03_ruin/blocks/casti/Palac.py`, pak celý dům `05_constructions/stavby/Palac_Obydli.py` (se `SUT = True` i suť), jednotlivě `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py` (celé staveniště; uložení ručních úprav `Palac_Obydli_Stavenisko_Capture.py`) a `Sut.py`. Navázání kamene potvrzené v UE (Jirka 16. 11. 2026), krov a srub jen mimo UE (`run_checks.py --only obydli`, náhledy `05_constructions/Stavby_palac_obydli_nahled.png` a `Stavby_palac_obydli_nahled_etapa1.png`).
 
 ## Co zbývá
-Viz [[predani_palac_obydli_stavitel]]: kap. 4 (vizuální kontrola staveniště a etapy 1 v UE) a kap. 5 (finální stav). Návrh staveniště: [[navrh_palac_obydli_stavenisko]].
+Fronta předání v tomto pořadí: [[predani_palac_obydli_1_etapa1_ue]] (kontrola etapy 1 v UE), [[predani_palac_obydli_2_krytina]], [[predani_palac_obydli_3_strop]], [[predani_palac_obydli_4_podlaha]], [[predani_palac_obydli_5_okap]], [[predani_palac_obydli_6_zarubne]], [[predani_palac_obydli_7_vybaveni]]. Návrh staveniště: [[navrh_palac_obydli_stavenisko]].
 
 ## Odkazy na návrh a předání
 - návrh: [[navrh_palac_obydli_stred]] (kap. 0 a 4: plán po etapách a rozměry), staveniště [[navrh_palac_obydli_stavenisko]]
-- předání: [[predani_palac_obydli_stavitel]] (aktivní)
+- předání: fronta [[predani_palac_obydli_1_etapa1_ue]] až [[predani_palac_obydli_7_vybaveni]] (aktivní); dřívější [[predani_palac_obydli_stavitel]] (archivováno 2026-11-23)
