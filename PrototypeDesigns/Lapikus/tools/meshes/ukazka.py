@@ -37,7 +37,7 @@ UKAZKY = {
                                              "SM_RuinDoor", "SM_RuinShutter", "SM_RuinOvenDoor", "SM_RuinStool", "SM_RuinWoodpile",
                                              "SM_RuinBasket", "SM_RuinLadder"]),
     "stan":        dict(src="lib", prefixes=["SM_RuinCanvasTent", "SM_RuinCampBed", "SM_RuinCampBedFolded", "SM_RuinChestSmall", "SM_RuinBundle", "SM_RuinStump"]),          # doplnit s etapami stanu
-    "guesthouse":  dict(src="lib", prefixes=["SM_RuinStool", "SM_RuinOvenDoor"]),            # doplnit s etapami guesthouse
+    "guesthouse":  dict(src="lib", prefixes=["SM_RuinBedLarge", "SM_RuinChestLocked", "SM_RuinArmorStand", "SM_RuinStool", "SM_RuinOvenDoor"]),            # doplnit s etapami guesthouse
 }
 PASY = list(UKAZKY) + ["ostatni"]           # poradi pasu v Y (pevne, at temata stoji vzdy na stejnem miste)
 

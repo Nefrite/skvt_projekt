@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 ---
 # Asset index
 
@@ -65,12 +65,20 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/04_forest/import_zone_splines.py` | entry | Les_Lapikus | Les_Lapikus | 04_forest | environment | folder | – |
 | `/PrototypeDesigns/Lapikus/04_forest/nacrt_zony.png` | data | Les_Lapikus | Les_Lapikus | 04_forest | environment | folder | – |
 | `/PrototypeDesigns/Lapikus/04_forest/place_alders.py` | entry | Les_Lapikus | Les_Lapikus | 04_forest | environment | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Guesthouse_postel_nahled.png` | data | Guesthouse | Guesthouse | 05_constructions | structures | name | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Guesthouse_stojan_brneni_nahled.png` | data | Guesthouse | Guesthouse | 05_constructions | structures | name | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Guesthouse_truhla_nahled.png` | data | Guesthouse | Guesthouse | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Knihovna_meshe_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Knihovna_textury_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Kulatina_meshe_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Kulatina_textury_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Props_kovarna_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Props_textury_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stan_luzko_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stan_luzko_slozena_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stan_plachta_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stan_truhlicka_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stan_vak_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled_etapa1.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_drevo_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
@@ -130,13 +138,14 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/06_furnishing/capture_furnishing.py` | entry | Lapikus | Lapikus | 06_furnishing | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/furn_data.py` | entry | Lapikus | Lapikus | 06_furnishing | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` | data | Lapikus | Lapikus | 06_furnishing | structures | folder | – |
-| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | – |
-| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py` | entry | Palac_Kovarna | Palac_Kovarna | 06_furnishing | structures | name | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna_Capture.py` | entry | Palac_Kovarna | Palac_Kovarna | 06_furnishing | structures | name | – |
 | `/PrototypeDesigns/Lapikus/README.txt` | data | – | – | – | – | header | README_PROJEKT |
 | `/PrototypeDesigns/Lapikus/build_fullscope.py` | entry | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/build_normal.py` | entry | – | – | – | – | – | – |
+| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasTent_A.json` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVezGable_A.json` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVez_A.json` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/new_designs/navrh_palac_obydli_puvodni_pudorys.png` | data | – | – | – | – | – | – |
@@ -159,11 +168,21 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/tools/meshes/mesh_bark.py` | library | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/tools/meshes/mesh_common.py` | library | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/tools/meshes/mesh_log.py` | library | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/tools/meshes/mesh_props.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/mesh_props.py` | library | Lapikus | Lapikus | – | structures | doc | Katalog_props |
 | `/PrototypeDesigns/Lapikus/tools/meshes/mesh_stone.py` | library | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/tools/meshes/mesh_textile.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/mesh_textile.py` | library | Lapikus | Lapikus | – | structures | doc | Katalog_props |
 | `/PrototypeDesigns/Lapikus/tools/meshes/mesh_wattle.py` | library | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/tools/meshes/mesh_wood.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka.py` | library | Lapikus | Lapikus | – | structures | doc | Katalog_props |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Drevo.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Guesthouse.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Kovarna.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Kulatina.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Kura_Prouti.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Naradi.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Obydli.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Stan.py` | library | – | – | – | structures | – | – |
+| `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Textil.py` | library | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/tools/preview_slope.py` | entry | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | Brana | Brana | 03_ruin | structures | name | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/build_ruin.py` | entry | Lapikus | Lapikus | 03_ruin | structures | folder | README_ruin |

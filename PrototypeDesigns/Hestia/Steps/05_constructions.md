@@ -4,7 +4,7 @@ type: step
 validity: valid
 aliases: [README_constructions]
 step_kind: build
-updated: 2026-11-21
+updated: 2026-11-22
 # hra
 build_step: 05_constructions
 domains: [structures]
@@ -340,7 +340,8 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 - **Textury** kůry a čel jsou vlastní, procedurální (`tools\textures\gen_textures.py`). Čela mají polární UV (u = úhel, v = vzdálenost od středu), takže letokruhy jsou soustředné a s náhodným posunem materiálu každé čelo jiné.
 - **Rozpracovaná kulatina** (tvar `peeling`, `SM_RuinLogPeeling_A/B`, 21. 11. 2026): kulatina s kůrou, nahoře (+Z) asi ve 2/3 délky oloupaná, okraj kůry v pruzích po loupáku, v oloupaném pásu stopy po loupáku. Klade se s `roll` 0, aby oloupaná strana byla nahoře. Parametr `bare` v `mesh_log.tube` (kde je kůra už oloupaná) ostatní meshe nemění, ty zůstaly bajtově stejné.
 - **Rozměry a varianty:** `ROUND_MESHES` v `zrlib\config.py` (musí odpovídat `NOMINAL` v `mesh_log.py`).
-- **Ukázka v UE:** `tools\meshes\Ukazka_Meshe.py` postaví kulatinu ve třech řadách (`peeled`, `raw`, `tar`) a za ní řadu ostatních knihovních meshí, na `ORIGIN`. Má tag `Ukazka_Meshe` a `MODE = "clear"` ji smaže (i starší ukázku `Ukazka_Kulatina`). Import a materiály dělá mimo transakci, Undo vrátí jen actory. Level zříceniny ani stavby nemění.
+- **Ukázka v UE:** `tools\meshes\Ukazka_Meshe.py` postaví všechna témata. Jednotlivá témata postaví `tools\meshes\ukazka\Ukazka_<Tema>.py` (kulatina, dřevo, kůra a proutí, textil, kovárna, nářadí, obydlí, stan, guesthouse; seznam meshí `UKAZKY` v `tools\meshes\ukazka.py`): téma importuje jen svoje meshe (`ensure_stone_meshes(only=…)`), stojí ve vlastním pásu v Y od `ORIGIN`, má tag `Ukazka_Meshe_<tema>` a `MODE = "clear"` smaže jen svoje téma. Nový mesh přidej do tématu v `UKAZKY`. Import a materiály dělá mimo transakci, Undo vrátí jen actory. Level zříceniny ani stavby nemění.
+- **Jen vybrané OBJ:** `gen_meshes.py --only PREFIX,…` zapíše jen meshe s daným prefixem; kompletní podklady bez `--only` (22. 11. 2026).
 
 **Další knihovní meshe** (`LIB_MESHES` v `zrlib\config.py`, dílec = `Stone` se `shape` z `LIB_SHAPES`, `cat` = materiál):
 
@@ -352,6 +353,7 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | `chimney` | `SM_RuinChimney` 60 × 60 × 100 cm | `wattle` | `Daub`, `Wattle` | `daub` | komín, výška přes `sz` |
 | `rope` | `SM_RuinRope` 100 × 1,5 cm | `textile` (`Ruin/Textile`) | `Rope` | `rope` | článek lana; prověšené lano = řetěz článků podél řetězovky |
 | `lashing` | `SM_RuinLashing` 7 × 10,5 cm | `textile` | `Rope` | `rope` | ovázání tyče Ø 8 cm (osa X), škáluje se s tyčí |
+| `canvas_tent` | `SM_RuinCanvasTent_A` 246 × 228 × 190 cm (na míru, `.json` se stojkami a kolíky) | `textile` | `Canvas` | `canvas` | plachta stanu do A, +X vchod, +Y odhrnutá chlopeň; karta v [[Katalog_props]] |
 
 **Props** (`tools\meshes\mesh_props.py`, kategorie `props`, OBJ v `meshes\props`, v UE `/Game/Skvt/Lapikus/Ruin/Props`): vlastní procedurální modely, dílec = `Stone` se `shape` z `LIB_SHAPES`, rozměry v `LIB_MESHES`. Slot `Wood` = materiál dílce (`cat`, úprava dřeva), ostatní sloty pevné.
 
@@ -384,6 +386,14 @@ Souřadnice jsou v rámu věže: **u** vede od jihozápadního rohu podél jižn
 | `iron_bars` | `SM_RuinIronBars` (svazek prutů) | 103 × 9 × 4 | Iron |
 | `basket` | `SM_RuinBasket` | Ø 44 × 37 | Wattle |
 | `ladder` | `SM_RuinLadder` (tyče s kůrou, příčle po 30 cm) | 450 × 54 × 8 | Wood, EndGrain, Bark |
+| `camp_bed`, `camp_bed_folded` | `SM_RuinCampBed`, `SM_RuinCampBedFolded` (lůžko ve stanu z klád a tyčí s kůrou, sláma, houně; hlava −X) | 199 × 76 × 29 (32) | Wood, EndGrain, Bark, Straw, Wool |
+| `chest_small` | `SM_RuinChestSmall` (truhlička, zámek −Y) | 59 × 38 × 32 | Wood, Iron |
+| `bundle` | `SM_RuinBundle` (vak na boku, hrdlo +X, popruh +Y) | 76 × 43 × 23 | Sackcloth, Rope |
+| `bed_large` | `SM_RuinBedLarge` (postel hosta, čelo 95 cm na −X, slamník, polštář, houně) | 250 × 109 × 95 | Wood, Wool, Canvas |
+| `chest_locked` | `SM_RuinChestLocked` (kovaná truhla, klenuté víko, zámek −Y, závěsy +Y) | 94 × 54 × 51 | Wood, EndGrain, IronClean |
+| `armor_stand` | `SM_RuinArmorStand` (stojan na brnění, čelo −Y; body pro brnění `ARMOR_STAND_POINTS`) | 60 × 60 × 175 | Wood, EndGrain |
+
+Karty těchto props (osy, funkční body, použití, úpravy) jsou v [[Katalog_props]].
 
 - Materiály lůžka: `MI_RuinStraw` (sláma, textura `T_RuinStraw`), `MI_RuinWool` (houně z nebarvené vlny, `T_RuinWool`); sloty Straw, Wool.
 - Materiály props: dvě železa – `MI_RuinIron` (slot Iron, s patinou tlumeně hnědé rzi, `Metallic` 0,5: kování, obruče, osy, pruty) a `MI_RuinIronClean` (slot IronClean, bez rzi, `Metallic` 0,8: nářadí a kovadlina); barva v textuře `T_RuinIron` / `T_RuinIronClean` (`TEX_VERSION` 4, `MAT_VERSION` 10, `MAT_RESET` iron 10), `MI_RuinLeather`, `MI_RuinSandstone` (StarterContent), `MI_RuinWater`, `MI_RuinCharcoal` (černou barvu dává tint, textura je jen světlý detail). Parametr `Metallic` je nově v `M_RuinStone` (výchozí 0, kámen a dřevo beze změny; `MAT_VERSION` 8 → master se při buildu přestaví).

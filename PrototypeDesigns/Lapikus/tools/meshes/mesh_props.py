@@ -18,6 +18,9 @@ Obydli: SM_RuinBed (A houne pres slamu, B slozena), SM_RuinTable, SM_RuinChest, 
 Stan: SM_RuinCampBed (luzko z klad a tyci s kurou, slama, houne pres slamu), SM_RuinCampBedFolded (houne slozena),
 SM_RuinChestSmall (truhlicka 55 x 35 x 32, kovani, oko na zamek na -Y, drzadla na +-X),
 SM_RuinBundle (valcovy vak z platna lezici na boku, dno -X, hrdlo stazene lanem +X, popruh z lana na +Y).
+Guesthouse: SM_RuinChestLocked (kovana truhla na cennosti 95 x 55 x 51, klenute viko, zamek na -Y, zavesy na +Y),
+SM_RuinBedLarge (postel 250 x 109, celo v hlave 95 cm na -X, slamnik v lnenem potahu, polstar, houne),
+SM_RuinArmorStand (stojan na brneni 60 x 60 x 175, celo -Y; body pro brneni ARMOR_STAND_POINTS).
 """
 import math, os
 import numpy as np
@@ -645,6 +648,87 @@ def camp_bed(seed, folded=False):
     return M
 
 
+def bed_large(seed, head_h=95.0):
+    """pohodlna postel hosta (Guesthouse) 250 x 109: ctyri hoblovane sloupky se zkosenymi hranami a hlavici, celo
+    v hlave s ramem a vlozenou deskou (vys head_h), nizsi celo v nohach, bocnice, laty na listach, slamnik v lnenem
+    potahu, polstar a vlnena houne pres slamnik s previsem pres bocnice. Hlava na -X."""
+    M = PM(); r = np.random.default_rng(seed); L, W = 250.0, 109.0; ps = 9.0; foot_h = 62.0
+    pl = dict(sub=4, rough=0.12, round_=0.5)
+    for x, hh in ((-L / 2 + ps / 2, head_h), (L / 2 - ps / 2, foot_h)):              # sloupky + hlavice
+        for y in (-W / 2 + ps / 2, W / 2 - ps / 2):
+            add_box(M, (x, y, (hh - 5) / 2), (ps, ps, hh - 5), WOOD, sub=5, rough=0.12, round_=1.2, seed=seed + int(x + y))
+            add_lathe(M, [(0, 0), (0, 3.2), (1.5, 4.0), (3.0, 3.4), (4.2, 2.0), (5.0, 0)], (x, y, hh - 5), (0, 0, 1),
+                      [WOOD] * 5, n=16, seed=seed + 3 + int(x + y))
+    rail = lambda x, z, h: add_box(M, (x, 0, z), (5, W - 2 * ps + 1, h), WOOD, seed=seed + 20 + int(x + z), **pl)
+    xh, xf = -L / 2 + ps / 2, L / 2 - ps / 2
+    rail(xh, 38, 8); rail(xh, head_h - 12, 8)                                        # celo v hlave: ram + deska
+    add_box(M, (xh, 0, (38 + head_h - 12) / 2), (2.2, W - 2 * ps - 2, head_h - 12 - 38 - 7), WOOD, seed=seed + 25, **pl)
+    add_box(M, (xh + 0.9, 0, (38 + head_h - 12) / 2), (1.2, W - 2 * ps - 18, head_h - 12 - 38 - 20), WOOD, seed=seed + 26, **pl)   # vystouply stred desky
+    add_box(M, (xh, 0, head_h - 6.5), (7, W - 2 * ps + 1, 2.5), WOOD, seed=seed + 27, **pl)                  # rimsa
+    rail(xf, 38, 8); rail(xf, foot_h - 8, 6)                                         # celo v nohach
+    add_box(M, (xf, 0, (38 + foot_h - 8) / 2), (2.2, W - 2 * ps - 2, foot_h - 8 - 38 - 5), WOOD, seed=seed + 28, **pl)
+    for y in (-W / 2 + ps / 2, W / 2 - ps / 2):                                     # bocnice + lista pod laty
+        add_box(M, (0, y, 38), (L - 2 * ps + 1, 4.5, 16), WOOD, R=rot(r.uniform(-0.1, 0.1)), seed=seed + 30 + int(y), **pl)
+        add_box(M, (0, y - np.sign(y) * 3.5, 31.5), (L - 2 * ps - 2, 2.5, 3), WOOD, seed=seed + 32 + int(y), **pl)
+    for k in range(9):                                                               # laty
+        x = -L / 2 + ps + 14 + k * (L - 2 * ps - 28) / 8
+        add_box(M, (x + r.uniform(-1, 1), 0, 34.2), (9, W - 2 * ps - 6, 2.4), WOOD, sub=3, rough=0.1, round_=0.4, seed=seed + 40 + k)
+    yi = W / 2 - ps / 2 - 2.25                                                       # vnitrni lic bocnice
+    Lm, Wm = L - 2 * ps - 2, 2 * yi - 1                                              # slamnik
+    zm0, zm1 = 35.5, 55.0
+    add_box(M, (0, 0, (zm0 + zm1) / 2), (Lm, Wm, zm1 - zm0), CANVAS, sub=10, rough=0.9, round_=5.5, seed=seed + 50)
+    add_box(M, (-L / 2 + ps + 30, 0, zm1 + 4.5), (40, Wm - 26, 11), CANVAS, R=rot(r.uniform(-3, 3)), sub=6, rough=0.6, round_=5.0, seed=seed + 51)   # polstar
+    W2 = waves(seed + 5, 10, 4, 18)                                                  # houne pres slamnik a bocnice
+    su = np.linspace(-L / 2 + 75, L / 2 - ps - 6, 30); sv = np.linspace(-Wm / 2 - 24, Wm / 2 + 24, 30)
+    U, V = np.meshgrid(su, sv, indexing="ij")
+    over = np.maximum(np.abs(V) - (Wm / 2 - 3), 0); sg = np.sign(V)
+    q = np.stack([U, V, np.zeros_like(U)], -1).reshape(-1, 3); wr = noise(q, W2).reshape(U.shape)
+    a = np.minimum(over, 9.0); b = np.maximum(over - 9.0, 0)
+    Y = sg * (Wm / 2 - 3 + a * 0.98) + sg * 0.5 * wr * (over > 0)
+    Z = zm1 + 1.6 + 0.5 * wr - a * (a / 9.0) * 1.1 - b
+    Y = np.where(over > 9.0, sg * (W / 2 - ps / 2 + 4.0) + sg * 0.5 * wr, Y)          # svisle pres bocnici
+    add_sheet(M, np.stack([U, Y, Z], -1), 1.2, WOOL)
+    return M
+
+
+# body pro brneni na stojanu (cm od zeme, osa sloupku x = y = 0); brneni = samostatny mesh posazeny na tyto body
+ARMOR_STAND_POINTS = dict(head=(0, 0, 167.0), shoulders=(0, 0, 150.0), waist=(0, 0, 105.0), peg=(10.0, 0, 126.0))
+
+
+def armor_stand(seed):
+    """stojan na brneni (Guesthouse) 60 x 60 x 175, varianta A: kriz noh z preplatovanych tramku s patkou a vzperami,
+    sloupek 9 x 9, ramenni jarmo 46 cm (klenute, pevne i pro platovou zbroj) se dvema vzperami, pasova pricka 34 cm,
+    drevena hlavice na prilbu, kolik na rukavice (+X). Rucni hrube opracovani (tesane, rucne tocene). Celo na -Y."""
+    M = PM(); r = np.random.default_rng(seed)
+    hw = dict(sub=4, rough=0.35, round_=0.8)
+    tilt = lambda a=0.6: rot(r.uniform(-a, a), r.uniform(-a, a), r.uniform(-a, a))
+    add_box(M, (0, 0, 4.0), (60, 8, 8), WOOD, R=tilt(), seed=seed + 1, **hw)                     # kriz noh (preplatovany)
+    add_box(M, (0, 0, 4.0), (8, 60, 8), WOOD, R=tilt(), seed=seed + 2, **hw)
+    add_box(M, (0, 0, 12.0), (20, 20, 8), WOOD, R=tilt(0.4), seed=seed + 3, **hw)                # patka
+    for k, (dx, dy) in enumerate(((1, 0), (-1, 0), (0, 1), (0, -1))):                          # vzpery noh
+        p0 = np.array([dx * 22.0, dy * 22.0, 8.0]); p1 = np.array([dx * 4.5, dy * 4.5, 34.0])
+        c = (p0 + p1) / 2; d = p1 - p0; ln = np.linalg.norm(d)
+        yaw = math.degrees(math.atan2(d[1], d[0])); pitch = -math.degrees(math.atan2(d[2], math.hypot(d[0], d[1])))
+        add_box(M, c, (ln + 2, 5, 5), WOOD, R=rot(yaw, pitch, r.uniform(-3, 3)), seed=seed + 10 + k, **hw)
+    add_box(M, (0, 0, 16.0 + (155.0 - 16.0) / 2), (9, 9, 155.0 - 16.0), WOOD, R=tilt(0.3), sub=5, rough=0.35, round_=1.0, seed=seed + 20)   # sloupek
+    # ramenni jarmo: klenuty profil v rovine XZ, hloubka 12 (Y)
+    xs = np.linspace(-23, 23, 13); top = 150.0 - 5.0 * (xs / 23.0) ** 2
+    prof = [(-23.0, 140.0), (23.0, 140.0)] + [(x, z) for x, z in zip(xs[::-1], top[::-1])]
+    prof = [(-p[0], p[1]) for p in prof][::-1]                                                  # rot(90): prvni souradnice = -X; zrcadleni -> obratit poradi (proti smeru hodin, normaly ven)
+    add_prism(M, prof, [WOOD] * len(prof), -6.0, 6.0, WOOD, R=rot(90 + r.uniform(-1, 1)))
+    for sx in (-1, 1):                                                                          # vzpery jarma
+        p0 = np.array([sx * 4.5, 0, 122.0]); p1 = np.array([sx * 17.0, 0, 140.5]); c = (p0 + p1) / 2; d = p1 - p0
+        add_box(M, c, (np.linalg.norm(d) + 2, 5, 5), WOOD, R=rot(0 if sx > 0 else 180, -math.degrees(math.atan2(d[2], abs(d[0]))), 0),
+                seed=seed + 30 + sx, **hw)
+    add_box(M, (0, 0, 105.0), (34, 6, 6), WOOD, R=tilt(0.8), seed=seed + 35, **hw)             # pasova pricka
+    add_cyl(M, (4.0, 0, 125.0), (14.0, r.uniform(-0.5, 0.5), 127.5), 1.6, 1.3, WOOD, cap_slot=END, n=10, rings=2, rough=0.15, seed=seed + 40)   # kolik
+    add_cyl(M, (0, 0, 154.0), (0, 0, 160.0), 2.8, 2.5, WOOD, n=12, rings=1, rough=0.15, seed=seed + 41)                  # krcek
+    prof = [(0, 0), (0.6, 4.0), (2.5, 6.8), (5.5, 7.9), (8.5, 7.6), (11.5, 6.0), (13.5, 3.5), (14.8, 0)]         # hlavice (rucne tocena)
+    add_lathe(M, prof, (r.uniform(-0.3, 0.3), r.uniform(-0.3, 0.3), 160.0), (r.uniform(-0.02, 0.02), r.uniform(-0.02, 0.02), 1),
+              [WOOD] * 7, n=20, rough=0.35, seed=seed + 42)
+    return M
+
+
 def table(seed):
     """stul 120 x 70 x 76: deska ze 3 prken, 4 nohy mirne rozkrocene, luby pod deskou, prickove spojeni dole (H)"""
     M = PM(); r = np.random.default_rng(seed); L, W, H = 120.0, 70.0, 76.0
@@ -778,6 +862,89 @@ def bundle(seed):
     pts = [(xt, Rn + 1.0, czt + 1.0), (xt - 6, 10, 1.1), (L * 0.75, 21 + r.uniform(-2, 2), 1.1), (L * 0.45, 25 + r.uniform(-2, 2), 1.1),
            (L * 0.2, 22, 1.1), (xb * 0.6, R0 * 1.1 + 1.5, 4.0), (xb * 0.9, R0 * 0.75, zt * 0.62)]
     _rope(M, pts, R=0.75, seed=seed + 30)
+    return M
+
+
+def chest_locked(seed):
+    """kovana truhla na cennosti (Guesthouse, host = inkvizitor) 95 x 55 x 51: hoblovana prkna na soklu, klenute viko,
+    cerne kovani bez rzi (IronClean): rohovniky, pasy pres korpus i viko s nyty, zamkova deska s klicovou dirkou
+    a zaverou na -Y, pasove zavesy vzadu (+Y), drzadla s kruhy na bocich (+-X)"""
+    M = PM(); r = np.random.default_rng(seed); L, W = 90.0, 50.0; t = 2.8; zs, zb = 6.0, 40.0    # korpus, sokl, vrch korpusu
+    Wl, Ll = W + 3.0, L + 3.0; side, rise = 3.0, 7.0                                            # viko
+    pl = dict(sub=4, rough=0.12, round_=0.45)
+    # sokl (o 1,5 cm vetsi nez korpus) a dno
+    for y in (-W / 2 - 0.25, W / 2 + 0.25):
+        add_box(M, (0, y, zs / 2), (L + 3, 3.3, zs), WOOD, seed=seed + 1 + int(y), **pl)
+    for x in (-L / 2 - 0.25, L / 2 + 0.25):
+        add_box(M, (x, 0, zs / 2), (3.3, W - 3, zs), WOOD, seed=seed + 3 + int(x), **pl)
+    add_box(M, (0, 0, zs + 1.0), (L - 2 * t, W - 2 * t, 2.0), WOOD, seed=seed + 5, **pl)
+    # steny korpusu: podelne ze 2 prken (spara), cela z jednoho
+    hb = (zb - zs) / 2
+    for y in (-W / 2 + t / 2, W / 2 - t / 2):
+        for k in range(2):
+            add_box(M, (0, y, zs + hb / 2 + k * hb), (L, t, hb - 0.2), WOOD, R=rot(r.uniform(-0.15, 0.15)), seed=seed + 10 + k + int(y), **pl)
+    for x in (-L / 2 + t / 2, L / 2 - t / 2):
+        add_box(M, (x, 0, (zs + zb) / 2), (t, W - 2 * t, zb - zs), WOOD, seed=seed + 14 + int(x), **pl)
+    # klenute viko (vytazeny profil podel X)
+    Rr = (Wl * Wl / 4 + rise * rise) / (2 * rise); zc = zb + side + rise - Rr
+    arc_y = np.linspace(Wl / 2, -Wl / 2, 17); arc_z = zc + np.sqrt(Rr * Rr - arc_y ** 2)
+    poly = [(-Wl / 2, zb), (Wl / 2, zb)] + list(zip(arc_y, arc_z))
+    add_prism(M, poly, [WOOD] * len(poly), -Ll / 2, Ll / 2, END)
+    def over_lid(x, w, seed_, studs=True, y_from=-Wl / 2, y_to=Wl / 2):
+        """zelezny pas pres klenbu vika (useky), volitelne s nyty"""
+        ys = np.linspace(y_from, y_to, 13); zs_ = zc + np.sqrt(Rr * Rr - ys ** 2)
+        for k in range(len(ys) - 1):
+            p0 = np.array([x, ys[k], zs_[k]]); p1 = np.array([x, ys[k + 1], zs_[k + 1]]); d = p1 - p0
+            n = np.array([0.0, -d[2], d[1]]); n /= np.linalg.norm(n)
+            if n[2] < 0: n = -n
+            ang = math.degrees(math.atan2(d[2], d[1]))
+            add_box(M, (p0 + p1) / 2 + n * 0.2, (w, np.linalg.norm(d) + 0.15, 0.4), CLEAN, R=rot(0, 0, ang), sub=2, rough=0.02, round_=0.1, seed=seed_ + k)
+            if studs and k % 2 == 1: add_cyl(M, p0 + n * 0.3, p0 + n * 0.9, 0.75, 0.45, CLEAN, n=8, rings=1)
+        for sy in (-1, 1):                                                         # pres bocni hranu vika
+            add_box(M, (x, sy * (Wl / 2 + 0.2), zb + side / 2), (w, 0.4, side), CLEAN, sub=2, rough=0.02, round_=0.1, seed=seed_ + 40 + sy)
+    def studs_line(p0, p1, nrm, step=6.0):
+        p0 = np.asarray(p0, float); p1 = np.asarray(p1, float); nrm = np.asarray(nrm, float); n = max(1, int(np.linalg.norm(p1 - p0) / step))
+        for k in range(n + 1):
+            p = p0 + (p1 - p0) * k / n; add_cyl(M, p, p + nrm * 0.6, 0.75, 0.45, CLEAN, n=8, rings=1)
+    # svisle pasy na celu a zadech + pres viko
+    for x in (-L / 2 + 18, L / 2 - 18):
+        for sy in (-1, 1):
+            y = sy * (W / 2 + 0.2)
+            add_box(M, (x, y, (zs + zb) / 2), (4.0, 0.4, zb - zs), CLEAN, sub=3, rough=0.02, round_=0.1, seed=seed + 30 + int(x) + sy)
+            studs_line((x, y + sy * 0.2, zs + 3), (x, y + sy * 0.2, zb - 3), (0, sy, 0))
+        over_lid(x, 4.0, seed + 60 + int(x))
+    # vodorovny pas uprostred cela a zad (mezi rohovniky), rohovniky na svislych hranach
+    for sy in (-1, 1):
+        y = sy * (W / 2 + 0.2)
+        add_box(M, (0, y, (zs + zb) / 2), (L - 8, 0.4, 3.5), CLEAN, sub=3, rough=0.02, round_=0.1, seed=seed + 70 + sy)
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            add_box(M, (sx * (L / 2 - 3.0), sy * (W / 2 + 0.2), (zs + zb) / 2), (6.0, 0.4, zb - zs), CLEAN, sub=3, rough=0.02, round_=0.1, seed=seed + 80 + sx + 2 * sy)
+            add_box(M, (sx * (L / 2 + 0.2), sy * (W / 2 - 3.0), (zs + zb) / 2), (0.4, 6.0, zb - zs), CLEAN, sub=3, rough=0.02, round_=0.1, seed=seed + 85 + sx + 2 * sy)
+            for z in (zs + 3, (zs + zb) / 2, zb - 3):
+                add_cyl(M, (sx * (L / 2 - 3.0), sy * (W / 2 + 0.4), z), (sx * (L / 2 - 3.0), sy * (W / 2 + 1.0), z), 0.75, 0.45, CLEAN, n=8, rings=1)
+    # zamkova deska s klicovou dirkou a zavera z vika (-Y)
+    yf = -W / 2 - 0.4
+    add_box(M, (0, yf - 0.1, 29.0), (15.0, 0.6, 15.0), CLEAN, sub=3, rough=0.02, round_=0.3, seed=seed + 90)
+    add_cyl(M, (0, yf - 0.4, 27.0), (0, yf - 0.9, 27.0), 1.6, 1.4, CLEAN, n=12, rings=1)                       # stitek klicove dirky
+    add_box(M, (0, yf - 0.9, 25.2), (0.9, 0.3, 2.6), WOOD, sub=1, rough=0.0, round_=0.1, seed=seed + 91)       # tmava dirka (drevo pod kovem)
+    for dx in (-5.5, 5.5):
+        for dz in (-5.5, 5.5):
+            add_cyl(M, (dx, yf - 0.4, 29.0 + dz), (dx, yf - 1.0, 29.0 + dz), 0.8, 0.5, CLEAN, n=8, rings=1)
+    add_box(M, (0, -Wl / 2 - 0.45, zb - 1.5), (4.5, 0.6, 14.0), CLEAN, sub=3, rough=0.02, round_=0.2, seed=seed + 92)   # zavera
+    add_cyl(M, (-2.2, yf - 1.0, 33.5), (2.2, yf - 1.0, 33.5), 0.9, 0.9, CLEAN, n=10, rings=1)                    # skoba zavery
+    # pasove zavesy vzadu (+Y): kloub na hrane, pas pres viko
+    for x in (-L / 2 + 30, L / 2 - 30):
+        add_cyl(M, (x - 3.0, W / 2 + 0.9, zb + 0.3), (x + 3.0, W / 2 + 0.9, zb + 0.3), 1.0, 1.0, CLEAN, n=10, rings=1)
+        add_box(M, (x, W / 2 + 0.3, zb - 5.0), (3.5, 0.4, 10.0), CLEAN, sub=2, rough=0.02, round_=0.1, seed=seed + 95 + int(x))
+        over_lid(x, 3.5, seed + 100 + int(x), studs=True, y_from=0.0, y_to=Wl / 2)
+    # drzadla s kruhem na bocich (+-X)
+    for sx in (-1, 1):
+        x = sx * (L / 2 + 0.25)
+        add_box(M, (x, 0, zb - 8), (0.5, 7, 5), CLEAN, sub=2, rough=0.02, round_=0.15, seed=seed + 110 + sx)
+        a = np.linspace(0, 2 * math.pi, 17)
+        pts = np.stack([np.full(17, x + sx * 1.3), 4.0 * np.cos(a), zb - 13.5 + 4.0 * np.sin(a)], 1)
+        for p0, p1 in zip(pts[:-1], pts[1:]): add_cyl(M, p0, p1, 0.55, 0.55, CLEAN, n=8, rings=1)
     return M
 
 
@@ -978,6 +1145,9 @@ PROPS = [  # (jmeno, funkce, varianty, popis)
     ("SM_RuinCampBedFolded", lambda s: camp_bed(s, folded=True), "A", "luzko ve stanu, houne slozena v nohach"),
     ("SM_RuinChestSmall", chest_small, "A", "truhlicka s kovanim a okem na zamek"),
     ("SM_RuinBundle", bundle, "A", "valcovy vak z platna s popruhem pres rameno"),
+    ("SM_RuinChestLocked", chest_locked, "A", "kovana truhla na cennosti se zamkem"),
+    ("SM_RuinBedLarge", bed_large, "A", "pohodlna postel hosta, houne pres slamnik"),
+    ("SM_RuinArmorStand", armor_stand, "A", "stojan na brneni (kriz, jarmo, hlavice), prazdny"),
 ]
 NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizuje. Stejna cisla v LIB_MESHES (zrlib/config.py)
     "SM_RuinStump": (53.6, 49.7, 46.7),
@@ -1015,6 +1185,9 @@ NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizu
     "SM_RuinCampBedFolded": (200.0, 76.5, 32.1),
     "SM_RuinChestSmall": (59.3, 38.0, 31.7),
     "SM_RuinBundle": (76.0, 43.4, 22.5),
+    "SM_RuinChestLocked": (94.2, 54.2, 50.7),
+    "SM_RuinBedLarge": (250.2, 109.1, 95.0),
+    "SM_RuinArmorStand": (60.1, 60.3, 175.0),
 }
 
 
