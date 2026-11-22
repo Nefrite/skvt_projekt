@@ -35,16 +35,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-21 · Builder · Palac · sdílený build: build_constructions._pile, ue_actors.place_ism s pivotem; ostatní stavby beze změny · chat: Jirka 21. 11. 2026 (oprava: hranice jako jednotlivé objekty, ne po kusech)
-- 2026-11-21 · Builder · Palac_Obydli · staveniště: každá hranice na nádvoří jeden actor s pivotem (data pile), posun a natočení ukládá Palac_Obydli_Stavenisko_Capture.py; ověřeno jen mimo UE · chat: Jirka 21. 11. 2026 (oprava: hranice jako jednotlivé objekty, ne po kusech)
-- 2026-11-21 · Builder · Lapikus · nový mesh SM_RuinLogPeeling (mesh_log.py, tvar peeling), krok 05 a checklist assetů; ostatní meshe beze změny · chat: Jirka 21. 11. 2026 (kozy s rozpracovanou kulatinou)
-- 2026-11-21 · Builder · Palac · palac_spec: D_SITE horses; kontrola visení: kus ve vidlici šikmých tyčí · chat: Jirka 21. 11. 2026 (kozy s rozpracovanou kulatinou)
-- 2026-11-21 · Builder · Palac_Obydli · staveniště: kozy s rozpracovanou kulatinou Palac_Obydli_Stavenisko_Kozy (S6, jeden objekt), pruhy kůry; prkna přemístěná Jirkou (capture); ověřeno jen mimo UE · chat: Jirka 21. 11. 2026 (kozy s rozpracovanou kulatinou)
-- 2026-11-21 · Furnisher · Ostroh · ostroh_spec.py: GH_* a guesthouse_vybaveni() pro vybaveni Guesthouse (03 a 05 beze zmeny) · chat: Jirka 21. 11. 2026 (vybaveni Guesthouse)
-- 2026-11-21 · Furnisher · Lapikus · 06_furnishing: skupina Guesthouse_Vybaveni, spoustece vybaveni/Guesthouse(_Capture).py, graybox material zrlib/config.py MAT_GRAYBOX, kontrola vybaveni v run_checks ostroh; CHECKLIST 6.8, know-how props · chat: Jirka 21. 11. 2026 (vybaveni Guesthouse)
-- 2026-11-21 · Furnisher · Guesthouse · vybaveni 06 graybox (9 kusu, MI_PrototypeGrid_Gray): postel, stul, stolicka, truhla, prazdne stojany na brneni a zbrane, regal, drevo, zastupce kamen; polohy z levelu (Jirka); navrh, stav, predani kamen staviteli; overeno mimo UE a v levelu Jirkou · chat: Jirka 21. 11. 2026 (vybaveni Guesthouse)
-- 2026-11-21 · Furnisher · Guesthouse · rozhodnuti Jirky: nove meshe truhly se zamkem a hromadky dreva, kamenna dlazba pod kamny (predani staviteli); uzavrene 3 otazky · chat: Jirka 21. 11. 2026 (vybaveni Guesthouse, rozhodnuti)
 - 2026-11-21 · Furnisher · Lapikus · CHECKLIST 6.8: SM_RuinChestLocked, SM_RuinWoodpileSmall, dlazba pod kamny · chat: Jirka 21. 11. 2026 (vybaveni Guesthouse, rozhodnuti)
+- 2026-11-21 · AssetGenerator · CHECKLIST_assets_navrhy · verze 3: stan bude, rozdělení stanu assety / Builder, výchozí pivot props ve středu bounding boxu, kvalita nábytku guesthouse, nová kap. 11 pořadí prací · chat: Jirka 21. 11. 2026 (prioritizace assetů)
+- 2026-11-21 · AssetGenerator · Lapikus · nový mesh SM_RuinCanvasTent_A (mesh_textile.canvas_tent, OBJ + .json se stojkami a kolíky), zrlib/config.py · chat: Jirka 21. 11. 2026 (assety stanu)
+- 2026-11-21 · AssetGenerator · Lapikus · ukázka meshí po tématech (tools/meshes/ukazka.py, ukazka/Ukazka_<Tema>.py), ensure_stone_meshes(only=), gen_meshes.py --only; kompletní výstup bit po bitu stejný (md5) · chat: Jirka 21. 11. 2026 (rozdělení ukázky meshí)
+- 2026-11-22 · AssetGenerator · Nadvori_Stan · props stanu: SM_RuinCampBed(+Folded), SM_RuinChestSmall, SM_RuinBundle, materiál MI_RuinSackcloth; jedno lůžko hlavou k zadnímu štítu, truhlička u hlavy, vak vedle (CHECKLIST 6.5) · chat: Jirka 22. 11. 2026 (assety stanu)
+- 2026-11-22 · AssetGenerator · Guesthouse · props guesthouse: SM_RuinChestLocked, SM_RuinBedLarge, SM_RuinArmorStand (varianta A, body ARMOR_STAND_POINTS), oprava normál jařma (verze 2); CHECKLIST 6.8 · chat: Jirka 22. 11. 2026 (assety guesthouse)
+- 2026-11-22 · AssetGenerator · Lapikus · nový dokument Katalog_props (karty props stanu a guesthouse), krok 05: tabulky props a textilu, ukázka po tématech, gen_meshes --only · chat: Jirka 22. 11. 2026 (dokumentace assetů)
+- 2026-11-22 · Furnisher · Ostroh · ostroh_spec.py: GH_MESH a rozmery meshi u GH_BED, GH_CHEST, GH_ARMOR (03 a 05 beze zmeny) · chat: Jirka 22. 11. 2026 (meshe Guesthouse z Katalog_props)
+- 2026-11-22 · Furnisher · Lapikus · ostroh_spec GH_MESH; furnishing.json, CHECKLIST 6.8, Katalog_props, 06_furnishing · chat: Jirka 22. 11. 2026 (meshe Guesthouse z Katalog_props)
+- 2026-11-22 · Furnisher · Guesthouse · vybaveni 06: postel SM_RuinBedLarge, truhla SM_RuinChestLocked, stojan na brneni SM_RuinArmorStand a stolicka SM_RuinStool jako meshe (oil) misto grayboxu; polohy z levelu beze zmeny, stojan otocen o 180 st. zady k hradbe; overeno mimo UE · chat: Jirka 22. 11. 2026 (meshe Guesthouse z Katalog_props)
 
 <!-- hestia:generated:end -->
 

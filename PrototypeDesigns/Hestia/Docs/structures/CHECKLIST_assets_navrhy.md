@@ -2,7 +2,7 @@
 # orchestrace
 type: checklist
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 # hra
 domain: structures
 entity: "[[Lapikus]]"
@@ -170,6 +170,7 @@ tools/meshes/
 - dřevo z dílců kap. 2 kde to jde (🧩): hrubé opracování, ohlazené hrany, praskliny jako u `SM_RuinTimber`;
 - ✋ tvary, které z dílců nesložíš (kovadlina, měch, sud, nářadí), se modelují zvlášť, ❓ procedurálně v `mesh_props.py`, nebo v Blenderu;
 - žádné ostré „CAD“ hrany, všechno trochu nakřivo a ošoupané;
+- léta dřeva vždy podél nejdelšího rozměru dílu, případně podle očekávané pevnosti (Jirka 22. 11. 2026; v kódu `grain="long"`, viz [[Katalog_props]]);
 - každý prop je samostatný actor (`loose`), **pivot ve středu bounding boxu** (výchozí, Jirka 21. 11. 2026; tak to dělá `mesh_props.py` a poloha v `06_furnishing` je střed bounding boxu). Pivot u země jen u kusů, kde to určí zadání (např. stavební dílce).
 
 ### 6.1 Kovárna (`06_furnishing`, `Palac_Kovarna_Vybaveni`) – stojí už v etapě 1; **rozmístěno 16. 11. 2026** (typ `props`, neověřeno v UE)
@@ -257,18 +258,18 @@ Rozdělení (Jirka 21. 11. 2026): **assety** = plachta, lůžko, truhlička, ran
 
 - ☐ ❓ Ohniště a vybavení hlídky ve 2. patře: návrh je výslovně neřeší. Jen poznámka pro game designera.
 
-### 6.8 Guesthouse (obytná část u ostrohu, `06_furnishing`, skupina `Guesthouse_Vybaveni`) – zadání Jirky 21. 11. 2026; **graybox postele, stolu a stoličky** srovnaný v levelu (21. 11. 2026); graybox truhly, stojanů a zástupce pece rozmístěný (21. 11. 2026, k ověření v levelu)
+### 6.8 Guesthouse (obytná část u ostrohu, `06_furnishing`, skupina `Guesthouse_Vybaveni`) – zadání Jirky 21. 11. 2026; **graybox postele, stolu a stoličky** srovnaný v levelu (21. 11. 2026); graybox truhly, stojanů a zástupce pece rozmístěný (21. 11. 2026); **22. 11. 2026 postel, truhla, stojan na brnění a stolička jako meshe** (06, `ostroh_spec.GH_MESH`, úprava `oil`), ostatní graybox
 
 Pokoj pro hosta (inkvizitor řádu, klíč nosí na krku, [[Guest_on_hunt]]). **Nábytek je kvalitnější než v domě** (Jirka 21. 11. 2026): pečlivější opracování a kování, pořád ve stylu hradu. Rám: `s` podél vnitřního líce `ZBudova_V` od jižního rohu k severu (0–12,36 m), `n` do místnosti k západu. První návrh půdorysu (před ověřením měřítka): `Attachments/navrh_guesthouse_vybaveni_pudorys.png`. Polohy grayboxu: `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`.
 
 | ☐ | Prop | Rozměr | Druh |
 |---|---|---|---|
-| ☐ | postel, **pohodlná** (východní zeď, s = 1,85–4,35; n = 0,39–1,48; graybox ověřený s postavou 180 cm, Jirka 21. 11. 2026) | 2,5 × 1,09 × 0,62 m | 🆕 větší lůžko (`SM_RuinBed` 2,0 × 0,87 nestačí) → `SM_RuinBedLarge` (`mesh_props.bed_large`, 250,2 × 109,1 × 95,0 cm: hoblované sloupky s hlavicí, čelo v hlavě 95 cm s rámem a deskou na −X, čelo v nohách 62 cm, bočnice, laťky, slamník a polštář v lněném potahu (`Canvas`), houně (`Wool`); ložná plocha 55 cm). **Hotovo 22. 11. 2026**, náhled `05_constructions/Guesthouse_postel_nahled.png`, neověřeno v UE; ❓ výška čela 95 cm vs. graybox 0,62 m |
+| ☐ | postel, **pohodlná** (východní zeď, s = 1,85–4,35; n = 0,39–1,48; graybox ověřený s postavou 180 cm, Jirka 21. 11. 2026) | 2,5 × 1,09 × 0,62 m | 🆕 větší lůžko (`SM_RuinBed` 2,0 × 0,87 nestačí) → `SM_RuinBedLarge` (`mesh_props.bed_large`, 250,2 × 109,1 × 95,0 cm: hoblované sloupky s hlavicí, čelo v hlavě 95 cm s rámem a deskou na −X, čelo v nohách 62 cm, bočnice, laťky, slamník a polštář v lněném potahu (`Canvas`), houně (`Wool`); ložná plocha 55 cm). **Hotovo 22. 11. 2026**, náhled `05_constructions/Guesthouse_postel_nahled.png`, neověřeno v UE. **Rozmístěno 22. 11. 2026** místo grayboxu (06), čelo 95 cm v hlavě u jižního rohu |
 | ☐ | 🆕 pracovní stůl pro jednoho pod oknem (s = 9,76–11,01; n = 0,07–0,82; graybox) | 1,25 × 0,75 × 0,78 m | 🧩 prkna a trámky → 🆕 `SM_RuinDesk` (nový mesh, Jirka 21. 11. 2026; ne `SM_RuinTable`) |
-| ◐ | stolička ke stolu (n = 1,10–1,45; graybox) | 36 × 35 × 47 cm | ♻ `SM_RuinStool` (škála 1,035) |
-| ☑ | 🆕 stojan na brnění (u hradby na severozápadě, s = 9,70–10,55; n = 5,25–6,10; poloha Jirka 21. 11. 2026; graybox) | 0,6 × 0,6 × 1,75 m | 🧩 kříž z trámku na noze s podstavcem; **zatím prázdný** (Jirka 21. 11. 2026), výstroj později → 🆕 `SM_RuinArmorStand` (`mesh_props.armor_stand`, varianta A, Jirka 22. 11. 2026): kříž noh se vzpěrami a patkou, sloupek 9 × 9, klenuté ramenní jařmo 46 cm se vzpěrami (unese i plátovou zbroj), pásová příčka, hlavice na přilbu, kolík na rukavice (+X); ruční hrubé opracování; čelo −Y; body pro brnění `ARMOR_STAND_POINTS` (hlava 167, ramena 150, pás 105, kolík 126 cm). **Hotovo 22. 11. 2026**, náhled `05_constructions/Guesthouse_stojan_brneni_nahled.png`, neověřeno v UE |
+| ☑ | stolička ke stolu (n = 1,10–1,45) | 36 × 35 × 47 cm | ♻ `SM_RuinStool` (škála 1,035), **rozmístěno 22. 11. 2026** místo grayboxu |
+| ☑ | 🆕 stojan na brnění (u hradby na severozápadě, s = 9,70–10,55; n = 5,25–6,10; poloha Jirka 21. 11. 2026; graybox) | 0,6 × 0,6 × 1,75 m | 🧩 kříž z trámku na noze s podstavcem; **zatím prázdný** (Jirka 21. 11. 2026), výstroj později → 🆕 `SM_RuinArmorStand` (`mesh_props.armor_stand`, varianta A, Jirka 22. 11. 2026): kříž noh se vzpěrami a patkou, sloupek 9 × 9, klenuté ramenní jařmo 46 cm se vzpěrami (unese i plátovou zbroj), pásová příčka, hlavice na přilbu, kolík na rukavice (+X); ruční hrubé opracování; čelo −Y; body pro brnění `ARMOR_STAND_POINTS` (hlava 167, ramena 150, pás 105, kolík 126 cm). **Hotovo 22. 11. 2026**, náhled `05_constructions/Guesthouse_stojan_brneni_nahled.png`, neověřeno v UE. **Rozmístěno 22. 11. 2026** místo grayboxu (06), čelem do místnosti |
 | ☐ | 🆕 stojan na zbraně (jiný objekt než stojan na brnění; u hradby naproti dveřím, s = 6,68–7,73; n = 6,47–7,04; poloha Jirka 21. 11. 2026; graybox) | 1,0 × 0,4 × 1,6 m, stojí u zdi | 🧩 rám z prken a trámků se zářezy; **zatím prázdný** (Jirka 21. 11. 2026), zbraně později (❓ sdílet se zbrojí posádky, kap. 6.5) |
-| ☑ | truhla s železným kováním a **zámkem** (v nohách postele, s = 4,46–5,00; n = 0,45–1,41; graybox) | 0,95 × 0,55 × 0,51 m (mesh 94,2 × 54,2 × 50,7 cm) | 🆕 nový mesh truhly s kováním a zámkem (Jirka 21. 11. 2026) → `SM_RuinChestLocked` (`mesh_props.chest_locked`): hoblovaná prkna na soklu, klenuté víko, černé kování bez rzi (`IronClean`) s nýty, rohovníky, zámková deska s klíčovou dírkou a závěrou na −Y, pásové závěsy na +Y, držadla s kruhy na ±X. **Hotovo 22. 11. 2026**, náhled `05_constructions/Guesthouse_truhla_nahled.png`, neověřeno v UE |
+| ☑ | truhla s železným kováním a **zámkem** (v nohách postele, s = 4,46–5,00; n = 0,45–1,41; graybox) | 0,95 × 0,55 × 0,51 m (mesh 94,2 × 54,2 × 50,7 cm) | 🆕 nový mesh truhly s kováním a zámkem (Jirka 21. 11. 2026) → `SM_RuinChestLocked` (`mesh_props.chest_locked`): hoblovaná prkna na soklu, klenuté víko, černé kování bez rzi (`IronClean`) s nýty, rohovníky, zámková deska s klíčovou dírkou a závěrou na −Y, pásové závěsy na +Y, držadla s kruhy na ±X. **Hotovo 22. 11. 2026**, náhled `05_constructions/Guesthouse_truhla_nahled.png`, neověřeno v UE. **Rozmístěno 22. 11. 2026** místo grayboxu (06), zámek k severu |
 | ☐ | výhřev: menší pec bez nístěje a plotny (po vzoru `Palac_Obydli_Ohniste`), zády k hradbě v jihozápadním klínu (střed s = 3,12; n = 4,10; v 06 dočasný kvádr `Pec_Zastupce` 1,0 × 0,9 × 1,2 m, po postavení pece se odebere) | asi 1,0 × 0,9 m | **05 → požadavek na stavitele ([[predani_guesthouse_kamna_stavitel]]), pod kamny kamenná dlažba (Jirka 21. 11. 2026):** pevná stavba (typ `hearth`, ♻ `SM_RuinOvenDome` škálovat, `SM_RuinChimney`), komín mezi trámy vějíře B0 a B1, prostup krytinou, **s dymníkem** nad ústím (Jirka 21. 11. 2026); poloha se srovná po ověření měřítka |
 | ☑ | poklop ústí pece (06) | 46 × 42 cm | ♻ `SM_RuinOvenDoor` |
 | ☐ | 🆕 regál na další věci (u severní zdi `ZBudova_S`, s = 11,90–12,30; n = 0,94–2,50; graybox `Regal`, rozměr Jirka 21. 11. 2026) | 1,56 × 0,4 × 2,0 m | 🧩 prkna a trámky → 🆕 `SM_RuinShelfTall` (vyšší a hlubší než `SM_RuinShelf` 1,0 × 0,28 × 0,9) |

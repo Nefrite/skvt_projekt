@@ -4,7 +4,7 @@ type: design
 validity: valid
 derived_from:
 alternative_to: []
-updated: 2026-11-21
+updated: 2026-11-22
 aliases: []
 # hra
 domain: structures
@@ -27,15 +27,15 @@ Obytná část u ostrohu: krov [[05_constructions]] `Ostroh_Krov`, kamenná dost
 Rám vybavení = rám podlahy: `s` podél vnitřního líce `ZBudova_V` od jižního rohu k severu (0–12,36 m), `n` do místnosti k západu. Dveře s = 6,16–7,76; okno s = 9,74–10,99; sloupy krovu s = 5,92 a 8,0, n = 1,16.
 
 ## Návrh
-Rozmístění je ověřené s postavou v levelu (Manny 180 cm) a polohy z větší části určil Jirka v levelu (21. 11. 2026). Zatím graybox (kvádry s materiálem `MI_PrototypeGrid_Gray`), meshe jsou v [[CHECKLIST_assets_navrhy]] kap. 6.8. Půdorys: `Attachments/navrh_guesthouse_vybaveni_pudorys.png`.
+Rozmístění je ověřené s postavou v levelu (Manny 180 cm) a polohy z větší části určil Jirka v levelu (21. 11. 2026). Postel, truhla, stojan na brnění a stolička jsou meshe z [[Katalog_props]] (úprava dřeva `oil`), ostatní kusy zatím graybox (kvádry s materiálem `MI_PrototypeGrid_Gray`); stav meshí vede [[CHECKLIST_assets_navrhy]] kap. 6.8. Půdorys: `Attachments/navrh_guesthouse_vybaveni_pudorys.png`.
 
 | Kus | Rozměr (m) | Poloha s; n (m) | Rozhodnutí |
 |---|---|---|---|
-| postel | 2,50 × 1,09 × 0,62 | 1,85–4,35; 0,39–1,48 | pohodlná, větší než `SM_RuinBed` (Jirka) |
+| postel `SM_RuinBedLarge` | 2,50 × 1,09 × 0,95 (čelo) | 1,85–4,35; 0,39–1,48 | pohodlná, větší než `SM_RuinBed` (Jirka); hlava k jihu |
 | pracovní stůl | 1,25 × 0,75 × 0,78 | 9,76–11,01; 0,07–0,82 | pod oknem; nový mesh, ne `SM_RuinTable`; výška 78 cm (Jirka) |
-| stolička | 0,36 × 0,35 × 0,47 | 10,21–10,57; 1,10–1,44 | úměrně ke stolu, postavě po kolena (Jirka) |
-| truhla se zámkem | 0,95 × 0,55 × 0,51 | 4,46–5,00; 0,45–1,41 | v nohách postele; nový mesh truhly se zámkem (Jirka) |
-| stojan na brnění | 0,6 × 0,6 × 1,75 | 9,70–10,55; 5,25–6,10 | u hradby na severozápadě, zatím prázdný (Jirka) |
+| stolička `SM_RuinStool` | 0,36 × 0,35 × 0,47 | 10,21–10,57; 1,10–1,44 | úměrně ke stolu, postavě po kolena (Jirka) |
+| truhla `SM_RuinChestLocked` | 0,94 × 0,54 × 0,51 | 4,46–5,00; 0,45–1,40 | v nohách postele, zámek k severu; nový mesh truhly se zámkem (Jirka) |
+| stojan na brnění `SM_RuinArmorStand` | 0,6 × 0,6 × 1,75 | 9,70–10,55; 5,25–6,10 | u hradby na severozápadě, zády k hradbě, zatím prázdný (Jirka) |
 | stojan na zbraně | 1,0 × 0,4 × 1,6 | 6,68–7,73; 6,47–7,04 | u hradby naproti dveřím, zatím prázdný (Jirka) |
 | regál | 1,56 × 0,4 × 2,0 | 11,90–12,30; 0,94–2,50 | u severní zdi na místě původně navrženého stojanu na zbraně (Jirka) |
 | kamna s dymníkem | asi 1,0 × 0,9 × 1,2 (těleso) | střed 3,12; 4,10, zády k hradbě | pevná stavba **05, staví stavitel** (Jirka); v 06 jen dočasný kvádr `Pec_Zastupce` |
@@ -47,7 +47,7 @@ Rozmístění je ověřené s postavou v levelu (Manny 180 cm) a polohy z větš
 ## Souhrn specifikace
 - Polohy a rozměry: `tools/ruin/ostroh_spec.py` → `GH_BED`, `GH_DESK`, `GH_STOOL`, `GH_CHEST`, `GH_ARMOR`, `GH_WEAPONS`, `GH_SHELF`, `GH_WOOD`, `GH_OVEN`, `GH_REF`, funkce `guesthouse_vybaveni()`.
 - Skupina `Guesthouse_Vybaveni` v `06_furnishing/furnishing.json` (generátor `tools/furnishing/gen_furnishing.py` → `guesthouse()`; výšky od vrchu prken podlahy, po změně terénu nebo podlahy přegenerovat).
-- Graybox: kusy s `cat = "graybox"` = Cube s materiálem `zrlib/config.py` → `MAT_GRAYBOX`.
+- Meshe: `GH_MESH` (id kusu → `shape`, `finish`); graybox: kusy s `cat = "graybox"` = Cube s materiálem `zrlib/config.py` → `MAT_GRAYBOX`.
 
 ## Vazby a závislosti
 - Stavby u ostrohu (05): `Ostroh_Krov`, `Ostroh_Dostavba`, `Ostroh_Podlaha`; vybavení je nemění.

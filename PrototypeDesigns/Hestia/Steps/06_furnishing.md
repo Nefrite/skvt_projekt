@@ -4,7 +4,7 @@ type: step
 validity: valid
 aliases: [README_furnishing]
 step_kind: build
-updated: 2026-11-21
+updated: 2026-11-22
 # hra
 build_step: 06_furnishing
 domains: [structures]
@@ -92,7 +92,7 @@ Kontrola: `tools/checks/run_checks.py --only palac` (průniky se zříceninou, s
 
 **`Guesthouse_Vybaveni`** – pokoj hosta v obytné části u ostrohu ([[navrh_guesthouse_vybaveni]], stav [[stav_guesthouse]]). Rám = rám podlahy `Ostroh_Podlaha` (`s` podél vnitřního líce `ZBudova_V` od jižního rohu, `n` do místnosti), výšky od vrchu prken podlahy (generátor ji spočítá z terénu; po změně terénu nebo podlahy přegenerovat). Konstanty `GH_*` a funkce `guesthouse_vybaveni()` v `tools/ruin/ostroh_spec.py`.
 
-- Zatím **graybox** (21. 11. 2026): 9 kvádrů (`cat = "graybox"` → Cube s materiálem `zrlib/config.py` → `MAT_GRAYBOX` = `MI_PrototypeGrid_Gray`): postel, stůl, stolička, truhla, stojan na brnění, stojan na zbraně, regál, hromádka dřeva a dočasný `Pec_Zastupce` (kamna jsou 05, staví stavitel).
+- Od 22. 11. 2026 jsou postel, truhla, stojan na brnění a stolička **meshe** (`GH_MESH` v `ostroh_spec.py`, úprava `oil`, [[Katalog_props]]); zbytek je **graybox** (21. 11. 2026): kvádry (`cat = "graybox"` → Cube s materiálem `zrlib/config.py` → `MAT_GRAYBOX` = `MI_PrototypeGrid_Gray`): postel, stůl, stolička, truhla, stojan na brnění, stojan na zbraně, regál, hromádka dřeva a dočasný `Pec_Zastupce` (kamna jsou 05, staví stavitel).
 - Polohy postele, stolu, stoličky a stojanů jsou z levelu (capture, Jirka).
 
 Kontrola: `tools/checks/run_checks.py --only ostroh` (průniky se zříceninou, dostavbou, krovem a mezi sebou, kusy na podlaze, volný průchod u dveří s = 5,8–8,1; n = 0–2 m).

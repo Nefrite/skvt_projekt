@@ -50,7 +50,7 @@ depth_structures: 4
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[05_constructions]] | `Ostroh_Dostavba.py`, `Ostroh_Krov.py`, `Ostroh_Podlaha.py` | – |
+| [[05_constructions]] | `Guesthouse_postel_nahled.png`, `Guesthouse_stojan_brneni_nahled.png`, `Guesthouse_truhla_nahled.png`, `Ostroh_Dostavba.py`, `Ostroh_Krov.py`, `Ostroh_Podlaha.py` | – |
 | [[06_furnishing]] | `Guesthouse.py`, `Guesthouse_Capture.py` | [[navrh_guesthouse_vybaveni]], [[stav_guesthouse]] |
 
 <!-- hestia:generated:end -->
@@ -65,6 +65,9 @@ depth_structures: 4
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | 05_constructions | alias |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | 06_furnishing | name |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | 06_furnishing | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/Guesthouse_postel_nahled.png` | data | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/Guesthouse_stojan_brneni_nahled.png` | data | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/Guesthouse_truhla_nahled.png` | data | 05_constructions | name |
 
 <!-- hestia:generated:end -->
 

@@ -23,6 +23,7 @@ Karty knihovních meshí z 21.–22. 11. 2026 (AssetGenerator), jak je použít 
 - **Materiál:** slot `Wood` = úprava dřeva z dat (`finish`: `raw`, `oil`, `tar`, `old` …), ostatní sloty jsou pevné (`SLOT_MI`, `CLOTH_MI`). Nábytek hosta: doporučená úprava `oil` (kvalitnější), stan: `raw`.
 - **Ukázka v UE:** `tools/meshes/ukazka/Ukazka_Stan.py`, `Ukazka_Guesthouse.py` (jen meshe tématu; seznam v `UKAZKY` v `tools/meshes/ukazka.py`).
 - **Změna tvaru:** upravit funkci → přegenerovat jen ten mesh `python tools/meshes/gen_meshes.py --only <prefix>` → nový bounding box zapsat do `NOMINAL` a `LIB_MESHES` → zvednout `STONE_MESH_VERSION[<prefix>]` (jinak UE starý mesh nepřenačte) → kompletní `gen_meshes.py` do dočasné složky a md5 ostatních OBJ beze změny → náhled → ukázka v UE. Seed propu se odvozuje z pořadí v `PROPS`: nový prop vždy **na konec** seznamu.
+- **Směr let dřeva:** dřevo se řeže tak, aby léta vedla podél **nejdelšího rozměru dílu**, případně podél směru, kde díl potřebuje pevnost (sloupek, noha, příčka, kolík, topůrko, prkno, soustružená hlavice podél osy). Textury dřeva mají léta podél U, takže UV dílu musí mít U podél jeho délky. V `mesh_props.py` to zajišťuje `grain="long"` u `add_box`, `add_cyl`, `add_lathe`, `add_prism` (Jirka 22. 11. 2026). Výchozí `GRAIN_DEFAULT = None` drží staré props beze změny; přepnutím na `"long"` se pravidlo uplatní na všechny props (změní UV 31 props, pak zvednout jejich `STONE_MESH_VERSION`; úkol T-0024 v `Maintenance/queue.md`).
 - **Vytažený profil (`add_prism`):** body obrysu proti směru hodinových ručiček; po zrcadlení souřadnice obrátit pořadí (jinak normály dovnitř, v UE chybí plochy; 22. 11. 2026 jařmo stojanu na brnění).
 
 ## Stan na nádvoří ([[Nadvori_Stan]])
@@ -78,7 +79,7 @@ Rozmístění (Jirka 22. 11. 2026): jedno lůžko na straně spuštěné chlopn�
 
 ## Guesthouse ([[navrh_guesthouse_vybaveni]], polohy `tools/ruin/ostroh_spec.py` → `GH_*`)
 
-Nábytek hosta je kvalitnější než v domě, ale pořád ručně a hrubě opracovaný (Jirka 22. 11. 2026). Graybox se mění za mesh v `ostroh_spec.py` (`shape` místo kvádru, `size` z `LIB_MESHES`).
+Nábytek hosta je kvalitnější než v domě, ale pořád ručně a hrubě opracovaný (Jirka 22. 11. 2026). Graybox se mění za mesh v `ostroh_spec.py` (`GH_MESH`: id kusu → `shape`, `finish`; `size` z `LIB_MESHES`). **22. 11. 2026 rozmístěné:** postel, truhla, stojan na brnění a stolička (skupina `Guesthouse_Vybaveni`, [[stav_guesthouse]]).
 
 ### Postel `SM_RuinBedLarge_A` (graybox `GH_BED`)
 
@@ -90,7 +91,7 @@ Nábytek hosta je kvalitnější než v domě, ale pořád ručně a hrubě opra
 | Konstrukce | sloupky 9 × 9 se zkosenými hranami a hlavicí; čelo v hlavě 95 cm (rám, vložená deska, římsa), čelo v nohách 62 cm; bočnice 16 cm, lišty, 9 laťek; slamník 20 cm a polštář v lněném potahu, houně přes bočnice |
 | Sloty | `Wood`, `Wool`, `Canvas` (potah, `MI_RuinCanvas`) |
 | Funkční | ložná plocha 55 cm nad podlahou, bočnice nahoře 46 cm |
-| Zdroj | `mesh_props.bed_large(seed, head_h=95)`; nižší čelo = parametr `head_h` |
+| Zdroj | `mesh_props.bed_large(seed, head_h=95)`; nižší čelo = parametr `head_h`; sloupky a hlavice s léty svisle (`grain="long"`, verze 2), ostatní díly zatím původní UV (úkol T-0024) |
 | Náhled | `05_constructions/Guesthouse_postel_nahled.png` |
 
 ### Kovaná truhla na cennosti `SM_RuinChestLocked_A` (graybox `GH_CHEST`)
@@ -114,7 +115,7 @@ Nábytek hosta je kvalitnější než v domě, ale pořád ručně a hrubě opra
 | Osy | **čelo −Y** (zády ke zdi), kolík na rukavice +X |
 | Konstrukce | varianta A (Jirka 22. 11. 2026): kříž noh 60 × 60 z přeplátovaných trámků se vzpěrami a patkou, sloupek 9 × 9, klenuté ramenní jařmo 46 cm se dvěma vzpěrami (unese plátovou zbroj), pásová příčka 34 cm, krček a ručně točená hlavice; ruční hrubé opracování; zatím prázdný |
 | Body pro brnění | `mesh_props.ARMOR_STAND_POINTS` v cm od podlahy, osa sloupku x = y = 0: hlava 167, ramena 150, pás 105, kolík (10; 0; 126). V lokálních osách meshe (pivot ve středu) je od výšek odečíst 87,3 cm. Brnění = samostatný mesh posazený na tyto body. |
-| Sloty | `Wood`, `EndGrain` |
+| Sloty | `Wood`, `EndGrain`; léta podél délky všech dílů (`grain="long"`) |
 | Zdroj | `mesh_props.armor_stand` |
 | Náhled | `05_constructions/Guesthouse_stojan_brneni_nahled.png` |
 
@@ -128,5 +129,6 @@ Pracovní stůl `SM_RuinDesk` (1,25 × 0,75 × 0,78), regál `SM_RuinShelfTall` 
 |---|---|---|
 | `SM_RuinCanvasTent_A` | ano (22. 11. 2026) | ne |
 | `SM_RuinCampBed_A`, `SM_RuinCampBedFolded_A`, `SM_RuinChestSmall_A`, `SM_RuinBundle_A`, `MI_RuinSackcloth` | ano (22. 11. 2026) | ne |
-| `SM_RuinChestLocked_A`, `SM_RuinBedLarge_A` | ano (22. 11. 2026) | ne |
-| `SM_RuinArmorStand_A` | ano; verze 2 (oprava jařma) čeká na nový import | screenshot verze 1 (chyba jařma) |
+| `SM_RuinChestLocked_A` | ano (22. 11. 2026) | ne |
+| `SM_RuinBedLarge_A` | ano; verze 2 (léta sloupků) čeká na import | ne |
+| `SM_RuinArmorStand_A` | ano; verze 3 (léta podél délky dílů) čeká na import | jařmo opravené (verze 2, screenshot 22. 11. 2026); léta sloupku napříč (verze 2) opravena ve verzi 3 |

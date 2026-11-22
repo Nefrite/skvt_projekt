@@ -1,11 +1,11 @@
-"""Guesthouse.py (06) - vybaveni pokoje hosta u ostrohu (Guesthouse): zatim GRAYBOX (kvadry, MI_PrototypeGrid_Gray): postel, pracovni
-stul, stolicka, truhla, prazdne stojany na brneni a na zbrane, regal, hromadka dreva a zastupce pece (05, stavitel). Polohy: tools/ruin/ostroh_spec.py -> guesthouse_vybaveni().
+"""Guesthouse.py (06) - vybaveni pokoje hosta u ostrohu (Guesthouse): meshe postel, truhla, stojan na brneni (prazdny)
+a stolicka (Katalog_props); GRAYBOX (kvadry, MI_PrototypeGrid_Gray) stul, stojan na zbrane, regal, hromadka dreva a zastupce pece (05). Polohy: tools/ruin/ostroh_spec.py -> guesthouse_vybaveni().
 Unreal: Tools -> Execute Python Script -> 06_furnishing/vybaveni/Guesthouse.py
 Kusy jsou samostatne actory: posun / otoc / zvets (Scale) / smaz / duplikuj je v levelu a spust s MODE = "capture"
 (nebo Guesthouse_Capture.py) - stav se zapise primo do ../furnishing.json a dalsi build ho zachova.
 Logika: ../build_furnishing.py (pres zrlib/pipeline.py). Stavby u ostrohu (05): 05_constructions/stavby/Ostroh_*.py.
 entities: [Guesthouse]
-docs: [navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing]
+docs: [navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing, Katalog_props]
 build_step: 06_furnishing
 domains: structures"""
 MODE = "build"                # "build" / "capture" (zapsat stav levelu do furnishing.json) / "list" (posuny proti specu) / "reset" (vratit na spec)

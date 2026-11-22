@@ -32,6 +32,12 @@ SLOTS = ("Wood", "EndGrain", "Bark", "Iron", "Leather", "Sandstone", "Water", "C
 WOOD, END, BARK, IRON, LEATHER, SAND, WATER, COAL, WATTLE, CLEAN, STRAW, WOOL, CANVAS, ROPE, SACK = range(15)      # IRON = s patinou rzi, CLEAN = bez rzi (naradi)
 
 
+# smer let dreva v UV: textury dreva maji leta podel U. grain="long" = U podel nejdelsiho rozmeru dilu (sloupek, noha,
+# kolik: leta podel delky). None = puvodni mapovani (stavajici props zustavaji bit po bitu stejne). GRAIN_DEFAULT plati,
+# kdyz funkce nedostane grain; prepnout na "long" = vsechny props podle pravidla (zmeni UV, zvednout STONE_MESH_VERSION).
+GRAIN_DEFAULT = None
+
+
 def rot(yaw=0.0, pitch=0.0, roll=0.0):
     """matice natoceni (stupne): yaw kolem Z, pitch kolem Y, roll kolem X"""
     a, b, c = (math.radians(v) for v in (yaw, pitch, roll))
@@ -69,7 +75,7 @@ class PM:
         return P, UV, G, F[keep], S[keep]
 
 
-def add_box(M, c, size, slot, R=None, sub=3, rough=0.25, seed=0, round_=0.6):
+def add_box(M, c, size, slot, R=None, sub=3, rough=0.25, seed=0, round_=0.6, grain=None):
     """hranol (stred c, rozmer size), kazda stena mrizka sub x sub s nerovnostmi (rough cm) a ohlazenymi hranami.
     Zaobleni je funkce polohy (bod se promitne na zaobleny kvadr s polomerem round_), takze sousedni steny
     sdili hranu presne - zadne prekryvajici se lemy (driv se lem kazde steny posouval po jeji normale)."""
@@ -92,6 +98,7 @@ def add_box(M, c, size, slot, R=None, sub=3, rough=0.25, seed=0, round_=0.6):
             p[..., ax] += sg * d
             Pw = p.reshape(-1, 3) @ R.T + c
             uv = np.stack([p[..., a1].ravel(), p[..., a2].ravel()], 1) / 100
+            if (grain or GRAIN_DEFAULT) == "long" and size[a2] > size[a1]: uv = uv[:, ::-1]      # leta (U) podel delsi strany steny
             i0 = M.verts(Pw, uv)
             nt = np.zeros(3); nt[ax] = sg; nt = R @ nt
             for i in range(n1):
@@ -106,7 +113,7 @@ def _frame(t):
     return y, z
 
 
-def add_cyl(M, p0, p1, r0, r1, slot, cap_slot=None, n=24, rings=2, caps=True, rough=0.0, seed=0):
+def add_cyl(M, p0, p1, r0, r1, slot, cap_slot=None, n=24, rings=2, caps=True, rough=0.0, seed=0, grain=None):
     """valec / kuzel z p0 do p1 (polomery r0 -> r1), plast slot, cela cap_slot"""
     p0 = np.asarray(p0, float); p1 = np.asarray(p1, float); ax = p1 - p0; L = np.linalg.norm(ax); t = ax / L
     y, z = _frame(t); th = np.linspace(0, 2 * math.pi, n + 1); W1 = waves(seed + 5, 6, 3, 15)
@@ -116,7 +123,10 @@ def add_cyl(M, p0, p1, r0, r1, slot, cap_slot=None, n=24, rings=2, caps=True, ro
         r = r0 + (r1 - r0) * kk
         ring = p0 + ax * kk + r * (np.cos(th)[:, None] * y + np.sin(th)[:, None] * z)
         if rough: ring = ring + (rough * noise(ring, W1))[:, None] * (ring - (p0 + ax * kk)) / max(r, 1e-3)
-        P.append(ring); UV.append(np.stack([th / (2 * math.pi) * max(1, round(2 * math.pi * max(r0, r1) / 100)), np.full(n + 1, kk * L / 100)], 1))
+        if (grain or GRAIN_DEFAULT) == "long":                                    # leta (U) podel osy
+            P.append(ring); UV.append(np.stack([np.full(n + 1, kk * L / 100), th * max(r0, r1) / 100], 1))
+        else:
+            P.append(ring); UV.append(np.stack([th / (2 * math.pi) * max(1, round(2 * math.pi * max(r0, r1) / 100)), np.full(n + 1, kk * L / 100)], 1))
     i0 = M.verts(np.array(P), np.array(UV))
     for i in range(rings):
         for j in range(n):
@@ -130,7 +140,7 @@ def add_cyl(M, p0, p1, r0, r1, slot, cap_slot=None, n=24, rings=2, caps=True, ro
                 M.tri(ci, ci + 1 + j, ci + 1 + (j + 1) % n, cap_slot if cap_slot is not None else slot, sg * t)
 
 
-def add_lathe(M, prof, origin, axis, slots, n=32, rough=0.0, seed=0, seam=0.0):
+def add_lathe(M, prof, origin, axis, slots, n=32, rough=0.0, seed=0, seam=0.0, grain=None):
     """rotacni teleso: prof = [(h, r), ...] obrys v rovine (r, h); vnejsi normala useku = (dh, -dr) (radialne, osove).
     Pravidlo: obrys pevneho telesa jde zdola od osy ven, po plasti nahoru a nahore zpet k ose (napr. kotouc, sud, obruc).
     Opacne poradi = normaly dovnitr (kontrola: tools/checks/check_normals.py). slots = slot kazdeho useku (len(prof) - 1)"""
@@ -145,7 +155,8 @@ def add_lathe(M, prof, origin, axis, slots, n=32, rough=0.0, seed=0, seam=0.0):
             radial = np.cos(th)[:, None] * y + np.sin(th)[:, None] * z
             ring = o + hh * t + rr * radial
             if rough: ring = ring + (rough * noise(ring, W1))[:, None] * radial
-            P.append(ring); UV.append(np.stack([th / (2 * math.pi) * max(1, round(2 * math.pi * max(r0, r1, 1) / 100)), np.full(n + 1, (hh + rr) / 100)], 1))
+            uvr = np.stack([th / (2 * math.pi) * max(1, round(2 * math.pi * max(r0, r1, 1) / 100)), np.full(n + 1, (hh + rr) / 100)], 1)
+            P.append(ring); UV.append(uvr[:, ::-1] if (grain or GRAIN_DEFAULT) == "long" else uvr)     # long: leta podel osy
         i0 = M.verts(np.array(P), np.array(UV))
         for j in range(n):
             a = i0 + j; b = a + n + 1
@@ -154,14 +165,19 @@ def add_lathe(M, prof, origin, axis, slots, n=32, rough=0.0, seed=0, seam=0.0):
             M.tri(a, b, b + 1, slots[k], tgt); M.tri(a, b + 1, a + 1, slots[k], tgt)
 
 
-def add_prism(M, poly, slots, x0, x1, end_slot, R=None, c=(0, 0, 0)):
+def add_prism(M, poly, slots, x0, x1, end_slot, R=None, c=(0, 0, 0), grain=None):
     """vytazeny konvexni profil poly [(y, z)] (proti smeru hodin) podel X od x0 do x1; slots = slot kazde hrany"""
     R = np.eye(3) if R is None else R; c = np.asarray(c, float); poly = np.asarray(poly, float); m = len(poly)
+    across = (grain or GRAIN_DEFAULT) == "long" and (x1 - x0) < (poly.max(0) - poly.min(0)).max()   # profil delsi nez vytazeni
+    sp = 0.0                                                                          # -> leta (U) podel obvodu profilu
     for k in range(m):
         a2, b2 = poly[k], poly[(k + 1) % m]
         P = np.array([[x0, a2[0], a2[1]], [x1, a2[0], a2[1]], [x1, b2[0], b2[1]], [x0, b2[0], b2[1]]]) @ R.T + c
         e = b2 - a2; ln = np.linalg.norm(e)
-        i0 = M.verts(P, [[0, 0], [(x1 - x0) / 100, 0], [(x1 - x0) / 100, ln / 100], [0, ln / 100]])
+        if across:
+            i0 = M.verts(P, [[sp / 100, x0 / 100], [sp / 100, x1 / 100], [(sp + ln) / 100, x1 / 100], [(sp + ln) / 100, x0 / 100]]); sp += ln
+        else:
+            i0 = M.verts(P, [[0, 0], [(x1 - x0) / 100, 0], [(x1 - x0) / 100, ln / 100], [0, ln / 100]])
         tgt = R @ np.array([0.0, e[1], -e[0]])
         M.tri(i0, i0 + 1, i0 + 2, slots[k], tgt); M.tri(i0, i0 + 2, i0 + 3, slots[k], tgt)
     ctr = poly.mean(0)
@@ -656,9 +672,9 @@ def bed_large(seed, head_h=95.0):
     pl = dict(sub=4, rough=0.12, round_=0.5)
     for x, hh in ((-L / 2 + ps / 2, head_h), (L / 2 - ps / 2, foot_h)):              # sloupky + hlavice
         for y in (-W / 2 + ps / 2, W / 2 - ps / 2):
-            add_box(M, (x, y, (hh - 5) / 2), (ps, ps, hh - 5), WOOD, sub=5, rough=0.12, round_=1.2, seed=seed + int(x + y))
+            add_box(M, (x, y, (hh - 5) / 2), (ps, ps, hh - 5), WOOD, sub=5, rough=0.12, round_=1.2, seed=seed + int(x + y), grain="long")
             add_lathe(M, [(0, 0), (0, 3.2), (1.5, 4.0), (3.0, 3.4), (4.2, 2.0), (5.0, 0)], (x, y, hh - 5), (0, 0, 1),
-                      [WOOD] * 5, n=16, seed=seed + 3 + int(x + y))
+                      [WOOD] * 5, n=16, seed=seed + 3 + int(x + y), grain="long")                   # sloupek a hlavice: leta svisle
     rail = lambda x, z, h: add_box(M, (x, 0, z), (5, W - 2 * ps + 1, h), WOOD, seed=seed + 20 + int(x + z), **pl)
     xh, xf = -L / 2 + ps / 2, L / 2 - ps / 2
     rail(xh, 38, 8); rail(xh, head_h - 12, 8)                                        # celo v hlave: ram + deska
@@ -700,7 +716,7 @@ def armor_stand(seed):
     sloupek 9 x 9, ramenni jarmo 46 cm (klenute, pevne i pro platovou zbroj) se dvema vzperami, pasova pricka 34 cm,
     drevena hlavice na prilbu, kolik na rukavice (+X). Rucni hrube opracovani (tesane, rucne tocene). Celo na -Y."""
     M = PM(); r = np.random.default_rng(seed)
-    hw = dict(sub=4, rough=0.35, round_=0.8)
+    hw = dict(sub=4, rough=0.35, round_=0.8, grain="long")                                   # leta podel delky dilu
     tilt = lambda a=0.6: rot(r.uniform(-a, a), r.uniform(-a, a), r.uniform(-a, a))
     add_box(M, (0, 0, 4.0), (60, 8, 8), WOOD, R=tilt(), seed=seed + 1, **hw)                     # kriz noh (preplatovany)
     add_box(M, (0, 0, 4.0), (8, 60, 8), WOOD, R=tilt(), seed=seed + 2, **hw)
@@ -710,22 +726,22 @@ def armor_stand(seed):
         c = (p0 + p1) / 2; d = p1 - p0; ln = np.linalg.norm(d)
         yaw = math.degrees(math.atan2(d[1], d[0])); pitch = -math.degrees(math.atan2(d[2], math.hypot(d[0], d[1])))
         add_box(M, c, (ln + 2, 5, 5), WOOD, R=rot(yaw, pitch, r.uniform(-3, 3)), seed=seed + 10 + k, **hw)
-    add_box(M, (0, 0, 16.0 + (155.0 - 16.0) / 2), (9, 9, 155.0 - 16.0), WOOD, R=tilt(0.3), sub=5, rough=0.35, round_=1.0, seed=seed + 20)   # sloupek
+    add_box(M, (0, 0, 16.0 + (155.0 - 16.0) / 2), (9, 9, 155.0 - 16.0), WOOD, R=tilt(0.3), sub=5, rough=0.35, round_=1.0, seed=seed + 20, grain="long")   # sloupek
     # ramenni jarmo: klenuty profil v rovine XZ, hloubka 12 (Y)
     xs = np.linspace(-23, 23, 13); top = 150.0 - 5.0 * (xs / 23.0) ** 2
     prof = [(-23.0, 140.0), (23.0, 140.0)] + [(x, z) for x, z in zip(xs[::-1], top[::-1])]
     prof = [(-p[0], p[1]) for p in prof][::-1]                                                  # rot(90): prvni souradnice = -X; zrcadleni -> obratit poradi (proti smeru hodin, normaly ven)
-    add_prism(M, prof, [WOOD] * len(prof), -6.0, 6.0, WOOD, R=rot(90 + r.uniform(-1, 1)))
+    add_prism(M, prof, [WOOD] * len(prof), -6.0, 6.0, WOOD, R=rot(90 + r.uniform(-1, 1)), grain="long")
     for sx in (-1, 1):                                                                          # vzpery jarma
         p0 = np.array([sx * 4.5, 0, 122.0]); p1 = np.array([sx * 17.0, 0, 140.5]); c = (p0 + p1) / 2; d = p1 - p0
         add_box(M, c, (np.linalg.norm(d) + 2, 5, 5), WOOD, R=rot(0 if sx > 0 else 180, -math.degrees(math.atan2(d[2], abs(d[0]))), 0),
                 seed=seed + 30 + sx, **hw)
     add_box(M, (0, 0, 105.0), (34, 6, 6), WOOD, R=tilt(0.8), seed=seed + 35, **hw)             # pasova pricka
-    add_cyl(M, (4.0, 0, 125.0), (14.0, r.uniform(-0.5, 0.5), 127.5), 1.6, 1.3, WOOD, cap_slot=END, n=10, rings=2, rough=0.15, seed=seed + 40)   # kolik
-    add_cyl(M, (0, 0, 154.0), (0, 0, 160.0), 2.8, 2.5, WOOD, n=12, rings=1, rough=0.15, seed=seed + 41)                  # krcek
+    add_cyl(M, (4.0, 0, 125.0), (14.0, r.uniform(-0.5, 0.5), 127.5), 1.6, 1.3, WOOD, cap_slot=END, n=10, rings=2, rough=0.15, seed=seed + 40, grain="long")   # kolik
+    add_cyl(M, (0, 0, 154.0), (0, 0, 160.0), 2.8, 2.5, WOOD, n=12, rings=1, rough=0.15, seed=seed + 41, grain="long")    # krcek
     prof = [(0, 0), (0.6, 4.0), (2.5, 6.8), (5.5, 7.9), (8.5, 7.6), (11.5, 6.0), (13.5, 3.5), (14.8, 0)]         # hlavice (rucne tocena)
     add_lathe(M, prof, (r.uniform(-0.3, 0.3), r.uniform(-0.3, 0.3), 160.0), (r.uniform(-0.02, 0.02), r.uniform(-0.02, 0.02), 1),
-              [WOOD] * 7, n=20, rough=0.35, seed=seed + 42)
+              [WOOD] * 7, n=20, rough=0.35, seed=seed + 42, grain="long")
     return M
 
 
