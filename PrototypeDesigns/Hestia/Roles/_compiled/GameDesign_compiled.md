@@ -360,6 +360,8 @@ Obsah návrhu piš podle bodů níže a zapiš ho do sekcí doménového dokumen
 | Vazby | *Vazby a závislosti* |
 | Otevřené otázky | *Otevřené otázky* |
 
+Dokument nad `doc_summary_chars` (6 000 znaků) má navíc na začátku sekci *Souhrn* (co platí, hlavní rozhodnutí, odkazy na sekce; asi do 1 500 znaků), kterou držíš aktuální při každé změně.
+
 Body:
 
 ```
@@ -379,7 +381,7 @@ Body:
 ```
 
 ### Výstup
-Zapisuješ do `Docs/<doména>/` (existující dokumentaci entity doplníš, nový dokument jen když žádný není); navazující práci zadáš předáním v `Handovers/`.
+Zapisuješ do `Docs/<doména>/` (existující dokumentaci entity doplníš, nový dokument jen když žádný není); navazující práci zadáš předáním v `Handovers/` (jedno předání = jeden task pro jednu roli, `for_role`).
 
 ### Známé pasti
 
@@ -412,7 +414,7 @@ Hrad [[Lapikus]] a jeho okolí v [[Lapikus_Region]]: herní využití, příběh
 Do kódu (`*.py`, `zrlib`) nahlížet nemusíš. Když přesto potřebuješ zjistit, jak něco funguje, piš to jako otázku pro stavitele.
 
 ### Vstupy a výstupy
-Zadání dostaneš od Jirky. Výstupem je návrh v `Docs/<doména>/` (modul `design_template`), u každého s etapou, ve které platí. Navazující práci pro architekta nebo stavitele zadáš předáním v `Handovers/` (modul `handover_out`).
+Zadání dostaneš od Jirky. Výstupem je návrh v `Docs/<doména>/` (modul `design_template`), u každého s etapou, ve které platí. Navazující práci pro architekta nebo stavitele zadáš předáním v `Handovers/` (modul `handover_out`; jedno předání = jeden task pro jednu roli, `for_role`).
 
 ### Uzavření tasku
 Podle modulu `task_close`; specifika role (např. co patří do `state`):

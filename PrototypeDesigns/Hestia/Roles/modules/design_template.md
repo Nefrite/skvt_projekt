@@ -5,7 +5,7 @@ trigger: návrh dostavby nebo herního místa
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 ---
 <!-- Z AGENT_GameDesign_hrad.md kap. 7 (pilot Lapikus, B5). -->
 # design_template
@@ -23,6 +23,8 @@ Obsah návrhu piš podle bodů níže a zapiš ho do sekcí doménového dokumen
 | Konstrukce, Vyžaduje úpravu 03, Varianty, Etapa, Vybavení, Náčrt slovy | *Návrh* |
 | Vazby | *Vazby a závislosti* |
 | Otevřené otázky | *Otevřené otázky* |
+
+Dokument nad `doc_summary_chars` (6 000 znaků) má navíc na začátku sekci *Souhrn* (co platí, hlavní rozhodnutí, odkazy na sekce; asi do 1 500 znaků), kterou držíš aktuální při každé změně.
 
 Body:
 
@@ -43,6 +45,6 @@ Body:
 ```
 
 ## Výstup
-Zapisuješ do `Docs/<doména>/` (existující dokumentaci entity doplníš, nový dokument jen když žádný není); navazující práci zadáš předáním v `Handovers/`.
+Zapisuješ do `Docs/<doména>/` (existující dokumentaci entity doplníš, nový dokument jen když žádný není); navazující práci zadáš předáním v `Handovers/` (jedno předání = jeden task pro jednu roli, `for_role`).
 
 ## Známé pasti

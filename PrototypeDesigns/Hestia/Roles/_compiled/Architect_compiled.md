@@ -389,6 +389,8 @@ Obsah návrhu piš podle bodů níže a zapiš ho do sekcí doménového dokumen
 | Ověření | *Ověření* |
 | Předpoklady a otevřené otázky | *Otevřené otázky* |
 
+Dokument nad `doc_summary_chars` (6 000 znaků) má navíc na začátku sekci *Souhrn* (co platí, hlavní rozhodnutí, odkazy na sekce; asi do 1 500 znaků), kterou držíš aktuální při každé změně.
+
 Body:
 
 ```
@@ -415,7 +417,7 @@ Body:
 ```
 
 ### Výstup
-Zapisuješ do `Docs/structures/navrh_<část>_<stavba>.md` (existující návrh doplníš, nový jen když žádný není); stavbu zadáš předáním v `Handovers/`.
+Zapisuješ do `Docs/structures/navrh_<část>_<stavba>.md` (existující návrh doplníš, nový jen když žádný není); stavbu zadáš předáním v `Handovers/` (jedno předání = jeden task pro jednu roli, `for_role`).
 
 ### Známé pasti
 
@@ -456,7 +458,7 @@ Dostaneš **zadání**, obvykle návrh od game designera (profil [[GameDesign]],
 - **cílovou strukturu**: co přesně má stát, z čeho, v jakých rozměrech a jak je to uložené;
 - **potřebné úpravy**: co se musí změnit ve zřícenině (03) a co se nově postaví (05), včetně parametrů pro stavitele.
 
-Návrh musí být tak úplný, aby podle něj šlo stavět bez domýšlení (modul `spec_template`). Stavbu zadáváš stavitelovi (nebo jiné roli) předáním v `Handovers/` z role architekta (modul `handover_out`); předání na návrh odkazuje, nekopíruje ho.
+Návrh musí být tak úplný, aby podle něj šlo stavět bez domýšlení (modul `spec_template`). Stavbu zadáváš stavitelovi (nebo jiné roli) předáním v `Handovers/` z role architekta (modul `handover_out`; jedno předání = jeden task pro jednu roli, `for_role`); předání na návrh odkazuje, nekopíruje ho.
 
 ### Uzavření tasku
 Podle modulu `task_close`; specifika role (např. co patří do `state`):

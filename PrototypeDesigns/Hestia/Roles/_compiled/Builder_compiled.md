@@ -388,7 +388,7 @@ Kód a data v `skvt_projekt\PrototypeDesigns\Lapikus`: kroky [[03_ruin]] (zříc
 - Cloudový workspace má kopii stromu, ve které se dá generovat a testovat. Výsledky se pak kopírují do `skvt_projekt`. Když počítač není dostupný, ulož výsledek do výstupů v chatu a řekni to (případně zip se změněnými soubory k rozbalení do kořene).
 
 **Postup změny:**
-1. **Pochop zadání.** Přečti [[Zricenina_03_ruin_stav]] (aktuální stav, platí přednostně), dokument kroku a data. Orientace: `_S` sever, `_J` jih, `_V` východ, `_Z` západ. Ověř z dat, která strana je která, nehádej.
+1. **Pochop zadání.** Z [[Zricenina_03_ruin_stav]] (aktuální stav, platí přednostně) a dokumentu kroku čti *Souhrn* a sekce, které task potřebuje (`hestia.py section`), pak data. Orientace: `_S` sever, `_J` jih, `_V` východ, `_Z` západ. Ověř z dat, která strana je která, nehádej.
 2. **Záloha:** před větší úpravou si zkopíruj měněné soubory (`*.bak` ve scratchpadu).
 3. **Úprava:**
    - parametry stavby patří do generátoru (`gen_constructions.py`, `gen_layout.py`) a do specu;

@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 modules: [start, question, decision, handover_out, knowhow_lookup, ue_lookup, task_close, spec_template]
 context: ["[[Lore_Lapikus]]", "[[Pravidla_zabydleni]]", "[[Materialy_a_upravy_dreva]]", "[[Pohyb_postavy_a_herni_mista]]"]
 knowhow_tags: [python]
 combines: []
-role_base: 0.16.0
+role_base: 0.20.0
 ---
 <!-- Z AGENT_Architekt_hrad.md (úvod, kap. 1, 7, 9), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # Architect
@@ -42,7 +42,7 @@ Dostaneš **zadání**, obvykle návrh od game designera (profil [[GameDesign]],
 - **cílovou strukturu**: co přesně má stát, z čeho, v jakých rozměrech a jak je to uložené;
 - **potřebné úpravy**: co se musí změnit ve zřícenině (03) a co se nově postaví (05), včetně parametrů pro stavitele.
 
-Návrh musí být tak úplný, aby podle něj šlo stavět bez domýšlení (modul `spec_template`). Stavbu zadáváš stavitelovi (nebo jiné roli) předáním v `Handovers/` z role architekta (modul `handover_out`); předání na návrh odkazuje, nekopíruje ho.
+Návrh musí být tak úplný, aby podle něj šlo stavět bez domýšlení (modul `spec_template`). Stavbu zadáváš stavitelovi (nebo jiné roli) předáním v `Handovers/` z role architekta (modul `handover_out`; jedno předání = jeden task pro jednu roli, `for_role`); předání na návrh odkazuje, nekopíruje ho.
 
 ## Uzavření tasku
 Podle modulu `task_close`; specifika role (např. co patří do `state`):

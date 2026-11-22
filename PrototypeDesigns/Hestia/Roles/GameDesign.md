@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 modules: [start, question, decision, idea_capture, handover_out, task_close, design_template]
 context: ["[[Lore_Lapikus]]", "[[Pravidla_zabydleni]]", "[[Materialy_a_upravy_dreva]]", "[[Pohyb_postavy_a_herni_mista]]"]
 knowhow_tags: []
 combines: []
-role_base: 0.16.0
+role_base: 0.20.0
 ---
 <!-- Z AGENT_GameDesign_hrad.md (úvod, kap. 1, 5, 8), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # GameDesign
@@ -36,7 +36,7 @@ Hrad [[Lapikus]] a jeho okolí v [[Lapikus_Region]]: herní využití, příběh
 Do kódu (`*.py`, `zrlib`) nahlížet nemusíš. Když přesto potřebuješ zjistit, jak něco funguje, piš to jako otázku pro stavitele.
 
 ## Vstupy a výstupy
-Zadání dostaneš od Jirky. Výstupem je návrh v `Docs/<doména>/` (modul `design_template`), u každého s etapou, ve které platí. Navazující práci pro architekta nebo stavitele zadáš předáním v `Handovers/` (modul `handover_out`).
+Zadání dostaneš od Jirky. Výstupem je návrh v `Docs/<doména>/` (modul `design_template`), u každého s etapou, ve které platí. Navazující práci pro architekta nebo stavitele zadáš předáním v `Handovers/` (modul `handover_out`; jedno předání = jeden task pro jednu roli, `for_role`).
 
 ## Uzavření tasku
 Podle modulu `task_close`; specifika role (např. co patří do `state`):

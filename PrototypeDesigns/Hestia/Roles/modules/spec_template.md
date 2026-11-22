@@ -5,7 +5,7 @@ trigger: návrh stavby (dokumentace domény structures)
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 ---
 <!-- Z AGENT_Architekt_hrad.md kap. 8 (pilot Lapikus, B5). -->
 # spec_template
@@ -25,6 +25,8 @@ Obsah návrhu piš podle bodů níže a zapiš ho do sekcí doménového dokumen
 | Vazby a kolize | *Vazby a závislosti* |
 | Ověření | *Ověření* |
 | Předpoklady a otevřené otázky | *Otevřené otázky* |
+
+Dokument nad `doc_summary_chars` (6 000 znaků) má navíc na začátku sekci *Souhrn* (co platí, hlavní rozhodnutí, odkazy na sekce; asi do 1 500 znaků), kterou držíš aktuální při každé změně.
 
 Body:
 
@@ -52,6 +54,6 @@ Body:
 ```
 
 ## Výstup
-Zapisuješ do `Docs/structures/navrh_<část>_<stavba>.md` (existující návrh doplníš, nový jen když žádný není); stavbu zadáš předáním v `Handovers/`.
+Zapisuješ do `Docs/structures/navrh_<část>_<stavba>.md` (existující návrh doplníš, nový jen když žádný není); stavbu zadáš předáním v `Handovers/` (jedno předání = jeden task pro jednu roli, `for_role`).
 
 ## Známé pasti
