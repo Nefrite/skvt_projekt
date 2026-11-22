@@ -20,6 +20,9 @@
 - Kroky po aktualizaci podle manifestu `upgrade.yaml` nového core (13 kap. 10.6a, modul `upgrade`): dry-run je
   vypíše; po `--apply` je řídicí skript spustí **novým** core jako `update_core --after-only --since <stará>`
   (automatické kroky, `lint`/`audit` v dry-run, ruční úkoly do `queue.md`, report). `--no-after` je přeskočí.
+- `--work-copy [<adresář>]` (zadání 0.22, CR-023): s `--apply` přechod v lokální pracovní kopii vaultu
+  a zápis zpět bez mazání (modul `workcopy`); `--work-phase copy|run|back`, `--keep-work-copy`. I s `--after-only`
+  (zadání 0.22.1): kroky po aktualizaci v kopii, kontrola originálu, zápis zpět.
 - `--with-views` (13 kap. 10.9): nakopíruje do `Dashboard/views/` chybějící pohledy z `vault_template` nového
   core (`bases/*.base`, `dataview/dv_*.md`), existující nepřepíše; funguje i bez změny verze core.
 """
@@ -237,7 +240,7 @@ def core_repo(vault: Vault) -> Path:
     if not cs:
         raise UsageError("Chybí core_source v Maintenance/config.yaml (cesta k repozitáři HearthLore relativně "
                          "k vaultu, např. core_source: \"../../HearthLore\"); nebo použij --from <cesta k hestia/>")
-    repo = (vault.root / str(cs)).resolve()
+    repo = (vault.home / str(cs)).resolve()
     if not repo.is_dir() or gitinfo.toplevel(repo) is None:
         raise UsageError(f"core_source {cs!r} ({repo}) není git repozitář")
     return repo
@@ -278,10 +281,22 @@ def export_tag(repo: Path, tag: str, dest: Path) -> Path:
 
 
 def run(args, vault: Vault) -> tuple[int, dict, str]:
+    work_copy = getattr(args, "work_copy", None)
+    if work_copy is None and (getattr(args, "work_phase", None) or getattr(args, "keep_work_copy", False)):
+        raise UsageError("--work-phase a --keep-work-copy jen s --work-copy")
+    if work_copy is not None:
+        if vault.origin is not None:
+            raise UsageError("--work-copy nad pracovní kopií nejde; spusť ho nad originálem vaultu")
+        if args.apply:                                   # dry-run jen čte a kopii nepotřebuje (13 kap. 10.6)
+            from . import workcopy
+            return workcopy.run(args, vault)
     if getattr(args, "after_only", False):
         if args.source or args.tag or args.latest:
             raise UsageError("--after-only nebere zdroj core (--from, --tag, --latest); běží nad _core/")
-        return upgrade_mod.run_after(args, vault)
+        code, payload, text = upgrade_mod.run_after(args, vault)
+        if work_copy is not None:                          # dry-run (s --apply jde výše do workcopy)
+            text += "\nS --apply proběhnou kroky v pracovní kopii (--work-copy) a zápis zpět bez mazání."
+        return code, payload, text
     if args.tag or args.latest:
         repo = core_repo(vault)
         tag = resolve_tag(args, repo)
@@ -494,6 +509,8 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
                      f"spusť compose_role --apply")
     if pending:
         lines.append("Upozornění: " + upgrade_mod.unfinished_line(pending))
+    if getattr(args, "work_copy", None) is not None and not args.apply and not unchanged:
+        lines.append("S --apply proběhne přechod v pracovní kopii (--work-copy) a zápis zpět bez mazání.")
     lines += [f"Upozornění: {w}" for w in warnings]
     if resumed:
         lines.insert(0, resumed)

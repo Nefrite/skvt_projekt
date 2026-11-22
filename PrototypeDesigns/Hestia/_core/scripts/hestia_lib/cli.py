@@ -23,7 +23,7 @@ VAULT_COMMANDS = {"lint": "lint", "compose_role": "compose", "asset_index": "ass
                   "update_core": "update_core", "export_cr": "export_cr", "doc_index": "doc_index",
                   "compose_context": "context", "ue_query": "ue",
                   "inbox_import": "inbox_import", "section": "section", "find": "search",
-                  "role_diff": "instructions", "agenda": "agenda"}
+                  "role_diff": "instructions", "agenda": "agenda", "feedback_log": "feedback"}
 
 
 class _Parser(argparse.ArgumentParser):
@@ -167,6 +167,21 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--since", metavar="VERZE", help=argparse.SUPPRESS)   # stará verze pro --after-only (řídicí skript)
     p.add_argument("--with-views", action="store_true",
                    help="doplnit chybějící pohledy do Dashboard/views/ (existující nepřepíše)")
+    p.add_argument("--work-copy", nargs="?", const="", default=None, metavar="ADRESÁŘ",
+                   help="přechod v lokální pracovní kopii vaultu a zápis zpět bez mazání (připojená složka); "
+                        "bez hodnoty dočasný adresář hestia_work_*")
+    p.add_argument("--work-phase", choices=["copy", "run", "back"],
+                   help="jen jedna fáze pracovní kopie (další běh pokračuje od nedokončené)")
+    p.add_argument("--keep-work-copy", action="store_true", help="pracovní adresář po zápisu zpět nemazat")
+
+    p = sub.add_parser("feedback_log", parents=[common],
+                       help="podněty pro Hestii (queue.md, code: hestia) do structure_log.md")
+    p.add_argument("--id", action="append", metavar="P-0001", help="jen tato položka fronty (opakovatelné)")
+    p.add_argument("--category", action="append", metavar="P-0001=KATEGORIE",
+                   help="kategorie logu pro položku (přednost před code: hestia:<kategorie>)")
+
+    sub.add_parser("doctor", parents=[common],
+                   help="kontrola prostředí: Python, PyYAML, git, vault, core_source, připojená složka")
 
     p = sub.add_parser("export_cr", parents=[common], help="change requesty ze structure_log do outbox/")
     p.add_argument("--area", help="oblast CR (výchozí: taxonomy u kategorie taxonomy, jinak process)")
@@ -199,6 +214,9 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "init":
             from . import init
             code, payload, text = init.run(args)
+        elif args.command == "doctor":                       # bez načtení vaultu, běží i bez PyYAML
+            from . import doctor
+            code, payload, text = doctor.run(args)
         elif args.command in VAULT_COMMANDS:
             import importlib
             from .vault import Vault, find_vault

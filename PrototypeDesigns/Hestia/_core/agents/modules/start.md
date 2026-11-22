@@ -15,6 +15,8 @@ Na začátku každého tasku a při pokračování v nové relaci.
 ## Postup
 0. **Režim podle přístupu** (12 kap. 1.1): ověř, zda vidíš `Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce. Když ano, pracuješ v režimu `vault`, i když jsi začal s kompilátem role: načti kontrakt a profil z vaultu (projektové role v `Hestia/Roles/`, role core v `Hestia/_core/agents/`) a kompilát dál neber jako zdroj. Když ne, pracuješ v režimu `chat` s kompilátem.
 
+**Nové prostředí** (nový chat, nová VM, jiný stroj): před prvním skriptem spusť `hestia.py doctor` a podle výsledku prostředí doplň (návod u každé chyby; Python ≥ 3.11 a PyYAML mimo projekt a vault). Upozornění na připojenou složku → dlouhé běhy `update_core` s `--work-copy --apply`.
+
 **Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
 
 **Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
@@ -43,6 +45,7 @@ Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, o
 Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého stavu vycházíš a co je nejasné. Nejasnost řeš modulem `question` dřív, než začneš.
 
 ## Známé pasti
+- Spustit první skript v novém prostředí bez `doctor`: selže na chybějícím PyYAML nebo starém Pythonu a hledání příčiny stojí víc než kontrola.
 - Pracovat podle kompilátu (balíčky, zápis Hestia), když relace vault vidí, třeba přes připojenou složku; hlavní práce pak běží nad ručně přenášenými výňatky.
 - Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným. Totéž dlouhý dokument celý místo osnovy a sekcí.
 - Hlásit „beze změny“ po aktualizaci podle části souboru místo `role_diff`.

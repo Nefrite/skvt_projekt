@@ -395,8 +395,18 @@ def _load_local_only(tx: Taxonomy, local_dir: Path) -> None:
     _load_ue_map(tx, local_dir / "ue_map.yaml")
 
 
-UE_MAP_KEYS = {"map", "stage_tag_prefix", "defaults", "items"}
+UE_MAP_KEYS = {"map", "stage_tag_prefix", "placeholder_ignore", "defaults", "items"}
 UE_RULE_KEYS = {"tags", "folders"}
+
+
+def _ue_paths(val, where: str, problems: list) -> list[str]:
+    """placeholder_ignore (zadání 0.22, CR-024): seznam cest meshů; jiný tvar = problém (G7)."""
+    if val is None:
+        return []
+    if not isinstance(val, list) or not all(isinstance(x, str) and x.strip() for x in val):
+        problems.append(f"{where} musí být seznam textů (cesty meshů, např. /Engine/BasicShapes/Cube.Cube)")
+        return []
+    return [x.strip() for x in val]
 
 
 def _ue_rule(raw, where: str, problems: list) -> dict | None:
@@ -404,7 +414,7 @@ def _ue_rule(raw, where: str, problems: list) -> dict | None:
     if not isinstance(raw, dict):
         problems.append(f"{where}: pravidlo musí být mapa s tags nebo folders")
         return None
-    extra = set(raw) - UE_RULE_KEYS - {"entity"}
+    extra = set(raw) - UE_RULE_KEYS - {"entity", "placeholder_ignore"}
     if extra:
         problems.append(f"{where}: neznámé klíče {', '.join(sorted(extra))}")
     rule = {}
@@ -428,7 +438,8 @@ def _load_ue_map(tx: Taxonomy, p: Path) -> None:
         return
     data = load_yaml(p)
     problems: list[str] = []
-    out = {"map": "", "stage_tag_prefix": "stage:", "defaults": {}, "items": []}
+    out = {"map": "", "stage_tag_prefix": "stage:", "placeholder_ignore": [], "placeholder_ignore_items": {},
+           "defaults": {}, "items": []}
     if not isinstance(data, dict):
         tx.problems.append((p, "ue_map: soubor musí být mapa (map, stage_tag_prefix, defaults, items)"))
         tx.ue_map, tx.ue_map_path = out, p
@@ -442,6 +453,7 @@ def _load_ue_map(tx: Taxonomy, p: Path) -> None:
                 out[key] = data[key]
             else:
                 problems.append(f"ue_map: {key} musí být text")
+    out["placeholder_ignore"] = _ue_paths(data.get("placeholder_ignore"), "ue_map: placeholder_ignore", problems)
     defaults = data.get("defaults") or {}
     if not isinstance(defaults, dict):
         problems.append("ue_map: defaults musí být mapa kind → pravidlo")
@@ -462,6 +474,11 @@ def _load_ue_map(tx: Taxonomy, p: Path) -> None:
         if not isinstance(ent, str) or not ent.strip():
             problems.append(f"ue_map items: položka {i} bez entity")
             continue
+        ign = _ue_paths(raw.get("placeholder_ignore"), f"ue_map {ent}: placeholder_ignore", problems)
+        if "placeholder_ignore" in raw:
+            out["placeholder_ignore_items"].setdefault(ent.strip(), []).extend(ign)
+        if "placeholder_ignore" in raw and not (set(raw) & UE_RULE_KEYS):
+            continue                                 # položka jen s placeholder_ignore: pravidlo z defaults
         rule = _ue_rule(raw, f"ue_map {ent}", problems)
         if rule:
             out["items"].append({"entity": ent.strip(), **rule})

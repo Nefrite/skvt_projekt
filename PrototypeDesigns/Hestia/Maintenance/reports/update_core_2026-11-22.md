@@ -285,3 +285,91 @@ updated: 2026-11-22
 - CR_2026-11-21_podnety_roli_pres_frontu (ověřit v instanci, do *Průběhu* `in_pilot`)
 - CR_2026-11-21_ue_cteni_vs_state (ověřit v instanci, do *Průběhu* `in_pilot`)
 - CR_2026-11-21_kontrakt_rozdeleni (ověřit v instanci, do *Průběhu* `in_pilot`)
+
+## Přechod 0.20.1 → 0.21.1
+- Stav: dokončeno
+- Výměna `_core/`: starý core v `_to_delete/_core_0.20.1/`; řádek v `structure_version.md`.
+- Záznamy manifestu: 0.21.0, 0.21.1.
+
+### Automatické kroky
+- `compose_role`: v pořádku
+  - změněné kompiláty: 5 z 5
+
+### Kontroly (dry-run)
+- lint: chyby 0, upozornění 9, informace 19
+- audit: chyby 0, upozornění 53, informace 68
+
+### Ruční úkoly
+- `update_core:0.21.0:structure_log_cr` (ve frontě): Projít záznamy structure_log.md, které lint hlásí kvůli buňce cr (–, -, samotné cr:, volný text): s člověkem rozhodnout, které vyexportovat (export_cr), a u ostatních nastavit cr: none (13 kap. 10.8)
+
+### Změny instrukcí
+- Změněné soubory: 5. Role si změny vypíše `role_diff <Role>`.
+
+#### `agents/Auditor.md` (změněný)
+- Sekce: Formáty výstupů (změněná)
+
+> ## Formáty výstupů
+> - Report podle šablony `tpl_report`: *Souhrn*, *Nálezy podle závažnosti* (chyba, upozornění, informace; ke každému návrh opravy), *Zralost*, *Doporučené kroky*.
+> - Nálezy strojově: `[{code, severity, target, file, message}]`.
+> - Položka fronty: `F-0001 | priority | finding | G-kód | cíl | návrh opravy | open`.
+> - Návrh do `structure_log.md`: `| datum | kategorie | popis | dopad | navrhovaná změna | |` (buňka `cr` prázdná; pomlčku ani text nepsat).
+
+#### `agents/Curator.md` (změněný)
+- Sekce: Co děláš a co ne (změněná), Postupy podle zakázky (změněná), Formáty výstupů (změněná)
+- Nové znění: 3818 znaků, nad 3000; přečti sekce v `_core/agents/Curator.md`.
+
+#### `agents/modules/hestia_feedback.md` (změněný)
+- Sekce: Postup (změněná), Výstup (změněná), Známé pasti (změněná)
+
+> ## Postup
+> 1. Change request nezakládáš a do `structure_log.md` ani `outbox/` nepíšeš: CR mimo kanál Curatora (`export_cr`) by nikdo nezpracoval.
+> 2. **Režim vault:** připiš na konec `Maintenance/queue.md` položku `kind: proposal`, `code: hestia`, nebo s navrženou kategorií logu `code: hestia:<kategorie>` (`friction`, `missing`, `surplus`, `collision`, `taxonomy`, `works`, `idea`), `target` = čeho se týká (entita, dokument nebo část Hestie, např. `tpl_state`, `audit G10`), `proposal` = `<role>: co se stalo (doklad: <odkaz>) → navrhovaná změna`, kde `<odkaz>` je wikilink na poznámku nebo cesta v backtickách, za ním případně řádek nebo datum (např. „doklad: `Maintenance/changes.md` 2026-11-21“; samotný popis řádku bez odkazu `feedback_log` nezapíše), `priority: medium` (`high` jen když podnět blokuje práci), `state: open`. Schválení GameDesignera k zápisu není potřeba.
+> 3. **Režim chat:** podnět dej do zápisu Hestia, sekce *Podněty pro Hestii* (modul `chat_entry`); do fronty ho zapíše ten, kdo zápis zapracuje.
+> 4. Podnět uveď v hlášení na konci tasku (`task_close`, krok 11).
+
+> ## Výstup
+> Položka fronty `P-…` s kódem `hestia` nebo `hestia:<kategorie>` (nebo sekce v zápisu Hestia). Curator ji převede do `structure_log.md` příkazem `hestia.py feedback_log` a uzavře; o CR rozhoduje člověk při `export_cr`.
+
+> ## Známé pasti
+> - Založit CR přímo v `outbox/` nebo v repozitáři projektu: zůstane mimo kanál a nikdo ho nezpracuje.
+> - Podnět bez dokladu, nebo s dokladem, který nejde dohledat (wikilink na existující poznámku nebo existující cesta v backtickách): `feedback_log` ho nezapíše. Doklad „řádek ve changes.md“ bez odkazu neprojde.
+> - Zaměnit podnět s otázkou (`question`) nebo s nálezem údržby (zapisuje Auditor).
+
+#### `agents/modules/start.md` (změněný)
+- Sekce: Postup (změněná), Známé pasti (změněná)
+- Nové znění: 3859 znaků, nad 3000; přečti sekce v `_core/agents/modules/start.md`.
+
+#### `agents/modules/ue_lookup.md` (změněný)
+- Sekce: Postup (změněná)
+- Nové znění: 3309 znaků, nad 3000; přečti sekce v `_core/agents/modules/ue_lookup.md`.
+
+#### Role a soubory
+- Architect: `agents/modules/hestia_feedback.md`, `agents/modules/start.md`, `agents/modules/ue_lookup.md`
+- Builder: `agents/modules/hestia_feedback.md`, `agents/modules/start.md`, `agents/modules/ue_lookup.md`
+- Furnisher: `agents/modules/hestia_feedback.md`, `agents/modules/start.md`
+- GameDesign: `agents/modules/hestia_feedback.md`, `agents/modules/start.md`
+- Curator: `agents/Curator.md`, `agents/modules/hestia_feedback.md`, `agents/modules/start.md`
+- Auditor: `agents/Auditor.md`, `agents/modules/hestia_feedback.md`, `agents/modules/start.md`, `agents/modules/ue_lookup.md`
+- Librarian: `agents/modules/hestia_feedback.md`, `agents/modules/start.md`, `agents/modules/ue_lookup.md`
+
+### CR k ověření
+- CR-022_prostredi_core (ověřit v instanci, do *Průběhu* `in_pilot`)
+- CR-023_update_core_pripojena_slozka (ověřit v instanci, do *Průběhu* `in_pilot`)
+- CR-024_ue_signal_basicshapes (ověřit v instanci, do *Průběhu* `in_pilot`)
+- CR-025_ue_ism_bounds (ověřit v instanci, do *Průběhu* `in_pilot`)
+- CR-030_export_cr_prazdne_cr (ověřit v instanci, do *Průběhu* `in_pilot`)
+- CR-031_podnety_do_structure_log_skriptem (ověřit v instanci, do *Průběhu* `in_pilot`)
+
+### Pracovní kopie
+- Pracovní adresář: `/sessions/rcw-01nw4mxpuk2thvsg4ues1vms/hestia_work_p17`.
+- Kontrola originálu: beze změny od snímku (1386 souborů).
+- Přeneseno: změněné 8, nové 0, přesunuté 0; `_core/` vyměněn (starý v `_to_delete/_core_0.20.1/`).
+  - ~ `Maintenance/queue.md`
+  - ~ `Maintenance/reports/update_core_2026-11-22.md`
+  - ~ `Maintenance/structure_version.md`
+  - ~ `Roles/_compiled/Architect_compiled.md`
+  - ~ `Roles/_compiled/Builder_compiled.md`
+  - ~ `Roles/_compiled/Furnisher_compiled.md`
+  - ~ `Roles/_compiled/GameDesign_compiled.md`
+  - ~ `Roles/_compiled/Librarian_compiled.md`
+- Čas fází: kopie 65.0 s, přechod 117.8 s, zápis zpět 55.0 s.

@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: GameDesign | core: 0.20.1 | date: 2026-11-22 -->
+<!-- role: GameDesign | core: 0.21.1 | date: 2026-11-22 -->
 <!-- sources: Roles/GameDesign.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/hestia_feedback.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/design_template.md -->
 # GameDesign – instrukce pro chat
 
@@ -60,6 +60,8 @@ Na začátku každého tasku a při pokračování v nové relaci.
 ### Postup
 0. **Režim podle přístupu** (12 kap. 1.1): ověř, zda vidíš `Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce. Když ano, pracuješ v režimu `vault`, i když jsi začal s kompilátem role: načti kontrakt a profil z vaultu (projektové role v `Hestia/Roles/`, role core v `Hestia/_core/agents/`) a kompilát dál neber jako zdroj. Když ne, pracuješ v režimu `chat` s kompilátem.
 
+**Nové prostředí** (nový chat, nová VM, jiný stroj): před prvním skriptem spusť `hestia.py doctor` a podle výsledku prostředí doplň (návod u každé chyby; Python ≥ 3.11 a PyYAML mimo projekt a vault). Upozornění na připojenou složku → dlouhé běhy `update_core` s `--work-copy --apply`.
+
 **Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
 
 **Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
@@ -88,6 +90,7 @@ Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, o
 Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého stavu vycházíš a co je nejasné. Nejasnost řeš modulem `question` dřív, než začneš.
 
 ### Známé pasti
+- Spustit první skript v novém prostředí bez `doctor`: selže na chybějícím PyYAML nebo starém Pythonu a hledání příčiny stojí víc než kontrola.
 - Pracovat podle kompilátu (balíčky, zápis Hestia), když relace vault vidí, třeba přes připojenou složku; hlavní práce pak běží nad ručně přenášenými výňatky.
 - Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným. Totéž dlouhý dokument celý místo osnovy a sekcí.
 - Hlásit „beze změny“ po aktualizaci podle části souboru místo `role_diff`.
@@ -242,16 +245,16 @@ Narazíš na problém nebo možnost zlepšení Hestie jako nástroje: kontrakt, 
 
 ### Postup
 1. Change request nezakládáš a do `structure_log.md` ani `outbox/` nepíšeš: CR mimo kanál Curatora (`export_cr`) by nikdo nezpracoval.
-2. **Režim vault:** připiš na konec `Maintenance/queue.md` položku `kind: proposal`, `code: hestia`, `target` = čeho se týká (entita, dokument nebo část Hestie, např. `tpl_state`, `audit G10`), `proposal` = `<role>: co se stalo (doklad: odkaz na dokument, report nebo řádek) → navrhovaná změna`, `priority: medium` (`high` jen když podnět blokuje práci), `state: open`. Schválení GameDesignera k zápisu není potřeba.
+2. **Režim vault:** připiš na konec `Maintenance/queue.md` položku `kind: proposal`, `code: hestia`, nebo s navrženou kategorií logu `code: hestia:<kategorie>` (`friction`, `missing`, `surplus`, `collision`, `taxonomy`, `works`, `idea`), `target` = čeho se týká (entita, dokument nebo část Hestie, např. `tpl_state`, `audit G10`), `proposal` = `<role>: co se stalo (doklad: <odkaz>) → navrhovaná změna`, kde `<odkaz>` je wikilink na poznámku nebo cesta v backtickách, za ním případně řádek nebo datum (např. „doklad: `Maintenance/changes.md` 2026-11-21“; samotný popis řádku bez odkazu `feedback_log` nezapíše), `priority: medium` (`high` jen když podnět blokuje práci), `state: open`. Schválení GameDesignera k zápisu není potřeba.
 3. **Režim chat:** podnět dej do zápisu Hestia, sekce *Podněty pro Hestii* (modul `chat_entry`); do fronty ho zapíše ten, kdo zápis zapracuje.
 4. Podnět uveď v hlášení na konci tasku (`task_close`, krok 11).
 
 ### Výstup
-Položka fronty `P-…` s kódem `hestia` (nebo sekce v zápisu Hestia). Curator ji převede do `structure_log.md` a uzavře; o CR rozhoduje člověk při `export_cr`.
+Položka fronty `P-…` s kódem `hestia` nebo `hestia:<kategorie>` (nebo sekce v zápisu Hestia). Curator ji převede do `structure_log.md` příkazem `hestia.py feedback_log` a uzavře; o CR rozhoduje člověk při `export_cr`.
 
 ### Známé pasti
 - Založit CR přímo v `outbox/` nebo v repozitáři projektu: zůstane mimo kanál a nikdo ho nezpracuje.
-- Podnět bez dokladu: Curator ho nemůže posoudit.
+- Podnět bez dokladu, nebo s dokladem, který nejde dohledat (wikilink na existující poznámku nebo existující cesta v backtickách): `feedback_log` ho nezapíše. Doklad „řádek ve changes.md“ bez odkazu neprojde.
 - Zaměnit podnět s otázkou (`question`) nebo s nálezem údržby (zapisuje Auditor).
 
 ## Modul `chat_entry` (L1)

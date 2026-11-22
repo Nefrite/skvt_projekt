@@ -92,3 +92,12 @@ versions:
     after: []
     manual: []
     crs: []
+  - version: 0.21.0
+    after: [compose_role]
+    manual:
+      - id: structure_log_cr
+        text: "Projít záznamy structure_log.md, které lint hlásí kvůli buňce cr (–, -, samotné cr:, volný text): s člověkem rozhodnout, které vyexportovat (export_cr), a u ostatních nastavit cr: none (13 kap. 10.8)"
+    crs: [CR-022_prostredi_core, CR-023_update_core_pripojena_slozka, CR-024_ue_signal_basicshapes, CR-025_ue_ism_bounds, CR-030_export_cr_prazdne_cr, CR-031_podnety_do_structure_log_skriptem]
+  - version: 0.21.1
+    after: [compose_role]
+    crs: [CR-023_update_core_pripojena_slozka, CR-025_ue_ism_bounds, CR-031_podnety_do_structure_log_skriptem]

@@ -8,7 +8,7 @@ from . import CORE_ROOT
 from . import config as config_mod
 from . import taxonomy as taxonomy_mod
 from .errors import UsageError
-from .fileio import read_text, to_posix
+from .fileio import display_path, read_text, register_alias, to_posix
 from .frontmatter import FrontmatterError, Split, parse
 
 VAULT_DIRNAME = "Hestia"
@@ -18,6 +18,25 @@ SKIP_DIRS = {".obsidian", ".trash", ".git", "__pycache__"}
 # _core/ ověřují akceptační testy, lint ho nekontroluje (13 kap. 2).
 LINT_EXCLUDE_PREFIXES = ("_core/", "_to_delete/", "Roles/_compiled/", "Maintenance/context/",
                          "Maintenance/import/")      # soubory výměny importu (13 kap. 10.12, zadání 0.16)
+
+
+WORK_MARKER = "hestia_work.json"           # značka pracovní kopie vedle kopie vaultu (13 kap. 10.6)
+
+
+def work_origin(root: Path) -> Path | None:
+    """Originál vaultu, je-li `root` pracovní kopie (`update_core --work-copy`): značka `hestia_work.json`
+    v nadřazené složce s `vault` = jméno složky kopie."""
+    import json
+    marker = Path(root).parent / WORK_MARKER
+    if not marker.is_file():
+        return None
+    try:
+        data = json.loads(read_text(marker))
+    except (OSError, ValueError):
+        return None
+    if not isinstance(data, dict) or data.get("vault") != Path(root).name or not data.get("origin"):
+        return None
+    return Path(data["origin"]).resolve()
 
 
 def find_vault(start: Path | None = None) -> Path:
@@ -56,6 +75,7 @@ class Vault:
     project_root: Path
     taxonomy: taxonomy_mod.Taxonomy
     config: config_mod.Config
+    origin: Path | None = None        # originál, je-li vault pracovní kopie (13 kap. 10.6, zadání 0.22)
     files: list[str] = field(default_factory=list)              # všechny soubory, rel s /
     notes: dict[str, Note] = field(default_factory=dict)        # rel -> Note (jen .md)
     _by_name: dict[str, list[str]] = field(default_factory=dict)  # lower(jméno) -> [rel]
@@ -69,8 +89,12 @@ class Vault:
             raise UsageError(f"Vault neexistuje: {root}")
         cfg = config_mod.load(root, core_root)
         tx = taxonomy_mod.load(core_root / "taxonomy", root / "Maintenance" / "taxonomy_local")
-        project_root = (root / str(cfg.get("project_root") or "..")).resolve()
-        v = cls(root=root, project_root=project_root, taxonomy=tx, config=cfg)
+        origin = work_origin(root)
+        if origin is not None:
+            register_alias(root, origin)
+        # project_root a další cesty z config.yaml jsou relativně k vaultu v projektu (u kopie k originálu)
+        project_root = ((origin or root) / str(cfg.get("project_root") or "..")).resolve()
+        v = cls(root=root, project_root=project_root, taxonomy=tx, config=cfg, origin=origin)
         v._scan()
         return v
 
@@ -150,9 +174,14 @@ class Vault:
         rel, status = self.resolve(name)
         return self.notes.get(rel) if status == "ok" and rel else None
 
+    @property
+    def home(self) -> Path:
+        """Umístění vaultu v projektu: originál u pracovní kopie, jinak `root`."""
+        return self.origin or self.root
+
     def project_rel(self, path: Path) -> str:
         """Cesta od kořene projektu, začíná / (01 kap. 11)."""
         try:
-            return "/" + to_posix(Path(path).resolve().relative_to(self.project_root))
+            return "/" + to_posix(display_path(Path(path)).resolve().relative_to(self.project_root))
         except ValueError:
             return to_posix(path)

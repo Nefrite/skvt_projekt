@@ -2,13 +2,18 @@
 
 - Jeden záznam `structure_log.md` = jeden CR v `Maintenance/outbox/CR_RRRR-MM-DD_<short_name>.md`.
 - Exportují se záznamy bez vyplněného `cr:` v kategoriích friction, missing, surplus, collision, taxonomy,
-  idea; `works` jen s `--include-works`.
+  idea; `works` jen s `--include-works`. Vyplněné je jen `cr: <ID>` (`CR_RRRR-MM-DD_<short_name>` nebo
+  `CR-NNN_<short_name>`) a `cr: none`; prázdná buňka, `–`, `-`, samotné `cr:` a jiný text = nevyplněno
+  (zadání 0.22, CR-030). Vyplnění nevyplněnou hodnotu nahradí.
 - CR vzniká ze šablony `templates/tpl_change_request.md`: `cr_status: new`, `source_instance`
   (`instance` z config.yaml, jinak jméno složky projektu), `hestia_version` (`_core/VERSION`),
   `structure_log` (citace záznamu), `area` (`--area`, jinak taxonomy → taxonomy, ostatní → process),
   `gd_relevance` prázdné, *Průběh* (tabulka) s řádkem `| datum | new | export_cr | … |`.
 - Po zápisu se u záznamu vyplní `cr: <ID>` – jediná povolená úprava existujícího řádku logu.
-- Odeslání do HearthLore dělá člověk; export ho neprovádí.
+- Předání do HearthLore (zadání 0.22.1): export soubor neodesílá. Soubor z `outbox/` se uvede v hlášení pro
+  HearthLore, nebo ho předá člověk; instance ho nepřejmenovává, nečísluje ani nekopíruje do HearthLore. Zaeviduje
+  ho agent HearthLore (číslo, `CR-NNN_<short_name>`, původní jméno v `source_id`). Totéž říká poznámka pod
+  nadpisem CR (`HANDOVER_NOTE`) a výpis příkazu.
 """
 from __future__ import annotations
 
@@ -22,7 +27,7 @@ from .changeset import ChangeSet
 from .errors import EXIT_OK, UsageError
 from .fileio import detect_newline, read_text
 from .frontmatter import set_field
-from .logs import LOG_LINE_RE, escape, format_line, split_row
+from .logs import LOG_LINE_RE, cr_cell, escape, format_line, split_row
 from .util import today
 from .vault import Vault
 
@@ -33,6 +38,10 @@ EXPORTED = ["friction", "missing", "surplus", "collision", "taxonomy", "idea"]
 FIELDS = ["date", "category", "description", "impact", "proposal", "cr"]
 SHORT_MAX = 40
 TODO = "<!-- doplní Curator nebo člověk před odesláním -->"
+HANDOVER_NOTE = ("> **Předání do HearthLore:** soubor se neodesílá skriptem. Uveď ho v hlášení pro HearthLore, nebo "
+                 "ho předá člověk; v instanci ho nepřejmenovávej, nečísluj ani nekopíruj do HearthLore. Zaeviduje "
+                 "ho agent HearthLore: číslo, jméno `CR-NNN_<short_name>`, původní jméno v `source_id` "
+                 "(11 kap. 3).")
 
 
 @dataclass
@@ -46,8 +55,10 @@ class Record:
 
     @property
     def cr(self) -> str:
-        """Vyplněné ID CR (bez předpony `cr:`), jinak prázdné."""
-        return re.sub(r"^cr:\s*", "", self.get("cr").strip(), flags=re.I).strip()
+        """Vyplněné `cr` (ID nebo `none`, bez předpony `cr:`), jinak prázdné. `–`, `-`, samotné `cr:`
+        a jiný text = nevyplněno (zadání 0.22, CR-030)."""
+        state, value = cr_cell(self.get("cr"))
+        return value if state in ("id", "none") else ""
 
     @property
     def citation(self) -> str:
@@ -111,6 +122,7 @@ def _fill_sections(body: str, content: dict[str, str]) -> str:
 def render(template: str, rec: Record, cr_id: str, vault: Vault, area: str, date) -> str:
     text = template.replace("\r\n", "\n").replace("{{date:YYYY-MM-DD}}", date.isoformat())
     text = text.replace("{{title}}", rec.get("description").strip() or cr_id)
+    text = text.replace("\n## Co se stalo", f"\n{HANDOVER_NOTE}\n\n## Co se stalo", 1)
     for key, value in (("cr_status", "new"), ("source_instance", source_instance(vault)),
                        ("hestia_version", hestia_version(vault)), ("area", area),
                        ("structure_log", [rec.citation])):
@@ -195,7 +207,8 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         lines += [f"  {e['id']} (area {e['area']}) ← {e['record']}" for e in exported]
         if not args.apply:
             lines.append(cs.diff())
-        lines.append("Dopad a Alternativy doplní Curator nebo člověk; odeslání do hearthlore/change-requests/ "
-                     "dělá člověk.")
+        lines.append("Dopad a Alternativy doplní Curator nebo člověk. Předání do HearthLore: soubory z outbox/ uveď "
+                     "v hlášení pro HearthLore, nebo je předá člověk; nepřejmenovávat, nečíslovat, nekopírovat "
+                     "(zaeviduje agent HearthLore).")
     lines += [f"Přeskočeno: {s['record']} ({s['reason']})" for s in skipped]
     return EXIT_OK, payload, "\n".join(l for l in lines if l)

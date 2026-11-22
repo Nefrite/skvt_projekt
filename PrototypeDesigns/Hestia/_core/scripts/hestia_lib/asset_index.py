@@ -147,7 +147,7 @@ class Indexer:
         if not roots:
             warnings.append("code_roots v config.yaml je prázdné; index je prázdný")
         patterns = [p for p in as_list(self.cfg.get("ignore")) if isinstance(p, str)]
-        vault_root = self.v.root.resolve()
+        vault_roots = {self.v.root.resolve(), self.v.home.resolve()}     # u pracovní kopie i originál
         files, generated = [], 0
         for r in roots:
             base = (root / r).resolve()
@@ -157,7 +157,7 @@ class Indexer:
             for p in sorted(base.rglob("*")):
                 if not p.is_file():
                     continue
-                if vault_root == p or vault_root in p.parents:
+                if any(vr == p or vr in p.parents for vr in vault_roots):
                     continue
                 rel = to_posix(p.relative_to(root))
                 parts = set(Path(rel).parts)

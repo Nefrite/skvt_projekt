@@ -12,7 +12,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from .errors import WriteConflict
-from .fileio import atomic_write, file_hash, read_text, to_posix
+from .fileio import atomic_write, display_path, file_hash, read_text, to_posix
 
 
 @dataclass
@@ -81,7 +81,7 @@ class ChangeSet:
     # ------------------------------------------------------------ výstup
     def rel(self, path: Path) -> str:
         try:
-            return "/" + to_posix(Path(path).resolve().relative_to(Path(self.display_root).resolve()))
+            return "/" + to_posix(display_path(Path(path)).resolve().relative_to(Path(self.display_root).resolve()))
         except ValueError:
             return to_posix(path)
 

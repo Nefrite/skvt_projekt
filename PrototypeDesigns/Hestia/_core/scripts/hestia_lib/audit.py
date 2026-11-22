@@ -167,7 +167,7 @@ class Auditor:
         for proto in self.v.config.get("prototypes") or []:
             name = (proto or {}).get("lore") or f"Lore_{(proto or {}).get('id')}"
             n = self.v.note_by_name(name)
-            expected = f"/{to_posix(self.v.root.relative_to(self.v.project_root))}/Docs/narrative/{name}.md"
+            expected = f"/{to_posix(self.v.home.relative_to(self.v.project_root))}/Docs/narrative/{name}.md"
             if n is None or not n.fm:
                 self.add("G12", name, expected, f"master lore prototypu {proto.get('id')} chybí")
                 continue
@@ -483,7 +483,7 @@ class Auditor:
 
     # ------------------------------------------------------------ běh
     def run(self, state: dict) -> AuditResult:
-        self.r.findings += run_checks(self.v, None)
+        self.r.findings += run_checks(self.v, None, log_format=False)
         idx = ai.build(self.v, self.m)
         self.r.index = idx
         self.r.findings += idx.findings

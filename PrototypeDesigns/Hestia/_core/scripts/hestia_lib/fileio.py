@@ -64,3 +64,27 @@ def atomic_write(path: Path, data: str | bytes, expected_hash: str | None = None
 
 def to_posix(path: Path | str) -> str:
     return str(path).replace("\\", "/")
+
+
+# Pracovní kopie vaultu (update_core --work-copy, 13 kap. 10.6): cesty v kopii se ve výstupech
+# (cesty od kořene projektu, souhrny změn) ukazují jako cesty v originálu.
+_ALIASES: list[tuple[Path, Path]] = []
+
+
+def register_alias(copy_root: Path, origin_root: Path) -> None:
+    pair = (Path(copy_root).resolve(), Path(origin_root).resolve())
+    if pair not in _ALIASES:
+        _ALIASES.append(pair)
+
+
+def display_path(path: Path | str) -> Path:
+    """Cesta v pracovní kopii převedená na cestu v originálu; jiná cesta beze změny."""
+    p = Path(path)
+    if not _ALIASES:
+        return p
+    rp = p.resolve()
+    for copy_root, origin in _ALIASES:
+        if rp == copy_root or copy_root in rp.parents:
+            return origin / rp.relative_to(copy_root)
+    return p
+

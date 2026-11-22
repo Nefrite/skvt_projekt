@@ -71,8 +71,9 @@ def core_part(vault: Vault, role: str) -> dict | None:
         return {"id": i.id, "kind": i.kind, "code": i.code, "target": i.target, "proposal": i.proposal,
                 "state": i.state_value}
     if r == "curator":
-        hestia = [row(i) for i in items if i.kind == "proposal" and i.code == "hestia"]
-        other = [row(i) for i in items if i.kind == "proposal" and i.code != "hestia"]
+        from .feedback import is_hestia_code                 # i `hestia:<kategorie>` (zadání 0.22)
+        hestia = [row(i) for i in items if i.kind == "proposal" and is_hestia_code(i.code)]
+        other = [row(i) for i in items if i.kind == "proposal" and not is_hestia_code(i.code)]
         return {"kind": "queue", "label": "podněty `code: hestia`", "count": len(hestia), "items": hestia,
                 "proposals": other}
     tasks = [row(i) for i in items if i.kind == "task" and i.code.startswith("update_core:")]

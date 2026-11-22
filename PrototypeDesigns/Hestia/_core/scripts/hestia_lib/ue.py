@@ -23,7 +23,7 @@ from pathlib import Path
 
 from .changeset import ChangeSet
 from .errors import EXIT_OK, UsageError
-from .fileio import read_text, to_posix
+from .fileio import display_path, read_text, to_posix
 from .model import Model
 from .util import today
 from .vault import Vault
@@ -130,9 +130,12 @@ def hub_block(vault: Vault, m: Model, entity: str, rule_map: dict, day: _dt.date
         actors += "; výpis v reportu zkrácen"
     lines.append(actors)
     bk = own.get("by_kind") or {}
-    lines.append(f"- Třídy: StaticMesh {bk.get('static_mesh', 0)}, Blueprint {bk.get('blueprint', 0)}, "
+    ism = f", ISM {bk['ism']} ({own.get('ism_instances', 0)} instancí)" if bk.get("ism") else ""
+    lines.append(f"- Třídy: StaticMesh {bk.get('static_mesh', 0)}{ism}, Blueprint {bk.get('blueprint', 0)}, "
                  f"BSP {bk.get('bsp', 0)}, ostatní {bk.get('other', 0)}")
-    lines.append(f"- Zástupné meshe (`/Engine/BasicShapes/`): {own.get('placeholder_meshes', 0)}; "
+    ign = f" (vynecháno podle `placeholder_ignore`: {own['placeholder_ignored']})" \
+        if own.get("placeholder_ignored") else ""
+    lines.append(f"- Zástupné meshe (`/Engine/BasicShapes/`): {own.get('placeholder_meshes', 0)}{ign}; "
                  f"výchozí materiály: {own.get('default_materials', 0)}")
     stages = own.get("stages") or {}
     lines.append("- Fáze: " + (", ".join(f"{k} {v}" for k, v in stages.items()) if stages else "–"))
@@ -140,6 +143,10 @@ def hub_block(vault: Vault, m: Model, entity: str, rule_map: dict, day: _dt.date
     if b and b.get("min") and b.get("max"):
         size = [b["max"][i] - b["min"][i] for i in range(3)]
         lines.append(f"- Rozsah: {size[0]:.0f} × {size[1]:.0f} × {size[2]:.0f} cm")
+    if own.get("pivot_far"):                            # zadání 0.22.1: informace pro modelování, ne nález
+        lim = own.get("pivot_far_cm") or pivot_far_cm(vault)
+        lines.append(f"- Kořen daleko od geometrie (`pivot_far`, víc než {float(lim):.0f} cm): {own['pivot_far']} "
+                     "actorů; informace pro modelování v instanci, ne nález")
     fm = m.entities[entity].fm
     depths = [f"{dom} {fm.get(f'depth_{dom}')}" for dom in vault.taxonomy.domains
               if fm.get(f"depth_{dom}") not in (None, "") and m.mode(entity, dom) == "build"]
@@ -153,6 +160,14 @@ def hub_block(vault: Vault, m: Model, entity: str, rule_map: dict, day: _dt.date
 
 
 # ---------------------------------------------------------------- emit a import
+
+def pivot_far_cm(vault: Vault) -> float:
+    """Práh signálu `pivot_far` (`ue_pivot_far_cm`, výchozí 500 cm; 13 kap. 4, 10.11)."""
+    try:
+        return float(vault.config.get("ue_pivot_far_cm") or 500)
+    except (TypeError, ValueError):
+        return 500.0
+
 
 def request(vault: Vault, m: Model, entity: str | None, all_: bool) -> dict:
     um = vault.taxonomy.ue_map
@@ -171,8 +186,15 @@ def request(vault: Vault, m: Model, entity: str | None, all_: bool) -> dict:
         if not rmap:
             raise UsageError("ue_query: ue_map.yaml nemá žádné pravidlo pro existující entitu")
         targets = list(rmap)
-    return {"hestia_ue": FORMAT, "id": entity or "all", "map": um["map"], "stage_tag_prefix": um["stage_tag_prefix"],
-            "limit": LIMIT, "path": PATH_STAGE1, "targets": targets, "rules": rmap}
+    req = {"hestia_ue": FORMAT, "id": entity or "all", "map": um["map"], "stage_tag_prefix": um["stage_tag_prefix"],
+           "limit": LIMIT, "path": PATH_STAGE1, "targets": targets, "rules": rmap}
+    req["pivot_far_cm"] = pivot_far_cm(vault)           # zadání 0.22.1, CR-025 bod 2
+    if um.get("placeholder_ignore"):                    # zadání 0.22, CR-024
+        req["placeholder_ignore"] = list(um["placeholder_ignore"])
+    items = {e: v for e, v in (um.get("placeholder_ignore_items") or {}).items() if e in targets}
+    if items:
+        req["placeholder_ignore_items"] = items
+    return req
 
 
 def script_text(req: dict, result_name: str) -> str:
@@ -204,9 +226,9 @@ def script_text(req: dict, result_name: str) -> str:
 
 def editor_path(vault: Vault, path: Path) -> str:
     """Cesta pro pokyn do editoru relativně ke kořeni projektu (bez absolutní cesty stroje, kde běží core)."""
-    for base in (vault.project_root, vault.root.parent):
+    for base in (vault.project_root, vault.home.parent):
         try:
-            return to_posix(path.resolve().relative_to(base.resolve()))
+            return to_posix(display_path(path).resolve().relative_to(base.resolve()))
         except ValueError:
             continue
     return f"{vault.root.name}/{to_posix(path.relative_to(vault.root))}"

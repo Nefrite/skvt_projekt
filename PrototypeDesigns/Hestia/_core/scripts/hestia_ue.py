@@ -12,7 +12,19 @@ Požadavek (vygeneruje `hestia.py ue_query --emit`):
   vyhraje nad `stavba:Palac*`.
 Výsledek: na entitu `count`, `stats` (signály realizace přes všechny actory: třídy, zástupné meshe
 `/Engine/BasicShapes/`, výchozí materiály, fáze podle tagů, bounds) a nejvýš `limit` actorů se jménem, třídou,
-meshem, materiály, tagy, složkou a bounds. Úroveň realizace se neodhaduje (posoudí agent nebo GameDesigner).
+meshem, materiály, tagy, složkou a bounds.
+- `placeholder_ignore` (zadání 0.22, CR-024): požadavek nese `placeholder_ignore` (seznam cest meshů pro všechny
+  entity) a `placeholder_ignore_items` ({entita: [cesty]}); takové meshe se do zástupných nepočítají a actor,
+  který by jinak zástupný byl, se započte do `placeholder_ignored`.
+- ISM (zadání 0.22, CR-025 bod 1): actor, který by jinak patřil mezi ostatní a má `InstancedStaticMeshComponent`
+  (i hierarchickou), je druh `ism`; `ism_instances` = součet instancí; meshe instancí jdou do signálu zástupných
+  meshů. Úroveň realizace se neodhaduje (posoudí agent nebo GameDesigner).
+- Rozsah z geometrie (zadání 0.22.1, CR-025 bod 2, ověřeno T-0020): `bounds` actoru = sjednocení rozsahů komponent
+  s geometrií (statické meshe přes `SystemLibrary.get_component_bounds`, každá instance ISM v jejím světovém
+  umístění: rozsah meshe transformovaný `get_instance_transform(i, True)`); kořen a komponenty bez meshe se
+  nezapočítají. Actor bez geometrie (BSP, světla) nebo s nečitelnou geometrií má rozsah z `get_actor_bounds`
+  (`bounds_from: actor`). `pivot_offset` = vzdálenost kořene (`get_actor_location`) od středu rozsahu v cm;
+  souhrn `pivot_far` = počet actorů s `pivot_offset` nad `pivot_far_cm` z požadavku (výchozí 500).
 Dotaz „původ“ (actory podle skriptu) v etapě 1 není.
 """
 from __future__ import annotations
@@ -29,7 +41,8 @@ except ImportError:                     # pragma: no cover – mimo editor jen i
 FORMAT = 1
 PLACEHOLDER_MESH = "/Engine/BasicShapes/"
 DEFAULT_MATERIALS = ("/Engine/EngineMaterials/", "/Engine/BasicShapes/BasicShapeMaterial")
-KINDS = ("static_mesh", "blueprint", "bsp", "other")
+KINDS = ("static_mesh", "ism", "blueprint", "bsp", "other")
+PIVOT_FAR_CM = 500
 
 
 # ---------------------------------------------------------------- čtení z editoru
@@ -67,19 +80,117 @@ def actor_kind(class_name: str) -> str:
     return "other"
 
 
+def _mesh_and_materials(comp, meshes: list, materials: list) -> None:
+    mesh = getattr(comp, "static_mesh", None)
+    if mesh is not None:
+        path = _s(mesh.get_path_name())
+        if path not in meshes:
+            meshes.append(path)
+    materials += [_s(m.get_path_name()) for m in (comp.get_materials() or []) if m is not None]
+
+
+def _vec(v) -> list:
+    return [float(v.x), float(v.y), float(v.z)]
+
+
+def _union(box, lo: list, hi: list):
+    if box is None:
+        return [list(lo), list(hi)]
+    return [[min(box[0][i], lo[i]) for i in range(3)], [max(box[1][i], hi[i]) for i in range(3)]]
+
+
+def _component_box(comp):
+    """(min, max) světového rozsahu statické mesh komponenty."""
+    res = unreal.SystemLibrary.get_component_bounds(comp)
+    o, e = _vec(res[0]), _vec(res[1])
+    return [o[i] - e[i] for i in range(3)], [o[i] + e[i] for i in range(3)]
+
+
+def _transform(res):
+    """Výsledek get_instance_transform: Transform, (bool, Transform) nebo None."""
+    if isinstance(res, tuple):
+        ok = [x for x in res if not isinstance(x, bool)]
+        if any(x is False for x in res) or not ok:
+            return None
+        return ok[-1]
+    return res
+
+
+def _instances_box(comp, count: int):
+    """Sjednocení rozsahů instancí ISM ve světových souřadnicích (rohy rozsahu meshe přes transformaci instance)."""
+    b = comp.static_mesh.get_bounds()
+    o, e = _vec(b.origin), _vec(b.box_extent)
+    corners = [unreal.Vector(o[0] + sx * e[0], o[1] + sy * e[1], o[2] + sz * e[2])
+               for sx in (-1, 1) for sy in (-1, 1) for sz in (-1, 1)]
+    box = None
+    for i in range(count):
+        t = _transform(comp.get_instance_transform(i, True))
+        if t is None:
+            continue
+        pts = [_vec(t.transform_location(c)) for c in corners]
+        box = _union(box, [min(q[k] for q in pts) for k in range(3)], [max(q[k] for q in pts) for k in range(3)])
+    return box
+
+
+def geometry_bounds(static: list, ism: list, counts: list):
+    """Rozsah z komponent s geometrií [min, max], nebo None (bez geometrie nebo nečitelná)."""
+    box = None
+    try:
+        for comp in static:
+            if getattr(comp, "static_mesh", None) is not None:
+                box = _union(box, *_component_box(comp))
+        for comp, n in zip(ism, counts):
+            if getattr(comp, "static_mesh", None) is None or not n:
+                continue
+            ib = _instances_box(comp, n)
+            if ib is not None:
+                box = _union(box, *ib)
+    except Exception:                   # noqa: BLE001 – API editoru jinak; rozsah z actoru
+        return None
+    return box
+
+
 def actor_record(actor) -> dict:
     cls = _s(actor.get_class().get_name())
     meshes, materials = [], []
-    for comp in actor.get_components_by_class(unreal.StaticMeshComponent) or []:
-        mesh = getattr(comp, "static_mesh", None)
-        if mesh is not None:
-            meshes.append(_s(mesh.get_path_name()))
-        materials += [_s(m.get_path_name()) for m in (comp.get_materials() or []) if m is not None]
-    origin, extent = actor.get_actor_bounds(False)
-    return {"name": _s(actor.get_actor_label()), "class": cls, "kind": actor_kind(cls),
-            "mesh": meshes[0] if meshes else None, "meshes": meshes, "materials": sorted(set(materials)),
-            "tags": [_s(t) for t in (actor.tags or [])], "folder": _s(actor.get_folder_path()),
-            "bounds": {"origin": [origin.x, origin.y, origin.z], "extent": [extent.x, extent.y, extent.z]}}
+    ism_cls = getattr(unreal, "InstancedStaticMeshComponent", None)       # HISM je podtřída
+    ism = list(actor.get_components_by_class(ism_cls) or []) if ism_cls is not None else []
+    static = [c for c in actor.get_components_by_class(unreal.StaticMeshComponent) or []
+              if not any(c is i for i in ism)]
+    for comp in static:
+        _mesh_and_materials(comp, meshes, materials)
+    instances, counts = 0, []
+    for comp in ism:                                     # meshe instancí do signálu zástupných meshů
+        _mesh_and_materials(comp, meshes, materials)
+        try:
+            n = int(comp.get_instance_count())
+        except Exception:               # noqa: BLE001 – počet instancí jen pro informaci
+            n = 0
+        counts.append(n)
+        instances += n
+    kind = actor_kind(cls)
+    if kind == "other" and ism:
+        kind = "ism"
+    box = geometry_bounds(static, ism, counts)
+    if box is not None:
+        origin = [(box[0][i] + box[1][i]) / 2 for i in range(3)]
+        extent = [(box[1][i] - box[0][i]) / 2 for i in range(3)]
+        source = "geometry"
+    else:
+        o, e = actor.get_actor_bounds(False)
+        origin, extent, source = _vec(o), _vec(e), "actor"
+    rec = {"name": _s(actor.get_actor_label()), "class": cls, "kind": kind,
+           "mesh": meshes[0] if meshes else None, "meshes": meshes, "materials": sorted(set(materials)),
+           "tags": [_s(t) for t in (actor.tags or [])], "folder": _s(actor.get_folder_path()),
+           "bounds": {"origin": origin, "extent": extent}, "bounds_from": source}
+    try:
+        root = _vec(actor.get_actor_location())
+        rec["pivot_offset"] = round(sum((root[i] - origin[i]) ** 2 for i in range(3)) ** 0.5, 1)
+    except Exception:                   # noqa: BLE001 – poloha kořene jen pro signál
+        pass
+    if ism:
+        rec["ism_instances"] = instances
+    return rec
 
 
 # ---------------------------------------------------------------- pravidla
@@ -123,15 +234,27 @@ def assign(rules: dict, rec: dict) -> str | None:
     return best[1] if best else None
 
 
-def stats(records: list, stage_prefix: str) -> dict:
+def _ignored(mesh: str, ignore) -> bool:
+    """Mesh ze seznamu placeholder_ignore (shoda celé cesty, i bez přípony objektu `.Jmeno`)."""
+    base = mesh.split(".", 1)[0]
+    return any(mesh == i or base == i.split(".", 1)[0] for i in ignore)
+
+
+def stats(records: list, stage_prefix: str, ignore=(), pivot_far_cm: float = PIVOT_FAR_CM) -> dict:
     by_kind = {k: 0 for k in KINDS}
     stages: dict = {}
     lo, hi = None, None
-    placeholder = default_mat = 0
+    placeholder = default_mat = ignored = instances = pivot_far = 0
     for r in records:
-        by_kind[r["kind"]] += 1
-        if any(m.startswith(PLACEHOLDER_MESH) for m in r["meshes"]):
+        if float(r.get("pivot_offset") or 0) > pivot_far_cm:
+            pivot_far += 1
+        by_kind[r["kind"]] = by_kind.get(r["kind"], 0) + 1
+        instances += int(r.get("ism_instances") or 0)
+        ph = [m for m in r["meshes"] if m.startswith(PLACEHOLDER_MESH)]
+        if any(not _ignored(m, ignore) for m in ph):
             placeholder += 1
+        elif ph:
+            ignored += 1
         if any(m.startswith(DEFAULT_MATERIALS) for m in r["materials"]):
             default_mat += 1
         for t in r["tags"]:
@@ -143,8 +266,9 @@ def stats(records: list, stage_prefix: str) -> dict:
         b = [o[i] + e[i] for i in range(3)]
         lo = a if lo is None else [min(lo[i], a[i]) for i in range(3)]
         hi = b if hi is None else [max(hi[i], b[i]) for i in range(3)]
-    return {"actors": len(records), "by_kind": by_kind, "placeholder_meshes": placeholder,
-            "default_materials": default_mat, "stages": dict(sorted(stages.items())),
+    return {"actors": len(records), "by_kind": by_kind, "ism_instances": instances,
+            "placeholder_meshes": placeholder, "placeholder_ignored": ignored, "default_materials": default_mat,
+            "pivot_far": pivot_far, "pivot_far_cm": pivot_far_cm, "stages": dict(sorted(stages.items())),
             "bounds": {"min": lo, "max": hi} if lo is not None else None}
 
 
@@ -155,6 +279,9 @@ def collect(request: dict) -> dict:
     targets = request.get("targets") or sorted(rules)
     limit = int(request.get("limit") or 500)
     prefix = request.get("stage_tag_prefix") or ""
+    ignore_all = list(request.get("placeholder_ignore") or [])
+    ignore_items = request.get("placeholder_ignore_items") or {}
+    pivot_far_cm = float(request.get("pivot_far_cm") or PIVOT_FAR_CM)
     owned: dict = {e: [] for e in targets}
     for actor in level_actors():
         rec = actor_record(actor)
@@ -165,7 +292,8 @@ def collect(request: dict) -> dict:
     for e in targets:
         recs = sorted(owned[e], key=lambda r: r["name"])
         entities[e] = {"rule": rules.get(e, []), "count": len(recs), "truncated": len(recs) > limit,
-                       "stats": stats(recs, prefix), "actors": recs[:limit]}
+                       "stats": stats(recs, prefix, ignore_all + list(ignore_items.get(e) or []), pivot_far_cm),
+                       "actors": recs[:limit]}
     loaded = map_path()
     return {"hestia_ue": FORMAT, "id": request.get("id"), "path": request.get("path") or "editor",
             "generated": datetime.datetime.now().replace(microsecond=0).isoformat(),

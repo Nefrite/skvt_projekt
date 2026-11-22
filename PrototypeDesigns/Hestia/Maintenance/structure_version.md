@@ -16,3 +16,4 @@ Verze core (`_core/VERSION`) a lokální revize instance (`taxonomy_local`), dat
 | 2026-11-21 | core 0.15.0 | aktualizace z 0.14.2 (update_core --tag v0.15.0) | CR_2026-11-21_update_core_report_zmena_prirazeni, CR_2026-11-21_update_core_report_a_preruseni, CR_2026-11-21_knihovnik_pripojena_slozka, CR_2026-11-21_ue_query_cesty_ve_skriptu, CR_2026-11-21_inbox_import_notion |
 | 2026-11-21 | core 0.16.0 | aktualizace z 0.15.0 (update_core --tag v0.16.0) | CR_2026-11-21_zaklad_roli_v_instanci |
 | 2026-11-22 | core 0.20.1 | aktualizace z 0.16.0 (update_core --tag v0.20.1) | CR_2026-11-21_inbox_import_seznamy_v_li, CR_2026-11-21_podnety_roli_pres_frontu, CR_2026-11-21_ue_cteni_vs_state, CR_2026-11-21_kontrakt_rozdeleni |
+| 2026-11-22 | core 0.21.1 | aktualizace z 0.20.1 (update_core) | CR-022_prostredi_core, CR-023_update_core_pripojena_slozka, CR-024_ue_signal_basicshapes, CR-025_ue_ism_bounds, CR-030_export_cr_prazdne_cr, CR-031_podnety_do_structure_log_skriptem |

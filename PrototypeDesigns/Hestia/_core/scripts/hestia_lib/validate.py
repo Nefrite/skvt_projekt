@@ -283,22 +283,47 @@ class Checker:
         # ue_map.yaml: položka s neexistující entitou (13 kap. 10.11)
         if self.tx.ue_map is not None:
             ents = {n.name for n in all_notes if n.fm.get("type") == "entity"}
-            for it in self.tx.ue_map["items"]:
-                if it["entity"] not in ents:
-                    self.add("G6", None, f"ue_map: entita {it['entity']} neexistuje",
-                             file=self.v.project_rel(self.tx.ue_map_path), target=it["entity"])
+            names = [it["entity"] for it in self.tx.ue_map["items"]]
+            names += [e for e in self.tx.ue_map.get("placeholder_ignore_items") or {} if e not in names]
+            for name in names:
+                if name not in ents:
+                    self.add("G6", None, f"ue_map: entita {name} neexistuje",
+                             file=self.v.project_rel(self.tx.ue_map_path), target=name)
         # problémy lokální taxonomie
         for path, msg in self.tx.problems:
             self.add("G7", None, msg, file=self.v.project_rel(path), target=path.stem)
 
 
-def run_checks(vault: Vault, notes: list[Note] | None = None) -> list[Finding]:
-    """G6 + G7 nad poznámkami (výchozí: všechny kontrolované poznámky vaultu)."""
+STRUCTURE_LOG_REL = "Maintenance/structure_log.md"
+
+
+def check_structure_log(ch: Checker, note: Note) -> None:
+    """Buňka `cr` v structure_log.md (13 kap. 10.8, zadání 0.22, CR-030): ani prázdná, ani `cr: <ID>`
+    nebo `cr: none` → upozornění bez kódu G (formát logu, kap. 7)."""
+    from .logs import LOG_LINE_RE, cr_cell, split_row
+    for i, line in enumerate(note.text.replace("\r\n", "\n").split("\n"), start=1):
+        if not LOG_LINE_RE.match(line):
+            continue
+        cells = split_row(line)
+        if len(cells) < 6:
+            continue
+        state, value = cr_cell(cells[5])
+        if state == "invalid":
+            ch.add("log", note, f"řádek {i} ({cells[0]}): buňka cr {value!r} není prázdná ani cr: <ID> "
+                                f"nebo cr: none; při exportu ji vyplní export_cr, nebo nastav cr: none",
+                   severity="warning")
+
+
+def run_checks(vault: Vault, notes: list[Note] | None = None, log_format: bool = True) -> list[Finding]:
+    """G6 + G7 nad poznámkami (výchozí: všechny kontrolované poznámky vaultu); s `log_format` i formát
+    structure_log (jen `lint` a `task_close`; audit ho do fronty nedává, 13 kap. 10.8)."""
     ch = Checker(vault)
     full = notes is None
     notes = vault.lint_notes() if notes is None else notes
     for n in notes:
         ch.check_frontmatter(n)
         ch.check_links(n)
+        if log_format and n.rel == STRUCTURE_LOG_REL:
+            check_structure_log(ch, n)
     ch.check_vault(notes, full)
     return ch.out

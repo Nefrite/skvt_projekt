@@ -22,6 +22,29 @@ QUEUE_PREFIX = {"finding": "F", "proposal": "P", "task": "T"}
 OPEN_STATES = {"open", "approved", "in_progress"}
 
 
+# buňka `cr` v structure_log.md (13 kap. 10.8, zadání 0.22, CR-030): vyplněné jen `cr: <ID>` a `cr: none`
+CR_ID_RE = re.compile(r"CR_\d{4}-\d{2}-\d{2}_[a-z0-9_]+|CR-\d{3,}_[a-z0-9_]+")
+_CR_CELL_RE = re.compile(r"^cr:\s*(\S.*?)\s*$", re.I)
+
+
+def cr_cell(cell: str) -> tuple[str, str]:
+    """Stav buňky `cr`: (`empty`, ""), (`id`, ID), (`none`, "none") nebo (`invalid`, text).
+
+    `empty` = prázdná buňka; `invalid` = nevyplněno, ale v nepovoleném tvaru (`–`, `-`, samotné `cr:`,
+    volný text). Za vyplněné se berou jen `id` a `none`."""
+    s = (cell or "").strip()
+    if not s:
+        return "empty", ""
+    m = _CR_CELL_RE.match(s)
+    if m:
+        value = m.group(1)
+        if value.lower() == "none":
+            return "none", "none"
+        if CR_ID_RE.fullmatch(value):
+            return "id", value
+    return "invalid", s
+
+
 def escape(text: str) -> str:
     return str(text).replace("\r", " ").replace("\n", " ").replace("|", "\\|").strip()
 

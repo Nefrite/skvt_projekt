@@ -45,7 +45,7 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Auditor) a lokální dopl
 - Report podle šablony `tpl_report`: *Souhrn*, *Nálezy podle závažnosti* (chyba, upozornění, informace; ke každému návrh opravy), *Zralost*, *Doporučené kroky*.
 - Nálezy strojově: `[{code, severity, target, file, message}]`.
 - Položka fronty: `F-0001 | priority | finding | G-kód | cíl | návrh opravy | open`.
-- Návrh do `structure_log.md`: `datum | kategorie | popis | dopad | navrhovaná změna | cr:`.
+- Návrh do `structure_log.md`: `| datum | kategorie | popis | dopad | navrhovaná změna | |` (buňka `cr` prázdná; pomlčku ani text nepsat).
 
 ## Kdy se zeptat člověka
 - Když nález vyžaduje rozhodnutí o obsahu (který ze dvou rozporných dokumentů platí).
