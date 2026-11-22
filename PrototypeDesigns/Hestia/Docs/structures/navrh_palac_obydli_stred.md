@@ -3,7 +3,7 @@
 type: design
 validity: valid
 alternative_to: ["[[navrh_palac_obydli]]"]
-updated: 2026-11-21
+updated: 2026-11-22
 # hra
 status: in_progress
 domain: structures
@@ -12,6 +12,16 @@ entity: "[[Palac_Obydli]]"
 build_step: 05_constructions
 ---
 # Návrh: Palac_Obydli – obytná stavba posádky v prostřední místnosti paláce
+
+## Souhrn
+Platný návrh domu posádky v prostřední místnosti paláce (varianta ve východní místnosti, [[navrh_palac_obydli]], je zavržená). Stav: kroky 1–3 postavené (kámen, krov bez krytiny, srub), staveniště pro etapu 1 postavené ve skriptech a ověřené mimo UE (kap. 0.4, 9.2a).
+- **Přednost:** kap. 0 platí přednostně před kap. 3–9; 0.5a (větší světnice) a 0.5b (pec s nístějí) mají přednost před čísly níže i před kap. 4.
+- **Etapy:** tři sady actorů `stage:base` / `stage:final` / `stage:site`; etapa 1 = `base` + `site`, etapa 2 = `base` + `final`. Sada `base` je zamčená (kap. 0.1, 0.7).
+- **Konstrukce:** pultový krov se spádem 16° k severu, srubové stěny a příčka, kamenné podezdívky, pec s nístějí a komín, okap k západu bez svodu (kap. 0.5–0.7, 4).
+- **Dřevo a otvory:** dřevo surové v obou etapách; dveře a okenice v etapě 2 otevřené jako kulisa, žebříky jen kulisa (kap. 0.1).
+- **Zbývá:** krytina s lemováním, strop, podlaha, okap, vybavení (kap. 0.4). Předání staviteli: [[predani_palac_obydli_stavitel]].
+- **Otevřené otázky a rizika:** kap. 9.5 a 10 (kouř při jižním větru, déšť přes sníženou zeď, kde spí posádka v etapě 1).
+- **Kap. 3** (zřícení koruny u komína) je překonaná úpravami 03 v kap. 0.2a.
 
 Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **staví se po krocích** (16. 11. 2026): plán po etapách a stav je v kap. 0, která platí přednostně; kamenné části jsou ve skriptech. Je to kopie návrhu [[navrh_palac_obydli]] (dům ve východní místnosti u věže) přenesená do **prostřední místnosti**. Původní dokument zůstává beze změny pro srovnání. Náčrty: [[navrh_palac_obydli_stred.png]] (hotová stavba) a [[navrh_palac_obydli_stred_etapa1.png]] (rozestavěný stav). Jsou to schémata, ne přesné modely.
 

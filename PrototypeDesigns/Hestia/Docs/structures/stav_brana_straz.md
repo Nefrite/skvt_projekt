@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-22
 aliases: []
 # hra
 domain: structures
@@ -12,6 +12,13 @@ build_step: 05_constructions
 assets: []
 ---
 # Brana_Straz – stav stavby
+
+## Souhrn
+Skutečný stav stavby strážního stanoviště nad východní bránou proti návrhu [[navrh_brana_straz]] (k 16. 11. 2026; stav má přednost před kap. 2–7 návrhu). Hotové jsou kroky 1–3 ve skriptech: úprava 03 (kapsy a nároží `Brana_V`), podesta a všechny tři kryty. V UE Jirka viděl podestu a východní kryt (16. 11. 2026), nový stav neověřen.
+- **Podesta:** 3 trámy Ø 24 cm a čtvrtý na koruně `Brana_S`, vrch podlahy Z 3581 (návrh: 6 trámů Ø 22 cm, vrch Z 3522).
+- **Kryty:** východní kryt a podesta jsou sada `base`, severní a jižní kryt `final`.
+- **Odchylky a jejich důvod:** sekce *Co se liší od návrhu* (návrh neseděl na dnešní výšky zdí z levelu; zábradlí směrem do hradu se nestaví).
+- **Zbývá:** přístřešek z kůry, zátaras, staveniště pro etapu 1, výlez na podestu (určí Jirka).
 
 ## Co je hotové
 | Část | Provedení | Sada |

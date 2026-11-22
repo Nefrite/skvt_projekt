@@ -12,6 +12,13 @@ assets: ["/PrototypeDesigns/Lapikus/tools/meshes/mesh_props.py", "/PrototypeDesi
 ---
 # Katalog props a meshí na míru (stan, guesthouse)
 
+## Souhrn
+Karty knihovních meshí z 21.–22. 11. 2026 (AssetGenerator) pro stan na nádvoří a Guesthouse: jak je použít ve stavbě a vybavení a jak je upravovat. Starší props (kovárna, obydlí, nářadí) jsou v [[05_constructions]] (tabulka *Props*).
+- **Společné konvence:** kód v `mesh_props.py` a `mesh_textile.py`, pivot ve středu bounding boxu, osy v UE (cm, Z nahoru), jmenovitý rozměr = bounding box, sloty materiálů, směr let dřeva, postup změny tvaru.
+- **Stan ([[Nadvori_Stan]]):** plachta stanu, lůžko (i se složenou houní), truhlička, vak.
+- **Guesthouse ([[navrh_guesthouse_vybaveni]]):** postel, kovaná truhla, stojan na brnění; stůl, regál, hromádka dřeva a stojan na zbraně zatím bez meshe.
+- **Stav:** všechny meshe jsou importované do UE (22. 11. 2026), vzhled neověřen; postel (verze 2) a stojan na brnění (verze 3) čekají na nový import.
+
 Karty knihovních meshí z 21.–22. 11. 2026 (AssetGenerator), jak je použít ve stavbě a vybavení a jak je dál upravovat. Starší props (kovárna, obydlí, nářadí) jsou v přehledu v [[05_constructions]] (tabulka *Props*). Stav požadavků vede [[CHECKLIST_assets_navrhy]] (kap. 6.5, 6.8).
 
 ## Společné konvence

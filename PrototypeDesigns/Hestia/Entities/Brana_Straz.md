@@ -78,7 +78,6 @@ Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Brana_Straz.json` · et
 - Fáze: base 3, final 1
 - Rozsah: 2915 × 3488 × 3893 cm
 - Pro srovnání `depth_*`: structures 3; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
-- Pozor: `state` stav_brana_straz (2026-11-19) je starší než čtení z UE (2026-11-21); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

@@ -2,13 +2,21 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-11
+updated: 2026-11-22
 # hra
 domain: gameplay
 depth: 5
 entity: "[[Characters]]"
 ---
 # Characters – animace postavy (přehled a rozšíření)
+
+## Souhrn
+Evidence animací postavy (`BP_SkvtBaseChar`, potomci `BP_SkvtCharacterMale` / `Female`, `ABP_SkvtCharacter`, kostra UE5 Manny) k 11. 11. 2026: co je hotové, co je k dispozici a co se bude přidávat.
+- **Co postava umí (kap. 1):** plynulý pohyb stání–chůze–běh, zastavení, skok a pád, rozhlédnutí při nečinnosti, dřep s kamerou a kontrolou vstávání pod překážkou.
+- **Inventář (kap. 2):** pohyb, skok, dřep a doplňky jsou použité; útočné a zásahové animace a montáže (údery, kombo, párové akce) v projektu jsou, ale nepoužité.
+- **Chybí (kap. 3):** pohyb do stran, dřep do stran, rozjezd a otočky, turn in place, přechod do dřepu, sprint, překonávání překážek, smrt a zásahy, sezení.
+- **Zdroje a migrace (kap. 4):** GASP, Lyra, Animation Starter Pack z Fab; postup migrace a retargetingu.
+- **Log rozšíření (kap. 5):** záznam každého přidaného rozšíření, nejnovější nahoře; podrobné návody v podsložkách (zatím `01_sitting`, návod připraven).
 
 Evidence animací postavy v projektu: co je hotové, co je k dispozici a co se bude postupně přidávat.
 Platí pro `BP_SkvtBaseChar` (+ potomci `BP_SkvtCharacterMale` / `BP_SkvtCharacterFemale`) a `ABP_SkvtCharacter`, kostra **UE5 Manny** (`SK_Mannequin`).

@@ -3,7 +3,7 @@
 type: design
 validity: valid
 alternative_to: ["[[navrh_palac_obydli_stred]]"]
-updated: 2026-11-15
+updated: 2026-11-22
 # hra
 status: rejected
 domain: structures
@@ -11,6 +11,12 @@ depth: 2
 entity: "[[Palac_Obydli]]"
 ---
 # Návrh: Palac_Obydli – obytná stavba posádky ve východní části paláce
+
+## Souhrn
+**Zavržená varianta** (`status: rejected`, 15. 11. 2026): dům ve východní místnosti paláce u věže se stavět nebude, protože tam bude kovárna ([[navrh_palac_kovarna]]) a komín u věže má špatný tah. Platí [[navrh_palac_obydli_stred]]; dokument zůstává jen pro srovnání a neaktualizuje se.
+- **Co varianta navrhovala:** obydlí pro 2–3 členy posádky, pultová střecha (sklon 16°, spád k severu) opřená o jižní zeď `Palac_J` a věž, hloubka 5,35 m, srubové stěny, světnice s prkennou podlahou a stropem, síň a komora s hliněnou podlahou, půda nad světnicí (kap. 1, 4).
+- **Zvažované varianty A–E** a důvody výběru C: kap. 8.
+- **Rizika a otázky,** které platí i pro dům v prostřední místnosti: kap. 9 (kouř, zatékání po stěně věže, rozšíření o podsíň).
 
 Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **návrh finální stavby, nepostaveno. Vybraná varianta C** (pultová střecha opřená o jižní zeď a věž, rozhodl Jirka 14. 11. 2026). Náčrt: [[navrh_palac_obydli.png]] (schéma, ne přesný model). Nahrazuje východní místnost ze staršího `navrh_palac_posadka.md`.
 

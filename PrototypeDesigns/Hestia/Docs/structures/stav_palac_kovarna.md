@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-16
+updated: 2026-11-22
 # hra
 domain: structures
 depth: 4
@@ -10,6 +10,13 @@ entity: "[[Palac_Kovarna]]"
 build_step: 05_constructions
 ---
 # Kovárna v paláci (Palac_Kovarna) – stav stavby proti návrhu
+
+## Souhrn
+Stav stavby kovárny k 16. 11. 2026 proti návrhu [[navrh_palac_kovarna]] (stejný přehled je v jeho kap. 0). Kroky 1–4 jsou hotové ve skriptech a ověřené mimo UE; v UE je ověřená úprava 03, kostra přístřešku a výheň, zbytek (krytina, lemování, stěna, okap, vybavení) ne.
+- **Odloženo:** žhavé uhlí, saze, oheň a kouř, podlaha z udusané hlíny.
+- **Odchylky od návrhu ze 14. 11. 2026:** sekce *Odchylky* (výheň v koutě, zanořená `Palac_J`, posunutá západní linie, komín, přesah krokví, rozšíření o řadu krokví).
+- **Spuštění v UE:** `Palac_Kovarna.py` celá kovárna, jednotlivé stavby a vybavení v `06_furnishing` (sekce *Co spustit v UE*).
+- **Další kroky:** ověření v UE a přepočet korun `Palac_J` v [[navrh_palac_obydli_stred]] (zeď je o 0,31 m níž).
 
 Stav: 16. 11. 2026 (kroky 1–4 hotové). Návrh: [[navrh_palac_kovarna]] (stejný přehled je v jeho kap. 0, při změně uprav oba). Rozměry: `tools/ruin/palac_spec.py`. Náhled: `05_constructions/Stavby_palac_kovarna_nahled.png`.
 

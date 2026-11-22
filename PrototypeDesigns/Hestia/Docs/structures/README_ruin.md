@@ -2,7 +2,7 @@
 # orchestrace
 type: design
 validity: outdated
-updated: 2026-11-16
+updated: 2026-11-22
 # hra
 domain: structures
 depth: 4
@@ -10,6 +10,13 @@ entity: "[[Lapikus]]"
 build_step: 03_ruin
 ---
 # 03 Ruin – plán stavby zříceniny
+
+## Souhrn
+**Zastaralý plán** (`validity: outdated`) zříceniny hradu Lapikus ve stavu blockout a hrubý vzhled. Skutečný stav stavby popisuje [[Zricenina_03_ruin_stav]]; kap. 1–2 (předloha a herní verze kolem roku 1540) jsou přesunuté do [[Lore_Lapikus]].
+- **Půdorys (kap. 3):** plošina ~67 × 25 m na Z ≈ 3129 cm, hradba, palác 32 × 9,5 m, věž 11 × 11 m, rozměry zhruba 0,9× skutečnosti.
+- **Rozpad (kap. 4):** výška zdí se ubírá ve dvou krocích, mírný rozpad časem a hlavně rozebírání kamene tam, kde je to nejsnazší; vnější plášť a věž zůstávají vysoké, vnitřek a nízké stavby jsou rozebrané. Pravidla pro generátor a otvory.
+- **Hratelnost (kap. 5):** trasy hráče (brána, nádvoří, ochoz, věž, palác, sklep, cisterna) a rozměry pro postavu (průchod ≥ 1,2 m, schod max ~45 cm, rampy ≤ 44°).
+- **Postup (kap. 6) a checklist (kap. 8):** generátor a podklad půdorysu hotové, ostatní kroky v plánu neodškrtnuté.
 
 Cíl: na plošině ostrohu postavit zříceninu hradu ve stavu **blockout + hrubý vzhled**: správné rozměry, průchodnost a silueta ruiny, kamenný materiál a sutě. Detail přijde později.
 Postup: **část generuje skript** (zdi, věž, palác podle půdorysu), **část se domodeluje ručně** v Modeling Mode podle pocitu.

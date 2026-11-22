@@ -2,13 +2,21 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-22
 aliases: []
 # hra
 domain: structures
 entity: "[[Lapikus]]"
 ---
 # Rozhodnutí: zřícenina Lapikus
+
+## Souhrn
+Tabulka rozhodnutí k zřícenině Lapikus z 11/2026 (z `KNOWHOW_hrad.md`, kap. 7), aby se neotevírala znovu. Tematicky pokrývá:
+- **Architektura projektu:** 03 a 05 oddělené, sdílená knihovna `zrlib`, hlavní složka `PrototypeDesigns/Lapikus`, vlastní procedurální props, generátor meshí, buildy `build_normal.py` a `build_fullscope.py`, 06_furnishing a jeden JSON pro vybavení.
+- **Palác:** dům posádky v prostřední místnosti (varianta u věže zavržená), kovárna ve východní místnosti (výheň v koutě, zanořená `Palac_J`), etapy domu, portál v západní místnosti.
+- **Věž a brána:** průlomy z dobývání z východu, přístřešek varianty B, výšky staveb na zdech s různou patou absolutně v UE cm.
+- **Technické zásady:** maltové jádro nového zdiva, srub s půltrámy v nárožích, kontrola kolizí před stavbou dřeva.
+- **Otevřené otázky** (konec dokumentu): stan na nádvoří, kůra nebo loupané dřevo u jednotlivých staveb, výstup na podestu brány, poloha cisterny.
 
 <!-- Z KNOWHOW_hrad.md kap. 7 (pilot Lapikus, B6). Rozhodnutí, aby se neotevírala znovu. -->
 

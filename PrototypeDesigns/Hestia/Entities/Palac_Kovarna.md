@@ -84,7 +84,6 @@ Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Kovarna.json` · 
 - Fáze: –
 - Rozsah: 762 × 1494 × 3807 cm
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
-- Pozor: `state` stav_palac_kovarna (2026-11-16) je starší než čtení z UE (2026-11-21); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

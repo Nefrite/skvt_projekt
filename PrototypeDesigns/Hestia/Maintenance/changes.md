@@ -121,3 +121,12 @@ updated: 2026-11-22
 | 2026-11-22 | agent pilotu | Roles/Furnisher.md | `role_base: 0.20.0` (T-0025–T-0027) | update_core 0.20.1 (ruční úkoly), P14 |
 | 2026-11-22 | agent pilotu | Roles/modules/spec_template.md, Roles/modules/design_template.md | *Souhrn* nad `doc_summary_chars`; předání s `for_role` (základ 0.20.0) | update_core 0.20.1 (ruční úkoly), P14 |
 | 2026-11-22 | agent pilotu | Handovers/predani_knihovnik_souhrny.md, Handovers/predani_knihovnik_rozdeleni.md | jednorázový úkol Knihovníka P17 (G14a souhrny, G14b/G14c návrhy rozdělení), `for_role: [Librarian]` | pokyn GameDesignera, P17 |
+| 2026-11-22 | Librarian | Les_Lapikus | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Characters | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Lapikus | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Brana_Straz | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Nadvori_Stan | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Palac_Kovarna | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Palac_Kovarna_Vybaveni | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Palac_Obydli | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |
+| 2026-11-22 | Librarian | Vez_Pristresek | doplněna sekce Souhrn (G14a) | Handovers/predani_knihovnik_souhrny.md |

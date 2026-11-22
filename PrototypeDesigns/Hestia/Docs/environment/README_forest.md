@@ -2,7 +2,7 @@
 # orchestrace
 type: design
 validity: valid
-updated: 2026-11-10
+updated: 2026-11-22
 # hra
 domain: environment
 depth: 4
@@ -11,7 +11,15 @@ build_step: 04_forest
 ---
 # 04 Forest – plán smíšeného lesa
 
-Cíl: travnaté plochy mapy `LapikusPrototypeMap` pokrýt **automaticky** smíšeným lesem (dubohabřina, ve stinných polohách buk). Okolí řeky, hrad a stará cesta ke hradu zůstanou bez stromů. Na skalnatém podloží roste jen kosodřevina a keře.
+## Souhrn
+Plán automatického smíšeného lesa (dubohabřina, ve stinných polohách buk) pro mapu `LapikusPrototypeMap` pomocí PCG. Stav: pouze plán, hodnoty jsou výchozí návrh; v projektu nejsou žádné stromy ani foliage a checklist (kap. 7) není odškrtnutý.
+- **Zóny (kap. 1):** A1 dubohabřina (~390 stromů), A2 stinné svahy (~140), B okraj lesa (~100), D sráz (~25), K skalnaté podloží (~5); bez stromů S skála, R okolí řeky (jen 41 olší a vrby), C hrad, P stará cesta. Celkem ~650 stromů.
+- **Stromy (kap. 3):** Quixel Megaplants z Fabu jako presety pro PVE, exporty do `Content/Skvt/Lapikus/Vegetation/`; podrobně [[README_assets_stromy]].
+- **Technika (kap. 4):** PCG graf `PCG_Forest`, spliny `PCG_NoForest`, `PCG_Path`, `PCG_Rocky`, maska zón `T_ForestZones_505.png`.
+- **Ruční doladění (kap. 5):** olše podél řeky (`place_alders.py`, 41 kusů), výhledy, stezka, stará cesta, padlé kmeny.
+- **Výkon (kap. 6)** a **soubory** na konci dokumentu.
+
+Cíl: travnaté plochy mapy `LapikusPrototypeMap` pokrýt **automaticky** smíšeným lesem (dubohabřina, ve stinných polohách buk). Okolí řeky, hrad a stará cesta ke hradu zůstanou bez stromů. Na skalnatém podloží roste borovice lesní, bříza, suchá borovice, vřes a borůvka (zóna K).
 
 ![Plán zón](../../../Lapikus/04_forest/Zricenina_les_plan.png)
 

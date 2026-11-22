@@ -2,7 +2,7 @@
 # orchestrace
 type: design
 validity: valid
-updated: 2026-11-16
+updated: 2026-11-22
 # hra
 status: in_progress
 domain: structures
@@ -11,6 +11,15 @@ entity: "[[Brana_Straz]]"
 build_step: 05_constructions
 ---
 # Návrh: Brana_Straz – strážní podesta nad oblouky východní brány
+
+## Souhrn
+Návrh strážního stanoviště nad východní bránou: dřevěná podesta nad oblouky, kryty z kulatiny, přístřešek z kůry a zátaras před bránou. Stav stavby, odchylky od návrhu a rozhodnutí z 16. 11. 2026 jsou v [[stav_brana_straz]]; podle kap. 0 platí přednostně před kap. 2–7.
+- **Podesta:** podle stavu 3 trámy Ø 24 cm a čtvrtý na `Brana_S`, vrch v Z 3581 (návrh v kap. 4.1 uváděl 6 trámů Ø 22 cm a Z 3522, viz [[stav_brana_straz]]).
+- **Kryty a zábradlí (kap. 4.2, 4.3):** východní (vrch 1,8 m nad podestou, 3 průzory), severní (prsní výška 1,25 m, bez průzorů, pro střelbu z luku), jižní (1 průzor).
+- **Přístřešek z kůry:** kap. 4.4 je nahrazena kap. 11 (pultová stříška v SV koutě, spád 22° k východu, vlastní kostra).
+- **Zátaras (kap. 4.5):** španělský jezdec před vnějším lícem `Brana_V`, samostatný actor.
+- **Neřeší se:** výstup na podestu, příkop a most před bránou (zadání, kap. 1).
+- **Otevřené:** kap. 9 (výstup, poloha zátarasu, obcházení brány po zřícené jižní straně, etapa hry).
 
 Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **rozestavěno, viz kap. 0** (podesta je ve skriptech, kryty a přístřešek ne). Náčrt: [[navrh_brana_straz.png]] (schéma, ne přesný model).
 

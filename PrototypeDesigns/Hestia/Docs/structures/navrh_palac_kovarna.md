@@ -2,7 +2,7 @@
 # orchestrace
 type: design
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-22
 # hra
 status: in_progress
 domain: structures
@@ -11,6 +11,14 @@ entity: ["[[Palac_Kovarna]]", "[[Palac_Kovarna_Vybaveni]]"]
 build_step: 05_constructions
 ---
 # Návrh: Palac_Kovarna – provizorní kovárna pod přístřeškem
+
+## Souhrn
+Platný návrh provizorní kovárny posádky pod pultovým přístřeškem ve východní místnosti paláce u věže (kap. 1). Text je platný, náčrt [[navrh_palac_kovarna.png]] je starší schéma a v rozměrech se liší. Stav: všechny kroky 1–4 hotové ve skriptech a ověřené mimo UE; v UE ověřená jen úprava 03, kostra přístřešku a výheň (kap. 0).
+- **Stavba:** pultová střecha spádem k západu, krytina z prken, stěna z proutí na západě, žlab a sud, výheň v koutě s dymníkem a komínem, vybavení jako samostatné actory (kap. 4).
+- **Úpravy zříceniny (03):** `Palac_J` zanořená o řadu kamene, koruna u věže rozebraná, kapsa pro východní pozednici (kap. 3).
+- **Odchylky od původního návrhu ze 14. 11. 2026:** kap. 0.
+- **Odloženo:** žhavé uhlí, saze, oheň a kouř, podlaha z udusané hlíny (kap. 0).
+- **Zavržené varianty:** kap. 8. **Rizika a předpoklady:** kap. 9 (kouř, zatékání po stěně věže, rozpětí krokví).
 
 Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **vybraný návrh, staví se po krocích** (16. 11. 2026; hotové kroky 1–4, v UE ověřená kostra a výheň). Co je hotové a co zbývá, je v kap. 0. Náčrt: [[navrh_palac_kovarna.png]] je starší schéma, které se v hlavním (výheň v koutě) shoduje, v rozměrech ne; **platí tento text**.
 

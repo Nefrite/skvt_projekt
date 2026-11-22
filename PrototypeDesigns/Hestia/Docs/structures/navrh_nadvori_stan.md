@@ -2,7 +2,7 @@
 # orchestrace
 type: design
 validity: valid
-updated: 2026-11-16
+updated: 2026-11-22
 # hra
 status: on_hold
 domain: structures
@@ -10,6 +10,14 @@ depth: 2
 entity: "[[Nadvori_Stan]]"
 ---
 # Návrh: Nadvori_Stan – zabydlený vojenský stan pro dva na nádvoří
+
+## Souhrn
+Podmíněný návrh (`status: on_hold`), nepostaveno: Jirka zatím nerozhodl, zda stan ve hře bude (kap. 9). Jedna z variant je spaní ve věži bez stanu (kap. 8). Pokud se nepoužije, dokument platit nebude.
+- **Účel:** dočasné spaní dvou členů posádky jen v etapě 1, dokud dům v paláci nemá střechu; v etapě 2 stan nestojí (kap. 1).
+- **Stan (kap. 4.1):** lněný stan do A, 2,4 × 2,2 m, u paty severní hradby (s = 21,5–23,9; n = 14,6–16,8), hřeben rovnoběžně s hradbou, vchod na východ.
+- **Úpravy pro delší pobyt (kap. 4.2, 4.3):** stružka kolem stanu, dvě lůžka z klád a tyčí, stříška z kůry 2 × 2 m před vchodem.
+- **Zřícenina (03):** beze změn (kap. 3). Nové typy staveb a vazby: kap. 5, 6.
+- **Otevřené:** kap. 9 (zda stan bude, poloha cisterny může místo změnit).
 
 Specifikace od architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **podmíněný návrh, nepostaveno.** Jirka zatím nerozhodl, jestli stan ve hře bude (14. 11. 2026). Náčrt není, jen popis slovy v kap. 10.
 

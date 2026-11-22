@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-22
 # hra
 domain: structures
 depth: 4
@@ -10,6 +10,14 @@ entity: "[[Lapikus]]"
 build_step: 03_ruin
 ---
 # Zřícenina – stav 03_ruin (bloky, půdorys v3)
+
+## Souhrn
+Platný stav kroku `03_ruin` (zřícenina z bloků, půdorys v3, 11/2026) a přehled staveb na ní v `05_constructions`. Řádek „Hrad“ v `Zricenina_README_PROJEKT.md` je zastaralý, platí tento dokument.
+- **Generování:** `build_ruin_blocks.py`, data `gen_layout.py` → `ruin_layout.json`, terén se měří z levelu; `manual_edits.json` se nepřepisuje (kap. *Pracovní postup*, *Jak se teď generuje*).
+- **Zřícenina (03):** půdorys v3, úpravy zdí, materiály a dřevo, věž včetně škod z dobývání a přístřešku hlídky (kap. *Půdorys v3*, *Úpravy zdí*, *Věž*). Dělení 03 (zdi, kámen) / 05 (dřevěné vestavby, suť) a spouštěče: kap. *Rozdělení 03 / 05*.
+- **Stavby po částech:** západní část u ostrohu (krov, dostavba); palác – kovárna (všechny kroky hotové, v UE ověřeny jen zčásti); palác – dům posádky (kroky 1–3 hotové, staveniště ověřeno jen mimo UE); brána – strážní stanoviště (kroky 1–2).
+- **Otevřené:** most nebo rampa k 1. bráně, přístřešek a zátaras na bráně, krytina, strop a vybavení domu, ověření v UE (kap. *Otevřené / další kroky* a kapitoly staveb). Optimalizace (34,5 mil. trojúhelníků, s Nanite bez problému) se zatím neřeší.
+- **Přednost:** u domu a brány platí kap. 0 návrhů [[navrh_palac_obydli_stred]] a [[navrh_brana_straz]]. Koruny `Palac_J` jsou v návrhu domu o 0,31 m výš než skutečnost (kap. *Palác – kovárna*).
 
 Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zastaralý, platí tento dokument.
 

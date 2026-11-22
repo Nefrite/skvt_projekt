@@ -2,7 +2,7 @@
 # orchestrace
 type: design
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-22
 # hra
 status: in_progress
 domain: structures
@@ -11,6 +11,13 @@ entity: "[[Vez_Pristresek]]"
 build_step: 05_constructions
 ---
 # Návrh: Vez_Pristresek – plátěný přístřešek hlídky na věži
+
+## Souhrn
+Platný návrh plátěného přístřešku pro hlídku ve 2. patře věže (dobývané z východu) a s ním související škody na koruně věže. Stav: postaveno 17. 11. 2026 ve skriptech a ověřeno mimo UE, v UE neověřeno.
+- **Přístřešek (05, kap. 4):** pultový, spád k jihu, plátno nad JZ částí 2. patra (u = 1,30–7,30 m, v = 0,50–4,80 m), sklon 22,6° (nesnižovat pod 22°), hřeben na kůlech nad trámem v = 4,678 m, okap na koruně `Vez_J`, severní a východní strana otevřené, plátno z jednoho velkého lněného stanu.
+- **Škody z dobývání (03, kap. 3):** `Vez_V` s hlavním průlomem, `Vez_J` s průlomem do tvaru mísy nad přístřeškem, `Vez_Z` jen s vedlejšími škodami (střed vyšší), `Vez_S` s plynulým poklesem koruny k SV rohu (11,2 m).
+- **Zavržené varianty:** celá šířka 8,5 m, rovné snížení koruny, štít až ke koruně `Vez_Z` a další (kap. 9).
+- **Otevřené a přijaté:** kap. 10 (suť pod východní zdí rozhodne game designer; východní bok otevřený, štěrbiny pod štítem jako větrání).
 
 Specifikace architekta pro stavitele (šablona `..\AGENT_Architekt_hrad.md`, kap. 8). Stav: **postaveno 17. 11. 2026, neověřeno v UE.** Úpravy 03 (kap. 3) v `tower_spec.ruin_edits()`, přístřešek 05 `Vez_Pristresek` (typ `canvas_shelter`, `tower_spec.pristresek()`), kontroly `run_checks.py --only vez`, náhled `05_constructions/Stavby_vez_pristresek_nahled.png`. Odchylky od kap. 4: plátno 2 cm nad krokvemi (ne 0,5 cm, přes ovázání), podkladní kámen v u = 7,20 je dvojitý (0,54 m; koruna pod ním je 10,49 m, kámen 10,84 m sahá pod podklad jen rohem). Vybraná varianta B (západní 2/3 šířky), průlomy z dobývání ve `Vez_J` a `Vez_V` (Jirka 14. 11. 2026), vyšší střed `Vez_Z` a plynule klesající `Vez_S` místo průlomu do tvaru U (Jirka 17. 11. 2026).
 
