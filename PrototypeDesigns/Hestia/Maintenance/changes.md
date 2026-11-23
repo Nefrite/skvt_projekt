@@ -201,3 +201,5 @@ updated: 2026-11-23
 | 2026-11-23 | Furnisher | Brana_Straz | Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety | chat:task |
 | 2026-11-23 | Furnisher | Lapikus | Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety | chat:task |
 | 2026-11-23 | Furnisher | Brana | Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety | chat:task |
+| 2026-11-23 | agent pilotu (Steward) | Maintenance/reports/ue_assets.json | čtení assetů z UE (etapa C): current 54, outdated 0, missing 0 | predani_pilot_lapikus_knihovnik_unreal P20 |
+| 2026-11-23 | agent pilotu (Steward) | Assets/ | blok *Stav v UE* (generovaný) ve 43 kartách imported, ruční text nahrazen | predani_pilot_lapikus_knihovnik_unreal P20 |

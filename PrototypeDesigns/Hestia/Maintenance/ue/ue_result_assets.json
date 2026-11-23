@@ -1,0 +1,443 @@
+{
+ "hestia_ue": 1,
+ "format_version": 3,
+ "kind": "assets",
+ "id": "assets",
+ "path": "etapa 1 (skript v editoru)",
+ "generated": "2026-11-23T22:06:42",
+ "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
+ "assets": {
+  "SM_RuinBarkStrip_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_A.SM_RuinBarkStrip_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinBarkStrip_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_B.SM_RuinBarkStrip_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinBarkStrip_C": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_C.SM_RuinBarkStrip_C",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinWattlePanel_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinWattlePanel_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_B.SM_RuinWattlePanel_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinWattlePanel_C": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_C.SM_RuinWattlePanel_C",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinSmokeHood_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinSmokeHood_A.SM_RuinSmokeHood_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinSmokeHood_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinSmokeHood_B.SM_RuinSmokeHood_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinChimney_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinChimney_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_B.SM_RuinChimney_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinRope_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_A.SM_RuinRope_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinRope_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_B.SM_RuinRope_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinLashing_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinLashing_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_B.SM_RuinLashing_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinCanvasSample_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasSample_A.SM_RuinCanvasSample_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinCanvasTent_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasTent_A.SM_RuinCanvasTent_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinStump_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_A.SM_RuinStump_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinStump_B": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_B.SM_RuinStump_B",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinAnvil_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinAnvil_A.SM_RuinAnvil_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinBellows_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBellows_A.SM_RuinBellows_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "5"
+   }
+  },
+  "SM_RuinBarrel_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBarrel_A.SM_RuinBarrel_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinGrindstone_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinGrindstone_A.SM_RuinGrindstone_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "6"
+   }
+  },
+  "SM_RuinWorkbench_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWorkbench_A.SM_RuinWorkbench_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinTongs_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinTongs_A.SM_RuinTongs_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinHammer_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinHammer_A.SM_RuinHammer_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "5"
+   }
+  },
+  "SM_RuinChisel_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChisel_A.SM_RuinChisel_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinNailHeader_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinNailHeader_A.SM_RuinNailHeader_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinCoalBox_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBox_A.SM_RuinCoalBox_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "4"
+   }
+  },
+  "SM_RuinWoodpile_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWoodpile_A.SM_RuinWoodpile_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinIronBars_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinIronBars_A.SM_RuinIronBars_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinBasket_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBasket_A.SM_RuinBasket_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinLadder_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinLadder_A.SM_RuinLadder_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinGrindstoneTreadle_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinGrindstoneTreadle_A.SM_RuinGrindstoneTreadle_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "6"
+   }
+  },
+  "SM_RuinStool_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinStool_A.SM_RuinStool_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinCoalBoxLid_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBoxLid_A.SM_RuinCoalBoxLid_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "4"
+   }
+  },
+  "SM_RuinMallet_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinMallet_A.SM_RuinMallet_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinNailHammer_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinNailHammer_A.SM_RuinNailHammer_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinBroadaxe_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBroadaxe_A.SM_RuinBroadaxe_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinAxe_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinAxe_A.SM_RuinAxe_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  },
+  "SM_RuinCrosscutSaw_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCrosscutSaw_A.SM_RuinCrosscutSaw_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinBed_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBed_A.SM_RuinBed_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinBedFolded_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBedFolded_A.SM_RuinBedFolded_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinTable_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinTable_A.SM_RuinTable_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinChest_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChest_A.SM_RuinChest_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinShelf_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinShelf_A.SM_RuinShelf_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinDoor_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinDoor_A.SM_RuinDoor_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinShutter_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinShutter_A.SM_RuinShutter_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinCampBed_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBed_A.SM_RuinCampBed_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinCampBedFolded_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBedFolded_A.SM_RuinCampBedFolded_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinChestSmall_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestSmall_A.SM_RuinChestSmall_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinBundle_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBundle_A.SM_RuinBundle_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinChestLocked_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestLocked_A.SM_RuinChestLocked_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "1"
+   }
+  },
+  "SM_RuinBedLarge_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBedLarge_A.SM_RuinBedLarge_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "2"
+   }
+  },
+  "SM_RuinArmorStand_A": {
+   "ue_path": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinArmorStand_A.SM_RuinArmorStand_A",
+   "exists": true,
+   "tags": {
+    "RuinMeshAxes": "10",
+    "RuinStoneVersion": "3"
+   }
+  }
+ }
+}

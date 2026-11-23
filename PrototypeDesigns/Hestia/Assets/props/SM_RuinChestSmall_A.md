@@ -51,7 +51,14 @@ Osy: **zámek (oko na zámek) −Y**, držadla ±X; pivot ve středu bounding bo
 <!-- hestia:generated:end -->
 
 ## Stav v UE
-Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_ue -->
+Čtení z UE: `Maintenance/reports/ue_assets.json` · etapa 1 (skript v editoru) (datum čtení u každého assetu)
+
+- `SM_RuinChestSmall_A` (čteno 2026-11-23): v UE ano (`/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestSmall_A.SM_RuinChestSmall_A`) · `RuinStoneVersion` 1 (kód 1) · `RuinMeshAxes` 10 (`MESH_AXES` 10) · current
+
+<!-- hestia:generated:end -->
 
 ## Vizuálně ověřeno
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->

@@ -51,7 +51,16 @@ Osy: délka X, šířka Y, prohnutí nahoru (+Z); pivot ve středu bounding boxu
 <!-- hestia:generated:end -->
 
 ## Stav v UE
-Ručně do etapy C (`ue_query --assets`): `.uasset` všech 3 variant v `Content/Skvt/Lapikus/Ruin/Wood/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_ue -->
+Čtení z UE: `Maintenance/reports/ue_assets.json` · etapa 1 (skript v editoru) (datum čtení u každého assetu)
+
+- `SM_RuinBarkStrip_A` (čteno 2026-11-23): v UE ano (`/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_A.SM_RuinBarkStrip_A`) · `RuinStoneVersion` 1 (kód 1) · `RuinMeshAxes` 10 (`MESH_AXES` 10) · current
+- `SM_RuinBarkStrip_B` (čteno 2026-11-23): v UE ano (`/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_B.SM_RuinBarkStrip_B`) · `RuinStoneVersion` 1 (kód 1) · `RuinMeshAxes` 10 (`MESH_AXES` 10) · current
+- `SM_RuinBarkStrip_C` (čteno 2026-11-23): v UE ano (`/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_C.SM_RuinBarkStrip_C`) · `RuinStoneVersion` 1 (kód 1) · `RuinMeshAxes` 10 (`MESH_AXES` 10) · current
+
+<!-- hestia:generated:end -->
 
 ## Vizuálně ověřeno
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->

@@ -51,7 +51,15 @@ Osy: osa tyče X; pivot ve středu bounding boxu. Společná pravidla: [[Konvenc
 <!-- hestia:generated:end -->
 
 ## Stav v UE
-Ručně do etapy C (`ue_query --assets`): `.uasset` všech 2 variant v `Content/Skvt/Lapikus/Ruin/Textile/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_ue -->
+Čtení z UE: `Maintenance/reports/ue_assets.json` · etapa 1 (skript v editoru) (datum čtení u každého assetu)
+
+- `SM_RuinLashing_A` (čteno 2026-11-23): v UE ano (`/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A`) · `RuinStoneVersion` 1 (kód 1) · `RuinMeshAxes` 10 (`MESH_AXES` 10) · current
+- `SM_RuinLashing_B` (čteno 2026-11-23): v UE ano (`/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_B.SM_RuinLashing_B`) · `RuinStoneVersion` 1 (kód 1) · `RuinMeshAxes` 10 (`MESH_AXES` 10) · current
+
+<!-- hestia:generated:end -->
 
 ## Vizuálně ověřeno
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->

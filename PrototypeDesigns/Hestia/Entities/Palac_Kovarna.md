@@ -94,7 +94,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Kovarna.json` · 
 ## Assety
 <!-- hestia:generated:start -->
 
-Souhrn: requested 2, in_progress 2, generated 0, imported 13, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+Souhrn: requested 2, in_progress 2, generated 0, imported 13, verified 0 · graybox 0 · outdated v UE 0 (signál vedle `depth_*`, hloubka se z něj nepočítá)
 
 | Asset | Stav | Náhrada v levelu |
 |---|---|---|

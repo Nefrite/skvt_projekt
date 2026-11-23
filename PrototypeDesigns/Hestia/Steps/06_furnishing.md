@@ -62,6 +62,8 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 | `/PrototypeDesigns/Lapikus/06_furnishing/capture_furnishing.py` | entry | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/furn_data.py` | entry | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Brana_Straz.py` | entry | [[Brana_Straz]] | [[navrh_brana_straz]], [[stav_brana_straz]], [[06_furnishing]] |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Brana_Straz_Capture.py` | entry | [[Brana_Straz]] | [[navrh_brana_straz]], [[stav_brana_straz]], [[06_furnishing]] |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | [[Guesthouse]] | [[navrh_guesthouse_vybaveni]], [[stav_guesthouse]], [[06_furnishing]], [[Katalog_props]] |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | [[Guesthouse]] | [[navrh_guesthouse_vybaveni]], [[stav_guesthouse]], [[06_furnishing]] |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py` | entry | [[Palac_Kovarna]] | – |

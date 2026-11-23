@@ -90,7 +90,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana_Straz.json` · et
 ## Assety
 <!-- hestia:generated:start -->
 
-Souhrn: requested 4, in_progress 2, generated 0, imported 10, verified 0 · graybox 4 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+Souhrn: requested 4, in_progress 2, generated 0, imported 10, verified 0 · graybox 4 · outdated v UE 0 (signál vedle `depth_*`, hloubka se z něj nepočítá)
 
 | Asset | Stav | Náhrada v levelu |
 |---|---|---|
