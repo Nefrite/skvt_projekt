@@ -1,8 +1,9 @@
 {
  "hestia_ue": 1,
+ "format_version": 3,
  "id": "all",
  "path": "etapa 1 (skript v editoru)",
- "generated": "2026-11-23T10:57:10",
+ "generated": "2026-11-23T20:30:15",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "expected_map": "/Game/Skvt/LapikusPrototypeMap",
