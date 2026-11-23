@@ -150,5 +150,5 @@ Všechno je ve skriptech a prošlo `tools/checks/run_checks.py` (`SOUHRN: ... ob
 Fronta předání v tomto pořadí: [[predani_palac_obydli_1_etapa1_ue]] (kontrola etapy 1 v UE), [[predani_palac_obydli_2_krytina]], [[predani_palac_obydli_3_strop]], [[predani_palac_obydli_4_podlaha]], [[predani_palac_obydli_5_okap]], [[predani_palac_obydli_6_zarubne]], [[predani_palac_obydli_7_vybaveni]]. Návrh staveniště: [[navrh_palac_obydli_stavenisko]].
 
 ## Odkazy na návrh a předání
-- návrh: [[navrh_palac_obydli_stred]] (kap. 0 a 4: plán po etapách a rozměry), staveniště [[navrh_palac_obydli_stavenisko]]
+- návrh: [[navrh_palac_obydli_stred]] (rozměry), plán po etapách [[navrh_palac_obydli_etapy]], pec [[navrh_palac_obydli_pec]], staveniště [[navrh_palac_obydli_stavenisko]]
 - předání: fronta [[predani_palac_obydli_1_etapa1_ue]] až [[predani_palac_obydli_7_vybaveni]] (aktivní); dřívější [[predani_palac_obydli_stavitel]] (archivováno 2026-11-23)

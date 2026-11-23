@@ -36,10 +36,12 @@ depth_structures: 3
 <!-- hestia:generated:start -->
 
 **structures**
-- [[navrh_palac_obydli]] – design, depth 2, valid, rejected
+- [[navrh_palac_obydli_etapy]] – design, depth 4, valid, in_progress
+- [[navrh_palac_obydli_pec]] – design, depth 4, valid, in_progress
 - [[navrh_palac_obydli_stavenisko]] – design, depth 4, valid, in_progress
 - [[navrh_palac_obydli_stred]] – design, depth 4, valid, in_progress
 - [[stav_palac_obydli]] – state, depth 3, valid
+- nahrazené nebo archivované: 1
 
 **Aktivní předání**
 - [[predani_palac_obydli_1_etapa1_ue]]
@@ -57,7 +59,7 @@ depth_structures: 3
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py`, `Palac_Obydli_Stavenisko_Capture.py` | [[navrh_palac_obydli_stavenisko]], [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
+| [[05_constructions]] | `Palac_Obydli.py`, `Palac_Obydli_Kamen.py`, `Palac_Obydli_Krov.py`, `Palac_Obydli_Ohniste.py`, `Palac_Obydli_Srub.py`, `Palac_Obydli_Stavenisko.py`, `Palac_Obydli_Stavenisko_Capture.py` | [[navrh_palac_obydli_etapy]], [[navrh_palac_obydli_pec]], [[navrh_palac_obydli_stavenisko]], [[navrh_palac_obydli_stred]], [[stav_palac_obydli]] |
 
 <!-- hestia:generated:end -->
 

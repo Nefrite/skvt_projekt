@@ -2,7 +2,7 @@
 # orchestrace
 type: checklist
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 # hra
 domain: structures
 entity: "[[Lapikus]]"
@@ -314,10 +314,10 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 | ☑ | `Vez_J` | 2 × `breaches` + `protect` nad střílnou (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.2 |
 | ☑ | `Vez_Z` | 2 × `protect` (s = 7,0–8,2 `min` 12,1; s = 8,2–9,5 `min` 11,8): střed zdi vyšší, jen vedlejší škody (Jirka 17. 11. 2026) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.3 |
 | ☑ | `Vez_S` | zrušit `breaches` s = 3,5–7,5 (tvar U); nový `breaches` (rampa od SV rohu, `power_r` 0,7) + 8 × `protect` po 1,5 m: koruna plynule klesá od SZ rohu k SV rohu (Jirka 17. 11. 2026) (hotovo 17. 11. 2026 v `tower_spec.ruin_edits()`, neověřeno v UE) | 3.4 |
-| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | [[navrh_palac_obydli_stred]] kap. 0.2 |
+| ☐ | `Palac_J` | `breaches` s = 15,5–18,3 (sedlo u komína): **odpadá**, po zanoření zdi je koruna u komína 4,4–4,8 m (16. 11. 2026) | [[navrh_palac_obydli_stred]] kap. 2 |
 | ☑ | `Palac_J` | celá zeď zanořená o jednu řadu do země (`z_offset` −0,31), rozebraná koruna u věže (`breaches` s = 29,6–33, komín kovárny ji přesahuje) a `kapsa` pro východní pozednici kovárny v s = 30,55 (15. 11. 2026, neověřeno v UE) | [[navrh_palac_kovarna]] kap. 3, `palac_spec.py` |
-| ☑ | `Palac_S` | portál přesunutý do západní místnosti (s = 4,5, `protect` s = 2,5–6,5), ve střední místnosti hrubý průchod (`prulom` s = 16, 1,8 m) (16. 11. 2026, neověřeno v UE) | [[navrh_palac_obydli_stred]] kap. 0.2a, `gen_layout.py` |
-| ☑ | `Palac_pricka_2` | hrubý průchod ze zápraží domu ke kovárně (`prulom` n = 6,9–8,5) (16. 11. 2026, neověřeno v UE) | [[navrh_palac_obydli_stred]] kap. 0.2a, `palac_spec.py` → `D_PASS` |
+| ☑ | `Palac_S` | portál přesunutý do západní místnosti (s = 4,5, `protect` s = 2,5–6,5), ve střední místnosti hrubý průchod (`prulom` s = 16, 1,8 m) (16. 11. 2026, neověřeno v UE) | [[navrh_palac_obydli_stred]] kap. 3, `gen_layout.py` |
+| ☑ | `Palac_pricka_2` | hrubý průchod ze zápraží domu ke kovárně (`prulom` n = 6,9–8,5) (16. 11. 2026, neověřeno v UE) | [[navrh_palac_obydli_stred]] kap. 3, `palac_spec.py` → `D_PASS` |
 | ☐ | kontrola `manual_edits.json` | ID kamenů `Vez_J`, `Vez_V`, `Vez_Z`, `Palac_J`, `Palac_S`, `Palac_pricka_2` se po přestavbě změní (17. 11. 2026 prázdný) | – |
 
 ---
@@ -330,7 +330,7 @@ Nejsou to assety, ale bez nich se assety do levelu nedostanou.
 - ☑ Props tvaru ✋: procedurálně v Pythonu (vizuální prototyp, 14. 11. 2026).
 - ◐ Plátno ve větru: připraveno v materiálu (`M_RuinCloth`, parametr `WindAmount`, výchozí 0 = staticky). Vítr ani napnutí plachet zatím řešené nejsou; prověšení dává `make_canvas` (`sag`).
 - ☑ Kovárna ve východní místnosti: potvrzeno (Jirka 15. 11. 2026). Svod se nedělá, žlab ústí do sudu. Saze, udusaná hlína, žhavé uhlí a VFX ohně se pro kovárnu zatím nedělají.
-- ☑ Žebříky (staveniště, půda): jen kulisa, pro postavu nepoužitelné (chybí animace; [[navrh_palac_obydli_stred]] kap. 0.1).
+- ☑ Žebříky (staveniště, půda): jen kulisa, pro postavu nepoužitelné (chybí animace; [[navrh_palac_obydli_etapy]] kap. 0.1).
 - ☐ ❓ Stojí podesta brány v etapě 1? Určuje, jestli potřebuje přepínač `ETAPA`.
 - ☐ ❓ VFX ohně a kouře: v tomto kroku, nebo později s atmosférou?
 - ☑ Stan: bude (Jirka 21. 11. 2026). Rozdělení assety / Builder v kap. 6.5.

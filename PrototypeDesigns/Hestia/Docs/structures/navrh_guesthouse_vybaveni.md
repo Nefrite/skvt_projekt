@@ -4,7 +4,7 @@ type: design
 validity: valid
 derived_from:
 alternative_to: []
-updated: 2026-11-22
+updated: 2026-11-23
 aliases: []
 # hra
 domain: structures
@@ -42,7 +42,7 @@ Rozmístění je ověřené s postavou v levelu (Manny 180 cm) a polohy z větš
 | hromádka dřeva | 0,8 × 0,4 × 0,6 | 3,37–4,20; 4,48–5,34 | vedle kamen podél hradby, nový mesh (Jirka) |
 
 - Průchod od dveří (s = 5,8–8,1; n = 0–2 m) zůstává volný.
-- Kamna: menší než pec v obydlí ([[navrh_palac_obydli_stred]] kap. 0.5b), bez nístěje a plotny, s dymníkem nad ústím a komínem skrz krytinu. Pod kamny je kamenná dlažba (Jirka). Zadání pro stavitele: [[predani_guesthouse_kamna_stavitel]].
+- Kamna: menší než pec v obydlí ([[navrh_palac_obydli_pec]]), bez nístěje a plotny, s dymníkem nad ústím a komínem skrz krytinu. Pod kamny je kamenná dlažba (Jirka). Zadání pro stavitele: [[predani_guesthouse_kamna_stavitel]].
 
 ## Souhrn specifikace
 - Polohy a rozměry: `tools/ruin/ostroh_spec.py` → `GH_BED`, `GH_DESK`, `GH_STOOL`, `GH_CHEST`, `GH_ARMOR`, `GH_WEAPONS`, `GH_SHELF`, `GH_WOOD`, `GH_OVEN`, `GH_REF`, funkce `guesthouse_vybaveni()`.

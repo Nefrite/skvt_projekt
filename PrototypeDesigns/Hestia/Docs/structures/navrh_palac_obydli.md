@@ -1,9 +1,10 @@
 ---
 # orchestrace
 type: design
-validity: valid
+validity: superseded
+superseded_by: "[[navrh_palac_obydli_stred]]"
 alternative_to: ["[[navrh_palac_obydli_stred]]"]
-updated: 2026-11-22
+updated: 2026-11-23
 # hra
 status: rejected
 domain: structures
