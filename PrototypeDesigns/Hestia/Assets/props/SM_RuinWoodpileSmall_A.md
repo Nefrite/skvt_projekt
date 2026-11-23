@@ -31,6 +31,12 @@ Obal = graybox `GH_WOOD` 0,8 × 0,4 × 0,6 m (`Drevo_Pec`, s = 3,37–4,20; n = 
 ## Na míru
 
 ## Z kódu
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 

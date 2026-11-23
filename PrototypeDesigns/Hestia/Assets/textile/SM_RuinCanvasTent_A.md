@@ -35,11 +35,21 @@ Osy: X podél hřebene, **+X = štít se vchodem**, +Y = strana odhrnuté chlopn
 `meshes/textile/SM_RuinCanvasTent_A.json`: `center` (střed bounding boxu v osách stanu, počátek na zemi pod středem hřebene), `size`, `ridge` (vrch 190 cm, Ø 6, x −130…130), `poles` (stojky Ø 7 v x = ±120), `pegs` (13 kolíků, lem k zemi), `door`. Stavba posadí mesh podle `center` (vzor `zr_stavby/pristresek.py`, `LIB_SHAPE_OF`). Parametry generátoru `TENT`: `L`, `W`, `H`, `sag` (prohnutí boků), `bulge` (vydutí štítů), `hem` (zvednutí lemu mezi kolíky), `pegs_x`, `pegs_back`, `pegs_door`, `flap` (úhel odhrnuté chlopně).
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/textile/`): 246,0 × 227,7 × 189,6 cm
-- varianty v UE: `SM_RuinCanvasTent_A`
-- sloty: `canvas`; výchozí materiál dílce `canvas`
-- verze: `STONE_MESH_VERSION["SM_RuinCanvasTent"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 246 × 227.7 × 189.6 cm; `envelope` 246 × 228 × 190 cm: vejde se
+- Varianty: `SM_RuinCanvasTent_A`
+- Sloty: ['canvas']
+- Výchozí materiál: `canvas`
+- Verze: 1 (prefix `SM_RuinCanvasTent`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasTent_A.SM_RuinCanvasTent_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:236`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Textile/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

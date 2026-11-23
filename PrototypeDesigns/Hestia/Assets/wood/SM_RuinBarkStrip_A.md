@@ -34,11 +34,21 @@ Osy: délka X, šířka Y, prohnutí nahoru (+Z); pivot ve středu bounding boxu
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/wood/`): 160,0 × 70,0 × 9,0 cm
-- varianty v UE: `SM_RuinBarkStrip_A`, `SM_RuinBarkStrip_B`, `SM_RuinBarkStrip_C`
-- sloty: `bark`, `endgrain`; výchozí materiál dílce `bark`
-- verze: `STONE_MESH_VERSION["SM_RuinBarkStrip"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 160 × 70 × 9 cm; `envelope` 160 × 70 × 9 cm: vejde se
+- Varianty: `SM_RuinBarkStrip_A`, `SM_RuinBarkStrip_B`, `SM_RuinBarkStrip_C`
+- Sloty: ['bark', 'endgrain']
+- Výchozí materiál: `bark`
+- Verze: 1 (prefix `SM_RuinBarkStrip`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_A.SM_RuinBarkStrip_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:225`
+- Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 3 variant v `Content/Skvt/Lapikus/Ruin/Wood/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

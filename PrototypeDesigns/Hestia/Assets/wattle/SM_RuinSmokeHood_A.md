@@ -34,11 +34,21 @@ Osy: osa koše Z (nahoru); pivot ve středu bounding boxu. Společná pravidla: 
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/wattle/`): 140,0 × 120,0 × 100,0 cm
-- varianty v UE: `SM_RuinSmokeHood_A`, `SM_RuinSmokeHood_B`
-- sloty: `daub`, `wattle`; výchozí materiál dílce `daub`
-- verze: `STONE_MESH_VERSION["SM_RuinSmokeHood"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 140 × 120 × 100 cm; `envelope` 140 × 120 × 100 cm: vejde se
+- Varianty: `SM_RuinSmokeHood_A`, `SM_RuinSmokeHood_B`
+- Sloty: ['daub', 'wattle']
+- Výchozí materiál: `daub`
+- Verze: 1 (prefix `SM_RuinSmokeHood`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinSmokeHood_A.SM_RuinSmokeHood_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:227`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 2 variant v `Content/Skvt/Lapikus/Ruin/Wattle/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

@@ -1,0 +1,22 @@
+# Knihovní assety instance Lapikus, etapa B (zadání 13 kap. 10.18; ruční úkol update_core:0.23.0:asset_sources, P20).
+# Hodnoty se čtou jen jako literály ze zdrojového textu (ast.literal_eval), kód se nespouští.
+# Cesty od kořene projektu (project_root = skvt_projekt).
+meshes:
+  - file: PrototypeDesigns/Lapikus/zrlib/config.py
+    variable: LIB_MESHES
+    fields: [size, variants, category, slots, material]
+    name: "{key}_{variant}"
+    ue_root: {variable: MESH_ROOT}
+    ue_dirs: {variable: MESH_DIRS}
+    content_dir: Content/Skvt/Lapikus/Ruin
+versions:
+  - file: PrototypeDesigns/Lapikus/zrlib/config.py
+    variable: STONE_MESH_VERSION
+    match: prefix
+    ue_tag: RuinStoneVersion
+global_versions:
+  - {file: PrototypeDesigns/Lapikus/zrlib/config.py, variable: MESH_AXES, ue_tag: RuinMeshAxes}
+shapes:
+  - {file: PrototypeDesigns/Lapikus/zrlib/config.py, variable: LIB_SHAPES}
+data_refs:
+  - {glob: "PrototypeDesigns/Lapikus/**/*.json", keys: [shape, mesh]}

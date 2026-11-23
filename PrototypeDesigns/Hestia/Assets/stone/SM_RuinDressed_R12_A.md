@@ -34,10 +34,16 @@ Osy: délka podél X, hloubka zdi Y, výška Z; pivot ve středu bounding boxu. 
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
+Ručně: klíč není v `LIB_MESHES` a manifest `asset_sources.yaml` ho nepokrývá (`ROUND_MESHES`, `WOOD_NOMINAL`, kameny v `mesh_stone.py`); stav kódu 2026-11-23:
 - rozměr (bounding box OBJ `meshes/stone/`): 36,0 × 45,0 × 30,0 cm (SM_RuinDressed_R12_A, SM_RuinDressed_R12_B); 54,0 × 45,0 × 30,0 cm (SM_RuinDressed_R18_A, SM_RuinDressed_R18_B); 78,0 × 45,0 × 30,0 cm (SM_RuinDressed_R26_A, SM_RuinDressed_R26_B); 102,0 × 45,0 × 30,0 cm (SM_RuinDressed_R34_A, SM_RuinDressed_R34_B)
 - varianty v UE: `SM_RuinDressed_R12_A`, `SM_RuinDressed_R12_B`, `SM_RuinDressed_R18_A`, `SM_RuinDressed_R18_B`, `SM_RuinDressed_R26_A`, `SM_RuinDressed_R26_B`, `SM_RuinDressed_R34_A`, `SM_RuinDressed_R34_B`
 - verze: bez záznamu v `STONE_MESH_VERSION` (výchozí); `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 8 variant v `Content/Skvt/Lapikus/Ruin/Stones/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

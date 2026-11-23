@@ -35,11 +35,21 @@ Osy: X podél lůžka, **hlava −X**; pivot ve středu bounding boxu. Společn�
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 198,8 × 76,2 × 28,8 cm (SM_RuinCampBed_A); 200,0 × 76,5 × 32,1 cm (SM_RuinCampBedFolded_A)
-- varianty v UE: `SM_RuinCampBed_A`, `SM_RuinCampBedFolded_A`
-- sloty: `wood`, `endgrain`, `bark`, `straw`, `wool`; výchozí materiál dílce `wood`
-- verze: `STONE_MESH_VERSION["SM_RuinCampBed"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 198.8 × 76.2 × 28.8 cm; `envelope` 200 × 77 × 33 cm: vejde se
+- Varianty: `SM_RuinCampBed_A`, `SM_RuinCampBedFolded_A`
+- Sloty: ['wood', 'endgrain', 'bark', 'straw', 'wool']
+- Výchozí materiál: `wood`
+- Verze: 1 (prefix `SM_RuinCampBed`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBed_A.SM_RuinCampBed_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:269`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 2 variant v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

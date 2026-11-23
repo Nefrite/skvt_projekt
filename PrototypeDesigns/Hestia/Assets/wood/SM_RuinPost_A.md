@@ -32,10 +32,16 @@ Osy: délka podél Z (nominál 100 cm), průřez X × Y; pivot ve středu boundi
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
+Ručně: klíč není v `LIB_MESHES` a manifest `asset_sources.yaml` ho nepokrývá (`ROUND_MESHES`, `WOOD_NOMINAL`, kameny v `mesh_stone.py`); stav kódu 2026-11-23:
 - rozměr (bounding box OBJ `meshes/wood/`): 25,0 × 25,0 × 100,0 cm
 - varianty v UE: `SM_RuinPost_A`, `SM_RuinPost_B`, `SM_RuinPost_C`
 - verze: `STONE_MESH_VERSION["SM_RuinPost_"]` = 2; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 3 variant v `Content/Skvt/Lapikus/Ruin/Wood/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

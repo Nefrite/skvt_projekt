@@ -34,11 +34,21 @@ Osy: dílec v rovině XZ (X šířka, Z výška), tloušťka Y; pivot ve středu
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/wattle/`): 100,0 × 8,0 × 100,0 cm
-- varianty v UE: `SM_RuinWattlePanel_A`, `SM_RuinWattlePanel_B`, `SM_RuinWattlePanel_C`
-- sloty: `daub`, `wattle`; výchozí materiál dílce `daub`
-- verze: `STONE_MESH_VERSION["SM_RuinWattlePanel"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 100 × 8 × 100 cm; `envelope` 100 × 8 × 100 cm: vejde se
+- Varianty: `SM_RuinWattlePanel_A`, `SM_RuinWattlePanel_B`, `SM_RuinWattlePanel_C`
+- Sloty: ['daub', 'wattle']
+- Výchozí materiál: `daub`
+- Verze: 1 (prefix `SM_RuinWattlePanel`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:226`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 3 variant v `Content/Skvt/Lapikus/Ruin/Wattle/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

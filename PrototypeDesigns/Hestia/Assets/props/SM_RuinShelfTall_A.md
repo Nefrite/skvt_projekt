@@ -31,6 +31,12 @@ Obal = graybox `GH_SHELF` 156,2 × 40 × 200 cm (`Regal`, rozměr a poloha Jirka
 ## Na míru
 
 ## Z kódu
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 

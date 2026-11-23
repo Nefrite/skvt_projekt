@@ -34,11 +34,21 @@ Osy: okenice v rovině XZ, tloušťka Y; pivot ve středu bounding boxu. Společ
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 61,4 × 8,4 × 59,2 cm
-- varianty v UE: `SM_RuinShutter_A`
-- sloty: `wood`, `endgrain`, `iron`; výchozí materiál dílce `wood`
-- verze: `STONE_MESH_VERSION["SM_RuinShutter"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 61.4 × 8.4 × 59.2 cm; `envelope` 62 × 9 × 60 cm: vejde se
+- Varianty: `SM_RuinShutter_A`
+- Sloty: ['wood', 'endgrain', 'iron']
+- Výchozí materiál: `wood`
+- Verze: 1 (prefix `SM_RuinShutter`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinShutter_A.SM_RuinShutter_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:267`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

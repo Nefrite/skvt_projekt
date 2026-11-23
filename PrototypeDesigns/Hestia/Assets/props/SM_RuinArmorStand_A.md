@@ -35,11 +35,21 @@ Osy: **čelo −Y** (zády ke zdi), kolík na rukavice +X; pivot ve středu boun
 Body pro brnění `mesh_props.ARMOR_STAND_POINTS` v cm od podlahy, osa sloupku x = y = 0: hlava 167, ramena 150, pás 105, kolík (10; 0; 126). V lokálních osách meshe (pivot ve středu) je od výšek odečíst 87,3 cm.
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 60,1 × 60,3 × 175,0 cm
-- varianty v UE: `SM_RuinArmorStand_A`
-- sloty: `wood`, `endgrain`; výchozí materiál dílce `wood`
-- verze: `STONE_MESH_VERSION["SM_RuinArmorStand"]` = 3; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 60.1 × 60.3 × 175 cm; `envelope` 61 × 61 × 175 cm: vejde se
+- Varianty: `SM_RuinArmorStand_A`
+- Sloty: ['wood', 'endgrain']
+- Výchozí materiál: `wood`
+- Verze: 3 (prefix `SM_RuinArmorStand`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinArmorStand_A.SM_RuinArmorStand_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:275`
+- Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

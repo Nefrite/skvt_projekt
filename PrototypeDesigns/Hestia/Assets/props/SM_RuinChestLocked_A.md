@@ -34,11 +34,21 @@ Osy: **zámek a závěra −Y**, pásové závěsy +Y, držadla s kruhy ±X, del
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 94,2 × 54,2 × 50,7 cm
-- varianty v UE: `SM_RuinChestLocked_A`
-- sloty: `wood`, `endgrain`, `ironclean`; výchozí materiál dílce `wood`
-- verze: `STONE_MESH_VERSION["SM_RuinChestLocked"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 94.2 × 54.2 × 50.7 cm; `envelope` 95 × 55 × 51 cm: vejde se
+- Varianty: `SM_RuinChestLocked_A`
+- Sloty: ['wood', 'endgrain', 'ironclean']
+- Výchozí materiál: `wood`
+- Verze: 1 (prefix `SM_RuinChestLocked`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestLocked_A.SM_RuinChestLocked_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:273`
+- Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

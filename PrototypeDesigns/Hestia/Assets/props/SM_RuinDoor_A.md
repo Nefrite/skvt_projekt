@@ -34,11 +34,21 @@ Osy: dveře v rovině XZ, tloušťka Y; pivot ve středu bounding boxu. Společn
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 101,8 × 9,3 × 219,3 cm
-- varianty v UE: `SM_RuinDoor_A`
-- sloty: `wood`, `iron`; výchozí materiál dílce `wood`
-- verze: `STONE_MESH_VERSION["SM_RuinDoor"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 101.8 × 9.3 × 219.3 cm; `envelope` 102 × 10 × 220 cm: vejde se
+- Varianty: `SM_RuinDoor_A`
+- Sloty: ['wood', 'iron']
+- Výchozí materiál: `wood`
+- Verze: 1 (prefix `SM_RuinDoor`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinDoor_A.SM_RuinDoor_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:266`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

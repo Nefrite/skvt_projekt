@@ -31,6 +31,12 @@ Obal 1,25 × 0,75 × 0,78 m = graybox `GH_DESK` (`tools/ruin/ostroh_spec.py`, s 
 ## Na míru
 
 ## Z kódu
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 

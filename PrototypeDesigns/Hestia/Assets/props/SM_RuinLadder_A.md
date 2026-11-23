@@ -34,11 +34,21 @@ Osy: nejdelší rozměr podél X (podle rozměru meshe); pivot ve středu boundi
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 450,4 × 53,7 × 7,8 cm
-- varianty v UE: `SM_RuinLadder_A`
-- sloty: `wood`, `endgrain`, `bark`; výchozí materiál dílce `wood`
-- verze: `STONE_MESH_VERSION["SM_RuinLadder"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 450.4 × 53.7 × 7.8 cm; `envelope` 451 × 54 × 8 cm: vejde se
+- Varianty: `SM_RuinLadder_A`
+- Sloty: ['wood', 'endgrain', 'bark']
+- Výchozí materiál: `wood`
+- Verze: 1 (prefix `SM_RuinLadder`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinLadder_A.SM_RuinLadder_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:252`
+- Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

@@ -33,11 +33,21 @@ Osy: svislý štít, X = tloušťka; pivot ve středu bounding boxu. Společná 
 Tvar na míru: `meshes/textile/SM_RuinCanvasVezGable_A.json` (střed a rozměr v osách stavby); stavba bere rozměr z `.json`.
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/textile/`): 2,0 × 269,0 × 111,8 cm
-- varianty v UE: `SM_RuinCanvasVezGable_A`
-- sloty: `canvas`; výchozí materiál dílce `canvas`
-- verze: `STONE_MESH_VERSION["SM_RuinCanvasVez"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 2 × 269 × 111.8 cm; `envelope` 3 × 269 × 112 cm: vejde se
+- Varianty: `SM_RuinCanvasVezGable_A`
+- Sloty: ['canvas']
+- Výchozí materiál: `canvas`
+- Verze: 1 (prefix `SM_RuinCanvasVez`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:235`
+- Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Textile/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

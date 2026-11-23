@@ -34,11 +34,21 @@ Osy: **dno −X, hrdlo +X** (stažené dvěma závity lana, roztřepený okraj),
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/props/`): 76,0 × 43,4 × 22,5 cm
-- varianty v UE: `SM_RuinBundle_A`
-- sloty: `rope`, `sackcloth`; výchozí materiál dílce `sackcloth`
-- verze: `STONE_MESH_VERSION["SM_RuinBundle"]` = 2; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 76 × 43.4 × 22.5 cm; `envelope` 76 × 44 × 23 cm: vejde se
+- Varianty: `SM_RuinBundle_A`
+- Sloty: ['rope', 'sackcloth']
+- Výchozí materiál: `sackcloth`
+- Verze: 2 (prefix `SM_RuinBundle`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBundle_A.SM_RuinBundle_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:272`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Props/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

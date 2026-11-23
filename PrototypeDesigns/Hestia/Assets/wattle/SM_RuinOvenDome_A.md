@@ -32,11 +32,21 @@ Osy: X šířka (rozpětí), Y hloubka, Z výška; pivot ve středu bounding box
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/wattle/`): 140,0 × 100,0 × 40,0 cm
-- varianty v UE: `SM_RuinOvenDome_A`, `SM_RuinOvenDome_B`
-- sloty: `daub`, `wattle`; výchozí materiál dílce `daub`
-- verze: `STONE_MESH_VERSION["SM_RuinOvenDome"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 140 × 100 × 40 cm; `envelope` 140 × 100 × 40 cm: vejde se
+- Varianty: `SM_RuinOvenDome_A`, `SM_RuinOvenDome_B`
+- Sloty: ['daub', 'wattle']
+- Výchozí materiál: `daub`
+- Verze: 1 (prefix `SM_RuinOvenDome`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinOvenDome_A.SM_RuinOvenDome_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:229`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 2 variant v `Content/Skvt/Lapikus/Ruin/Wattle/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

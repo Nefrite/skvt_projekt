@@ -31,6 +31,12 @@ Chybí v sadě tesařského nářadí (sekera, širočina, pila, kladivo, palice
 ## Na míru
 
 ## Z kódu
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 

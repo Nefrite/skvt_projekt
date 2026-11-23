@@ -31,6 +31,12 @@ Obal = graybox `GH_WEAPONS` 1,0 × 0,4 × 1,6 m (`Stojan_Zbrane`, s = 6,68–7,7
 ## Na míru
 
 ## Z kódu
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 

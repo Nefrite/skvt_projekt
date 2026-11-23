@@ -34,11 +34,21 @@ Osy: plachta v rovině XY se sklonem; pivot ve středu bounding boxu. Společná
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/textile/`): 300,0 × 221,6 × 93,8 cm
-- varianty v UE: `SM_RuinCanvasSample_A`
-- sloty: `canvas`; výchozí materiál dílce `canvas`
-- verze: `STONE_MESH_VERSION["SM_RuinCanvasSample"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 300 × 221.6 × 93.8 cm; `envelope` 300 × 222 × 94 cm: vejde se
+- Varianty: `SM_RuinCanvasSample_A`
+- Sloty: ['canvas']
+- Výchozí materiál: `canvas`
+- Verze: 1 (prefix `SM_RuinCanvasSample`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasSample_A.SM_RuinCanvasSample_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:232`
+- Data: bez výskytu
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/Ruin/Textile/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.

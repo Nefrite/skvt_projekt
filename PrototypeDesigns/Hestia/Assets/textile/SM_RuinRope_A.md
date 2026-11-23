@@ -34,11 +34,21 @@ Osy: délka X; pivot ve středu bounding boxu. Společná pravidla: [[Konvence_a
 ## Na míru
 
 ## Z kódu
-Ručně do etapy B (P20, `asset_sources.yaml`), stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/textile/`): 100,0 × 1,5 × 1,5 cm
-- varianty v UE: `SM_RuinRope_A`, `SM_RuinRope_B`
-- sloty: `rope`; výchozí materiál dílce `rope`
-- verze: `STONE_MESH_VERSION["SM_RuinRope"]` = 1; `MESH_AXES` = 10
+<!-- hestia:generated:start -->
+
+<!-- hestia:asset_code -->
+- Rozměr (skutečný): 100 × 1.5 × 1.5 cm; `envelope` 100 × 2 × 2 cm: vejde se
+- Varianty: `SM_RuinRope_A`, `SM_RuinRope_B`
+- Sloty: ['rope']
+- Výchozí materiál: `rope`
+- Verze: 1 (prefix `SM_RuinRope`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_A.SM_RuinRope_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:230`
+- Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
+
+<!-- hestia:generated:end -->
 
 ## Stav v UE
 Ručně do etapy C (`ue_query --assets`): `.uasset` všech 2 variant v `Content/Skvt/Lapikus/Ruin/Textile/` (v gitu, 2026-11-23); verze v UE a vzhled neověřeny.
