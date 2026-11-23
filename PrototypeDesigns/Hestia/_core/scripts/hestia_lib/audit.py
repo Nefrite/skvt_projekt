@@ -1,4 +1,4 @@
-"""Příkaz audit: G1–G14, zralost; report a fronta jako seznam úkolů (zadání 04 kap. 3–4, 13 kap. 7 a 10.4).
+"""Příkaz audit: G1–G15, zralost; report a fronta jako seznam úkolů (zadání 04 kap. 3–4, 13 kap. 7 a 10.4).
 
 - Nálezy: G6/G7 z lintu a z hlaviček kódu, G1–G5, G8–G12 podle 04 kap. 4 a 10 kap. 9.
 - Report `Maintenance/reports/audit_RRRR-MM-DD.md` (šablona 07 kap. 7) + `.json` ([{code, severity, target,
@@ -16,10 +16,14 @@
 - G5 i u balíčků kontextu (`Maintenance/context/`), které by nové složení změnilo; audit obnoví `doc_index.json`.
 - G5 u profilu `Roles/<Role>.md` bez `role_base` nebo se starším než poslední verze s příznakem `roles`
   v manifestu běžícího core (zadání 0.17).
+- G5 u úkolu pro roli (`code: role:<Role>`) otevřeného déle než `queue_task_days`; datum vzniku = první commit
+  s řádkem úkolu v `queue.md` (zadání 0.24, 13 kap. 10.17).
 - G14 dlouhý dokument (informace, jen report; zadání 0.21): (a) dokument v `Docs/` nad `doc_summary_chars` bez
   `## Souhrn`, (b) poznámka nad `doc_split_chars` → rozdělit, (c) aktivní předání nad `handover_max_chars`; znaky
   těla bez frontmatteru a generovaných bloků, `Maintenance/` a `Dashboard/` se nepočítají.
-Instance bez herní vrstvy: G1–G4, G10, G12 a zralost se nepočítají.
+- G15 asset (zadání 0.25, 0.26): karty assetů proti kódu podle `asset_sources.yaml` (modul `library`) a proti
+  poslednímu čtení z UE `ue_assets.json` (modul `ue_assets`); upozornění do fronty, informace jen do reportu.
+Instance bez herní vrstvy: G1–G4, G10, G12, G15 a zralost se nepočítají.
 """
 from __future__ import annotations
 
@@ -196,6 +200,28 @@ class Auditor:
                          f"bez změny od {stale[0].isoformat()} (déle než {self.doc_days} dní), "
                          f"entita {stale[2]} se od té doby změnila ({stale[1].isoformat()}, changes.md)")
 
+    def role_task_checks(self) -> None:
+        """G5: úkol pro roli (`code: role:<Role>`) ve stavu `open` déle než `queue_task_days` (13 kap. 10.17,
+        zadání 0.24). Datum vzniku = commit, ve kterém se řádek úkolu poprvé objevil v `queue.md` (git jen čte);
+        necommitnutý úkol je nový. Mimo git se kontrola přeskočí s upozorněním."""
+        p = self.v.root / QUEUE_REL
+        if not p.is_file():
+            return
+        tasks = [it for it in parse_queue(p.read_text(encoding="utf-8")) if it.role and it.state_value == "open"]
+        if not tasks:
+            return
+        seen = gitinfo.first_seen(p, [it.id for it in tasks])
+        if seen is None:
+            self.r.warnings.append("G5 úkolů pro role přeskočeno: fronta není v gitu (datum vzniku úkolu nejde určit)")
+            return
+        limit = int(self.v.config.get("queue_task_days") or 14)
+        for it in tasks:
+            d = as_date(seen.get(it.id))
+            if d and (self.day - d).days > limit:
+                self.add("G5", it.id, self.v.project_rel(p),
+                         f"úkol pro roli {it.role} otevřený {(self.day - d).days} dní (od {d.isoformat()}, "
+                         f"práh queue_task_days {limit}): {it.target}")
+
     def long_doc_checks(self) -> None:
         """G14 dlouhý dokument (04 kap. 4, 13 kap. 10.13; zadání 0.21)."""
         cfg = self.v.config
@@ -328,6 +354,19 @@ class Auditor:
             lines.append("- Obnova: `hestia.py ue_query --emit --all --apply`, spustit v editoru, "
                          "`ue_query --import --all --apply`, `hubs --apply`")
         self.r.unreal = lines
+
+    def asset_checks(self, idx) -> None:
+        """G15 (04 kap. 4, 13 kap. 10.18, 10.19): karty assetů proti kódu (s manifestem) a proti čtení z UE."""
+        from . import assets, library, ue_assets
+        cards = assets.cards(self.v, self.m)
+        found = []
+        if idx.library is not None:
+            found += library.g15(self.v, self.m, idx.library, cards, self.day)
+        elif idx.library_info and cards:
+            self.r.warnings.append(idx.library_info)
+        found += ue_assets.g15(self.v, cards, self.day)
+        for severity, target, file, msg in found:
+            self.add("G15", target, file, msg, severity=severity)
 
     def context_checks(self) -> None:
         """G5: balíček kontextu starší než zdroje (13 kap. 10.10); jinak se Maintenance/context/ nekontroluje."""
@@ -494,7 +533,9 @@ class Auditor:
             self.lore_checks()
             self.maturity_table()
             self.ue_checks(idx.files)
+            self.asset_checks(idx)
         self.stale_checks()
+        self.role_task_checks()
         self.long_doc_checks()
         self.compiled_checks()
         self.role_base_checks()

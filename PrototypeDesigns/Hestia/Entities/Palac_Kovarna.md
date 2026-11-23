@@ -91,11 +91,36 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Kovarna.json` · 
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 2, in_progress 2, generated 0, imported 13, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinRammedEarth]] | requested | none |
+| [[MI_RuinSoot]] | requested | none |
+| [[MI_RuinWood]] | in_progress | none |
+| [[SM_RuinPost_A]] | in_progress | none |
+| [[MI_RuinDaub]] | imported | none |
+| [[MI_RuinWattle]] | imported | none |
+| [[MI_RuinWood_EndGrain]] | imported | none |
+| [[SM_RuinChimney_A]] | imported | none |
+| [[SM_RuinForkHead_A]] | imported | none |
+| [[SM_RuinGutterBark_A]] | imported | none |
+| [[SM_RuinGutter_A]] | imported | none |
+| [[SM_RuinLog_A]] | imported | none |
+| [[SM_RuinPlank_A]] | imported | none |
+| [[SM_RuinPole_A]] | imported | none |
+| [[SM_RuinSmokeHood_A]] | imported | none |
+| [[SM_RuinTimber_A]] | imported | none |
+| [[SM_RuinWattlePanel_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0016 (G2, [[Palac_Kovarna]]): očekávaná doména gameplay (kind structure) bez target_gameplay ani u potomků; očekávaná doména structures (kind structure) bez target_structures ani u potomků
 - Fronta T-0007 (–, [[navrh_palac_kovarna]]): kap. 0 duplicitní se [[stav_palac_kovarna]]: sjednotit (M22)
 
 <!-- hestia:generated:end -->

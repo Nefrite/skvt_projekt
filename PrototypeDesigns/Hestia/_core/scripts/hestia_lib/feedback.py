@@ -3,7 +3,7 @@ zadání 0.22, CR-031).
 
 - Vstup: položky `queue.md` s `kind: proposal` a `code: hestia` nebo `code: hestia:<kategorie>`, které nejsou
   uzavřené (`state` jiný než `done`, `rejected`); `--id P-0001` (opakovatelné) omezí výběr.
-- Tvar `proposal` (12 kap. 4.5): `<role>: co se stalo (doklad: …) → navrhovaná změna`.
+- Tvar `proposal` (12 kap. 4.5): `<role>: co se stalo (doklad: …; dopad: …) → navrhovaná změna` (`dopad:` volitelně).
 - Formální kontrola: (1) doklad (text v závorce „doklad: …“, jinak wikilink nebo cesta v textu) je dohledatelný:
   wikilink na existující poznámku, existující cesta v projektu, ve vaultu nebo v `_core/`, nebo jméno
   poznámky v backtickách; (2) duplicita: ID položky v popisu řádku `structure_log.md`, nebo tam je shodný text
@@ -11,8 +11,8 @@ zadání 0.22, CR-031).
 - Kategorie z `code` (`hestia:missing`), nebo `--category P-0001=missing` (přednost); platné podle 05 kap. 7.3
   (výčet `structure_log_category`). Bez kategorie, s neplatnou kategorií nebo s nedohledaným dokladem se položka
   jen vypíše.
-- `--apply`: řádek `| dnes | kategorie | <role>: <co se stalo> (<ID>) | doklad: <doklad> | <změna> | |` na konec
-  logu a položka `state: done`, `closed` = dnes; duplicita se jen uzavře (odkaz na existující řádek ve výpisu).
+- `--apply`: řádek `| dnes | kategorie | <role>: <co se stalo> (<ID>; doklad: <doklad>) | <dopad> | <změna> | |`
+  na konec logu (*dopad* z volitelné části `dopad:` podnětu, jinak prázdný; zadání 0.24.1) a položka `state: done`, `closed` = dnes; duplicita se jen uzavře (odkaz na existující řádek ve výpisu).
   Log se jen připisuje, ve frontě se mění jen `state` a `closed` (13 kap. 7).
 """
 from __future__ import annotations
@@ -33,6 +33,8 @@ LOG_REL = "Maintenance/structure_log.md"
 CLOSED_STATES = {"done", "rejected"}
 ARROW_RE = re.compile(r"\s*(?:→|->)\s*")
 DOKLAD_RE = re.compile(r"\(\s*doklad:\s*(.+?)\)\s*", re.I)
+DOPAD_SPLIT_RE = re.compile(r"\s*;\s*dopad:\s*", re.I)               # (doklad: …; dopad: …), zadání 0.24.1
+DOPAD_RE = re.compile(r"\(\s*dopad:\s*(.+?)\)\s*", re.I)
 PATH_RE = re.compile(r"`([^`]+)`|((?:/|\b)[\w.\-]+(?:/[\w.\-]+)+|\b[\w.\-]+\.(?:md|json|yaml|yml|py|base|css))")
 
 
@@ -53,6 +55,7 @@ class Proposal:
     what: str
     doklad: str
     change: str
+    dopad: str = ""
     category: str = ""
     problems: list[str] = field(default_factory=list)
     duplicate: dict | None = None
@@ -60,13 +63,28 @@ class Proposal:
 
 def parse_proposal(text: str) -> tuple[str, str, str, str]:
     """(role, co se stalo, doklad, navrhovaná změna) z tvaru 12 kap. 4.5."""
+    role, what, doklad, _dopad, change = parse_parts(text)
+    return role, what, doklad, change
+
+
+def parse_parts(text: str) -> tuple[str, str, str, str, str]:
+    """(role, co se stalo, doklad, dopad, navrhovaná změna) z tvaru 12 kap. 4.5
+    `<role>: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna`; `dopad:` je volitelný (zadání 0.24.1)."""
     parts = ARROW_RE.split(text, maxsplit=1)
     left, change = (parts[0], parts[1]) if len(parts) == 2 else (text, "")
-    doklad = ""
+    doklad = dopad = ""
     m = DOKLAD_RE.search(left)
     if m:
         doklad = m.group(1).strip()
         left = (left[:m.start()] + " " + left[m.end():]).strip()
+        dm = DOPAD_SPLIT_RE.search(doklad)
+        if dm:
+            dopad, doklad = doklad[dm.end():].strip(" ;,."), doklad[:dm.start()].strip(" ;,")
+    if not dopad:                                            # samostatná závorka (dopad: …)
+        dm = DOPAD_RE.search(left)
+        if dm:
+            dopad = dm.group(1).strip(" ;,.")
+            left = (left[:dm.start()] + " " + left[dm.end():]).strip()
     role, what = "", left.strip()
     m = re.match(r"^([A-Za-zÀ-ž_][\wÀ-ž_ \-]{0,40}?):\s*(.+)$", left.strip())
     if m:
@@ -79,7 +97,7 @@ def parse_proposal(text: str) -> tuple[str, str, str, str]:
             pm = PATH_RE.search(text)
             if pm:
                 doklad = pm.group(0)
-    return role, what.rstrip(" ;,."), doklad, change.strip()
+    return role, what.rstrip(" ;,."), doklad, dopad, change.strip()
 
 
 def doklad_found(vault: Vault, doklad: str) -> bool:
@@ -143,8 +161,8 @@ def plan(vault: Vault, ids: list[str] | None, cats: dict[str, str]) -> tuple[lis
             continue
         if ids and it.id not in ids:
             continue
-        role, what, doklad, change = parse_proposal(it.proposal)
-        p = Proposal(it.id, it.line, role, what, doklad, change)
+        role, what, doklad, dopad, change = parse_parts(it.proposal)
+        p = Proposal(it.id, it.line, role, what, doklad, change, dopad)
         code_cat = it.code.split(":", 1)[1].strip() if ":" in it.code else ""
         p.category = cats.get(it.id) or code_cat
         if not p.category:
@@ -170,9 +188,10 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     bad = [p for p in items if p.problems and not p.duplicate]
     cs = ChangeSet(vault.project_root)
     if ok or dups:
+        # doklad v popisu, dopad z části `dopad:` podnětu (zadání 0.24.1, nález P18; 13 kap. 10.14)
         new_rows = [format_line([day.isoformat(), p.category,
-                                 (f"{p.role}: " if p.role else "") + f"{p.what} ({p.id})",
-                                 f"doklad: {p.doklad}", p.change, ""]) for p in ok]
+                                 (f"{p.role}: " if p.role else "") + f"{p.what} ({p.id}; doklad: {p.doklad})",
+                                 p.dopad, p.change, ""]) for p in ok]
         lp, qp = vault.root / LOG_REL, vault.root / QUEUE_REL
         if new_rows:
             if not lp.is_file():
@@ -186,7 +205,7 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
 
     def entry(p: Proposal) -> dict:
         return {"id": p.id, "category": p.category or None, "role": p.role, "what": p.what, "doklad": p.doklad,
-                "change": p.change, "problems": p.problems, "duplicate": p.duplicate}
+                "dopad": p.dopad, "change": p.change, "problems": p.problems, "duplicate": p.duplicate}
     payload = {"command": "feedback_log", "applied": bool(args.apply and not cs.empty),
                "logged": [entry(p) for p in ok], "duplicates": [entry(p) for p in dups],
                "skipped": [entry(p) for p in bad], "changes": cs.summary()}

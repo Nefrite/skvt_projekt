@@ -15,6 +15,15 @@ items:
     zone: "Entities/"
     template: tpl_entity.md
 
+  - id: asset
+    description: Karta knihovního assetu (mesh, materiál, textura, Blueprint); požadavek, výroba a stav (zadání 0.23)
+    game_section: required
+    required_fields: [type, updated, asset_status, requested_by, requested, asset_kind, asset_category, used_by]
+    optional_fields: [owner, priority, depends_on, superseded_by, aliases, tags, envelope, stand_in, asset_source,
+                      ue_path, variants]                                # podle asset_status kontroluje lint (13 kap. 10.16)
+    zone: "Assets/<asset_category>/"
+    template: tpl_asset.md
+
   - id: scratch
     description: Nezpracovaný nápad nebo brainstorm; z inboxu nebo psaný přímo
     game_section: optional

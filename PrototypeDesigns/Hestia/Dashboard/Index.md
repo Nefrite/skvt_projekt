@@ -41,12 +41,10 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - [[predani_palac_obydli_6_zarubne]] – [[Palac_Obydli]]
 - [[predani_palac_obydli_7_vybaveni]] – [[Palac_Obydli]]
 
-**Otevřené otázky:** do 14 dní 13 · starší 0 · bez data 0
+**Otevřené otázky:** do 14 dní 16 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-23 · Curator · Brana · doplněno target_structures 4, target_gameplay 0 · chat:L5_target
-- 2026-11-23 · Curator · Brana_Straz · doplněno target_structures 4, target_gameplay 4 · chat:L5_target
 - 2026-11-23 · Curator · Guesthouse · doplněno target_structures 4, target_gameplay 4 · chat:L5_target
 - 2026-11-23 · Curator · Les_Lapikus · doplněno target_environment 4, target_paths 4, target_narrative 0 · chat:L5_target
 - 2026-11-23 · Curator · Nadvori_Stan · doplněno target_structures 4, target_gameplay 0 · chat:L5_target
@@ -55,6 +53,8 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - 2026-11-23 · Curator · Strazni_Vez · doplněno target_structures 4, target_gameplay 4 · chat:L5_target
 - 2026-11-23 · Curator · Udoli_Reky · doplněno target_environment 4, target_paths 4, target_narrative 0 · chat:L5_target
 - 2026-11-23 · Curator · Vez_Pristresek · doplněno target_structures 4, target_gameplay 0 · chat:L5_target
+- 2026-11-23 · Curator · Les_Lapikus · doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) · chat:L5_target
+- 2026-11-23 · Curator · Udoli_Reky · doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) · chat:L5_target
 
 <!-- hestia:generated:end -->
 

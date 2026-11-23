@@ -7,9 +7,13 @@
   (*Execute Python Script*); skript přes `_core/scripts/hestia_ue.py` zapíše surový výsledek
   `Maintenance/ue/ue_result_<id>.json`. U `--entity` se čtou i potomci s pravidlem (součet za potomky).
   Skript je přenosný (zadání 0.15.4): cesty k `_core/scripts` a k výsledku odvozuje z `__file__`, absolutní cestu
-  stroje, kde běží core, neobsahuje; výpis pro editor uvádí cestu relativně ke kořeni projektu.
+  stroje, kde běží core, neobsahuje; výpis pro editor uvádí cestu relativně ke kořeni projektu. Po `import hestia_ue`
+  volá `importlib.reload` (editor drží dříve načtený modul; zadání 0.24.1).
 - `ue_query --import [soubor]`: ověří výsledek, doplní souhrn (vlastní actory, za potomky) a uloží report na entitu
-  `Maintenance/reports/ue_<entita>.json`. Novější report starším nepřepíše.
+  `Maintenance/reports/ue_<entita>.json`. Novější report starším nepřepíše. Výsledek bez `format_version` nebo se
+  starší verzí, než má tento core, odmítne se zprávou „restartuj editor, nebo spusť skript znovu“ (kód 1).
+- `ue_query --assets --emit [--category K] [--asset JMÉNO] [--all-library]`: čtení knihovních assetů (zadání 0.26,
+  13 kap. 10.19; modul `ue_assets`); `--import` výsledek assetů pozná a uloží `Maintenance/reports/ue_assets.json`.
 Pravidla: jmenovité položky (`items`) mají přednost před `defaults` podle `kind` (`{entity}` = ID entity); actor
 patří entitě s nejdelší shodou vzoru (počítá `hestia_ue.py`, proto dostane pravidla všech entit).
 Záloha bez editoru (`UnrealEditor-Cmd … -run=pythonscript -script=<skript>`) jen v README; core ji nespouští.
@@ -22,7 +26,7 @@ import json
 from pathlib import Path
 
 from .changeset import ChangeSet
-from .errors import EXIT_OK, UsageError
+from .errors import EXIT_FINDINGS, EXIT_OK, UsageError
 from .fileio import display_path, read_text, to_posix
 from .model import Model
 from .util import today
@@ -32,6 +36,10 @@ UE_DIR = "Maintenance/ue"
 REPORTS = "Maintenance/reports"
 LIMIT = 500
 FORMAT = 1
+# verze výstupu čtecího modulu, kterou má tento core (= hestia_ue.FORMAT_VERSION; test hlídá shodu). Výsledek se
+# starší verzí (nebo bez ní) vznikl dříve načteným modulem v běžícím editoru → --import ho odmítne (zadání 0.24.1)
+FORMAT_VERSION = 3                                  # 3 = čtení assetů (zadání 0.26)
+STALE_MODULE_MSG = "restartuj editor, nebo spusť skript znovu"
 PATH_STAGE1 = "etapa 1 (skript v editoru)"
 
 
@@ -200,11 +208,13 @@ def request(vault: Vault, m: Model, entity: str | None, all_: bool) -> dict:
 def script_text(req: dict, result_name: str) -> str:
     """Přenosný skript (zadání 0.15.4, CR_2026-11-21_ue_query_cesty_ve_skriptu): žádná absolutní cesta stroje, kde
     běží core; `_core/scripts` a výsledek odvodí ze svého umístění `<Hestia>/Maintenance/ue/` (`__file__`)."""
+    assets = req.get("kind") == "assets"
+    what = "Assety (13 kap. 10.19)" if assets else f"Entita: {req['id']}"
+    sel = "assets" if assets else ("all" if req["id"] == "all" else f"entity {req['id']}")
     return "\n".join([
         "# hestia:ue_query – vygenerovaný čtecí skript, needitovat (zadání 13, kap. 10.11). Jen čtení.",
-        f"# Entita: {req['id']}. Spusť v editoru Unreal: Tools → Execute Python Script. Výsledek načti:",
-        f"#   python <Hestia>/_core/scripts/hestia.py ue_query --import --"
-        + ("all" if req["id"] == "all" else f"entity {req['id']}") + " --apply",
+        f"# {what}. Spusť v editoru Unreal: Tools → Execute Python Script. Výsledek načti:",
+        f"#   python <Hestia>/_core/scripts/hestia.py ue_query --import --{sel} --apply",
         "# Cesty se odvozují z umístění skriptu (<Hestia>/Maintenance/ue/); skript je přenosný mezi stroji.",
         "import json",
         "import sys",
@@ -216,7 +226,10 @@ def script_text(req: dict, result_name: str) -> str:
         "    raise SystemExit('hestia:ue_query: skript spusť jako soubor (Execute Python Script), chybí __file__')",
         "VAULT = HERE.parents[1]",
         "sys.path.insert(0, str(VAULT / '_core' / 'scripts'))",
+        "import importlib  # noqa: E402",
         "import hestia_ue  # noqa: E402",
+        "# editor drží dříve načtený modul v sys.modules; reload načte verzi z _core (zadání 0.24.1)",
+        "hestia_ue = importlib.reload(hestia_ue)",
         "",
         f"REQUEST = json.loads({json.dumps(req, ensure_ascii=False)!r})",
         f"hestia_ue.run(REQUEST, str(HERE / {result_name!r}))",
@@ -275,8 +288,18 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     cs = ChangeSet(vault.project_root)
     if bool(args.emit) == (args.import_file is not None):
         raise UsageError("ue_query: zadej právě jedno z --emit, --import")
+    assets_mode = bool(getattr(args, "assets", False))
+    if not assets_mode and (getattr(args, "category", None) or getattr(args, "asset", None)
+                            or getattr(args, "all_library", False)):
+        raise UsageError("ue_query: --category, --asset a --all-library patří k --assets")
+    if assets_mode and (args.entity or args.all):
+        raise UsageError("ue_query: --assets nejde s --entity ani --all")
     if args.emit:
-        req = request(vault, m, args.entity, args.all)
+        if assets_mode:
+            from . import ue_assets
+            req = ue_assets.request(vault, args)
+        else:
+            req = request(vault, m, args.entity, args.all)
         script = vault.root / UE_DIR / f"ue_query_{req['id']}.py"
         result = vault.root / UE_DIR / f"ue_result_{req['id']}.json"
         cs.write(script, script_text(req, result.name))
@@ -287,24 +310,40 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
             warnings.append("ve vaultu chybí _core/scripts/hestia_ue.py; skript v editoru ho nenajde (aktualizuj core)")
         rel = editor_path(vault, script)
         verb = "zapsán" if args.apply else "zapsal by se (dry-run, zapiš s --apply)"
-        lines = [f"ue_query --emit {req['id']}: čtecí skript {verb} → {UE_DIR}/{script.name} "
-                 f"({len(req['targets'])} entit: {', '.join(req['targets'])})",
+        if assets_mode:
+            what = f"{len(req['assets'])} assetů: {', '.join(a['name'] for a in req['assets'])}"
+            then = "--assets"
+        else:
+            what = f"{len(req['targets'])} entit: {', '.join(req['targets'])}"
+            then = "--all" if req["id"] == "all" else f"--entity {req['id']}"
+        lines = [f"ue_query --emit {req['id']}: čtecí skript {verb} → {UE_DIR}/{script.name} ({what})",
                  f"V editoru Unreal: Tools → Execute Python Script → {rel} (relativně ke kořeni projektu; "
                  "v dialogu ho vyber ve složce projektu)",
-                 f"Pak: hestia.py ue_query --import --{'all' if req['id'] == 'all' else 'entity ' + req['id']} --apply"]
+                 f"Pak: hestia.py ue_query --import {then} --apply"]
         lines += [f"upozornění: {w}" for w in warnings]
         payload = {"command": "ue_query", "mode": "emit", "applied": bool(args.apply), "id": req["id"],
                    "script": f"{UE_DIR}/{script.name}", "result": f"{UE_DIR}/{result.name}", "editor_path": rel,
-                   "targets": req["targets"], "warnings": warnings}
+                   "targets": req.get("targets") or [a["name"] for a in req.get("assets") or []],
+                   "warnings": warnings}
         return EXIT_OK, payload, "\n".join(lines)
 
-    src = _result_file(vault, args.import_file, args.entity, args.all)
+    src = _result_file(vault, args.import_file, "assets" if assets_mode else args.entity, args.all)
     if not src.is_file():
         raise UsageError(f"ue_query --import: výsledek neexistuje: {src}")
     try:
         raw = json.loads(read_text(src))
     except ValueError:
         raise UsageError(f"ue_query --import: výsledek není platný JSON: {src}")
+    fv = raw.get("format_version") if isinstance(raw, dict) else None
+    if isinstance(raw, dict) and raw.get("hestia_ue") == FORMAT and not (isinstance(fv, int) and fv >= FORMAT_VERSION):
+        msg = (f"ue_query --import {to_posix(src.name)}: výsledek má starší verzi čtecího modulu "
+               f"({fv if fv is not None else 'bez format_version'}, core čeká {FORMAT_VERSION}); vznikl dříve "
+               f"načteným hestia_ue v běžícím editoru – {STALE_MODULE_MSG}. Nic se nezapsalo.")
+        return EXIT_FINDINGS, {"command": "ue_query", "mode": "import", "applied": False, "written": [],
+                               "skipped": [], "warnings": [msg], "source": to_posix(src),
+                               "format_version": fv, "expected_format_version": FORMAT_VERSION}, msg
+    if isinstance(raw, dict) and raw.get("kind") == "assets":
+        return import_assets(args, vault, raw, src, cs)
     reports, warnings = build_reports(vault, m, raw)
     written, skipped = [], []
     for e, rep in reports.items():
@@ -327,4 +366,35 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     lines.append("Blok ## Stav v UE v hubech obnoví hestia.py hubs --apply.")
     payload = {"command": "ue_query", "mode": "import", "applied": bool(args.apply and written), "written": written,
                "skipped": skipped, "warnings": warnings, "source": to_posix(src)}
+    return EXIT_OK, payload, "\n".join(lines)
+
+
+def import_assets(args, vault: Vault, raw: dict, src: Path, cs: ChangeSet) -> tuple[int, dict, str]:
+    """Výsledek čtení assetů → `Maintenance/reports/ue_assets.json` (13 kap. 10.19)."""
+    from . import ue_assets
+    old = ue_assets.load_report(vault)
+    if old and str(old.get("generated") or "") > str(raw.get("generated") or ""):
+        msg = (f"{ue_assets.REPORT_REL}: existující report je novější ({old.get('generated')}); nepřepisuji")
+        return EXIT_OK, {"command": "ue_query", "mode": "import", "kind": "assets", "applied": False,
+                         "written": [], "skipped": [ue_assets.REPORT_REL], "warnings": [msg],
+                         "source": to_posix(src)}, msg
+    rep, warnings = ue_assets.build_report(vault, raw, old)
+    changed = cs.write(vault.root / ue_assets.REPORT_REL, json.dumps(rep, ensure_ascii=False, indent=1) + "\n")
+    if args.apply and not cs.empty:
+        cs.apply()
+    counts = {s: 0 for s in ue_assets.STATES}
+    for name in raw.get("assets") or {}:
+        counts[rep["assets"][name]["state"]] += 1
+    verb = "zapsáno" if args.apply else "zapsalo by se (dry-run, zapiš s --apply)"
+    lines = [f"ue_query --import {to_posix(src.name)}: report assetů {verb}: "
+             + (ue_assets.REPORT_REL if changed else "beze změny"),
+             "- " + ", ".join(f"{s} {n}" for s, n in counts.items())]
+    lines += [f"- {n}: {rep['assets'][n]['state']}" + (f" ({'; '.join(rep['assets'][n]['why'])})"
+                                                       if rep["assets"][n]["why"] else "")
+              for n in sorted(raw.get("assets") or {})]
+    lines += [f"Upozornění: {w}" for w in warnings]
+    lines.append("Blok ## Stav v UE v kartách obnoví hestia.py hubs --apply.")
+    payload = {"command": "ue_query", "mode": "import", "kind": "assets", "applied": bool(args.apply and changed),
+               "written": [ue_assets.REPORT_REL] if changed else [], "skipped": [], "warnings": warnings,
+               "counts": counts, "source": to_posix(src)}
     return EXIT_OK, payload, "\n".join(lines)

@@ -1,7 +1,7 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 modules: [start, metadata, file_safety, knowhow_lookup, question, inbox_import]
 context: []
 knowhow_tags: []
@@ -44,11 +44,12 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální dopl
 - **Generované věci:** `asset_index`, `hubs`, `compose_role` nejdřív bez `--apply`, pak s `--apply`. Schválení netřeba.
 - **Metadata hromadně:** více než 10 souborů jen se schválením seznamu změn z dry-run.
 - **Taxonomie:** nová doména, kategorie, krok nebo `kind` → `taxonomy_local/` (po schválení) a záznam `taxonomy` do `structure_log.md`.
-- **Podněty pro Hestii** (`queue.md`, `kind: proposal`, `code: hestia` nebo `code: hestia:<kategorie>`; od projektových rolí a Knihovníka): převáděj příkazem `hestia.py feedback_log` (dry-run vypíše otevřené podněty s formální kontrolou: doklad dohledatelný, duplicita podle ID nebo textu změny; `--apply` připíše řádky do `structure_log.md` a položky uzavře, duplicitu jen uzavře). Kategorii bere z `code`; chybí-li, zadej ji podle obsahu `--category P-0001=<kategorie>`. Ručně (tvar řádku níže, v popisu ID položky, `state: done`, datum v `closed`) jen když příkaz hlásí chybu. Zda z podnětu bude CR, rozhoduje člověk při exportu.
+- **Podněty pro Hestii** (`queue.md`, `kind: proposal`, `code: hestia` nebo `code: hestia:<kategorie>`; od projektových rolí a Knihovníka): tvar `proposal` = `<role>: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna`, část `dopad:` je volitelná (12 kap. 4.5); převáděj příkazem `hestia.py feedback_log` (dry-run vypíše otevřené podněty s formální kontrolou: doklad dohledatelný, duplicita podle ID nebo textu změny; `--apply` připíše řádky do `structure_log.md` (doklad v popisu, *dopad* z části `dopad:`, jinak prázdný) a položky uzavře, duplicitu jen uzavře). Kategorii bere z `code`; chybí-li, zadej ji podle obsahu `--category P-0001=<kategorie>`. Ručně (tvar řádku níže, v popisu ID položky, `state: done`, datum v `closed`) jen když příkaz hlásí chybu. Zda z podnětu bude CR, rozhoduje člověk při exportu.
+- **Úkoly pro role** (`queue.md`, `kind: task`, `code: role:<Role>`; 12 kap. 4.7): práci, která patří jiné roli, zapiš na konec fronty jako úkol pro roli (`target`, `proposal` s dokladem, `priority: medium`, `state: open`). Cílová role ho vidí v `agenda --role <Role>`, `agenda` bez role ukáže úkoly všech rolí. Neplatný úkol (role neexistuje, práce odpadla) uzavři jako `rejected` s dokladem v hlášení; `priority` měníš jen na pokyn GameDesignera. `lint` hlásí G6 u role bez profilu, `audit` G5 u úkolu otevřeného déle než `queue_task_days`.
 - **Export CR:** měsíčně se člověkem projdi `structure_log.md` a připrav change requesty do `outbox/` (`hestia.py export_cr`, nejdřív dry-run, pak `--apply`; jeden záznam = jeden CR); doplň *Dopad* a *Alternativy*; odesílá člověk.
 
 ## Formáty výstupů
-- Položka fronty (`queue.md`): `id | priority | kind | code | target | proposal | state`; ID `F-0001` (nález), `P-0001` (návrh), `T-0001` (úkol); v místě měníš jen `state`.
+- Položka fronty (`queue.md`): `id | priority | kind | code | target | proposal | state | closed`; ID `F-0001` (nález), `P-0001` (návrh), `T-0001` (úkol; pro roli `code: role:<Role>`); v místě měníš jen `state` a `closed` (u úkolu pro roli `priority` jen na pokyn GameDesignera).
 - Záznam `structure_log.md`: `| datum | kategorie | popis | dopad | navrhovaná změna | |`; buňka `cr` prázdná, dokud se o CR nerozhodne, pak `cr: <ID>` (vyplní `export_cr`) nebo `cr: none` (s člověkem posouzeno, CR nebude); pomlčku ani jiný text nepsat; kategorie `friction`, `missing`, `surplus`, `collision`, `taxonomy`, `works`, `idea`.
 - Řádek `changes.md`: `| RRRR-MM-DD | Curator | <entita nebo soubor> | <co> | <zdroj> |`.
 - Change request: šablona `tpl_change_request`.

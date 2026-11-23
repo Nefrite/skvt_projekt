@@ -71,11 +71,40 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Nadvori_Stan.json` · e
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 0, in_progress 1, generated 0, imported 19, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinWood]] | in_progress | none |
+| [[MI_RuinBark]] | imported | none |
+| [[MI_RuinCanvas]] | imported | none |
+| [[MI_RuinIron]] | imported | none |
+| [[MI_RuinRope]] | imported | none |
+| [[MI_RuinSackcloth]] | imported | none |
+| [[MI_RuinStraw]] | imported | none |
+| [[MI_RuinWool]] | imported | none |
+| [[SM_RuinBarkStrip_A]] | imported | none |
+| [[SM_RuinBundle_A]] | imported | none |
+| [[SM_RuinCampBed_A]] | imported | none |
+| [[SM_RuinCanvasTent_A]] | imported | none |
+| [[SM_RuinChestSmall_A]] | imported | none |
+| [[SM_RuinForkHead_A]] | imported | none |
+| [[SM_RuinLashing_A]] | imported | none |
+| [[SM_RuinPoleBark_A]] | imported | none |
+| [[SM_RuinPole_A]] | imported | none |
+| [[SM_RuinRope_A]] | imported | none |
+| [[SM_RuinStakeSmall_A]] | imported | none |
+| [[SM_RuinStump_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0013 (G2, [[Nadvori_Stan]]): očekávaná doména gameplay (kind object) bez target_gameplay; očekávaná doména structures (kind object) bez target_structures
+- Fronta T-0035 (role:Builder, [[Nadvori_Stan]]): Typ `tent` (stojky, hřeben, kolíky, šňůry jako řetěz [[SM_RuinRope_A]]) a stříška stanu typem `bark_roof` (typ zakládá [[predani_brana_straz_striska_stavitel]]); plachtu [[SM_RuinCanvasTent_A]] posadit podle `center` v `meshes/textile/SM_RuinCanvasTent_A.json` (doklad: [[CHECKLIST_assets_navrhy]] kap. 6.5, 7; [[navrh_nadvori_stan]]; entita `on_hold`)
 
 <!-- hestia:generated:end -->
 

@@ -86,7 +86,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac.json` · etapa 1 
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0015 (G2, [[Palac]]): očekávaná doména gameplay (kind structure) bez target_gameplay ani u potomků; očekávaná doména structures (kind structure) bez target_structures ani u potomků
+_Žádné otevřené otázky z dokumentů, fronty ani scratch._
 
 <!-- hestia:generated:end -->
 

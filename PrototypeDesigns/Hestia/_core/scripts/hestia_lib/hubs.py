@@ -6,6 +6,9 @@ Generuje jen obsah bloků `hestia:generated` (mimo ně nic, `updated` se neměn�
 - `Dashboard/Index.md` [R2]: kořenové entity se zralostí, aktivní předání, otázky podle stáří, poslední změny,
 - generované pohledy `Dashboard/views/generated/` (13 kap. 10.9): matice entita × doména a mapa podle místa,
   pokud je instance má (manifest `taxonomy/views.yaml`).
+- karta assetu meshe (13 kap. 10.18, 10.19): blok *Z kódu* ze sekce `library` v `asset_index.json` (jen s manifestem
+  `asset_sources.yaml`) a blok *Stav v UE* z `Maintenance/reports/ue_assets.json` (jen asset, který report má);
+  značky doplní pod ruční text sekce.
 Soubory a kroky bere jen z `asset_index.json` (13 kap. 7). Chybějící blok se nedoplňuje, jen ohlásí.
 """
 from __future__ import annotations
@@ -15,11 +18,15 @@ from dataclasses import dataclass, field
 
 from . import CORE_ROOT
 from . import asset_index as ai
+from . import assets as assets_mod
+from . import library as library_mod
 from . import ue as ue_mod
+from . import ue_assets as ue_assets_mod
 from . import views as views_mod
-from .blocks import ensure_block, replace_block
+from .blocks import add_section, ensure_block, replace_block
 from .changeset import ChangeSet
 from .errors import EXIT_OK, UsageError
+from .links import headings
 from .logs import log_entries, parse_queue
 from .model import DOC_TYPES, INACTIVE_VALIDITY, Model
 from .util import today as _today
@@ -28,10 +35,12 @@ from .vault import Note, Vault
 
 INDEX_REL = "Dashboard/Index.md"
 UE_HEADING = "Stav v UE"                         # blok z posledního čtení Unrealu (13 kap. 10.11)
+ASSETS_HEADING = assets_mod.HUB_HEADING          # karty assetů s entitou v used_by (13 kap. 10.16)
 CHANGES_REL = "Maintenance/changes.md"
 QUEUE_REL = "Maintenance/queue.md"
 # mají vlastní místo: kroky v Postupu stavby, scratch v otázkách, know-how a předání ve vlastních skupinách
 NOT_IN_DOCUMENTS = ("step", "scratch", "knowhow", "handover")
+CARD_BEFORE = {"Z kódu": "Stav v UE", "Stav v UE": "Vizuálně ověřeno"}   # chybějící sekce karty (07 kap. 20)
 
 
 @dataclass
@@ -218,22 +227,53 @@ class Hubs:
         out += [f"- {' · '.join(x for x in e if x)}" for e in lines[-10:]] or ["_Žádné._"]
         return "\n".join(out)
 
+    # ------------------------------------------------------------ karty assetů
+    def card_targets(self, cards: list, rep: dict | None, only: set | None) -> list:
+        """Bloky *Z kódu* (meshe, s manifestem) a *Stav v UE* (asset v reportu) v kartách (13 kap. 10.18, 10.19)."""
+        lib = (self.index or {}).get("library")
+        globals_ = (self.index or {}).get("library_globals") or {}
+        lib_by_name = {e["name"]: e for e in lib or []}
+        tol = library_mod.tolerance(self.v)
+        out = []
+        for c in cards:
+            note = self.v.notes.get(c.rel)
+            if note is None or (only is not None and c.name not in only):
+                continue
+            blocks = []
+            if lib is not None and c.kind == "mesh":
+                blocks.append((library_mod.CODE_HEADING, library_mod.code_block(c, note.fm, lib, globals_, tol)))
+            ue_block = ue_assets_mod.card_block(self.v, c, rep, lib_by_name, globals_, self.day)
+            if ue_block is not None:
+                blocks.append((ue_assets_mod.UE_HEADING, ue_block))
+            if blocks:
+                out.append((note, blocks))
+        return out
+
     # ------------------------------------------------------------ běh
     def plan(self, cs: ChangeSet, only: list[str] | None = None) -> HubsResult:
         res = HubsResult()
         only_set = set(only or [])
         targets: list[tuple[Note, list[tuple[str | None, str]]]] = []
         ue_rules = ue_mod.rules(self.v, self.m)
+        asset_cards = assets_mod.cards(self.v, self.m)
+        ue_assets_rep = ue_assets_mod.load_report(self.v)
+        outdated = ue_assets_mod.outdated_names(self.v, ue_assets_rep)
         for name, n in sorted(self.m.entities.items()):
             if only and name not in only_set:
                 continue
-            targets.append((n, [("Domény", self.domains_block(n)), ("Dokumenty", self.documents_block(n)),
-                                ("Postup stavby", self.build_block(n)), ("Soubory", self.files_block(n)),
-                                (UE_HEADING, ue_mod.hub_block(self.v, self.m, name, ue_rules, self.day)),
-                                ("Otevřené otázky", self.questions_block(n))]))
+            blocks = [("Domény", self.domains_block(n)), ("Dokumenty", self.documents_block(n)),
+                      ("Postup stavby", self.build_block(n)), ("Soubory", self.files_block(n)),
+                      (UE_HEADING, ue_mod.hub_block(self.v, self.m, name, ue_rules, self.day))]
+            # ## Assety: sekce vznikne jen u entity s kartou v used_by (13 kap. 10.16, zadání 0.23)
+            asset_block = assets_mod.hub_block(name, asset_cards, outdated)
+            if asset_block is not None or ASSETS_HEADING in {h for lvl, h, _ in headings(n.body) if lvl == 2}:
+                blocks.append((ASSETS_HEADING, asset_block or "_Žádná karta assetu nemá entitu v `used_by`._"))
+            blocks.append(("Otevřené otázky", self.questions_block(n)))
+            targets.append((n, blocks))
         for n in sorted(self.m.notes, key=lambda x: x.name):
             if n.type == "step" and n.fm.get("step_kind") == "build" and (not only or n.name in only_set):
                 targets.append((n, [("Skripty", self.step_block(n))]))
+        targets += self.card_targets(asset_cards, ue_assets_rep, only_set if only else None)
         idx = self.v.notes.get(INDEX_REL)
         if idx is not None:
             targets.append((idx, [("Přehled", self.index_block())]))
@@ -246,7 +286,13 @@ class Hubs:
         for note, blocks in targets:
             text = cs.current(note.path)
             for heading, content in blocks:
-                if heading == UE_HEADING:                       # značky pod ruční text (13 kap. 10.3, 10.11)
+                if note.type == "asset":                        # karta: sekce a značky pod ruční text
+                    text, _added = add_section(text, heading, before=CARD_BEFORE[heading])
+                    text, _added = ensure_block(text, heading)
+                elif heading == UE_HEADING:                       # značky pod ruční text (13 kap. 10.3, 10.11)
+                    text, _added = ensure_block(text, heading)
+                if heading == ASSETS_HEADING:                   # sekce před Otevřenými otázkami (13 kap. 10.16)
+                    text, _added = add_section(text, heading, before="Otevřené otázky")
                     text, _added = ensure_block(text, heading)
                 new, status = replace_block(text, heading, content)
                 if status != "ok":

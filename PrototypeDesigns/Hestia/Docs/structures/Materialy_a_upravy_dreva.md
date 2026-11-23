@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-23
 aliases: []
 # hra
 domain: structures
@@ -25,3 +25,8 @@ Kulatina je s kůrou (provizorní stavby, nezpracovaný materiál) i loupaná (n
 Úpravy dřeva: `tar` (dehet, venkovní a masivní), `raw` (bez úpravy, vnitřní plochy), `oil` (jemná práce), `blood` (mořené krví, venkovní), `old` (staré, zašedlé), `peeled` (čerstvě loupaná kulatina, světlá).
 
 Materiály navíc ke dřevu a kameni: kůra, čela kulatiny, lano, plátno, proutí, mazanina, výplň spár srubu, železo (s rzí a bez), kůže, pískovec, dřevěné uhlí, sláma, houně. **Chybí:** saze, udusaná hlína, třísky na zemi, oheň a kouř (VFX), tesařské kozy, hromady materiálu staveniště, plachta stanu.
+
+## Otevřené otázky
+- [ ] Přiřazení kůra / bez kůry podle staveb (návrh v [[CHECKLIST_assets_navrhy]] kap. 2.1): potvrdit, hlavně zábradlí brány, žlaby a rozpracovanou kulatinu — Steward, 2026-11-23
+- [ ] Úprava loupané kulatiny srubu podle etapy: v etapě 1 `peeled`, v etapě 2 `peeled`, nebo `raw` (už ztmavlá)? Krov `raw` → `tar`? ([[CHECKLIST_assets_navrhy]] kap. 5) — Steward, 2026-11-23
+- [ ] VFX ohně a kouře (výheň, ohniště, komíny) a saze: teď, nebo později s atmosférou? Pro kovárnu rozhodnuto „zatím ne“ ([[Rozhodnuti_zricenina]], 15. 11. 2026) — Steward, 2026-11-23

@@ -1,4 +1,4 @@
-# Nálezy G1–G14 (zadání 04, kap. 4). informace = info, upozornění = warning, chyba = error.
+# Nálezy G1–G15 (zadání 04, kap. 4). informace = info, upozornění = warning, chyba = error.
 taxonomy: findings
 spec: "04 kap. 4"
 items:
@@ -16,3 +16,4 @@ items:
   - {code: G12, severity: warning, label: "Povinný dokument instance chybí nebo má prázdnou povinnou sekci"}
   - {code: G13, severity: info,    label: "Připraveno ke stavbě: režim build, hloubka návrhu ≥ target_x, realizace depth_x < target_x"}
   - {code: G14, severity: info,    label: "Dlouhý dokument: bez ## Souhrn nad doc_summary_chars, nad doc_split_chars rozdělit, předání nad handover_max_chars"}
+  - {code: G15, severity: warning, label: "Asset: nesoulad karet assetů s kódem, Content/, daty staveb a Unrealem (asset_sources.yaml); úroveň podle nálezu"}

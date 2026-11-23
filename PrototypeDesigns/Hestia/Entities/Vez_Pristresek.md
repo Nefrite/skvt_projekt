@@ -79,12 +79,34 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Vez_Pristresek.json` ·
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 0, in_progress 4, generated 0, imported 10, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinWood]] | in_progress | none |
+| [[SM_RuinCanvasVezGable_A]] | in_progress | none |
+| [[SM_RuinCanvasVez_A]] | in_progress | none |
+| [[SM_RuinPost_A]] | in_progress | none |
+| [[MI_RuinBark]] | imported | none |
+| [[MI_RuinCanvas]] | imported | none |
+| [[MI_RuinRope]] | imported | none |
+| [[SM_RuinForkHead_A]] | imported | none |
+| [[SM_RuinLashing_A]] | imported | none |
+| [[SM_RuinLogBark_A]] | imported | none |
+| [[SM_RuinPlank_A]] | imported | none |
+| [[SM_RuinPoleBark_A]] | imported | none |
+| [[SM_RuinRope_A]] | imported | none |
+| [[SM_RuinTimber_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0025 (G2, [[Vez_Pristresek]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
-- Fronta F-0026 (G4, [[Vez_Pristresek]]): status built bez platného dokumentu state
+_Žádné otevřené otázky z dokumentů, fronty ani scratch._
 
 <!-- hestia:generated:end -->
 

@@ -1,13 +1,13 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: GameDesign | core: 0.21.1 | date: 2026-11-22 -->
-<!-- sources: Roles/GameDesign.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/hestia_feedback.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/design_template.md -->
+<!-- role: GameDesign | core: 0.23.0 | date: 2026-11-23 -->
+<!-- sources: Roles/GameDesign.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/asset_request.md, _core/agents/modules/handover_out.md, _core/agents/modules/hestia_feedback.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md, Roles/modules/design_template.md -->
 # GameDesign – instrukce pro chat
 
 Kompilát pro režim `chat`: kontrakt (L0), moduly (L1) a profil role (L2) v jednom souboru. Vidíš-li vault (`Hestia/_core/agents/CONTRACT.md` v pracovní nebo připojené složce), přepni do režimu `vault` podle modulu `start` a tento kompilát dál neber jako zdroj. Kompilát je pro relaci bez přístupu k vaultu: co k tasku potřebuješ, dostaneš v předání nebo na vyžádání, platí verze ve vaultu a změny vracíš zápisem Hestia (modul `chat_entry`).
 
 Vynechané moduly (jen režim `vault`): `file_safety`, `metadata`, `asset_header`.
 
-Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: `lookup`, `file_info`, `completeness`, `canon_check`, `inbox_triage`, `ue_lookup`. Když nastane jejich spouštěč, předej věc Knihovníkovi (zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2).
+Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: `lookup`, `file_info`, `completeness`, `canon_check`, `inbox_triage`, `ue_lookup`, `asset_work`. Když nastane jejich spouštěč, předej věc roli, která modul má (u modulů Knihovníka Knihovníkovi, u `asset_work` Crafterovi; zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2).
 
 ## Kontrakt Hestia (L0)
 
@@ -42,6 +42,8 @@ Režim určuje přístup k vaultu: `vault` (vidíš soubory projektu, zapisuješ
 | otázka na realizaci v Unrealu (jen čtení) | `ue_lookup` |
 | zápis do souborů projektu | `file_safety`, `metadata` |
 | nový nebo změněný skript | `asset_header` |
+| potřebný knihovní asset chybí, graybox místo něj | `asset_request` |
+| výroba nebo změna knihovního assetu | `asset_work` |
 | předání jiné roli nebo relaci | `handover_out` |
 | problém s Hestií jako nástrojem | `hestia_feedback` |
 | práce v režimu chat | `chat_entry` |
@@ -62,7 +64,7 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 **Nové prostředí** (nový chat, nová VM, jiný stroj): před prvním skriptem spusť `hestia.py doctor` a podle výsledku prostředí doplň (návod u každé chyby; Python ≥ 3.11 a PyYAML mimo projekt a vault). Upozornění na připojenou složku → dlouhé běhy `update_core` s `--work-copy --apply`.
 
-**Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
+**Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`, úkoly pro tvou roli z `queue.md` (`code: role:<Role>`) a u rolí s assety karty k výrobě nebo tvé požadavky). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
 
 **Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
 
@@ -210,6 +212,31 @@ Otázka v chatu; nezodpovězená otázka zaevidovaná v dokumentu; zodpovězená
 - Zapsat otázku do `queue.md`. Otázka není nález údržby.
 - Nechat zodpovězenou otázku otevřenou nebo odpověď zapsat jen k otázce, ne do textu.
 
+## Modul `asset_request` (L1)
+
+### Kdy
+Tvá práce potřebuje knihovní asset (mesh, materiál, textura, Blueprint pro stavby nebo vybavení), který v `Assets/` není, nebo místo něj stavíš graybox. Modul mají v profilu role, které assety potřebují (Architect, Builder, Furnisher, GameDesign); vyrábí role s `asset_work` (12 kap. 4.6).
+
+### Postup
+1. **Nejdřív hledej:** `hestia.py find "<co hledáš>" --type asset` (název, alias, entita v `used_by`). Existuje-li karta, doplň svou entitu do `used_by` a skonči.
+2. **Nová karta** podle `_core/templates/tpl_asset.md` (07 kap. 20): soubor `Assets/<asset_category>/<jméno v UE>.md` (`SM_RuinChestSmall_A.md`), `asset_status: requested`, `requested_by` = tvá role, `requested` = dnes, `asset_kind`, `asset_category`, `used_by` (entity), `priority` (`medium`, `high` jen když asset blokuje práci).
+3. **`owner` vyplň vždy** (výrobce, 12 kap. 4.6 bod 3): jednoduchý asset (díl stavby z existujícího generátoru jen s jinými parametry nebo na míru: trám, prkno, sloup, kámen, kulatina; bez nového materiálu a textury) smí vyrobit Builder; props, textil, nový tvar, nový materiál nebo textura, UV a sloty vyrábí Crafter. Výchozí a v pochybnosti `owner: Crafter`. Builder, který jednoduchý asset potřebuje sám, založí kartu rovnou s `owner: Builder`.
+4. Vyplň *Účel a použití* (k čemu asset je, kde stojí) a *Požadavek*: `envelope` = **rozměr grayboxu** (`[x, y, z]` cm, obal, do kterého se asset vejde; z návrhu nebo grayboxu), nebo odkaz na návrh; technické údaje, které víš. Společné konvence jen odkazem na `Assets/Konvence_assetu.md`.
+5. **Graybox:** ve stavbě smí zatím stát graybox v rozměru `envelope` (`stand_in: graybox`). Prototyp může u grayboxu skončit se zaevidovaným požadavkem; kdy se asset vyrobí, je věc priority.
+6. **Rozměry pro rozvržení a data** bereš z karty: `envelope` pro graybox, skutečný rozměr z bloku *Z kódu* (po `generated`). Do vlastních dat je neopisuj bez odkazu na kartu; když výrobce `envelope` zvětší, dostaneš úkol ve frontě.
+7. **Náhrada grayboxu:** až je karta `imported`, nahraď graybox assetem a nastav v kartě `stand_in: none`.
+8. Kartu zkontroluj `hestia.py lint <karta>` (povinná pole a sekce podle stavu) a uzavři task `task_close` (řádek do `changes.md`). V režimu `chat` dej kartu do zápisu Hestia.
+
+### Výstup
+Karta `requested` s `owner` v `Assets/<asset_category>/`, nebo doplněné `used_by` existující karty; své otevřené požadavky vidíš v `agenda --role <Role>`.
+
+### Známé pasti
+- Nová karta bez hledání: vzniknou dvě karty jednoho assetu.
+- Karta bez `owner`: uvidí ji jen `asset_default_owner` (výchozí Crafter); Builder ji v agendě nemá.
+- Rozměry assetu opsané do dat stavby bez odkazu na kartu: po změně assetu se rozejdou.
+- Stav dál než `requested` nastavuje role s `asset_work`; `verified` jen GameDesigner.
+- Kartu nemaž: nepotřebný asset uzavře GameDesigner nebo Crafter jako `rejected` s důvodem v *Poznámkách*.
+
 ## Modul `handover_out` (L1)
 
 ### Kdy
@@ -245,7 +272,7 @@ Narazíš na problém nebo možnost zlepšení Hestie jako nástroje: kontrakt, 
 
 ### Postup
 1. Change request nezakládáš a do `structure_log.md` ani `outbox/` nepíšeš: CR mimo kanál Curatora (`export_cr`) by nikdo nezpracoval.
-2. **Režim vault:** připiš na konec `Maintenance/queue.md` položku `kind: proposal`, `code: hestia`, nebo s navrženou kategorií logu `code: hestia:<kategorie>` (`friction`, `missing`, `surplus`, `collision`, `taxonomy`, `works`, `idea`), `target` = čeho se týká (entita, dokument nebo část Hestie, např. `tpl_state`, `audit G10`), `proposal` = `<role>: co se stalo (doklad: <odkaz>) → navrhovaná změna`, kde `<odkaz>` je wikilink na poznámku nebo cesta v backtickách, za ním případně řádek nebo datum (např. „doklad: `Maintenance/changes.md` 2026-11-21“; samotný popis řádku bez odkazu `feedback_log` nezapíše), `priority: medium` (`high` jen když podnět blokuje práci), `state: open`. Schválení GameDesignera k zápisu není potřeba.
+2. **Režim vault:** připiš na konec `Maintenance/queue.md` položku `kind: proposal`, `code: hestia`, nebo s navrženou kategorií logu `code: hestia:<kategorie>` (`friction`, `missing`, `surplus`, `collision`, `taxonomy`, `works`, `idea`), `target` = čeho se týká (entita, dokument nebo část Hestie, např. `tpl_state`, `audit G10`), `proposal` = `<role>: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna`, kde `<odkaz>` je wikilink na poznámku nebo cesta v backtickách, za ním případně řádek nebo datum (např. „doklad: `Maintenance/changes.md` 2026-11-21“; samotný popis řádku bez odkazu `feedback_log` nezapíše) a `dopad:` je volitelný (co problém způsobuje, např. „hledání trvá dlouho“; `feedback_log` ho dá do sloupce *Dopad*), `priority: medium` (`high` jen když podnět blokuje práci), `state: open`. Schválení GameDesignera k zápisu není potřeba.
 3. **Režim chat:** podnět dej do zápisu Hestia, sekce *Podněty pro Hestii* (modul `chat_entry`); do fronty ho zapíše ten, kdo zápis zapracuje.
 4. Podnět uveď v hlášení na konci tasku (`task_close`, krok 11).
 
@@ -255,7 +282,7 @@ Položka fronty `P-…` s kódem `hestia` nebo `hestia:<kategorie>` (nebo sekce 
 ### Známé pasti
 - Založit CR přímo v `outbox/` nebo v repozitáři projektu: zůstane mimo kanál a nikdo ho nezpracuje.
 - Podnět bez dokladu, nebo s dokladem, který nejde dohledat (wikilink na existující poznámku nebo existující cesta v backtickách): `feedback_log` ho nezapíše. Doklad „řádek ve changes.md“ bez odkazu neprojde.
-- Zaměnit podnět s otázkou (`question`) nebo s nálezem údržby (zapisuje Auditor).
+- Zaměnit podnět s otázkou (`question`) nebo s nálezem údržby (zapisuje Auditor), nebo s prací pro jinou roli (úkol pro roli `code: role:<Role>`, `write_rules.md`).
 
 ## Modul `chat_entry` (L1)
 
@@ -414,6 +441,7 @@ Když se hodí obrázek, popiš ho v dokumentu slovy (pohled, co kde je, rozměr
 Hrad [[Lapikus]] a jeho okolí v [[Lapikus_Region]]: herní využití, příběh, dostavby druhého zabydlení. Návrhy architekta jsou v `Docs/structures/navrh_*.md`, otevřené náměty ve `Scratch/`.
 
 ### Postup specifický pro projekt
+- **Požadavek na asset** (modul `asset_request`): asset, který návrh potřebuje a v `Assets/` není, zapiš jako kartu `requested`; **`owner` vyplň vždy** (výchozí `Crafter`; jednoduchý díl stavby z existujícího generátoru `Builder`), dokud to neříkají moduly core (WI-45).
 Do kódu (`*.py`, `zrlib`) nahlížet nemusíš. Když přesto potřebuješ zjistit, jak něco funguje, piš to jako otázku pro stavitele.
 
 ### Vstupy a výstupy

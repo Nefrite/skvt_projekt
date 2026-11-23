@@ -12,7 +12,7 @@ taxonomy: fields
 spec: "01 kap. 9.1"
 
 groups:
-  all: &all [entity, scratch, crosscut, concept, design, spec, handover, state, guide, step, checklist,
+  all: &all [entity, asset, scratch, crosscut, concept, design, spec, handover, state, guide, step, checklist,
              reference, decision, knowhow, role, agent_module, report, queue, log, change_request]
   documents: &documents [scratch, crosscut, concept, design, spec, handover, state, guide, step, checklist,
                          reference, decision, knowhow, role, agent_module]
@@ -25,7 +25,10 @@ items:
   # --- orchestrace ---
   - {name: type,           section: orchestration, applies_to: *all,       value: "enum:type",     required: always}
   - {name: validity,       section: orchestration, applies_to: *documents, value: "enum:validity", required: always}
-  - {name: superseded_by,  section: orchestration, applies_to: *documents, value: wikilink,        required: "validity == superseded"}
+  # u karty assetu při asset_status: superseded (kontrola karty, 13 kap. 10.16)
+  - {name: superseded_by,  section: orchestration, applies_to: [scratch, crosscut, concept, design, spec, handover, state, guide, step,
+                                                                checklist, reference, decision, knowhow, role, agent_module, asset],
+     value: wikilink, required: "validity == superseded"}
   - {name: for_role,       section: orchestration, applies_to: [handover], value: list,            required: no}   # jména profilů rolí; agenda, 13 kap. 10.13 (zadání 0.21)
   - {name: derived_from,   section: orchestration, section_entity: game, applies_to: *documents_entity, value: wikilink_list, required: no}
   - {name: alternative_to, section: orchestration, applies_to: *documents_entity, value: wikilink_list, required: no}
@@ -44,6 +47,14 @@ items:
   - {name: context,        section: orchestration, applies_to: [role],     value: wikilink_list,   required: no}
   - {name: combines,       section: orchestration, applies_to: [role],     value: list, items: text, required: no}
   - {name: role_base,      section: orchestration, applies_to: [role],     value: text,            required: project_role}   # povinné u profilu Roles/<Role>.md, ne u rolí core (12 kap. 2.1, 13 kap. 10.6a)
+  # karta assetu (01 kap. 9.1, 9.5; zadání 0.23); pole a sekce podle asset_status kontroluje lint karty
+  # (validate.check_asset, 13 kap. 10.16), tady jen pole povinná vždy
+  - {name: asset_status,   section: orchestration, applies_to: [asset], value: "enum:asset_status", required: always}
+  - {name: requested_by,   section: orchestration, applies_to: [asset], value: text,               required: always}
+  - {name: requested,      section: orchestration, applies_to: [asset], value: date,               required: always}
+  - {name: owner,          section: orchestration, applies_to: [asset], value: text,               required: no}   # od in_progress (lint karty)
+  - {name: priority,       section: orchestration, applies_to: [asset], value: "enum:priority",    required: no}   # výchozí medium
+  - {name: depends_on,     section: orchestration, applies_to: [asset], value: wikilink_list,      required: no}
   - {name: master,         section: orchestration, applies_to: [concept],  value: "enum:master",   required: no}
   - {name: module_id,      section: orchestration, applies_to: [agent_module], value: text,        required: always}
   - {name: trigger,        section: orchestration, applies_to: [agent_module], value: text,        required: always}
@@ -78,7 +89,14 @@ items:
   - {name: "depth_<domain>",  section: game, applies_to: [entity], value: depth, required: "target_<domain> present in build mode"}
   - {name: "target_<domain>", section: game, applies_to: [entity], value: depth, required: no}
   - {name: "target_mode_<domain>", section: game, applies_to: [entity], value: "enum:target_mode", required: no}
-  - {name: ue_path,  section: game, applies_to: [entity], value: text, required: no}
+  - {name: ue_path,  section: game, applies_to: [entity, asset], value: text, required: no}   # u karty od imported (lint karty)
+  - {name: asset_kind,     section: game, applies_to: [asset], value: "enum:asset_kind", required: always}
+  - {name: asset_category, section: game, applies_to: [asset], value: text, required: always}   # = podsložka Assets/<asset_category>/
+  - {name: used_by,        section: game, applies_to: [asset], value: wikilink_list, required: always, allow_empty: true}   # prázdné jen s účelem v těle
+  - {name: envelope,       section: game, applies_to: [asset], value: list, required: no}        # [x, y, z] cm; u requested bez odkazu na návrh (lint karty)
+  - {name: stand_in,       section: game, applies_to: [asset], value: "enum:stand_in", required: no}   # výchozí none
+  - {name: asset_source,   section: game, applies_to: [asset], value: text, required: no}   # od generated (lint karty)
+  - {name: variants,       section: game, applies_to: [asset], value: list, items: text, required: no}
   - {name: scale,    section: game, applies_to: [entity], value: text, required: no}
   - {name: bounds,   section: game, applies_to: [entity], value: text, required: no}
   - {name: grid_ref, section: game, applies_to: [entity], value: text, required: no}

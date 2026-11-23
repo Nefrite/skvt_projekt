@@ -85,11 +85,31 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana_Straz.json` · et
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 0, in_progress 2, generated 0, imported 9, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinWood]] | in_progress | none |
+| [[SM_RuinPost_A]] | in_progress | none |
+| [[MI_RuinBark]] | imported | none |
+| [[SM_RuinBarkStrip_A]] | imported | none |
+| [[SM_RuinLashing_A]] | imported | none |
+| [[SM_RuinLog_A]] | imported | none |
+| [[SM_RuinPlank_A]] | imported | none |
+| [[SM_RuinPoleBark_A]] | imported | none |
+| [[SM_RuinPole_A]] | imported | none |
+| [[SM_RuinStake_A]] | imported | none |
+| [[SM_RuinTimber_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0004 (G2, [[Brana_Straz]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
+- Fronta F-0030 (G3, [[Brana_Straz]]): bez dokumentu v doméně gameplay (target_gameplay 4)
 
 <!-- hestia:generated:end -->
 

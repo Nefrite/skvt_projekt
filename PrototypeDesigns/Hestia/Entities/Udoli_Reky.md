@@ -33,7 +33,7 @@ target_narrative: 0
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
 | environment | – | 2 | 4 | build | −2 |
-| paths | – | – | 4 | build | −4 |
+| paths | – | 0 | 4 | build | −4 |
 | narrative | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
@@ -77,7 +77,7 @@ _Zatím žádné dokumenty._
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0023 (G2, [[Udoli_Reky]]): očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths
+- Fronta F-0035 (G3, [[Udoli_Reky]]): bez dokumentu v doméně environment (target_environment 4); bez dokumentu v doméně paths (target_paths 4)
 
 <!-- hestia:generated:end -->
 

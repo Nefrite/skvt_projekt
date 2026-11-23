@@ -1,4 +1,4 @@
-{"generated": "2026-11-22T09:26:07", "project_root": "/", "generated_files": 0, "files": [
+{"generated": "2026-11-23T18:20:52", "project_root": "/", "generated_files": 0, "files": [
   {"path": "/PrototypeDesigns/Characters/01_sitting/seat_place_selected.py", "role": "entry", "entity": "Characters", "entities": ["Characters"], "build_step": "01_sitting", "domains": ["gameplay"], "rule": "folder", "docs": []},
   {"path": "/PrototypeDesigns/Characters/01_sitting/seat_report.py", "role": "entry", "entity": "Characters", "entities": ["Characters"], "build_step": "01_sitting", "domains": ["gameplay"], "rule": "folder", "docs": []},
   {"path": "/PrototypeDesigns/Characters/01_sitting/seat_test_station.py", "role": "entry", "entity": "Characters", "entities": ["Characters"], "build_step": "01_sitting", "domains": ["gameplay"], "rule": "folder", "docs": []},
@@ -126,7 +126,7 @@
   {"path": "/PrototypeDesigns/Lapikus/06_furnishing/capture_furnishing.py", "role": "entry", "entity": "Lapikus", "entities": ["Lapikus"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "folder", "docs": []},
   {"path": "/PrototypeDesigns/Lapikus/06_furnishing/furn_data.py", "role": "entry", "entity": "Lapikus", "entities": ["Lapikus"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "folder", "docs": []},
   {"path": "/PrototypeDesigns/Lapikus/06_furnishing/furnishing.json", "role": "data", "entity": "Lapikus", "entities": ["Lapikus"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "folder", "docs": []},
-  {"path": "/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py", "role": "entry", "entity": "Guesthouse", "entities": ["Guesthouse"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "name", "docs": ["navrh_guesthouse_vybaveni", "stav_guesthouse", "06_furnishing"]},
+  {"path": "/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py", "role": "entry", "entity": "Guesthouse", "entities": ["Guesthouse"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "name", "docs": ["navrh_guesthouse_vybaveni", "stav_guesthouse", "06_furnishing", "Katalog_props"]},
   {"path": "/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py", "role": "entry", "entity": "Guesthouse", "entities": ["Guesthouse"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "name", "docs": ["navrh_guesthouse_vybaveni", "stav_guesthouse", "06_furnishing"]},
   {"path": "/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py", "role": "entry", "entity": "Palac_Kovarna", "entities": ["Palac_Kovarna"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "name", "docs": []},
   {"path": "/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna_Capture.py", "role": "entry", "entity": "Palac_Kovarna", "entities": ["Palac_Kovarna"], "build_step": "06_furnishing", "domains": ["structures"], "rule": "name", "docs": []},

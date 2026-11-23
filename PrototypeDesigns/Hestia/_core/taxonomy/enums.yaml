@@ -15,6 +15,10 @@ items:
   - {name: master,       spec: "01 kap. 9.1", open: true,  values: [lore]}
   - {name: modes,        spec: "01 kap. 9.1", open: false, values: [vault, chat]}
   - {name: compile,      spec: "12 kap. 2",   open: false, values: [all, listed]}     # do kompilátu všem / jen uvedeným (zadání 0.14.2)
+  - {name: asset_status, spec: "01 kap. 9.1", open: false, values: [requested, in_progress, generated, imported, verified, rejected, superseded]}   # 01 kap. 9.5 (zadání 0.23)
+  - {name: priority,     spec: "01 kap. 9.1", open: false, values: [high, medium, low]}       # karta assetu
+  - {name: asset_kind,   spec: "01 kap. 9.1", open: false, values: [mesh, material, texture, blueprint]}
+  - {name: stand_in,     spec: "01 kap. 9.1", open: false, values: [graybox, none]}
   # --- navazující dokumenty ---
   - {name: asset_role,             spec: "10 kap. 6",   open: false, values: [entry, library, generator, spec, check, data, output, ue_asset]}
   - {name: cr_status,              spec: "11 kap. 3",   open: false, values: [new, accepted, rejected, in_spec, in_pilot, released]}

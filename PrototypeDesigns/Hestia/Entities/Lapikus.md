@@ -49,12 +49,10 @@ Agregace z potomků (04 kap. 3):
 **structures**
 - [[README_ruin]] – design, depth 4, outdated
 - [[Zricenina_03_ruin_stav]] – state, depth 4, valid
-- [[CHECKLIST_assets_navrhy]] – checklist, valid
-- [[Katalog_props]] – reference, valid
 - [[Materialy_a_upravy_dreva]] – reference, valid
 - [[Pravidla_zabydleni]] – reference, valid
 - [[Rozhodnuti_zricenina]] – reference, valid
-- nahrazené nebo archivované: 1
+- nahrazené nebo archivované: 3
 
 **gameplay**
 - [[Pohyb_postavy_a_herni_mista]] – reference, valid
@@ -68,7 +66,7 @@ Agregace z potomků (04 kap. 3):
 |---|---|---|
 | [[03_ruin]] | `Zricenina_Brana_S_nahled.png`, `Zricenina_bloky_nahled.png`, `Zricenina_kameny_detail.png`, `Zricenina_kameny_koruny.png`, `Zricenina_koruna_nahled.png`, `Zricenina_lic_pred_po.png`, `Zricenina_strilna_preklad_pred_po.png`, `Zricenina_strilny_osteni_nahled.png`, `build_ruin_blocks.py`, `Obvod.py`, `detach_stones.py`, `gen_stones.py`, `manual_edits.json`, `ruin_layout.json`, `terrain_from_level.json`, `Zricenina_blockout_nahled.png`, `build_ruin.py`, `ruin_layout.json`, `navrh_vez_okna_podesta.png`, `navrh_vez_patra_strilny.png`, `navrh_vez_schody.png`, `navrh_vez_vyklenky_kvadry.png`, `ruin_layout_draft.json`, `build_ruin.py`, `check3d.py`, `check_blocks.py`, `decay.py`, `elev.py`, `export_level_layout.py`, `gen_layout.py`, `layout_from_level.json`, `massing.py`, `tower_spec.py` | [[README_ruin]], [[Zricenina_03_ruin_stav]] |
 | [[05_constructions]] | `Knihovna_meshe_nahled.png`, `Knihovna_textury_nahled.png`, `Kulatina_meshe_nahled.png`, `Kulatina_textury_nahled.png`, `Props_kovarna_nahled.png`, `Props_textury_nahled.png`, `Stan_luzko_nahled.png`, `Stan_luzko_slozena_nahled.png`, `Stan_plachta_nahled.png`, `Stan_truhlicka_nahled.png`, `Stan_vak_nahled.png`, `Stavby_brana_straz_nahled.png`, `Stavby_brana_straz_nahled_etapa1.png`, `Stavby_drevo_nahled.png`, `Stavby_ostroh_dostavba_nahled.png`, `Stavby_ostroh_nahled.png`, `Stavby_ostroh_podlaha_nahled.png`, `Stavby_ostroh_tramovi_nahled.png`, `Stavby_palac_kovarna_nahled.png`, `Stavby_palac_obydli_nahled.png`, `Stavby_palac_obydli_nahled_etapa1.png`, `Stavby_vez_nahled.png`, `Stavby_vez_pristresek_nahled.png`, `build_constructions.py`, `constructions.json`, `constructions_edits.json`, `Etapa.py`, `Sut.py` | – |
-| [[06_furnishing]] | `build_furnishing.py`, `capture_furnishing.py`, `furn_data.py`, `furnishing.json` | [[Katalog_props]] |
+| [[06_furnishing]] | `build_furnishing.py`, `capture_furnishing.py`, `furn_data.py`, `furnishing.json` | – |
 
 <!-- hestia:generated:end -->
 
@@ -164,11 +162,28 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Lapikus.json` · etapa 
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 0, in_progress 2, generated 0, imported 3, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinFace]] | in_progress | none |
+| [[SM_RuinAshlar]] | in_progress | none |
+| [[SM_RuinDressed_R12_A]] | imported | none |
+| [[SM_RuinStone_R12_A]] | imported | none |
+| [[SM_RuinStone_W_R12_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 - [x] Unreal (report `ue_Lapikus.json`, 2026-11-21): vlastní pravidlo `Ruin/Rampa` (rampa `Rampa_SZ` z `ruin_layout.json`) nenašlo žádný actor; hrad má 208 actorů za potomky. Je rampa v levelu (jiná složka, nebo ji blokový build zříceniny nestaví)? — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: rampa v levelu zatím není; pravidlo `Ruin/Rampa` zůstává
 <!-- hestia:generated:start -->
 
+- [[Materialy_a_upravy_dreva]]: Přiřazení kůra / bez kůry podle staveb (návrh v [[CHECKLIST_assets_navrhy]] kap. 2.1): potvrdit, hlavně zábradlí brány, žlaby a rozpracovanou kulatinu — Steward, 2026-11-23
+- [[Materialy_a_upravy_dreva]]: Úprava loupané kulatiny srubu podle etapy: v etapě 1 `peeled`, v etapě 2 `peeled`, nebo `raw` (už ztmavlá)? Krov `raw` → `tar`? ([[CHECKLIST_assets_navrhy]] kap. 5) — Steward, 2026-11-23
+- [[Materialy_a_upravy_dreva]]: VFX ohně a kouře (výheň, ohniště, komíny) a saze: teď, nebo později s atmosférou? Pro kovárnu rozhodnuto „zatím ne“ ([[Rozhodnuti_zricenina]], 15. 11. 2026) — Steward, 2026-11-23
 - [[Pravidla_zabydleni]]: **Etapy:** jak se ve hře přepnou (dvě verze levelu, skrytí a zobrazení sad actorů)? Stojí podesta brány už v etapě 1? — z AGENT_GameDesign_hrad, 2026-11-17
 - [[Pravidla_zabydleni]]: **Spaní v etapě 1:** kde spí ti, kdo nejsou na hlídce (stan na nádvoří, nebo 1. patro věže)? Od toho závisí, jestli bude `Nadvori_Stan`. — z AGENT_GameDesign_hrad, 2026-11-17
 - [[Pravidla_zabydleni]]: **Žebříky** (staveniště, půda domu): použitelné pro postavu, nebo jen kulisa? — z AGENT_GameDesign_hrad, 2026-11-17
@@ -184,12 +199,10 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Lapikus.json` · etapa 
 - Fronta F-0008 (G2, [[Lapikus]]): očekávaná doména gameplay (kind location) bez target_gameplay ani u potomků; očekávaná doména narrative (kind location) bez target_narrative ani u potomků; očekávaná doména npc (kind location) bez target_npc ani u potomků; očekávaná doména paths (kind location) bez target_paths ani u potomků; očekávaná doména structures (kind location) bez target_structures ani u potomků
 - Fronta T-0001 (–, [[README_ruin]]): porovnat se stavem [[Zricenina_03_ruin_stav]], pak rozhodnout o platnosti (M18, GameDesigner 2026-11-19)
 - Fronta T-0002 (–, [[README_ruin]]): kap. 6–7 rozpadnout do [[03_ruin]] (M18)
-- Fronta T-0003 (–, [[CHECKLIST_assets_navrhy]]): rozpad kap. 0, 7, 9 (M07)
 - Fronta T-0006 (–, [[Zricenina_03_ruin_stav]]): rozpad do stavů entit (M19, B11 pilotu)
 - Fronta T-0011 (–, [[FURNISHING]]): sloučit s [[06_furnishing]] (M08)
 - Fronta T-0012 (–, [[Kod_spousteni_kontroly_z_roli]]): zařadit do `Steps/` a `Steps/shared/` podle *Předzpracování* (B7)
 - Fronta T-0013 (–, [[Namety_dostavby]]): GameDesigner rozhodne, co dál (B7)
-- Fronta T-0024 (props:grain_long, [[Katalog_props]]): Uplatnit pravidlo směru let dřeva (léta podél nejdelšího rozměru dílu) na všechny props: v `tools/meshes/mesh_props.py` přepnout `GRAIN_DEFAULT = "long"`, přegenerovat props (`gen_meshes.py props`), zvednout `STONE_MESH_VERSION` u 31 props se změněným UV (mimo jiné nohy stolu, lůžek a stoličky, topůrka nářadí, dveře, okenice, truhly, bočnice a čela `SM_RuinBedLarge`), kontrola md5 tvarů beze změny a ukázka po tématech v UE (Jirka 22. 11. 2026: odloženo; hotové jsou `SM_RuinArmorStand` a sloupky `SM_RuinBedLarge`)
 - Scratch: [[FURNISHING]] (prepared)
 - Scratch: [[Kod_spousteni_kontroly_z_roli]] (prepared)
 - Scratch: [[Namety_dostavby]] (prepared)

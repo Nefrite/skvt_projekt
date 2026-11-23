@@ -85,7 +85,6 @@ Agregace z potomků (04 kap. 3):
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0009 (G2, [[Lapikus_Region]]): očekávaná doména environment (kind place) bez target_environment ani u potomků; očekávaná doména paths (kind place) bez target_paths ani u potomků
 - Fronta T-0010 (–, [[README_PROJEKT]]): zařadit ze Scratch podle navrženého zařazení (M01, B10 pilotu)
 - Scratch: [[README_PROJEKT]] (prepared)
 

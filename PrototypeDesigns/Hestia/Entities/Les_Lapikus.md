@@ -33,7 +33,7 @@ target_narrative: 0
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
 | environment | 4 | 1 | 4 | build | −3 |
-| paths | – | – | 4 | build | −4 |
+| paths | – | 0 | 4 | build | −4 |
 | narrative | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
@@ -85,7 +85,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Les_Lapikus.json` · et
 - Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: –
-- Pro srovnání `depth_*`: environment 1; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pro srovnání `depth_*`: environment 1, paths 0; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->
 
@@ -94,8 +94,8 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Les_Lapikus.json` · et
 - [x] Unreal (report `ue_Les_Lapikus.json`, 2026-11-21): v levelu není žádný actor s tagem `Zricenina_Alder` ve složce `Forest/Alders` (`04_forest/place_alders.py`). Olše nejsou rozmístěné, nebo jsou jinde (jiná složka, PCG)? Podle toho upravit pravidlo v `ue_map.yaml`; `depth_environment: 1` beze změny — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: les v levelu ještě neexistuje, je jen návrh game designu; pravidlo v `ue_map.yaml` zůstává pro budoucí realizaci
 <!-- hestia:generated:start -->
 
-- Fronta F-0010 (G2, [[Les_Lapikus]]): očekávaná doména environment (kind place) bez target_environment; očekávaná doména narrative (kind place) bez target_narrative; očekávaná doména paths (kind place) bez target_paths
 - Fronta T-0004 (–, [[README_forest]]): rozpad PCG a spouštění do [[04_forest]] (M14)
+- Fronta F-0032 (G3, [[Les_Lapikus]]): bez dokumentu v doméně paths (target_paths 4)
 
 <!-- hestia:generated:end -->
 

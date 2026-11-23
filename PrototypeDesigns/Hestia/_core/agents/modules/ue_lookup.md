@@ -6,7 +6,7 @@ requires: []
 modes: [vault, chat]
 compile: listed
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 # Čtení stavu v Unrealu
 
@@ -27,7 +27,8 @@ Potřebuješ vědět, co je v enginu skutečně postavené: otázka na realizaci
    - `pivot_far` v bloku `## Stav v UE` (kořen actoru dál od geometrie než `ue_pivot_far_cm`) je informace pro modelování v instanci (kořen sloučeného actoru daleko od stavby), ne nález ani úroveň realizace.
 5. Neshodu reportu s `depth_*` zapiš jako otázku nebo ji nech na auditu (G10). `depth_*` neměníš; mění ho ten, kdo realizoval, nebo GameDesigner.
 6. **Report a `state`:** při odpovědi o realizaci porovnej report se `state` entity. Je-li report novější a stavbu ukazuje, platí „v levelu je“ (s datem reportu), i když starší `state` píše „neověřeno“ nebo „neběželo“; rozpor řekni a starší text nepřebírej. Report nepotvrzuje vzhled ani funkci: ty platí jen z § *Vizuálně ověřeno* ve `state` (kdo, kdy). Když `state` měníš, doplň § *V levelu* podle reportu (stavby, datum reportu, odkaz). Hub to připomene v bloku `## Stav v UE`, audit jako G10 (12 kap. 3b.8, zadání 0.19).
-7. V chatu bez vaultu pracuj jen s reportem, který máš v balíčku kontextu. **Bez balíčku** řekni přesně, který potřebuješ: `hestia.py compose_context --entity <Entita> --apply` (hub entity s blokem `## Stav v UE`, tedy souhrn posledního reportu a jeho datum), nebo přístup k vaultu. Ve vaultu čti report `Maintenance/reports/ue_<entita>.json` přímo.
+7. **Je asset v UE?** (karty assetů, 13 kap. 10.19): report `Maintenance/reports/ue_assets.json` uvádí na asset `ue_path`, zda existuje, tagy verzí a stav `current` / `outdated` (verze v UE starší než v kódu, čeká na import) / `missing`; blok *Stav v UE* v kartě ho shrnuje s datem čtení. Nové čtení: `hestia.py ue_query --assets --emit --apply` (výchozí karty od `generated`; `--asset <jméno>`, `--category <kategorie>`, `--all-library`), spustit v editoru, `ue_query --import --assets --apply`, `hubs --apply`.
+8. V chatu bez vaultu pracuj jen s reportem, který máš v balíčku kontextu. **Bez balíčku** řekni přesně, který potřebuješ: `hestia.py compose_context --entity <Entita> --apply` (hub entity s blokem `## Stav v UE`, tedy souhrn posledního reportu a jeho datum), nebo přístup k vaultu. Ve vaultu čti report `Maintenance/reports/ue_<entita>.json` přímo.
 
 ## Výstup
 Stav entity v Unrealu se zdrojem (report a jeho datum) a srovnání s `depth_*`; v odpovědi `lookup` řádek ve *Zdrojích*.

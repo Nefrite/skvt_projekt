@@ -25,6 +25,11 @@ meshem, materiály, tagy, složkou a bounds.
   nezapočítají. Actor bez geometrie (BSP, světla) nebo s nečitelnou geometrií má rozsah z `get_actor_bounds`
   (`bounds_from: actor`). `pivot_offset` = vzdálenost kořene (`get_actor_location`) od středu rozsahu v cm;
   souhrn `pivot_far` = počet actorů s `pivot_offset` nad `pivot_far_cm` z požadavku (výchozí 500).
+- `format_version` ve výsledku (zadání 0.24.1, nález P18): verze výstupu modulu; čtecí skript po `import hestia_ue`
+  volá `importlib.reload`, protože editor drží dříve načtený modul v `sys.modules`.
+- Assety (zadání 0.26, CR-028; `FORMAT_VERSION` 3): požadavek `{"kind": "assets", "assets": [{name, ue_path}],
+  "tags": [ue_tag, ...]}` → na asset `EditorAssetLibrary.does_asset_exist` a u existujícího `get_metadata_tag`
+  pro každý tag; nic se neukládá ani nemaže, metadata se nenastavují, level se nemění.
 Dotaz „původ“ (actory podle skriptu) v etapě 1 není.
 """
 from __future__ import annotations
@@ -39,6 +44,10 @@ except ImportError:                     # pragma: no cover – mimo editor jen i
     unreal = None
 
 FORMAT = 1
+# verze výstupu modulu: zvyšuje se při změně obsahu výsledku; `ue_query --import` výsledek se starší verzí,
+# než má instalovaný core (`hestia_lib/ue.py`, FORMAT_VERSION), odmítne (zadání 0.24.1, nález P18)
+# 3 = čtení assetů (zadání 0.26, CR-028)
+FORMAT_VERSION = 3
 PLACEHOLDER_MESH = "/Engine/BasicShapes/"
 DEFAULT_MATERIALS = ("/Engine/EngineMaterials/", "/Engine/BasicShapes/BasicShapeMaterial")
 KINDS = ("static_mesh", "ism", "blueprint", "bsp", "other")
@@ -295,22 +304,56 @@ def collect(request: dict) -> dict:
                        "stats": stats(recs, prefix, ignore_all + list(ignore_items.get(e) or []), pivot_far_cm),
                        "actors": recs[:limit]}
     loaded = map_path()
-    return {"hestia_ue": FORMAT, "id": request.get("id"), "path": request.get("path") or "editor",
+    return {"hestia_ue": FORMAT, "format_version": FORMAT_VERSION, "id": request.get("id"), "path": request.get("path") or "editor",
             "generated": datetime.datetime.now().replace(microsecond=0).isoformat(),
             "unreal_version": engine_version(), "map": loaded, "expected_map": request.get("map") or "",
             "map_mismatch": bool(request.get("map")) and loaded != request.get("map"),
             "entities": entities}
 
 
+def asset_record(ue_path: str, tags: list) -> dict:
+    """Jeden asset: existuje a hodnoty metadat `tags` (jen čtení; `load_asset` asset nemění, nic se neukládá)."""
+    lib = unreal.EditorAssetLibrary
+    exists = bool(lib.does_asset_exist(ue_path))
+    values = {}
+    if exists:
+        try:
+            obj = lib.load_asset(ue_path)
+        except Exception:               # noqa: BLE001 – nečitelný asset: existuje, tagy neznámé
+            obj = None
+        for tag in tags:
+            try:
+                v = lib.get_metadata_tag(obj, tag) if obj is not None else None
+            except Exception:           # noqa: BLE001
+                v = None
+            values[tag] = _s(v) if v not in (None, "") else None
+    return {"ue_path": ue_path, "exists": exists, "tags": values}
+
+
+def collect_assets(request: dict) -> dict:
+    """Stav knihovních assetů (zadání 0.26, CR-028): `does_asset_exist` a `get_metadata_tag` pro `tags`."""
+    tags = [str(t) for t in request.get("tags") or []]
+    assets = {str(a["name"]): asset_record(str(a["ue_path"]), tags) for a in request.get("assets") or []}
+    return {"hestia_ue": FORMAT, "format_version": FORMAT_VERSION, "kind": "assets", "id": request.get("id"),
+            "path": request.get("path") or "editor",
+            "generated": datetime.datetime.now().replace(microsecond=0).isoformat(),
+            "unreal_version": engine_version(), "assets": assets}
+
+
 def run(request: dict, out_path: str) -> dict:
     """Přečte stav podle požadavku a zapíše výsledek JSON do `out_path` (jen čtení v editoru)."""
-    result = collect(request)
+    assets = request.get("kind") == "assets"
+    result = collect_assets(request) if assets else collect(request)
     with open(out_path, "w", encoding="utf-8", newline="\n") as f:
         json.dump(result, f, ensure_ascii=False, indent=1)
         f.write("\n")
-    total = sum(v["count"] for v in result["entities"].values())
-    msg = f"hestia_ue: {len(result['entities'])} entit, {total} actorů → {out_path}"
-    if result["map_mismatch"]:
+    if assets:
+        found = sum(1 for a in result["assets"].values() if a["exists"])
+        msg = f"hestia_ue: {len(result['assets'])} assetů, v UE {found} → {out_path}"
+    else:
+        total = sum(v["count"] for v in result["entities"].values())
+        msg = f"hestia_ue: {len(result['entities'])} entit, {total} actorů → {out_path}"
+    if not assets and result["map_mismatch"]:
         msg += f" (pozor: otevřená mapa {result['map']} není {result['expected_map']})"
     try:
         unreal.log(msg)

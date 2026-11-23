@@ -1,13 +1,16 @@
 ---
 # orchestrace
 type: checklist
-validity: valid
+validity: superseded
+superseded_by: "[[Konvence_assetu]]"
 updated: 2026-11-23
 # hra
 domain: structures
 entity: "[[Lapikus]]"
 ---
 # Checklist: assety a podklady pro nové návrhy (11/2026)
+
+> **Nahrazeno (P19, 2026-11-23):** assety (kap. 1, 2.2, 4, 5, 6) jsou karty v `Assets/` (vyrobené podle skutečnosti, chybějící jako `requested`), pravidla výroby v [[Konvence_assetu]]; nehotové typy staveb a úpravy dat (kap. 6.3, 6.4, 7, 8) jsou úkoly pro Buildera ve `Maintenance/queue.md` (`code: role:Builder`), pokud je nepokrývá aktivní předání; otevřené otázky (kap. 9, 2.1, 5) v [[Materialy_a_upravy_dreva]]. Dokument se dál neudržuje.
 
 Seznam všeho, co je potřeba **namodelovat, vygenerovat nebo připravit** pro návrhy ze 14. 11. 2026. Sestaveno z `new_designs/navrh_*.md` a ze stávajícího stavu kódu (`zrlib/config.py`, `03_ruin/blocks/gen_stones.py`, `05_constructions/build_constructions.py`). Stav: **verze 3 (21. 11. 2026).** Knihovní meshe kulatiny, textilu, výpletu a props kovárny a domu jsou hotové (☑). Zbývají props stanu, guesthouse a staveniště, část materiálů a typy staveb v 05. Pořadí prací je v kap. 11. Karty hotových props stanu a guesthouse (osy, funkční body, použití): [[Katalog_props]].
 

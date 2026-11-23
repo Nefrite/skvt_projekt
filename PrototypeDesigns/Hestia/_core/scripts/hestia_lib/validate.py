@@ -13,13 +13,23 @@ from __future__ import annotations
 import datetime as _dt
 import re
 
+from . import library, ue_assets
 from .findings import Finding
 from .links import extract_links, headings, links_in_value, wikilink_value
 from .taxonomy import FieldDef, is_empty
+from .util import as_list
 from .vault import Note, Vault
 
 _DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 PROJECT_ROLE_RE = re.compile(r"Roles/[^/]+\.md")         # required: project_role (zadání 0.17)
+# karta assetu (13 kap. 10.16, 07 kap. 20, 01 kap. 9.5)
+ASSET_PURPOSE = "Účel a použití"
+ASSET_FROM_IN_PROGRESS = ("in_progress", "generated", "imported", "verified")
+ASSET_FROM_GENERATED = ("generated", "imported", "verified")
+_AXES_RE = re.compile(r"\b(os[ayue]?|osou|osám|osách|osami|axis|axes)\b", re.I)
+_PIVOT_RE = re.compile(r"\bpivot", re.I)
+_PREVIEW_RE = re.compile(r"!\[\[[^\]|#]+\.(png|jpe?g|webp|gif|svg)(\|[^\]]*)?\]\]|!\[[^\]]*\]\([^)]+\)", re.I)
+_DATE_IN_TEXT_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
 
 
 class Checker:
@@ -153,7 +163,89 @@ class Checker:
 
         if self.game:
             self._check_game_rules(note, t)
+            if t == "asset":
+                self.check_asset(note)
         self.check_sections(note)
+
+    # ------------------------------------------------------------ G7: karta assetu (13 kap. 10.16, zadání 0.23)
+    def asset_manifest(self) -> bool:
+        if not hasattr(self, "_asset_manifest"):
+            self._asset_manifest = (self.v.root / library.SOURCES_REL).is_file()
+        return self._asset_manifest
+
+    def asset_in_ue_report(self, note: Note) -> bool:
+        if not hasattr(self, "_ue_assets"):
+            rep = ue_assets.load_report(self.v)
+            self._ue_assets = set((rep or {}).get("assets") or {})
+        names = {note.name} | {str(v) for v in as_list(note.fm.get("variants"))}
+        return bool(names & self._ue_assets)
+
+    def check_asset(self, note: Note) -> None:
+        """Pole a sekce karty podle `asset_status` (13 kap. 10.16, 07 kap. 20); stav kontrola nemění."""
+        from .links import section_text
+        fm, body = note.fm, note.body.replace("\r\n", "\n")
+        status = str(fm.get("asset_status") or "")
+
+        def sec(heading: str) -> str:
+            return re.sub(r"<!--.*?-->", "", section_text(body, heading) or "", flags=re.DOTALL).strip()
+
+        def need_field(name: str, why: str) -> None:
+            if is_empty(fm.get(name)):
+                self.add("G7", note, f"karta assetu ({why}): chybí pole {name}")
+
+        def need_section(heading: str, why: str) -> None:
+            if not sec(heading):
+                self.add("G7", note, f"karta assetu ({why}): sekce ## {heading} chybí nebo je prázdná")
+
+        need_section(ASSET_PURPOSE, "vždy")
+        if status == "requested":
+            need_section("Požadavek", "requested")
+            if is_empty(fm.get("envelope")) and not extract_links(sec("Požadavek")):
+                self.add("G7", note, "karta assetu (requested): chybí envelope (obalové rozměry [x, y, z] cm) "
+                                     "nebo odkaz na návrh v ## Požadavek")
+        if status in ASSET_FROM_IN_PROGRESS:
+            need_field("owner", f"{status}, od in_progress")
+        if status in ASSET_FROM_GENERATED:
+            why = f"{status}, od generated"
+            need_field("asset_source", why)
+            kind = str(fm.get("asset_kind") or "")
+            if kind in ("mesh", "blueprint"):              # rozměr grayboxu po celou dobu (01 kap. 9.5; 0.25)
+                need_field("envelope", f"{why}, {kind}: rozměr grayboxu")
+            if kind == "mesh" and self.asset_manifest():   # etapa B: Z kódu = generovaný blok (13 kap. 10.18)
+                if not library.has_code_block(note.text):
+                    self.add("G7", note, f"karta assetu ({why}): ## Z kódu bez generovaného bloku "
+                                         "(hubs --apply po asset_index --apply)")
+            else:
+                need_section("Z kódu", why)
+            purpose = sec(ASSET_PURPOSE)
+            if not (_AXES_RE.search(purpose) and _PIVOT_RE.search(purpose)):
+                self.add("G7", note, f"karta assetu ({why}): v ## {ASSET_PURPOSE} chybí osy a pivot")
+            if not _PREVIEW_RE.search(purpose):
+                self.add("G7", note, f"karta assetu ({why}): v ## {ASSET_PURPOSE} chybí vložený náhled (![[…png]])")
+        if status in ("imported", "verified"):
+            need_field("ue_path", f"{status}, od imported")
+            if self.asset_in_ue_report(note):              # etapa C: Stav v UE = blok, je-li asset v reportu
+                if not ue_assets.has_block(note.text):
+                    self.add("G7", note, f"karta assetu ({status}, od imported): ## Stav v UE bez generovaného "
+                                         "bloku (asset je v reportu ue_assets.json; hubs --apply)")
+            else:
+                need_section("Stav v UE", f"{status}, od imported")
+        if status == "verified" and not _DATE_IN_TEXT_RE.search(sec("Vizuálně ověřeno")):
+            self.add("G7", note, "karta assetu (verified): sekce ## Vizuálně ověřeno bez data (kdo, kdy, verze)")
+        if status == "superseded":
+            need_field("superseded_by", "superseded")
+        if status in ("rejected", "superseded"):
+            need_section("Poznámky", f"{status}, důvod")
+        # upozornění: složka a jméno (13 kap. 10.16)
+        cat = str(fm.get("asset_category") or "").strip().strip("/")
+        if cat and note.rel.rsplit("/", 1)[0] != f"Assets/{cat}":
+            self.add("G7", note, f"karta assetu leží mimo Assets/{cat}/ (asset_category)", severity="warning")
+        ue_path = str(fm.get("ue_path") or "").strip()
+        if ue_path:
+            last = ue_path.rstrip("/").rsplit("/", 1)[-1].split(".", 1)[0]
+            if last and last != note.name:
+                self.add("G7", note, f"jméno karty {note.name} se liší od posledního segmentu ue_path ({last})",
+                         severity="warning")
 
     def _check_game_rules(self, note: Note, t: str) -> None:
         fm = note.fm
@@ -289,6 +381,11 @@ class Checker:
                 if name not in ents:
                     self.add("G6", None, f"ue_map: entita {name} neexistuje",
                              file=self.v.project_rel(self.tx.ue_map_path), target=name)
+        # asset_sources.yaml: tvar (G7), soubor, proměnná a literál (G6) (13 kap. 10.18)
+        if full and self.v.game_layer:
+            man = library.load_manifest(self.v)
+            for code, msg in (man.problems if man else []):
+                self.add(code, None, msg, file=self.v.project_rel(man.path), target="asset_sources")
         # problémy lokální taxonomie
         for path, msg in self.tx.problems:
             self.add("G7", None, msg, file=self.v.project_rel(path), target=path.stem)
@@ -314,6 +411,36 @@ def check_structure_log(ch: Checker, note: Note) -> None:
                    severity="warning")
 
 
+QUEUE_REL = "Maintenance/queue.md"
+
+
+def role_profiles(vault: Vault) -> set[str]:
+    """Jména profilů rolí (casefold): projektové `Roles/<Role>.md` a role core `_core/agents/<Role>.md`."""
+    from . import CORE_ROOT
+    from .frontmatter import parse
+    names = {n.name.casefold() for rel, n in vault.notes.items()
+             if rel.startswith("Roles/") and rel.count("/") == 1 and n.type == "role"}
+    for p in (CORE_ROOT / "agents").glob("*.md"):
+        fm, _sp = parse(p.read_text(encoding="utf-8"))
+        if (fm or {}).get("type") == "role":
+            names.add(p.stem.casefold())
+    return names
+
+
+def check_queue_roles(ch: Checker, note: Note) -> None:
+    """Úkol pro roli (`code: role:<Role>`) odkazuje na existující profil, jinak G6 (13 kap. 10.17, zadání 0.24).
+    Jen otevřené položky: uzavřené úkoly po zániku role šum nedělají (13 kap. 7)."""
+    from .logs import parse_queue, role_of
+    known = role_profiles(ch.v)
+    for it in parse_queue(note.text):
+        role = role_of(it.code)
+        if it.kind == "task" and it.is_open and it.code.strip().lower().startswith("role:"):
+            if not role:
+                ch.add("G6", note, f"{it.id}: code {it.code!r} bez jména role (role:<Role>)", target=it.id)
+            elif role.casefold() not in known:
+                ch.add("G6", note, f"{it.id}: role {role} nemá profil (Roles/{role}.md ani role core)", target=it.id)
+
+
 def run_checks(vault: Vault, notes: list[Note] | None = None, log_format: bool = True) -> list[Finding]:
     """G6 + G7 nad poznámkami (výchozí: všechny kontrolované poznámky vaultu); s `log_format` i formát
     structure_log (jen `lint` a `task_close`; audit ho do fronty nedává, 13 kap. 10.8)."""
@@ -325,5 +452,7 @@ def run_checks(vault: Vault, notes: list[Note] | None = None, log_format: bool =
         ch.check_links(n)
         if log_format and n.rel == STRUCTURE_LOG_REL:
             check_structure_log(ch, n)
+        if n.rel == QUEUE_REL:
+            check_queue_roles(ch, n)
     ch.check_vault(notes, full)
     return ch.out

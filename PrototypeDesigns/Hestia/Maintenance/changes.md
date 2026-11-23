@@ -173,3 +173,19 @@ updated: 2026-11-23
 | 2026-11-23 | Curator | Vez_Pristresek | doplněno target_structures 4, target_gameplay 0 | chat:L5_target |
 | 2026-11-23 | Curator | Les_Lapikus | doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) | chat:L5_target |
 | 2026-11-23 | Curator | Udoli_Reky | doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) | chat:L5_target |
+| 2026-11-23 | agent pilotu (Steward) | _core/ | aktualizace core 0.21.1 → 0.23.0 (`update_core --from` git archive v0.23.0 `--work-copy`, fáze copy/run/back; report `update_core_2026-11-23.md`) | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Assets/Konvence_assetu.md | nová reference: konvence assetů ze *Společných konvencí* Katalog_props a checklistu kap. 2.2, 6 (sekce 07 kap. 20.1), T-0024 jako řádek *Změn konvence* | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Assets/ | 91 karet assetů převedených z Katalog_props a CHECKLIST_assets_navrhy: 72 imported, 10 in_progress (bez vlastního náhledu), 9 requested; envelope u všech meshí | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Docs/structures/Katalog_props.md | validity: superseded (superseded_by Konvence_assetu), poznámka o kartách | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Docs/structures/CHECKLIST_assets_navrhy.md | validity: superseded (superseded_by Konvence_assetu), poznámka o kartách, úkolech a otázkách | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Docs/structures/Materialy_a_upravy_dreva.md | ## Otevřené otázky: kůra / bez kůry podle staveb, úprava srubu podle etapy, VFX ohně a saze (z checklistu kap. 2.1, 5, 9) | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Guesthouse | karty assetů v used_by (blok ## Assety): 4 requested s grayboxem (stůl, regál, hromádka dřeva, stojan na zbraně), 13 imported | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Nadvori_Stan | karty assetů v used_by (blok ## Assety): plachta, lůžko, truhlička, vak, špalek a díly stanu | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Palac_Obydli | karty assetů v used_by (blok ## Assety), požadavky staveniště (loupák, hromada hlíny, třísky, udusaná hlína, saze) | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Palac_Kovarna_Vybaveni | karty props kovárny v used_by (blok ## Assety) | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Roles/Crafter.md | nový profil projektové role (asset_work, ue_lookup; role_base 0.23.0), kompilát Crafter_compiled | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Roles/Furnisher.md | asset_request, ue_lookup, požadavky jako karty místo checklistu, owner vždy; role_base 0.23.0 | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Roles/Builder.md | asset_request, asset_work (jednoduché díly), knihovní assety vyrábí Crafter, owner vždy; role_base 0.23.0 | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Roles/Architect.md, Roles/GameDesign.md | asset_request a pravidlo owner vždy; role_base 0.23.0 | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Maintenance/queue.md | úkoly rolí T-0035–T-0040 (Builder, Crafter, Curator), podněty P-0006–P-0008; done T-0003, T-0029, T-0030, T-0032–T-0034 | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | agent pilotu (Steward) | Maintenance/ue/ue_query_all.py | čtecí skript core 0.23.0 (`ue_query --all --emit --apply`) pro ověření WI-44 bez restartu editoru | predani_pilot_lapikus_knihovnik_unreal P19 |

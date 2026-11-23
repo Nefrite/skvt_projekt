@@ -74,6 +74,17 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana.json` · etapa 1 
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 0, in_progress 0, generated 0, imported 2, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[SM_RuinLogBark_A]] | imported | none |
+| [[SM_RuinStakeSmall_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 - [ ] Po změně na `depth_structures: 1` (2026-11-21): brána má dál `status: built` a skript `tools/ruin/brana_spec.py` (krok 03_ruin, přiřazený jménem k Brana; audit G10). Změnit `status` (např. `in_progress` / `planned`) a patří `brana_spec.py` spíš [[Strazni_Vez]] (zdi brány)? — agent pilotu, 2026-11-21
@@ -81,8 +92,9 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana.json` · etapa 1 
 - [x] Unreal (report `ue_Brana.json`, 2026-11-21): bráně nepatří žádný actor, zdi `Ruin/Brana` jsou podle `ue_map` u [[Strazni_Vez]] (brány jsou otvory ve zdech, GameDesigner 2026-11-21). Odpovídá tomu `depth_structures: 4` u brány, nebo se realizace vede jen u strážní věže? — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: ne – zdi brány jsou realizací strážní věže; brána sama je dána polohou v ní, její podoba (zátaras, vrata apod.) je teprve na game designu. Nová hodnota `depth_structures` čeká na potvrzení GameDesignera (otázka níže)
 <!-- hestia:generated:start -->
 
-- Fronta F-0002 (G2, [[Brana]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
 - Fronta F-0003 (G4, [[Brana]]): status built bez platného dokumentu state
+- Fronta F-0029 (G3, [[Brana]]): bez dokumentu v doméně structures (target_structures 4)
+- Fronta T-0036 (role:Builder, [[Brana]]): Španělský jezdec `Brana_Zataras` jako jeden actor: kmen s kůrou Ø 18 × 3,4 m ([[SM_RuinLogBark_A]]) a 4 páry kůlů Ø 7 × 1,6 m ([[SM_RuinStakeSmall_A]]); zátaras zbývá podle [[stav_brana_straz]] (doklad: [[CHECKLIST_assets_navrhy]] kap. 6.4, 11.3 „zatím ne“)
 
 <!-- hestia:generated:end -->
 

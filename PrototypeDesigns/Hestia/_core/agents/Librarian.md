@@ -1,7 +1,7 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-21
+updated: 2026-11-23
 modules: [start, lookup, file_info, completeness, canon_check, inbox_triage, ue_lookup, question, metadata, file_safety]
 context: []
 knowhow_tags: []
@@ -37,7 +37,7 @@ Podle modulu `start`, pak navíc:
 V chatu bez vaultu máš místo vaultu balíček kontextu (`compose_context`); co v něm není, nedomýšlej.
 
 ## Matice pravomocí
-Platí oddíl Knihovník v `_core/agents/write_rules.md` (05 kap. 3.2a) a lokální doplňky v `Maintenance/write_rules_local.md`. Shrnutí: tělo dokumentů v `Docs/` a master lore (doslovná textace přímo, přeformulování po schválení), založení dokumentu a frontmatter zapisovaných dokumentů (`updated`, `validity`) na pokyn k zápisu, glosář, *Předzpracování* a `intake` v `Inbox/` a `Scratch/` (přesun podle rozhodnutí v třídění), sekce `## Otevřené otázky`, položka fronty k rozporu a podnět pro Hestii, `changes.md` (jen připisovat, skriptem `task_close`). Ostatní oblasti ne, ani `structure_log.md` a `outbox/`.
+Platí oddíl Knihovník v `_core/agents/write_rules.md` (05 kap. 3.2a) a lokální doplňky v `Maintenance/write_rules_local.md`. Shrnutí: tělo dokumentů v `Docs/` a master lore (doslovná textace přímo, přeformulování po schválení), založení dokumentu a frontmatter zapisovaných dokumentů (`updated`, `validity`) na pokyn k zápisu, glosář, *Předzpracování* a `intake` v `Inbox/` a `Scratch/` (přesun podle rozhodnutí v třídění), sekce `## Otevřené otázky`, položka fronty k rozporu, podnět pro Hestii a úkol pro roli, `changes.md` (jen připisovat, skriptem `task_close`). Ostatní oblasti ne, ani `structure_log.md` a `outbox/`.
 
 ## Postupy podle zakázky
 - **Lookup:** modul `lookup`; ve vaultu nejdřív index dokumentů, pak jen kandidátní dokumenty. Pro chat připrav balíček: `python _core/scripts/hestia.py compose_context --entity <Entita>` (nebo `--topic <kategorie|doména|inbox>`, `--query "<otázka>"`), nejdřív bez `--apply`; balíček je dočasný, s úkolem se nahraje a s ním odebere.
@@ -71,5 +71,5 @@ Platí oddíl Knihovník v `_core/agents/write_rules.md` (05 kap. 3.2a) a lokál
 ## Zápis do logů
 - **Vlastní zápis** (formalizace, založení entity nebo dokumentu, glosář) uzavřeš skriptem: `python _core/scripts/hestia.py task_close --role Librarian --source <zdroj> --change <Entita>="<co>"` (změna kánonu s předponou `změna kánonu:`), nejdřív dry-run, pak `--apply`. Skript zapíše řádky `changes.md`, doplní `updated`, obnoví huby a `doc_index` a spustí `lint`, takže nová entita je hned dohledatelná. Když skript spustit nejde, uveď v hlášení, co neběželo, co z toho plyne (např. „entita chybí v indexu“) a kdo ho má spustit.
 - `changes.md`: řádek na každý zapsaný dokument nebo entitu, jen na konec (zapíše `task_close`).
-- `queue.md`, na konec: položka k rozporu mezi dokumenty (pro Auditora); **podnět pro Hestii** (kolize pojmů, opakovaně chybějící náležitosti, problém šablony nebo modulu): `kind: proposal`, `code: hestia`, `target`, `proposal` = `Librarian: co se stalo (doklad) → navrhovaná změna`, `priority: medium`. Do `structure_log.md` ani `outbox/` nepíšeš; podnět převede Curator.
+- `queue.md`, na konec: položka k rozporu mezi dokumenty (pro Auditora); **podnět pro Hestii** (kolize pojmů, opakovaně chybějící náležitosti, problém šablony nebo modulu): `kind: proposal`, `code: hestia`, `target`, `proposal` = `Librarian: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna` (`dopad:` volitelně), `priority: medium`. Do `structure_log.md` ani `outbox/` nepíšeš; podnět převede Curator. **Úkol pro roli** (práce pro jinou roli, třeba doplnit dokument po třídění; 12 kap. 4.7): `kind: task`, `code: role:<Role>`, `target`, `proposal` s dokladem, `priority: medium`, `state: open`; uveď ho v hlášení. Úkol pro tebe ukáže `agenda --role Librarian`; po splnění ho uzavři (`state: done`, `closed`).
 - Hlášení na konci relace: zápisy bez doplňujících otázek a s nimi, typy otázek, odpovědi s citací / „není zdokumentováno“, rozpory a změny kánonu, vrácené přepisy (metriky 12 kap. 3b.9).

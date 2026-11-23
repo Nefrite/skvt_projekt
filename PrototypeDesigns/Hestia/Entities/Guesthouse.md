@@ -91,12 +91,42 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Guesthouse.json` · eta
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 4, in_progress 4, generated 0, imported 13, verified 0 · graybox 4 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[SM_RuinDesk_A]] | requested | graybox |
+| [[SM_RuinShelfTall_A]] | requested | graybox |
+| [[SM_RuinWeaponRack_A]] | requested | graybox |
+| [[SM_RuinWoodpileSmall_A]] | requested | graybox |
+| [[MI_RuinWood]] | in_progress | none |
+| [[SM_RuinOvenDome_A]] | in_progress | none |
+| [[SM_RuinOvenDoor_A]] | in_progress | none |
+| [[SM_RuinPost_A]] | in_progress | none |
+| [[MI_RuinCanvas]] | imported | none |
+| [[MI_RuinDaub]] | imported | none |
+| [[MI_RuinIronClean]] | imported | none |
+| [[MI_RuinWood_EndGrain]] | imported | none |
+| [[MI_RuinWool]] | imported | none |
+| [[SM_RuinArmorStand_A]] | imported | none |
+| [[SM_RuinBedLarge_A]] | imported | none |
+| [[SM_RuinChestLocked_A]] | imported | none |
+| [[SM_RuinChimney_A]] | imported | none |
+| [[SM_RuinPlank_A]] | imported | none |
+| [[SM_RuinSmokeHood_A]] | imported | none |
+| [[SM_RuinStool_A]] | imported | none |
+| [[SM_RuinTimber_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
 - [[navrh_guesthouse_vybaveni]]: Výstroj na stojanu na brnění a zbraně na stojanu na zbraně (které, sdílet se zbrojí posádky?) — Furnisher, 2026-11-21
-- Fronta F-0007 (G2, [[Guesthouse]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
+- Fronta F-0031 (G3, [[Guesthouse]]): bez dokumentu v doméně gameplay (target_gameplay 4)
 
 <!-- hestia:generated:end -->
 

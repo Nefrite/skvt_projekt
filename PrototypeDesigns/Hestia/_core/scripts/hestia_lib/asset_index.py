@@ -10,6 +10,9 @@ Prochází `code_roots` (od kořene projektu), vynechá `ignore` z konfigurace, 
 4. krok ze `build_steps.code` nebo ze složky se jménem kroku,
 5. odkaz z dokumentu (`assets:` v dokumentu nebo hubu).
 Hlavní entita = první shoda; `entities` = sjednocení hlavičky, jména a tabulky *Kdo používá* sdíleného kódu.
+Knihovní assety (etapa B, 13 kap. 10.18; zadání 0.25): s manifestem `taxonomy_local/asset_sources.yaml` přidá sekci
+`library` (a `library_globals`) do JSON a tabulku knihovních assetů do `.md` (modul `library`); bez manifestu se
+etapa přeskočí s informací.
 Výstup: `Maintenance/asset_index.json` (pro skripty) a `asset_index.md` (pro člověka) jedním během;
 přepisují se jen při změně obsahu (čas `generated` změnu nedělá). Report vypíše změny přiřazení hlavní entity
 proti předchozímu indexu (13 kap. 10.2).
@@ -51,6 +54,9 @@ class IndexResult:
     findings: list[Finding] = field(default_factory=list)
     generated_count: int = 0
     warnings: list[str] = field(default_factory=list)
+    library: list[dict] | None = None                  # None = bez manifestu asset_sources.yaml (13 kap. 10.18)
+    library_globals: dict = field(default_factory=dict)
+    library_info: str | None = None
 
 
 # ---------------------------------------------------------------- pomocné čtení
@@ -307,7 +313,25 @@ class Indexer:
         out.warnings += self.alias_warnings
         out.files = [self.entry(p, out) for p in files]
         out.files.sort(key=lambda f: f["path"])
+        self.build_library(out)
         return out
+
+    def build_library(self, out: IndexResult) -> None:
+        """Sekce `library` z manifestu `asset_sources.yaml` (13 kap. 10.18); problémy manifestu hlásí `lint`."""
+        from . import assets, library
+        if not self.v.game_layer:
+            return
+        man = library.load_manifest(self.v)
+        cards = assets.cards(self.v, self.m)
+        if man is None:
+            if cards:
+                out.library_info = library.summary(self.v, None, [])
+            return
+        out.library, out.library_globals, warns = library.build(self.v, man, out.files, cards, self.folder_map)
+        out.warnings += warns
+        if man.problems:
+            out.warnings.append(f"{library.SOURCES_REL}: {len(man.problems)} problémů manifestu; podrobnosti `lint`")
+        out.library_info = library.summary(self.v, man, out.library)
 
 
 def build(vault: Vault, model: Model | None = None) -> IndexResult:
@@ -338,8 +362,14 @@ def load_json(vault: Vault) -> dict | None:
 def render_json(res: IndexResult, generated: str) -> str:
     rows = ",\n".join("  " + json.dumps(f, ensure_ascii=False) for f in res.files)
     body = f"\n{rows}\n" if rows else ""
+    lib = ""
+    if res.library is not None:                         # etapa B (13 kap. 10.18): jen s manifestem
+        lrows = ",\n".join("  " + json.dumps(e, ensure_ascii=False) for e in res.library)
+        lbody = f"\n{lrows}\n" if lrows else ""
+        lib = (f', "library_globals": {json.dumps(res.library_globals, ensure_ascii=False, sort_keys=True)}, '
+               f'"library": [{lbody}]')
     return (f'{{"generated": {json.dumps(generated)}, "project_root": "/", '
-            f'"generated_files": {res.generated_count}, "files": [{body}]}}\n')
+            f'"generated_files": {res.generated_count}, "files": [{body}]{lib}}}\n')
 
 
 def _cell(v) -> str:
@@ -360,6 +390,18 @@ def render_md(res: IndexResult, day: _dt.date) -> str:
     for f in res.files:
         lines.append("| `" + f["path"] + "` | " + " | ".join(_cell(f[k]) for k in
                      ("role", "entity", "entities", "build_step", "domains", "rule", "docs")) + " |")
+    if res.library is not None:                         # 13 kap. 10.18
+        lines += ["", "## Knihovní assety", "",
+                  "Z kódu podle `taxonomy_local/asset_sources.yaml` (literály, kód se nespouští).", "",
+                  "| asset | kategorie | rozměr | verze | ue_path | uasset | karta | data | zdroj |",
+                  "|---|---|---|---|---|---|---|---|---|"]
+        for e in res.library:
+            size = " × ".join(f"{x:g}" for x in e["size"]) if e.get("size") else None
+            ver = f"{e['version']} ({e['version_prefix']})" if e.get("version") is not None else None
+            up = None if e.get("uasset") is None else ("ano" if e["uasset"] else "ne")
+            data = sorted({d.get("entity") or d["file"] for d in e.get("data") or []})
+            lines.append(f"| `{e['name']}` | " + " | ".join(_cell(v) for v in (
+                e.get("category"), size, ver, e.get("ue_path"), up, e.get("card"), data, e.get("source"))) + " |")
     return "\n".join(lines) + "\n"
 
 
@@ -396,7 +438,8 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     payload = {"command": "asset_index", "applied": bool(args.apply and changed), "changed": changed,
                "files": len(res.files), "generated_files": res.generated_count,
                "unlinked": [f["path"] for f in res.files if not f["entities"] and not f["docs"]],
-               "reassigned": moved, "findings": [f.as_dict() for f in findings], "warnings": res.warnings}
+               "reassigned": moved, "findings": [f.as_dict() for f in findings], "warnings": res.warnings,
+               "library": None if res.library is None else len(res.library), "library_info": res.library_info}
     roles: dict = {}
     for f in res.files:
         roles[f["role"]] = roles.get(f["role"], 0) + 1
@@ -407,6 +450,8 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         lines.append("Bez napojení na entitu ani dokument: " + ", ".join(payload["unlinked"]))
     lines += [f"Změna přiřazení: {m['path']}: {m['from'] or '–'} -> {m['to'] or '–'} ({m['rule'] or '–'})"
               for m in moved]
+    if res.library_info:
+        lines.append(res.library_info[0].upper() + res.library_info[1:])
     lines += [f"Upozornění: {w}" for w in res.warnings]
     if findings:
         lines.append(to_text(findings))

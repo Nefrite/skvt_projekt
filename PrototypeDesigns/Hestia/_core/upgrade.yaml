@@ -101,3 +101,21 @@ versions:
   - version: 0.21.1
     after: [compose_role]
     crs: [CR-023_update_core_pripojena_slozka, CR-025_ue_ism_bounds, CR-031_podnety_do_structure_log_skriptem]
+  - version: 0.22.0
+    after: [doc_index, hubs, compose_role]
+    roles: "assety (12 kap. 3, 4.6, 8; zadání 0.23): role, které knihovní assety potřebují (Architect, Builder, Furnisher, GameDesign), uvedou v modules asset_request (požadavek = karta requested v Assets/, nejdřív find); výrobce (Crafter) asset_work; obojí compile: listed. Úkol pro jinou roli na konec queue.md (task, code: role:<Role>, 12 kap. 4.7; zadání 0.24), agenda ho ukáže cílové roli. Podnět pro Hestii smí mít část dopad: (12 kap. 4.5; zadání 0.24.1)"
+    manual:
+      - id: asset_setup
+        text: "Založit Assets/ a Assets/Konvence_assetu.md (kostra v _core/vault_template/Assets/Konvence_assetu.md.tpl, přípona .md); profily Crafter (modul asset_work) a Furnisher (modul asset_request) podle tpl_role; doplnit asset_request do modules profilů rolí, které assety potřebují (Architect, Builder, GameDesign); pak compose_role. Převod dosavadního katalogu a checklistu assetů na karty je krok instance (13 kap. 10.16)"
+    crs: [CR-026_karta_assetu, CR-029_prace_s_assety, CR-032_ukoly_pro_role_ve_fronte, CR-025_ue_ism_bounds, CR-031_podnety_do_structure_log_skriptem]
+  - version: 0.23.0
+    after: [asset_index, hubs, compose_role]
+    roles: "assety etapy B a C (12 kap. 3, 4.6; zadání 0.24.3 až 0.26): jednoduché assety (díl stavby z existujícího generátoru) smí vyrábět i Builder, profil Builderu pak uvede v modules asset_work; žadatel vyplňuje owner vždy (výchozí Crafter); karty bez owner ukáže agenda jen roli asset_default_owner. Texty modulů asset_work, asset_request, lookup a ue_lookup se mění (Konvence_assetu, envelope jako rozměr grayboxu, blok Z kódu, čtení assetů z UE)"
+    manual:
+      - id: asset_sources
+        text: "Založit Maintenance/taxonomy_local/asset_sources.yaml podle vzoru v 13 kap. 10.18 (meshes s fields, name, ue_root, ue_dirs, content_dir; versions s ue_tag; global_versions; shapes; data_refs), ověřit lint a asset_index --apply (sekce library), pak hubs --apply (blok Z kódu v kartách meshí). Bez manifestu se etapa B přeskočí"
+      - id: asset_conventions
+        text: "Doplnit do Assets/Konvence_assetu.md sekce Rozměr a graybox, Pojmenování a varianty, Pravidla výroby, Verze a import, Změny konvence (s tabulkou | datum | změna | dotčené assety | úkol |) podle 07 kap. 20.1; kostra v _core/vault_template/Assets/Konvence_assetu.md.tpl"
+      - id: asset_envelope
+        text: "Doplnit envelope u karet meshí a Blueprintů od generated (obal skutečného rozměru z bloku Z kódu, zaokrouhleno nahoru na cm); lint ho od 0.23.0 hlásí jako chybu"
+    crs: [CR-027_asset_index_knihovni_meshe, CR-028_ue_query_assety, CR-029_prace_s_assety]

@@ -24,7 +24,7 @@ TPL_SUFFIX = ".tpl"            # kostra vaultu: soubory *.md.tpl (13 kap. 2), p�
 CORE_EXCLUDE_DIRS = {"__pycache__", ".pytest_cache"}
 ROOT_KINDS = ("place", "location")      # 12 kap. 3a: kořen prototypu je place nebo location
 # instance bez herní vrstvy (13 kap. 3): bez master lore a Entities/
-GAME_ONLY = ("Docs/narrative/", "Entities/")
+GAME_ONLY = ("Docs/narrative/", "Entities/", "Assets/")   # Assets/: karta assetu má herní sekci (zadání 0.23)
 VIEWS_PREFIX = "Dashboard/views/"     # pohledy podle manifestu taxonomy/views.yaml (13 kap. 10.9)
 
 

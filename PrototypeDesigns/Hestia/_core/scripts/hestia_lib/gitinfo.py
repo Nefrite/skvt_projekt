@@ -106,6 +106,27 @@ def added_lines(path: Path) -> list[str] | None:
     return [line[1:] for line in r.stdout.splitlines() if line.startswith("+") and not line.startswith("+++")]
 
 
+def first_seen(path: Path, ids: list[str]) -> dict[str, str] | None:
+    """Datum commitu (RRRR-MM-DD), ve kterém se v souboru poprvé objevil řádek tabulky `| <id> |` (úkol ve frontě,
+    13 kap. 10.17); jeden průchod historií souboru. None mimo git; ID mimo historii (necommitnuté) chybí."""
+    top = toplevel(path)
+    if top is None or not ids:
+        return None if top is None else {}
+    r = _git(top, "log", "--reverse", "--format=@@commit %as", "--unified=0", "-p", "--", str(path))
+    if r is None or r.returncode != 0:
+        return None
+    wanted, out, day = set(ids), {}, None
+    for line in r.stdout.splitlines():
+        if line.startswith("@@commit "):
+            day = line[len("@@commit "):].strip()
+        elif line.startswith("+") and not line.startswith("+++") and day:
+            cells = line[1:].strip().strip("|").split("|")
+            rid = cells[0].strip() if cells else ""
+            if rid in wanted and rid not in out:
+                out[rid] = day
+    return out
+
+
 def head_text(path: Path) -> str | None:
     """Obsah souboru v HEAD (None mimo git nebo u nového souboru)."""
     top = toplevel(path)

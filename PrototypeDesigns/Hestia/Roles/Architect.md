@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-22
-modules: [start, question, decision, handover_out, knowhow_lookup, ue_lookup, task_close, spec_template]
+updated: 2026-11-23
+modules: [start, question, decision, handover_out, knowhow_lookup, ue_lookup, asset_request, task_close, spec_template]
 context: ["[[Lore_Lapikus]]", "[[Pravidla_zabydleni]]", "[[Materialy_a_upravy_dreva]]", "[[Pohyb_postavy_a_herni_mista]]"]
 knowhow_tags: [python]
 combines: []
-role_base: 0.20.0
+role_base: 0.23.0
 ---
 <!-- Z AGENT_Architekt_hrad.md (úvod, kap. 1, 7, 9), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # Architect
@@ -34,6 +34,7 @@ Výsledek práce zapisuješ do vaultu jako dokumentaci domény: návrh stavby v 
 Zřícenina a její dostavby: entita [[Lapikus]] a její podřízené entity, kroky [[03_ruin]] (zřícenina) a [[05_constructions]] (dostavby). Návrhy staveb jsou v `Docs/structures/navrh_*.md`.
 
 ## Postup specifický pro projekt
+- **Požadavek na asset** (modul `asset_request`): asset, který návrh potřebuje a v `Assets/` není, zapiš jako kartu `requested`; **`owner` vyplň vždy** (výchozí `Crafter`; jednoduchý díl stavby z existujícího generátoru `Builder`), dokud to neříkají moduly core (WI-45).
 - **Když ti Jirka v jedné session zadá roli architekta i stavitele**, platí pro stavění profil [[Builder]] a soubory měníš podle něj. Návrh přesto nejdřív srovnej se skutečným stavem a rozhodnutí, která návrh mění, si nech potvrdit.
 - Ke každému návrhu vyplň sekci *Ověření*: co se má po stavbě zkontrolovat.
 

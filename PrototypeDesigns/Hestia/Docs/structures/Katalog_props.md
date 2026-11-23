@@ -1,8 +1,9 @@
 ---
 # orchestrace
 type: reference
-validity: valid
-updated: 2026-11-22
+validity: superseded
+superseded_by: "[[Konvence_assetu]]"
+updated: 2026-11-23
 aliases: [katalog props, katalog meshí]
 # hra
 domain: structures
@@ -11,6 +12,8 @@ build_step: 06_furnishing
 assets: ["/PrototypeDesigns/Lapikus/tools/meshes/mesh_props.py", "/PrototypeDesigns/Lapikus/tools/meshes/mesh_textile.py", "/PrototypeDesigns/Lapikus/tools/meshes/ukazka.py"]
 ---
 # Katalog props a meshí na míru (stan, guesthouse)
+
+> **Nahrazeno (P19, 2026-11-23):** karty assetů v `Assets/` (stan a Guesthouse: [[SM_RuinCanvasTent_A]], [[SM_RuinCampBed_A]], [[SM_RuinChestSmall_A]], [[SM_RuinBundle_A]], [[SM_RuinBedLarge_A]], [[SM_RuinChestLocked_A]], [[SM_RuinArmorStand_A]]; chybějící kusy jako požadavky [[SM_RuinDesk_A]], [[SM_RuinShelfTall_A]], [[SM_RuinWoodpileSmall_A]], [[SM_RuinWeaponRack_A]]) a společná pravidla v [[Konvence_assetu]]. Dokument se dál neudržuje.
 
 ## Souhrn
 Karty knihovních meshí z 21.–22. 11. 2026 (AssetGenerator) pro stan na nádvoří a Guesthouse: jak je použít ve stavbě a vybavení a jak je upravovat. Starší props (kovárna, obydlí, nářadí) jsou v [[05_constructions]] (tabulka *Props*).

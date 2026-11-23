@@ -6,7 +6,7 @@ requires: []
 modes: [vault, chat]
 compile: listed
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 # Vyhledávání v dokumentaci
 
@@ -16,7 +16,7 @@ Někdo se ptá, co dokumentace říká („Co víme o bráně?“, „Jakou stř
 ## Postup
 1. **Ve vaultu** (i chat s připojenou složkou projektu) hledej příkazem `hestia.py find "<dotaz>"` (index dokumentů: název, `aliases`, nadpisy sekcí, entita, cesta; glosář; pod 3 výsledky doplní hledání v textu, `--text` vždy), ne `grep -r` přes vault. Z kandidátů čti jen shodné sekce (`hestia.py section <dokument> "<nadpis>"`); dokument nad `doc_summary_chars` nečti celý (modul `start`, *Čtení*). Starý index obnov `hestia.py doc_index --apply`. Když skript core spustit nejde (relace bez shellu nebo bez vhodného Pythonu), čti index, glosář a dokumenty přímo a v odpovědi výslovně uveď, že skript neběžel (index může být starý).
 2. **V chatu bez vaultu** pracuj jen s balíčkem kontextu (`compose_context`) a s tím, co máš v tasku; co v něm není, nedomýšlej. **Bez balíčku** neodpovídej a řekni přesně, který balíček potřebuješ a jakým příkazem vznikne: `hestia.py compose_context --entity <Entita> --apply` (otázka o entitě), `--query "<otázka>"` (otázka napříč dokumenty), `--topic <kategorie nebo doména>`; nebo požádej o přístup k vaultu (připojenou složku projektu).
-3. U otázky o entitě vezmi z hubu stav: návrh, realizace, cíl a režim (blok *Domény*).
+3. U otázky o entitě vezmi z hubu stav: návrh, realizace, cíl a režim (blok *Domény*); má-li entita karty assetů, i souhrnný řádek bloku *Assety* (počty podle stavu, grayboxy, `outdated` v UE; v `doc_index` pole `assets`). Je to signál vedle `depth_*`, hloubku z něj neodvozuj.
 4. Rozliš **návrh** (`design`, `spec`, `decision`), **realizaci** (`state`, skript, report Unrealu) a **zavržené** (`status: rejected`). Realizaci ověř čtecím dotazem nebo posledním reportem (modul `ue_lookup`), je-li to potřeba.
 5. Když si zdroje odporují, nerozhoduj: vypiš rozpor a podle hierarchie zdrojů (12 kap. 3b.3) uveď, co platí. Zapiš otázku k dotčenému dokumentu, u rozporu mezi dokumenty i položku fronty pro Auditora.
 6. `outdated`, `superseded` a `archived` dokumenty uváděj jen jako historii a označ je. Položky z `Inbox/` a nezařazené ze `Scratch/` jsou **neověřené**.

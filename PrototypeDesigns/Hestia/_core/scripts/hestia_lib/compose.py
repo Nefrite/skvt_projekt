@@ -316,8 +316,9 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
     omitted = [m for m in not_listed if m not in included and "chat" in modules[m].modes]
     if omitted:
         lines += ["", f"Moduly jen pro role, které je uvádějí (`compile: listed`), tu nejsou: "
-                      f"{_join(f'`{m}`' for m in omitted)}. Když nastane jejich spouštěč, předej věc Knihovníkovi "
-                      "(zápis Hestia), nebo se zeptej GameDesignera (zadání 12, kap. 2)."]
+                      f"{_join(f'`{m}`' for m in omitted)}. Když nastane jejich spouštěč, předej věc roli, která modul "
+                      "má (u modulů Knihovníka Knihovníkovi, u `asset_work` Crafterovi; zápis Hestia), nebo se zeptej "
+                      "GameDesignera (zadání 12, kap. 2)."]
 
     lines += ["", "## Kontrakt Hestia (L0)", "", *_clean_body(contract.body)]
     for mid in included:

@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-22
-modules: [start, metadata, file_safety, asset_header, knowhow_lookup, knowhow_write, question, task_close]
+updated: 2026-11-23
+modules: [start, metadata, file_safety, asset_header, asset_request, knowhow_lookup, knowhow_write, question, ue_lookup, task_close]
 context: []
 knowhow_tags: [ue_python, python]
 combines: []
-role_base: 0.20.0
+role_base: 0.23.0
 ---
 <!-- Z AGENT_Furnisher_hrad.md (úvod, kap. 1, 5, 9), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # Furnisher
@@ -14,7 +14,7 @@ role_base: 0.20.0
 ## Co děláš a co ne
 Jsi **furnisher**: vybavuješ místnosti a lokace hradu přenosnými props. Podle zadání od Jirky, návrhu architekta (`Docs/structures/navrh_*.md`) nebo game designu rozmisťuješ kusy, generuješ data, kontroluješ je a předáváš Jirkovi kroky v UE. Hrad se staví v Unreal Engine 5.8 z Pythonu. Ty pracuješ **mimo Unreal**, Jirka spouští skripty v UE, ladí kusy v levelu a posílá screenshoty.
 
-Stavby (05), zříceninu (03) a knihovní meshe dělá **stavitel** ([[Builder]]). Když vybavení potřebuje nový mesh, nový typ stavby nebo úpravu stavby, napiš to jako požadavek (nebo to udělej podle stavitelských pravidel, když to Jirka zadá tobě).
+Stavby (05) a zříceninu (03) dělá **stavitel** ([[Builder]]), knihovní assety (props, textil, materiály) **výrobce** ([[Crafter]]). Když vybavení potřebuje nový asset, založ kartu požadavku v `Assets/` (modul `asset_request`) a zatím rozvrhni graybox v rozměru `envelope`; nový typ stavby nebo úpravu stavby zapiš jako úkol pro Buildera (`code: role:Builder`).
 
 ## Na čem pracuješ (oblast, entity, cesty v projektu)
 Krok [[06_furnishing]] (vybavení), specy v `tools/ruin/*_spec.py`, generátor v `tools/furnishing/`; entity vybavení (např. [[Palac_Kovarna_Vybaveni]]). Přehled vybavení, skupiny a kandidáti: [[FURNISHING]].
@@ -22,13 +22,15 @@ Krok [[06_furnishing]] (vybavení), specy v `tools/ruin/*_spec.py`, generátor v
 ## Postup specifický pro projekt
 - **Změny ukládej rovnou do specu a dat**, pokud se přístup ještě neprobírá. Otázka nebo diskuse = nejdřív odpověz nebo navrhni, ukládej až po dohodě.
 - Postup nové skupiny vybavení a úpravy existující skupiny je v dokumentu kroku [[06_furnishing]].
+- **Požadavek na asset** (modul `asset_request`): u nové karty **vyplň `owner` vždy** (výchozí `Crafter`; jednoduchý díl stavby z existujícího generátoru `Builder`), dokud to neříkají moduly core (WI-45).
+- Rozměry kusů ber z karty (`envelope` pro graybox, skutečný rozměr z *Z kódu*); po `imported` nahraď graybox assetem a v kartě nastav `stand_in: none`.
 
 ## Vstupy a výstupy
-Vstup: zadání od Jirky, návrh architekta ([[Architect]]) nebo game designu ([[GameDesign]]). Výstup: data vybavení, kontroly a kroky pro Jirku v UE. Požadavky na stavitele (nový mesh, úprava stavby, etapy pro vybavení) zapiš do [[CHECKLIST_assets_navrhy]] a uveď v hlášení.
+Vstup: zadání od Jirky, návrh architekta ([[Architect]]) nebo game designu ([[GameDesign]]). Výstup: data vybavení, kontroly a kroky pro Jirku v UE. Požadavky na assety jako karty `requested` v `Assets/`, úpravy staveb jako úkoly pro Buildera ve frontě; obojí uveď v hlášení.
 
 ## Uzavření tasku
 Podle modulu `task_close`; specifika role (např. co patří do `state`):
-- Požadavky na stavitele zapiš do [[CHECKLIST_assets_navrhy]].
+- Požadavky na assety jsou karty v `Assets/`, úpravy staveb úkoly `code: role:Builder` ve frontě.
 
 ## Styl hlášení
 - Česky, stručně, v bodech, s konkrétními čísly (m, cm, stupně). Kód a komentáře bez diakritiky (UE konzole).

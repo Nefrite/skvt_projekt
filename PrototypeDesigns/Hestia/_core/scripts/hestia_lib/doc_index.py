@@ -43,7 +43,7 @@ def record(vault: Vault, m: Model, note) -> dict:
         rel, status = vault.resolve(target)
         if status == "ok" and rel and rel != note.rel and rel in vault.notes:
             links.append(vault.notes[rel].name)
-    return {
+    rec = {
         "path": note.rel, "title": _title(note), "aliases": [str(a) for a in as_list(fm.get("aliases")) if a],
         "type": fm.get("type"), "validity": fm.get("validity"), "status": fm.get("status"),
         "updated": _date(fm.get("updated")),
@@ -54,12 +54,28 @@ def record(vault: Vault, m: Model, note) -> dict:
         "links_out": sorted(dict.fromkeys(links)),
         "chars": body_chars(note), "sections": outline(note),
     }
+    if fm.get("type") == "asset":           # karta assetu: entity z used_by, stav (13 kap. 10.16, zadání 0.23)
+        rec["entity"] = m.link_names(fm.get("used_by"))
+        rec["asset_status"] = fm.get("asset_status")
+    return rec
 
 
 def build(vault: Vault, model: Model | None = None) -> list[dict]:
+    from . import assets, ue_assets
     m = model or Model(vault)
-    return [record(vault, m, n) for rel, n in sorted(vault.notes.items())
-            if not rel.startswith(EXCLUDE_PREFIXES) and n.fm is not None]
+    cards = assets.cards(vault, m) if vault.game_layer else []
+    outdated = ue_assets.outdated_names(vault) if cards else None
+    out = []
+    for rel, n in sorted(vault.notes.items()):
+        if rel.startswith(EXCLUDE_PREFIXES) or n.fm is None:
+            continue
+        rec = record(vault, m, n)
+        if cards and rec["type"] == "entity":     # souhrn assetů entity jako u bloku ## Assety (13 kap. 10.19)
+            s = assets.entity_summary(n.name, cards, outdated)
+            if s:
+                rec["assets"] = s
+        out.append(rec)
+    return out
 
 
 def render(records: list[dict], generated: str) -> str:

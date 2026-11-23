@@ -192,7 +192,9 @@ def _filter(m: Model, args):
         fm = n.fm or {}
         if types and fm.get("type") not in types:
             return True
-        if entity and not (n.name == entity or entity in m.entities_of(n)):
+        # karta assetu patří entitám z used_by (13 kap. 10.16, zadání 0.23)
+        ents = m.link_names(fm.get("used_by")) if fm.get("type") == "asset" else m.entities_of(n)
+        if entity and not (n.name == entity or entity in ents):
             return True
         if role and role not in {str(r).casefold() for r in as_list(fm.get("for_role")) if r}:
             return True

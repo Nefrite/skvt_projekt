@@ -76,8 +76,8 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Strazni_Vez.json` · et
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0021 (G2, [[Strazni_Vez]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
 - Fronta F-0022 (G4, [[Strazni_Vez]]): status built bez platného dokumentu state
+- Fronta F-0034 (G3, [[Strazni_Vez]]): bez dokumentu v doméně gameplay (target_gameplay 4); bez dokumentu v doméně structures (target_structures 4)
 
 <!-- hestia:generated:end -->
 

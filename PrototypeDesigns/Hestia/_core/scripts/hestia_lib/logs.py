@@ -3,7 +3,8 @@
 `changes.md`, `structure_log.md`, `structure_version.md`: řádky `RRRR-MM-DD | …`, oddělovač ` | `,
 svislítko v textu jako `\\|`, jen připisování na konec; parser bere jen řádky začínající datem.
 `queue.md`: tabulka `id | priority | kind | code | target | proposal | state | closed`; stabilní ID F-/P-/T-,
-nové řádky na konec tabulky, v místě se mění jen sloupce `state` a `closed`.
+nové řádky na konec tabulky, v místě se mění jen sloupce `state` a `closed` (u úkolu pro roli i `priority`).
+Úkol pro roli: `kind: task`, `code: role:<Role>`; `QueueItem.role` vrací cílovou roli (zadání 0.24, CR-032).
 """
 from __future__ import annotations
 
@@ -107,8 +108,22 @@ class QueueItem:
     def is_open(self) -> bool:
         return self.state_value in OPEN_STATES
 
+    @property
+    def role(self) -> str:
+        """Cílová role úkolu `code: role:<Role>` (05 kap. 7.2, 12 kap. 4.7; zadání 0.24); jinak prázdná."""
+        return role_of(self.code) if self.kind == "task" else ""
+
     def row(self) -> str:
         return "| " + " | ".join(escape(getattr(self, c)) for c in QUEUE_COLUMNS) + " |"
+
+
+ROLE_CODE_PREFIX = "role:"
+
+
+def role_of(code: str) -> str:
+    """Role z kódu `role:<Role>` (úkol pro roli, zadání 0.24, CR-032); jiný kód = prázdná."""
+    c = (code or "").strip()
+    return c[len(ROLE_CODE_PREFIX):].strip() if c.lower().startswith(ROLE_CODE_PREFIX) else ""
 
 
 def _is_header(cells: list[str], columns: list[str]) -> bool:

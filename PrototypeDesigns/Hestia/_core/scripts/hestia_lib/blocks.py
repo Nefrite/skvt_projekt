@@ -73,6 +73,26 @@ def ensure_block(text: str, heading: str) -> tuple[str, bool]:
     return nl.join(new_lines) if nl != "\n" else "\n".join(new_lines), True
 
 
+def add_section(text: str, heading: str, before: str | None = None) -> tuple[str, bool]:
+    """Doplní sekci `## heading` s prázdnými značkami bloku, chybí-li: před sekci `## before`, jinak na konec
+    (`## Assety` v hubu, 13 kap. 10.16). Vrací (text, doplněno)."""
+    nl = detect_newline(text)
+    lf = text.replace("\r\n", "\n")
+    lines = lf.split("\n")
+    if _section_span(lines, lf, heading) is not None:
+        return text, False
+    new = [f"## {heading}", START, END]
+    span = _section_span(lines, lf, before) if before else None
+    if span is not None:
+        at = span[0] - 1                                  # řádek nadpisu `## before`
+        new_lines = lines[:at] + new + lines[at:]
+    else:
+        while lines and lines[-1] == "":
+            lines.pop()
+        new_lines = lines + new + [""]
+    return nl.join(new_lines) if nl != "\n" else "\n".join(new_lines), True
+
+
 def block_content(text: str, heading: str | None) -> str | None:
     lf = text.replace("\r\n", "\n")
     lines = lf.split("\n")

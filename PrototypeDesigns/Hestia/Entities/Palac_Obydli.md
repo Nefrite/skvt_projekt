@@ -97,12 +97,68 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Obydli.json` · e
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 5, in_progress 5, generated 0, imported 36, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinRammedEarth]] | requested | none |
+| [[MI_RuinSoot]] | requested | none |
+| [[MI_RuinWoodChips]] | requested | none |
+| [[SM_RuinDrawknife_A]] | requested | none |
+| [[SM_RuinEarthPile_A]] | requested | none |
+| [[MI_RuinWood]] | in_progress | none |
+| [[SM_RuinLogPeeling_A]] | in_progress | none |
+| [[SM_RuinOvenDome_A]] | in_progress | none |
+| [[SM_RuinOvenDoor_A]] | in_progress | none |
+| [[SM_RuinPost_A]] | in_progress | none |
+| [[MI_RuinBark]] | imported | none |
+| [[MI_RuinChinking]] | imported | none |
+| [[MI_RuinDaub]] | imported | none |
+| [[MI_RuinIron]] | imported | none |
+| [[MI_RuinIronClean]] | imported | none |
+| [[MI_RuinStraw]] | imported | none |
+| [[MI_RuinWattle]] | imported | none |
+| [[MI_RuinWood_EndGrain]] | imported | none |
+| [[MI_RuinWool]] | imported | none |
+| [[SM_RuinAxe_A]] | imported | none |
+| [[SM_RuinBarkStrip_A]] | imported | none |
+| [[SM_RuinBarrel_A]] | imported | none |
+| [[SM_RuinBasket_A]] | imported | none |
+| [[SM_RuinBed_A]] | imported | none |
+| [[SM_RuinBroadaxe_A]] | imported | none |
+| [[SM_RuinChest_A]] | imported | none |
+| [[SM_RuinChimney_A]] | imported | none |
+| [[SM_RuinCrosscutSaw_A]] | imported | none |
+| [[SM_RuinDoor_A]] | imported | none |
+| [[SM_RuinForkHead_A]] | imported | none |
+| [[SM_RuinGutterBark_A]] | imported | none |
+| [[SM_RuinGutter_A]] | imported | none |
+| [[SM_RuinLadder_A]] | imported | none |
+| [[SM_RuinLogBark_A]] | imported | none |
+| [[SM_RuinLog_A]] | imported | none |
+| [[SM_RuinMallet_A]] | imported | none |
+| [[SM_RuinNailHammer_A]] | imported | none |
+| [[SM_RuinPlank_A]] | imported | none |
+| [[SM_RuinPoleBark_A]] | imported | none |
+| [[SM_RuinShelf_A]] | imported | none |
+| [[SM_RuinShutter_A]] | imported | none |
+| [[SM_RuinSmokeHood_A]] | imported | none |
+| [[SM_RuinTable_A]] | imported | none |
+| [[SM_RuinTimber_A]] | imported | none |
+| [[SM_RuinWoodpile_A]] | imported | none |
+| [[SM_RuinWorkbench_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta F-0018 (G2, [[Palac_Obydli]]): očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures
 - Fronta T-0008 (–, [[navrh_palac_obydli_stred]]): kap. 0.5–0.6 (postavené) se překrývá se [[stav_palac_obydli]]: sjednotit (B4)
+- Fronta F-0033 (G3, [[Palac_Obydli]]): bez dokumentu v doméně gameplay (target_gameplay 3)
+- Fronta T-0037 (role:Builder, [[Palac_Obydli]]): Hromada kamene (asi 1 m³ z kamenů zříceniny, [[SM_RuinStone_R12_A]]) na staveništi etapy 1; hromada hlíny a třísky jsou karty požadavků [[SM_RuinEarthPile_A]], [[MI_RuinWoodChips]] (doklad: [[CHECKLIST_assets_navrhy]] kap. 6.3, 11.3 „zatím ne“; [[navrh_palac_obydli_stavenisko]])
 
 <!-- hestia:generated:end -->
 

@@ -5,7 +5,7 @@ trigger: always
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 # Kontrakt agentů Hestia (L0)
 
@@ -40,6 +40,8 @@ Režim určuje přístup k vaultu: `vault` (vidíš soubory projektu, zapisuješ
 | otázka na realizaci v Unrealu (jen čtení) | `ue_lookup` |
 | zápis do souborů projektu | `file_safety`, `metadata` |
 | nový nebo změněný skript | `asset_header` |
+| potřebný knihovní asset chybí, graybox místo něj | `asset_request` |
+| výroba nebo změna knihovního assetu | `asset_work` |
 | předání jiné roli nebo relaci | `handover_out` |
 | problém s Hestií jako nástrojem | `hestia_feedback` |
 | práce v režimu chat | `chat_entry` |

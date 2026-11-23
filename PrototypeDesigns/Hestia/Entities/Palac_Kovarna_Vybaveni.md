@@ -74,12 +74,42 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Kovarna_Vybaveni.
 
 <!-- hestia:generated:end -->
 
+## Assety
+<!-- hestia:generated:start -->
+
+Souhrn: requested 0, in_progress 1, generated 0, imported 21, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+
+| Asset | Stav | Náhrada v levelu |
+|---|---|---|
+| [[MI_RuinSandstone]] | in_progress | none |
+| [[MI_RuinCharcoal]] | imported | none |
+| [[MI_RuinIron]] | imported | none |
+| [[MI_RuinIronClean]] | imported | none |
+| [[MI_RuinLeather]] | imported | none |
+| [[MI_RuinWater]] | imported | none |
+| [[SM_RuinAnvil_A]] | imported | none |
+| [[SM_RuinBarrel_A]] | imported | none |
+| [[SM_RuinBasket_A]] | imported | none |
+| [[SM_RuinBellows_A]] | imported | none |
+| [[SM_RuinChisel_A]] | imported | none |
+| [[SM_RuinCoalBoxLid_A]] | imported | none |
+| [[SM_RuinCoalBox_A]] | imported | none |
+| [[SM_RuinGrindstoneTreadle_A]] | imported | none |
+| [[SM_RuinHammer_A]] | imported | none |
+| [[SM_RuinIronBars_A]] | imported | none |
+| [[SM_RuinNailHeader_A]] | imported | none |
+| [[SM_RuinStool_A]] | imported | none |
+| [[SM_RuinStump_A]] | imported | none |
+| [[SM_RuinTongs_A]] | imported | none |
+| [[SM_RuinWoodpile_A]] | imported | none |
+| [[SM_RuinWorkbench_A]] | imported | none |
+
+<!-- hestia:generated:end -->
 ## Otevřené otázky
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 - [x] Unreal (report `ue_Palac_Kovarna_Vybaveni.json`, 2026-11-21): 37 actorů StaticMesh z dat (`furnishing.json`), žádný zástupný mesh ani výchozí materiál; podle vodítka (meshe a data → asset_data) by realizace odpovídala spíš 4 než `depth_structures: 3`. Ponechat 3, nebo zvýšit? (rozhoduje realizátor nebo GameDesigner) — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: zvýšit na 4; zapsáno `depth_structures: 4`
 <!-- hestia:generated:start -->
 
-- Fronta F-0017 (G2, [[Palac_Kovarna_Vybaveni]]): očekávaná doména gameplay (kind object) bez target_gameplay; očekávaná doména structures (kind object) bez target_structures
 - Fronta T-0007 (–, [[navrh_palac_kovarna]]): kap. 0 duplicitní se [[stav_palac_kovarna]]: sjednotit (M22)
 
 <!-- hestia:generated:end -->

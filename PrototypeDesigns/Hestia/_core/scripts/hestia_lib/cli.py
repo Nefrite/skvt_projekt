@@ -141,8 +141,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("role", metavar="ROLE")
     p.add_argument("--since", metavar="VERZE", help="výchozí: verze před poslední aktualizací (structure_version.md)")
 
-    p = sub.add_parser("agenda", parents=[common], help="co čeká na roli: předání podle for_role (13 kap. 10.13)")
-    p.add_argument("--role", required=True, metavar="ROLE")
+    p = sub.add_parser("agenda", parents=[common], help="co čeká na roli: předání podle for_role, karty assetů, "
+                                                        "úkoly z fronty; bez --role úkoly všech rolí (13 kap. 10.13, 10.17)")
+    p.add_argument("--role", metavar="ROLE")
 
     p = sub.add_parser("ue_query", parents=[common], help="čtení stavu v Unrealu, etapa 1 (jen čtení; 13 kap. 10.11)")
     p.add_argument("--emit", action="store_true", help="vygenerovat čtecí skript do Maintenance/ue/")
@@ -150,6 +151,12 @@ def build_parser() -> argparse.ArgumentParser:
                    help="načíst výsledek z editoru a uložit reporty Maintenance/reports/ue_<entita>.json")
     p.add_argument("--entity", help="entita s pravidlem v ue_map.yaml (čtou se i její potomci)")
     p.add_argument("--all", action="store_true", help="všechny entity s pravidlem (jedno spuštění editoru)")
+    p.add_argument("--assets", action="store_true",
+                   help="knihovní assety z asset_index (existence a verze v UE; 13 kap. 10.19)")
+    p.add_argument("--category", help="s --assets: jen assety kategorie")
+    p.add_argument("--asset", help="s --assets: jen asset (jméno nebo karta s variants)")
+    p.add_argument("--all-library", dest="all_library", action="store_true",
+                   help="s --assets: všechny assety knihovny (výchozí jen karty od generated)")
 
     p = sub.add_parser("inbox_import", parents=[common],
                        help="import položek ze souboru výměny do Inbox/ (13 kap. 10.12)")

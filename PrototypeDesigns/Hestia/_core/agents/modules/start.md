@@ -17,7 +17,7 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 **Nové prostředí** (nový chat, nová VM, jiný stroj): před prvním skriptem spusť `hestia.py doctor` a podle výsledku prostředí doplň (návod u každé chyby; Python ≥ 3.11 a PyYAML mimo projekt a vault). Upozornění na připojenou složku → dlouhé běhy `update_core` s `--work-copy --apply`.
 
-**Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
+**Bez zadání** spusť `hestia.py agenda --role <Role>` a nabídni GameDesignerovi, co čeká (předání s tvou rolí ve `for_role` a předání bez `for_role`, úkoly pro tvou roli z `queue.md` (`code: role:<Role>`) a u rolí s assety karty k výrobě nebo tvé požadavky). Složky neprocházej a cizí soubory (předání pro jiné role, reporty jiných rolí) nečti.
 
 **Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
 

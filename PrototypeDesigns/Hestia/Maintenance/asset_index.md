@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 ---
 # Asset index
 
@@ -138,7 +138,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/06_furnishing/capture_furnishing.py` | entry | Lapikus | Lapikus | 06_furnishing | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/furn_data.py` | entry | Lapikus | Lapikus | 06_furnishing | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` | data | Lapikus | Lapikus | 06_furnishing | structures | folder | – |
-| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing, Katalog_props |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py` | entry | Palac_Kovarna | Palac_Kovarna | 06_furnishing | structures | name | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna_Capture.py` | entry | Palac_Kovarna | Palac_Kovarna | 06_furnishing | structures | name | – |
