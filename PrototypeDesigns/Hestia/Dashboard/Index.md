@@ -56,6 +56,12 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - 2026-11-23 · Architect · Lapikus · navrh konvence korene sloucenych ISM actoru staveb (03 a 05) a predani pro Builder · chat:koren_actoru_staveb
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/reports/ue_*.json · reporty čtení z UE (15 entit) z výsledku 2026-11-23 20:30, format_version 3 (`ue_query --import --all --apply`; WI-44) · predani_pilot_lapikus_knihovnik_unreal P19
 - 2026-11-23 · agent pilotu (Steward) · Lapikus · navrh_lapikus_koren_actoru: validity draft → valid, status draft → selected (Varianta C schválena GameDesignerem, předáno Builderovi) · pokyn GameDesignera 2026-11-23
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/taxonomy_local/asset_sources.yaml · nový manifest knihovních assetů (LIB_MESHES, STONE_MESH_VERSION, MESH_AXES, LIB_SHAPES, data Lapikus/**/*.json, Content/Skvt/Lapikus/Ruin); T-0031 · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/asset_index.json, asset_index.md · sekce library: 59 assetů z kódu (49 klíčů × varianty), 0 klíčů bez karty · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · agent pilotu (Steward) · Assets/ · blok *Z kódu* (generovaný) v 64 kartách meshí; ruční opis odstraněn u 47 karet, u 17 mimo LIB_MESHES ponechán s vysvětlením · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/queue.md · podněty P-0009 (manifest bez ROUND_MESHES, WOOD_NOMINAL, kamenů), P-0010 (výskyty v datech celé entitě Lapikus); T-0031 done · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_assets.py · čtecí skript assetů pro etapu C (54 karet od generated) · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · Architect · Brana · navrh sijoveho prikopu, terennich valu, mostniho pilire, lavky a zatarasu pred vychodni branou a predani pro Builder · chat:prikop_pred_branou
 
 <!-- hestia:generated:end -->
 

@@ -14,7 +14,7 @@ Zkušební pohled 2 pro rozhodnutí Q1 (zadání 04 kap. 2.1 a 5.1), varianta sk
 
 | Entita | kind | environment | structures | paths | npc | gameplay | narrative |
 |---|---|---|---|---|---|---|---|
-| [[Brana]] | structure |  | 1/4 ⚠ |  |  | bez cíle |  |
+| [[Brana]] | structure |  | 1/4 ⚠ (návrh 4) |  |  | bez cíle |  |
 | [[Brana_Straz]] | structure |  | 3/4 ⚠ |  |  | návrh 0/4 ⚠ |  |
 | [[Characters]] | system |  |  |  |  | bez cíle |  |
 | [[Characters_Animace_Sezeni]] | system |  |  |  |  | bez cíle |  |

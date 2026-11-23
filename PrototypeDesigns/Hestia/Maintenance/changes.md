@@ -197,3 +197,4 @@ updated: 2026-11-23
 | 2026-11-23 | agent pilotu (Steward) | Assets/ | blok *Z kódu* (generovaný) v 64 kartách meshí; ruční opis odstraněn u 47 karet, u 17 mimo LIB_MESHES ponechán s vysvětlením | predani_pilot_lapikus_knihovnik_unreal P20 |
 | 2026-11-23 | agent pilotu (Steward) | Maintenance/queue.md | podněty P-0009 (manifest bez ROUND_MESHES, WOOD_NOMINAL, kamenů), P-0010 (výskyty v datech celé entitě Lapikus); T-0031 done | predani_pilot_lapikus_knihovnik_unreal P20 |
 | 2026-11-23 | agent pilotu (Steward) | Maintenance/ue/ue_query_assets.py | čtecí skript assetů pro etapu C (54 karet od generated) | predani_pilot_lapikus_knihovnik_unreal P20 |
+| 2026-11-23 | Architect | Brana | navrh sijoveho prikopu, terennich valu, mostniho pilire, lavky a zatarasu pred vychodni branou a predani pro Builder | chat:prikop_pred_branou |

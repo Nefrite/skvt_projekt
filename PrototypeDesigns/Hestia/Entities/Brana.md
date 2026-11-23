@@ -29,7 +29,7 @@ target_gameplay: 0
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | 1 | 4 | build | −3 |
+| structures | 4 | 1 | 4 | build | −3 |
 | gameplay | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
@@ -37,7 +37,11 @@ target_gameplay: 0
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**structures**
+- [[navrh_brana_prikop]] – design, depth 4, valid, in_progress
+
+**Aktivní předání**
+- [[predani_brana_prikop_stavitel]]
 
 <!-- hestia:generated:end -->
 
@@ -47,6 +51,7 @@ _Zatím žádné dokumenty._
 | Krok | Skripty | Dokumenty |
 |---|---|---|
 | [[03_ruin]] | `brana_spec.py` | – |
+| [[05_constructions]] | – | [[navrh_brana_prikop]] |
 
 <!-- hestia:generated:end -->
 
