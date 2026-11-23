@@ -32,7 +32,7 @@ Skutečný stav stavby strážního stanoviště nad východní bránou proti n�
 | `Brana_Straz_Kryty` (typ `palisade`), východní | 30 kůlů s kůrou Ø 18–22 cm se špičkou nahoru na koruně `Brana_V` (u = 7,5; d = −0,6 až 5,35); vrch 1,8 m nad podlahou; 3 průzory 14 × 45 cm (d = 1,5 / 3,1 / 4,6; spodek 1,35 m), kůl v průzoru je rovně seříznutý | `base` |
 | severní | 37 kůlů **u vnější hrany `Brana_S`** (d = −0,75; u = 0–7,6; za krytem se nedá stoupnout), vrch 1,25 m nad podlahou (střílí se přes vrch), 3 průzory 14 × 35 cm (u = 1,8 / 3,7 / 5,6; spodek 0,9 m) | `final` |
 | jižní | 23 kůlů na jižním okraji podesty (d = 5,15; u = 2,6–7,38, tedy východní dvě třetiny, po `Hradba_V`); stojí na podlaze, na východě na koruně `Brana_V`; vrch 1,8 m, 2 průzory (u = 4,6 a 6,0) | `final` |
-| 06: `Brana_Straz_Vybaveni` (typ `props`, graybox) | 10 graybox kvádrů pod stříškou mezi západními sloupky (strážce sedí čelem do hradu): `Stolicka` (4,78; 2,20), `Bedna_Sipy` (4,25; 2,20), na ní `Naradi_Sipy` (z = +0,42 m), u bedny `Toulec_Vyroba` (4,25; 1,70), u SZ sloupku `Toulec_Straz` (4,00; 1,08) a `Luk` (4,16; 1,30) + 4 dočasní zástupci sloupků stříšky `Sloupek_*_Zastupce` (západní 3,20 m na podlaze v u = 4,00; d = 1,30 a 3,15, východní 1,55 m na koruně `Brana_V` v u = 7,15; d = 0,80 a 3,70) | – |
+| 06: `Brana_Straz_Vybaveni` (typ `props`, graybox) | 10 graybox kvádrů pod stříškou (polohy srovnané Jirkou v levelu 23. 11. 2026): `Stolicka` (4,60; 1,36), `Bedna_Sipy` (4,11; 1,56, výška 52,5 cm), na ní `Naradi_Sipy` (z = +0,525 m), u SZ sloupku `Toulec_Vyroba` (3,61; 0,83), na kamenné koruně `Brana_V` (+0,366 m) mezi průzory `Toulec_Straz` (7,14; 2,24) a `Luk` (7,16; 1,97) + 4 dočasní zástupci sloupků stříšky `Sloupek_*_Zastupce` (západní 3,20 m na podlaze v u = 3,40; d = 0,78 a u = 3,465; d = 3,574, východní 1,74–1,82 m na koruně `Brana_V` v u = 7,15; d = 0,81 a 3,70) | – |
 
 - **Ráhna** Ø 10 cm jsou zevnitř: jedno u spodu (východní a jižní kryt 0,55 m, severní 0,45 m nad podlahou) a druhé těsně pod průzory (1,22 m; u severního krytu 0,78 m). Přes průzory žádné nevede.
 - **Kůly jsou „utopené“ 25 cm v koruně zdi** (posádka korunu vydlabala, aby lépe držely). Ve skriptech kůl do kamene jen zasahuje, kameny koruny se kvůli tomu v 03 nemění.
@@ -76,10 +76,10 @@ Rám brány: `u` k východu podél `Brana_S`, `d` k jihu, počátek v SZ rohu v�
 - Další odchylky od kap. 4: trámy Ø 24 místo 22; podesta končí na východě u líce zdi (ne na její koruně), plocha 6,1 × 5,8 m; jižní kryt stojí na podlaze v d = 5,15 (návrh: práh z kulatiny v d = 5,35) a je delší (návrh u = 4,3–7,5); `Hradba_V` má korunu v Z 3237, podestu tedy nekryje.
 
 ## Ověřeno v UE (ano/ne, kdy, kým)
-**Kroky 1 až 3 hotové (podesta a všechny tři kryty; ve skriptech). V UE Jirka viděl podestu a východní kryt (16. 11. 2026) a zadal úpravy, které jsou tu už zapracované; nový stav v UE neověřen.**
+**Kroky 1 až 3 hotové (podesta a všechny tři kryty; ve skriptech). V UE Jirka viděl podestu a východní kryt (16. 11. 2026) a 23. 11. 2026 v levelu rozmístil a uložil (capture) graybox vybavení `Brana_Straz_Vybaveni` i 4 zástupce sloupků stříšky; po opravě výšek s `ref` při capture (23. 11. 2026) je potřeba spustit v UE `06_furnishing/vybaveni/Brana_Straz.py` (`MODE = "build"`).**
 
 ## Co zbývá
-**Zbývá:** přístřešek z kůry (`bark_roof`; nový návrh a instrukce pro stavitele: [[predani_brana_straz_striska_stavitel]], nahrazuje kap. 4.4), zátaras, staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
+**Zbývá:** rozšíření podesty ze 4 na 5 kulatin (`d = −0,20` na `Brana_S` + 4 v kapsách `Brana_V` v `d = 0,80 / 2,20 / 3,60 / 5,00 m`, aby západní sloupky stříšky v `d = 0,78` a `3,57 m` stály nad 2. a 4. kulatinou; úkol T-0041 pro Buildera), přístřešek z kůry (`bark_roof`; návrh a instrukce pro stavitele: [[predani_brana_straz_striska_stavitel]], nahrazuje kap. 4.4), výroba meshí vybavení ([[SM_RuinCrate_A]], [[SM_RuinArrowTools_A]], [[SM_RuinQuiver_A]], [[SM_RuinBow_A]]), zátaras, staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
 
 ### Mimo stříšku (z předání stříšky)
 

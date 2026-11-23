@@ -2,7 +2,7 @@
 # orchestrace
 type: handover
 validity: valid
-updated: 2026-11-16
+updated: 2026-11-23
 # hra
 domain: structures
 entity: "[[Brana_Straz]]"
@@ -60,4 +60,5 @@ Přesunuto do [[stav_brana_straz]] (Co zbývá).
 
 ## Zbývá
 
-- [ ] přístřešek z kůry `Brana_Straz_Pristresek` (celé toto předání; palisáda, podesta a kryty jsou hotové: [[stav_brana_straz]])
+- [ ] zvýšit počet trámů podesty `Brana_Straz_Podesta` ze 4 na **5 kulatin** (`d = −0,20` na `Brana_S` + 4 v kapsách `Brana_V` v `d = 0,80 / 2,20 / 3,60 / 5,00 m`; na `Brana_J` prodloužit `B_LEVEL` na `d = 0,65–5,30 m`; přegenerovat `03_ruin` a `05_constructions`), aby posunuté západní sloupky stříšky stály přímo nad 2. a 4. kulatinou (Jirka 23. 11. 2026, T-0041)
+- [ ] přístřešek z kůry `Brana_Straz_Pristresek` se západními sloupky podle poloh z levelu (`u = 3,40; d = 0,78–0,80 m` a `u = 3,465; d = 3,57–3,60 m`, výška 3,20 m) a východními sloupky (`u = 7,15; d = 0,81 a 3,70 m`, výška 1,74–1,82 m); po postavení odebrat 4 dočasné zástupce `Sloupek_*_Zastupce` z `Brana_Straz_Vybaveni` (palisáda, podesta a kryty jsou hotové: [[stav_brana_straz]])

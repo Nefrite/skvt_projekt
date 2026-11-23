@@ -129,13 +129,16 @@ def apply_pose(grp, it, s, pose, ratio, terr):
     x, y, z, roll, pitch, yaw = pose
     O, U, V = grp["origin"], grp["u"], grp["v"]
     ac = lambda X, Y: (((X - O[0]) * U[0] + (Y - O[1]) * U[1]) / 100, ((X - O[0]) * V[0] + (Y - O[1]) * V[1]) / 100)
+    P = lambda a_, c_: (O[0] + (U[0] * a_ + V[0] * c_) * 100, O[1] + (U[1] * a_ + V[1] * c_) * 100)
+    zr = terr.z(*P(*it["ref"])) if it.get("ref") else None
     if not it.get("manual") and not it.get("captured"): it["spec"] = copy.deepcopy(furn_data.pose_of(it))
     if "p0" in it:                                       # usek (tyc, lano): koncove body podel osy X kusu
         L = s.sx * ratio[0]; p, w = math.radians(pitch), math.radians(yaw)
         d = (math.cos(p) * math.cos(w), math.cos(p) * math.sin(w), math.sin(p))
         for key, sg in (("p0", -1), ("p1", 1)):
             X, Y, Z = x + sg * d[0] * L / 2, y + sg * d[1] * L / 2, z + sg * d[2] * L / 2
-            a, c = ac(X, Y); it[key] = [round(a, 3), round(c, 3), round((Z - terr.z(X, Y)) / 100, 3)]
+            a, c = ac(X, Y); zg = zr if zr is not None else terr.z(X, Y)
+            it[key] = [round(a, 3), round(c, 3), round((Z - zg) / 100, 3)]
         if abs(ratio[1] - 1) > SCALE_TOL or abs(ratio[2] - 1) > SCALE_TOL:
             it["d"] = round(it["d"] * (ratio[1] + ratio[2]) / 2, 4)
     else:
@@ -143,7 +146,7 @@ def apply_pose(grp, it, s, pose, ratio, terr):
             if "size" in it: it["size"] = [round(it["size"][i] * ratio[i], 1) for i in range(3)]
             else:
                 k = it.get("scale", (1.0, 1.0, 1.0)); it["scale"] = [round(k[i] * ratio[i], 4) for i in range(3)]
-        a, c = ac(x, y); zg = terr.z(x, y)
+        a, c = ac(x, y); zg = zr if zr is not None else terr.z(x, y)
         it["a"], it["c"] = round(a, 3), round(c, 3)
         if "zc" in it: it["zc"] = round((z - zg) / 100, 3)
         else: it["z"] = round((z - zg - s.sz * ratio[2] / 2) / 100, 3)

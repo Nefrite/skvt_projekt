@@ -661,11 +661,11 @@ def check_brana(S):
         bad_z = []
         for k, s in by_id.items():
             bot = s.z - s.sz / 2
-            want = crate_top if k == "Naradi_Sipy" else (zt + 36.6 if k in ("Sloupek_SV_Zastupce", "Sloupek_JV_Zastupce") else zt)
+            want = crate_top if k == "Naradi_Sipy" else (zt + 36.6 if k in ("Toulec_Straz", "Luk", "Sloupek_SV_Zastupce", "Sloupek_JV_Zastupce") else zt)
             if abs(bot - want) > 1.5: bad_z.append((k, round(bot - want, 1)))
         rep("vybaveni brany stoji na podlaze / bedne / korune Brana_V %s" % bad_z, not bad_z)
-        out_roof = [s.id.split("|")[-1] for s in fu if not (3.70 <= fb(s)[0] and fb(s)[1] <= 8.00 and 0.25 <= fb(s)[2] and fb(s)[3] <= (3.80 if "Sloupek_" in s.id else 3.75))]
-        rep("vybaveni brany je cele pod pudorysem strisky (u 3.7-8.0, d 0.25-3.75) %s" % out_roof, not out_roof)
+        out_roof = [s.id.split("|")[-1] for s in fu if not (3.15 <= fb(s)[0] and fb(s)[1] <= 8.00 and 0.25 <= fb(s)[2] and fb(s)[3] <= 3.80)]
+        rep("vybaveni brany je cele pod pudorysem strisky (u 3.15-8.0, d 0.25-3.80) %s" % out_roof, not out_roof)
     return ok
 
 

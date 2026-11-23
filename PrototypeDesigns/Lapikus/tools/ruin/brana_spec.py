@@ -106,25 +106,27 @@ def ruin_edits(walls):
 # ------------------------------------------------------------------ vybaveni Brana_Straz (06_furnishing, typ props)
 # Ram skupiny = ram brany (frame): a = u podel Brana_S k vychodu (m), c = d kolmo k jihu (m).
 # Podlaha podesty (Brana_Straz_Podesta): a = 0,20 - 6,27 m, c = -0,55 - 5,25 m, vrch prken deck_z = Z 3581 cm.
-# Striska z kury (Brana_Straz_Pristresek, kap. 11): pudorys krytiny a = 3,70 - 8,00 m, c = 0,25 - 3,75 m;
-# zapadni sloupky na podlaze v a = 4,00; c = 1,30 a 3,15 m, vychodni na korune Brana_V (+0,366 m) v a = 7,15; c = 0,80 a 3,70 m.
-# Graybox (23. 11. 2026, Jirka): strazce sedi pod striskou co nejblize k hradu (mezi zapadnimi sloupky) a pri vyrobe sipu
-# se diva do hradu (k zapadu). Vsechny kusy jsou samostatne actory (kvadry, MI_PrototypeGrid_Gray), vcetne docasnych
-# zastupcu 4 sloupku strisky (05, stavitel).
+# Striska z kury (Brana_Straz_Pristresek, kap. 11; polohy sloupku upravene Jirkou v levelu 23. 11. 2026):
+# zapadni sloupky na podlaze v a = 3,40; c = 0,78 m a a = 3,465; c = 3,574 m (nad budoucim 2. a 4. tramem pri 5 kulatinach
+# d = -0,20 / 0,80 / 2,20 / 3,60 / 5,00 m), vychodni na korune Brana_V (+0,366 m) v a = 7,15; c = 0,81 a 3,70 m;
+# pudorys krytiny s presahem a = 3,15 - 8,00 m, c = 0,25 - 3,80 m.
+# Graybox (23. 11. 2026, polohy z levelu Jirka): strazce sedi u SZ sloupku sikmo celem do hradu (-22 st.), pred sebou ma
+# prevracenou bednu (zvysenou na 52,5 cm) se sadou nastroju na vyrobu sipu a vedle ni toulec na vyrobene sipy;
+# pohotovostni toulec a luk stoji na kamenne korune Brana_V (+0,366 m) mezi vychodnimi pruzory d = 1,5 a 3,1 m.
 B_FURN_REF = (4.5, 2.2)                                             # bod, od jehoz terenu se meri vysky (podlaha podesty je vodorovna)
-B_FURN_CRATE = dict(a=4.25, c=2.20, x=(0, 1), size=(65.0, 45.0, 42.0))         # prevracena bedna dnem vzhuru jako pracovni stolek (SM_RuinCrate_A)
-B_FURN_TOOLS = dict(a=4.25, c=2.20, dz=0.42, x=(0, 1), size=(45.0, 30.0, 12.0))  # sada nastroju na vyrobu sipu na vrchu bedny (SM_RuinArrowTools_A)
-B_FURN_STOOL = dict(a=4.78, c=2.20, x=(-1, 0), size=(35.0, 34.0, 46.0))        # stolicka pro strazce za bednou, celem do hradu (SM_RuinStool_A, v 1. navrhu graybox)
-B_FURN_QUIVER_WORK = dict(a=4.25, c=1.70, x=(0, 1), size=(22.0, 18.0, 75.0))   # toulec primo u bedny jako odloziste na prave vyrobene sipy (SM_RuinQuiver_A)
-B_FURN_QUIVER_GUARD = dict(a=4.00, c=1.08, x=(1, 0), size=(22.0, 18.0, 75.0))  # pohotovostni toulec pro straz u SZ sloupku strisky (SM_RuinQuiver_A)
-B_FURN_BOW = dict(a=4.16, c=1.30, x=(0, 1), size=(25.0, 8.0, 145.0))           # luk po ruce u SZ sloupku strisky (SM_RuinBow_A)
+B_FURN_CRATE = dict(a=4.111, c=1.558, x=(0.3685, 0.9296), size=(65.0, 45.0, 52.5))          # prevracena bedna dnem vzhuru jako pracovni stolek (SM_RuinCrate_A)
+B_FURN_TOOLS = dict(a=4.111, c=1.558, dz=0.525, x=(0.3685, 0.9296), size=(45.0, 30.0, 12.0)) # sada nastroju na vyrobu sipu na vrchu bedny (SM_RuinArrowTools_A)
+B_FURN_STOOL = dict(a=4.604, c=1.362, x=(-0.9296, 0.3685), size=(35.0, 34.0, 46.0))         # stolicka pro strazce za bednou, celem do hradu (SM_RuinStool_A, v 1. navrhu graybox)
+B_FURN_QUIVER_WORK = dict(a=3.607, c=0.827, x=(0.3685, 0.9296), size=(22.0, 18.0, 75.0))    # toulec u bedny a SZ sloupku jako odloziste na prave vyrobene sipy (SM_RuinQuiver_A)
+B_FURN_QUIVER_GUARD = dict(a=7.138, c=2.238, dz=0.366, x=(1.0, 0.0), size=(22.0, 18.0, 75.0)) # pohotovostni toulec na korune Brana_V mezi pruzory (SM_RuinQuiver_A)
+B_FURN_BOW = dict(a=7.159, c=1.966, dz=0.366, x=(-0.0127, 0.9999), size=(25.0, 8.0, 145.0))   # luk na korune Brana_V vedle pohotovostniho toulce (SM_RuinBow_A)
 # docasni zastupci sloupku strisky z kury (05_constructions, Brana_Straz_Pristresek): O 14 cm, do vysky strisky (3,20 m zapadni na podlaze,
-# 1,55 m vychodni na korune Brana_V +0,366 m nad podlahou); po postaveni strisky stavitelem se odeberou
+# 1,74 - 1,82 m vychodni na korune Brana_V +0,366 m nad podlahou); po postaveni strisky stavitelem se odeberou
 B_FURN_POSTS = [
-    dict(id="Sloupek_SZ_Zastupce", a=4.00, c=1.30, dz=0.0, size=(14.0, 14.0, 320.0)),
-    dict(id="Sloupek_JZ_Zastupce", a=4.00, c=3.15, dz=0.0, size=(14.0, 14.0, 320.0)),
-    dict(id="Sloupek_SV_Zastupce", a=7.15, c=0.80, dz=0.366, size=(14.0, 14.0, 155.0)),
-    dict(id="Sloupek_JV_Zastupce", a=7.15, c=3.70, dz=0.366, size=(14.0, 14.0, 155.0)),
+    dict(id="Sloupek_SZ_Zastupce", a=3.400, c=0.777, dz=0.0, size=(14.0, 14.0, 320.0)),
+    dict(id="Sloupek_JZ_Zastupce", a=3.465, c=3.574, dz=0.0, size=(14.0, 14.0, 320.0)),
+    dict(id="Sloupek_SV_Zastupce", a=7.148, c=0.807, dz=0.366, size=(14.0, 14.0, 174.4)),
+    dict(id="Sloupek_JV_Zastupce", a=7.150, c=3.700, dz=0.366, size=(14.0, 14.0, 181.6)),
 ]
 B_FURN_MESH = {}                                                    # v 1. navrhu je vse v grayboxu (Jirka 23. 11. 2026)
 
@@ -144,8 +146,8 @@ def brana_straz_vybaveni(floor_z, graybox=True):
         gb("Bedna_Sipy", B_FURN_CRATE["a"], B_FURN_CRATE["c"], B_FURN_CRATE["size"], x=B_FURN_CRATE["x"]),
         gb("Naradi_Sipy", B_FURN_TOOLS["a"], B_FURN_TOOLS["c"], B_FURN_TOOLS["size"], dz=B_FURN_TOOLS["dz"], x=B_FURN_TOOLS["x"]),
         gb("Toulec_Vyroba", B_FURN_QUIVER_WORK["a"], B_FURN_QUIVER_WORK["c"], B_FURN_QUIVER_WORK["size"], x=B_FURN_QUIVER_WORK["x"]),
-        gb("Toulec_Straz", B_FURN_QUIVER_GUARD["a"], B_FURN_QUIVER_GUARD["c"], B_FURN_QUIVER_GUARD["size"], x=B_FURN_QUIVER_GUARD["x"]),
-        gb("Luk", B_FURN_BOW["a"], B_FURN_BOW["c"], B_FURN_BOW["size"], x=B_FURN_BOW["x"]),
+        gb("Toulec_Straz", B_FURN_QUIVER_GUARD["a"], B_FURN_QUIVER_GUARD["c"], B_FURN_QUIVER_GUARD["size"], dz=B_FURN_QUIVER_GUARD["dz"], x=B_FURN_QUIVER_GUARD["x"]),
+        gb("Luk", B_FURN_BOW["a"], B_FURN_BOW["c"], B_FURN_BOW["size"], dz=B_FURN_BOW["dz"], x=B_FURN_BOW["x"]),
     ]
     for p in B_FURN_POSTS:
         out.append(gb(p["id"], p["a"], p["c"], p["size"], dz=p["dz"]))

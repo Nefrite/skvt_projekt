@@ -14,7 +14,7 @@ aliases: ["SM_RuinCrate"]
 asset_kind: mesh
 asset_category: props
 used_by: ["[[Brana_Straz]]"]
-envelope: [65, 45, 42]
+envelope: [65, 45, 53]
 stand_in: graybox
 asset_source:
 ue_path:
@@ -26,7 +26,7 @@ variants: []
 Hrubá dřevěná bedna z prken a svlaků; na strážním stanovišti nad bránou (`Brana_Straz_Vybaveni`) stojí převrácená dnem vzhůru jako nízký pracovní stolek u stoličky strážce pod stříškou z kůry, na kterém strážce vyrábí šípy. Společná pravidla: [[Konvence_assetu]].
 
 ## Požadavek
-Obal 0,65 × 0,45 × 0,42 m (`envelope: [65, 45, 42]`) = graybox `B_FURN_CRATE` v `tools/ruin/brana_spec.py` (u = 4,25; d = 2,20 m). Převrácená bedna s rovným dnem nahoře (aby na ní mohla ležet sada nástrojů na výrobu šípů [[SM_RuinArrowTools_A]]). Návrh: [[navrh_brana_straz]], stav: [[stav_brana_straz]].
+Obal 0,65 × 0,45 × 0,53 m (`envelope: [65, 45, 53]`, v levelu zvýšeno Jirkou na 52,5 cm) = graybox `B_FURN_CRATE` v `tools/ruin/brana_spec.py` (u = 4,11; d = 1,56 m). Převrácená bedna s rovným dnem nahoře (aby na ní mohla ležet sada nástrojů na výrobu šípů [[SM_RuinArrowTools_A]]). Návrh: [[navrh_brana_straz]], stav: [[stav_brana_straz]].
 
 ## Na míru
 

@@ -14,10 +14,10 @@ build_step: 05_constructions
 
 ## Souhrn
 Návrh strážního stanoviště nad východní bránou: dřevěná podesta nad oblouky, kryty z kulatiny, přístřešek z kůry, vybavení strážce a zátaras před bránou. Stav stavby, odchylky od návrhu a rozhodnutí z 16. a 23. 11. 2026 jsou v [[stav_brana_straz]]; podle kap. 0 platí přednostně před kap. 2–7.
-- **Podesta:** podle stavu 3 trámy Ø 24 cm a čtvrtý na `Brana_S`, vrch v Z 3581 (návrh v kap. 4.1 uváděl 6 trámů Ø 22 cm a Z 3522, viz [[stav_brana_straz]]).
+- **Podesta:** podle stavu 3 trámy Ø 24 cm a čtvrtý na `Brana_S`, vrch v Z 3581 (návrh v kap. 4.1 uváděl 6 trámů Ø 22 cm a Z 3522, viz [[stav_brana_straz]]). **Rozhodnutí Jirky (23. 11. 2026):** kvůli většímu rozestupu západních sloupků stříšky (d = 0,78 a 3,57 m) zvýšit počet kulatin pod podestou ze 4 na **5** (`d = −0,20` na `Brana_S` + 4 v kapsách `Brana_V` v `d = 0,80 / 2,20 / 3,60 / 5,00 m`), aby sloupky stály nad 2. a 4. kulatinou.
 - **Kryty a zábradlí (kap. 4.2, 4.3):** východní (vrch 1,8 m nad podestou, 3 průzory), severní (prsní výška 1,25 m, bez průzorů, pro střelbu z luku), jižní (1 průzor).
-- **Přístřešek z kůry:** kap. 4.4 je nahrazena kap. 11 (pultová stříška v SV koutě, spád 22° k východu, vlastní kostra).
-- **Vybavení stanoviště (kap. 12, [[06_furnishing]]):** skupina `Brana_Straz_Vybaveni` pod stříškou z kůry na západním okraji mezi sloupky (strážce sedí na stoličce čelem do hradu, vyrábí šípy na převrácené bedně se sadou nástrojů, u bedny má toulec na vyrobené šípy a u SZ sloupku pohotovostní toulec a luk; v 1. návrhu vše graybox včetně 4 dočasných zástupců sloupků stříšky).
+- **Přístřešek z kůry:** kap. 4.4 je nahrazena kap. 11 (pultová stříška v SV koutě, spád 22° k východu, vlastní kostra; západní sloupky posunuty Jirkou v levelu 23. 11. 2026 na `u = 3,40; d = 0,78 m` a `u = 3,465; d = 3,574 m` nad 2. a 4. kulatinu podesty).
+- **Vybavení stanoviště (kap. 12, [[06_furnishing]]):** skupina `Brana_Straz_Vybaveni` pod stříškou z kůry (polohy srovnané Jirkou v levelu 23. 11. 2026: strážce sedí na stoličce u SZ sloupku šikmo čelem do hradu, vyrábí šípy na převrácené bedně se sadou nástrojů, u SZ sloupku má toulec na vyrobené šípy a na koruně `Brana_V` mezi východními průzory pohotovostní toulec a luk; v 1. návrhu vše graybox včetně 4 dočasných zástupců sloupků stříšky).
 - **Zátaras (kap. 4.5):** španělský jezdec před vnějším lícem `Brana_V`, samostatný actor.
 - **Neřeší se:** výstup na podestu, příkop a most před bránou (zadání, kap. 1).
 - **Otevřené:** kap. 9 (výstup, poloha zátarasu, obcházení brány po zřícené jižní straně, etapa hry).
@@ -197,8 +197,8 @@ Pultová stříška v severovýchodním koutě, spád 22° k východu. Voda sté
 
 | Prvek | Průřez | Počet a délka | Poloha | Na čem stojí nebo leží |
 |---|---|---|---|---|
-| západní sloupky | kulatina s kůrou Ø 14 cm | 2 ks, 3,2 m | u = 4,0; d = 1,3 a 3,15 | na podlaze přesně nad trámy podesty |
-| východní sloupky | kulatina s kůrou Ø 14 cm | 2 ks, asi 1,55 m | u = 7,15; d = 0,8 a 3,7 | na koruně `Brana_V` (pata kopíruje kámen), 0,35 m za kůly krytu |
+| západní sloupky | kulatina s kůrou Ø 14 cm | 2 ks, 3,2 m | u = 3,40; d = 0,78 a u = 3,465; d = 3,574 (původně u = 4,0; d = 1,3 a 3,15; posunuto Jirkou v levelu 23. 11. 2026) | na podlaze nad 2. a 4. trámem podesty (při 5 kulatinách d = −0,20 / 0,80 / 2,20 / 3,60 / 5,00 m) |
+| východní sloupky | kulatina s kůrou Ø 14 cm | 2 ks, 1,74–1,82 m (původně 1,55 m; zvýšeno Jirkou v levelu 23. 11. 2026) | u = 7,15; d = 0,81 a 3,70 | na koruně `Brana_V` (pata kopíruje kámen), 0,35 m za kůly krytu |
 | západní vaznice | tyč s kůrou Ø 12 cm | 1 ks, 3,4 m | u = 4,0; d = 0,3–3,7; vrch 3,32 m | na západních sloupcích |
 | východní vaznice | tyč s kůrou Ø 12 cm | 1 ks, 3,6 m | u = 7,15; d = 0,3–3,9; vrch 2,05 m | na východních sloupcích |
 | krokvičky | tyče s kůrou Ø 8 cm | 7 ks, 4,55 m | d = 0,5 až 3,5 po 0,5 m; u = 3,75–7,95 | na obou vaznicích, přivázané |
@@ -240,19 +240,19 @@ Pultová stříška v severovýchodním koutě, spád 22° k východu. Voda sté
 
 ## 12. Vybavení stanoviště (06_furnishing, graybox 23. 11. 2026)
 
-Zadání a rozhodnutí Jirky (23. 11. 2026): vybavit strážní stanoviště pod stříškou z kůry (`Brana_Straz_Vybaveni` v [[06_furnishing]]). Strážce sedí pod stříškou co nejblíže směrem k hradu (mezi západními sloupky stříšky) a při výrobě šípů se dívá do hradu (k západu). V prvním návrhu jsou všechny kusy **graybox** (kvádry s materiálem `MI_PrototypeGrid_Gray`), každý jako samostatný actor pro ruční doladění v levelu (`capture`), včetně 4 dočasných zástupců sloupků stříšky (`*_Zastupce`), než stavitel postaví `Brana_Straz_Pristresek` (05).
+Zadání a rozhodnutí Jirky (23. 11. 2026, polohy a velikosti srovnané v levelu): vybavit strážní stanoviště pod stříškou z kůry (`Brana_Straz_Vybaveni` v [[06_furnishing]]). Strážce sedí v severozápadní části pod stříškou šikmo čelem do hradu (`−22°`) a vyrábí šípy na převrácené bedně (zvýšené na 52,5 cm) se sadou nástrojů; u SZ sloupku má toulec na vyrobené šípy a na kamenné koruně `Brana_V` mezi východními průzory (`d = 1,5` a `3,1 m`) pohotovostní toulec a luk. V prvním návrhu jsou všechny kusy **graybox** (kvádry s materiálem `MI_PrototypeGrid_Gray`), každý jako samostatný actor pro ruční doladění v levelu (`capture`), včetně 4 dočasných zástupců sloupků stříšky (`*_Zastupce`), než stavitel postaví `Brana_Straz_Pristresek` (05).
 
 | ID kusu | Asset (požadavek) | Rozměr `envelope` (cm) | Poloha `u; d` (m), výška nad podlahou | Účel a umístění |
 |---|---|---|---|---|
-| `Stolicka` | [[SM_RuinStool_A]] | `35 × 34 × 46` | `4,78; 2,20`, `z = 0,00 m`, `x = (−1, 0)` | stolička pro strážce východně od bedny, čelem do hradu (v 1. návrhu graybox) |
-| `Bedna_Sipy` | [[SM_RuinCrate_A]] | `65 × 45 × 42` | `4,25; 2,20`, `z = 0,00 m`, `x = (0, 1)` | převrácená dřevěná bedna dnem vzhůru jako pracovní stolek mezi západními sloupky stříšky |
-| `Naradi_Sipy` | [[SM_RuinArrowTools_A]] | `45 × 30 × 12` | `4,25; 2,20`, `z = +0,42 m`, `x = (0, 1)` | sada nástrojů a rozpracovaných šípů na vrchu převrácené bedny (samostatný actor) |
-| `Toulec_Vyroba` | [[SM_RuinQuiver_A]] | `22 × 18 × 75` | `4,25; 1,70`, `z = 0,00 m`, `x = (0, 1)` | toulec přímo u bedny (po pravé ruce strážce) jako odložiště na právě vyrobené šípy |
-| `Toulec_Straz` | [[SM_RuinQuiver_A]] | `22 × 18 × 75` | `4,00; 1,08`, `z = 0,00 m`, `x = (1, 0)` | pohotovostní toulec se šípy u SZ sloupku stříšky směrem k severnímu střeleckému krytu |
-| `Luk` | [[SM_RuinBow_A]] | `25 × 8 × 145` | `4,16; 1,30`, `z = 0,00 m`, `x = (0, 1)` | luk opřený po ruce u SZ sloupku stříšky vedle pohotovostního toulce |
-| `Sloupek_SZ_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 320` | `4,00; 1,30`, `z = 0,00 m` | dočasný graybox SZ sloupku stříšky na podlaze podesty (do výšky stříšky 3,20 m) |
-| `Sloupek_JZ_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 320` | `4,00; 3,15`, `z = 0,00 m` | dočasný graybox JZ sloupku stříšky na podlaze podesty (do výšky stříšky 3,20 m) |
-| `Sloupek_SV_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 155` | `7,15; 0,80`, `z = +0,366 m` | dočasný graybox SV sloupku stříšky na koruně `Brana_V` (do výšky stříšky) |
-| `Sloupek_JV_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 155` | `7,15; 3,70`, `z = +0,366 m` | dočasný graybox JV sloupku stříšky na koruně `Brana_V` (do výšky stříšky) |
+| `Stolicka` | [[SM_RuinStool_A]] | `35 × 34 × 46` | `4,604; 1,362`, `z = 0,00 m`, `x = (−0,930, 0,369)` | stolička pro strážce za bednou, šikmo čelem do hradu (`−22°`, v 1. návrhu graybox) |
+| `Bedna_Sipy` | [[SM_RuinCrate_A]] | `65 × 45 × 53` | `4,111; 1,558`, `z = 0,00 m`, `x = (0,369, 0,930)` | převrácená dřevěná bedna dnem vzhůru jako pracovní stolek (výška 52,5 cm z levelu) |
+| `Naradi_Sipy` | [[SM_RuinArrowTools_A]] | `45 × 30 × 12` | `4,111; 1,558`, `z = +0,525 m`, `x = (0,369, 0,930)` | sada nástrojů a rozpracovaných šípů na vrchu převrácené bedny (samostatný actor) |
+| `Toulec_Vyroba` | [[SM_RuinQuiver_A]] | `22 × 18 × 75` | `3,607; 0,827`, `z = 0,00 m`, `x = (0,369, 0,930)` | toulec u bedny a SZ sloupku (po pravé ruce strážce) jako odložiště na právě vyrobené šípy |
+| `Toulec_Straz` | [[SM_RuinQuiver_A]] | `22 × 18 × 75` | `7,138; 2,238`, `z = +0,366 m`, `x = (1, 0)` | pohotovostní toulec se šípy na kamenné koruně `Brana_V` mezi průzory `d = 1,5` a `3,1 m` |
+| `Luk` | [[SM_RuinBow_A]] | `25 × 8 × 145` | `7,159; 1,966`, `z = +0,366 m`, `x = (−0,013, 1,0)` | luk na kamenné koruně `Brana_V` vedle pohotovostního toulce |
+| `Sloupek_SZ_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 320` | `3,400; 0,777`, `z = 0,00 m` | dočasný graybox SZ sloupku stříšky na podlaze podesty (nad budoucí 2. kulatinou `d = 0,80 m`) |
+| `Sloupek_JZ_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 320` | `3,465; 3,574`, `z = 0,00 m` | dočasný graybox JZ sloupku stříšky na podlaze podesty (nad budoucí 4. kulatinou `d = 3,60 m`) |
+| `Sloupek_SV_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 174,4` | `7,148; 0,807`, `z = +0,366 m` | dočasný graybox SV sloupku stříšky na koruně `Brana_V` (výška 174,4 cm z levelu) |
+| `Sloupek_JV_Zastupce` | 05 (`Brana_Straz_Pristresek`) | `14 × 14 × 181,6` | `7,150; 3,700`, `z = +0,366 m` | dočasný graybox JV sloupku stříšky na koruně `Brana_V` (výška 181,6 cm z levelu) |
 
 - **Specifikace:** `tools/ruin/brana_spec.py` (`B_FURN_*`, `brana_straz_vybaveni()`), generátor `tools/furnishing/gen_furnishing.py` → `brana()`, spouštěče `06_furnishing/vybaveni/Brana_Straz.py` a `Brana_Straz_Capture.py` (nebo `05_constructions/stavby/Brana_Straz.py` s `VYBAVENI = True`).
