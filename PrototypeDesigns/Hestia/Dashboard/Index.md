@@ -46,7 +46,6 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-23 · agent pilotu (Steward) · Palac_Obydli · karty assetů v used_by (blok ## Assety), požadavky staveniště (loupák, hromada hlíny, třísky, udusaná hlína, saze) · predani_pilot_lapikus_knihovnik_unreal P19
 - 2026-11-23 · agent pilotu (Steward) · Palac_Kovarna_Vybaveni · karty props kovárny v used_by (blok ## Assety) · predani_pilot_lapikus_knihovnik_unreal P19
 - 2026-11-23 · agent pilotu (Steward) · Roles/Crafter.md · nový profil projektové role (asset_work, ue_lookup; role_base 0.23.0), kompilát Crafter_compiled · predani_pilot_lapikus_knihovnik_unreal P19
 - 2026-11-23 · agent pilotu (Steward) · Roles/Furnisher.md · asset_request, ue_lookup, požadavky jako karty místo checklistu, owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
@@ -56,6 +55,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_all.py · čtecí skript core 0.23.0 (`ue_query --all --emit --apply`) pro ověření WI-44 bez restartu editoru · predani_pilot_lapikus_knihovnik_unreal P19
 - 2026-11-23 · Architect · Lapikus · navrh konvence korene sloucenych ISM actoru staveb (03 a 05) a predani pro Builder · chat:koren_actoru_staveb
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/reports/ue_*.json · reporty čtení z UE (15 entit) z výsledku 2026-11-23 20:30, format_version 3 (`ue_query --import --all --apply`; WI-44) · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Lapikus · navrh_lapikus_koren_actoru: validity draft → valid, status draft → selected (Varianta C schválena GameDesignerem, předáno Builderovi) · pokyn GameDesignera 2026-11-23
 
 <!-- hestia:generated:end -->
 

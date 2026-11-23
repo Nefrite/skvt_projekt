@@ -28,7 +28,7 @@ depth_narrative: 2
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | – | 4 | – | build | bez cíle |
+| structures | 4 | 4 | – | build | bez cíle |
 | paths | – | – | – | build | bez cíle |
 | npc | – | – | – | design | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
@@ -48,7 +48,7 @@ Agregace z potomků (04 kap. 3):
 
 **structures**
 - [[README_ruin]] – design, depth 4, outdated
-- [[navrh_lapikus_koren_actoru]] – design, depth 4, draft, draft
+- [[navrh_lapikus_koren_actoru]] – design, depth 4, valid, selected
 - [[Zricenina_03_ruin_stav]] – state, depth 4, valid
 - [[Materialy_a_upravy_dreva]] – reference, valid
 - [[Pravidla_zabydleni]] – reference, valid

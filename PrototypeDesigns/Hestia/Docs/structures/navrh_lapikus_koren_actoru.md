@@ -1,13 +1,13 @@
 ---
 # orchestrace
 type: design
-validity: draft
+validity: valid
 derived_from:
 alternative_to: []
 updated: 2026-11-23
 aliases: []
 # hra
-status: draft
+status: selected
 domain: structures
 category: []
 entity: "[[Lapikus]]"
