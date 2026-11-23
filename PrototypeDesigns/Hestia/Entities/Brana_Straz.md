@@ -52,6 +52,7 @@ target_gameplay: 4
 | Krok | Skripty | Dokumenty |
 |---|---|---|
 | [[05_constructions]] | `Brana_Straz.py`, `Brana_Straz_Kamen.py`, `Brana_Straz_Kryty.py`, `Brana_Straz_Podesta.py` | [[navrh_brana_straz]], [[stav_brana_straz]] |
+| [[06_furnishing]] | `Brana_Straz.py`, `Brana_Straz_Capture.py` | – |
 
 <!-- hestia:generated:end -->
 
@@ -64,6 +65,8 @@ target_gameplay: 4
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kamen.py` | entry | 05_constructions | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kryty.py` | entry | 05_constructions | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Podesta.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Brana_Straz.py` | entry | 06_furnishing | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Brana_Straz_Capture.py` | entry | 06_furnishing | name |
 
 <!-- hestia:generated:end -->
 
@@ -81,17 +84,20 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana_Straz.json` · et
 - Rozsah: 880 × 764 × 331 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 4 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 3; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
-- Pozor: `state` stav_brana_straz (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 
 ## Assety
 <!-- hestia:generated:start -->
 
-Souhrn: requested 0, in_progress 2, generated 0, imported 9, verified 0 · graybox 0 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
+Souhrn: requested 4, in_progress 2, generated 0, imported 10, verified 0 · graybox 4 · outdated v UE — (signál vedle `depth_*`, hloubka se z něj nepočítá)
 
 | Asset | Stav | Náhrada v levelu |
 |---|---|---|
+| [[SM_RuinArrowTools_A]] | requested | graybox |
+| [[SM_RuinBow_A]] | requested | graybox |
+| [[SM_RuinCrate_A]] | requested | graybox |
+| [[SM_RuinQuiver_A]] | requested | graybox |
 | [[MI_RuinWood]] | in_progress | none |
 | [[SM_RuinPost_A]] | in_progress | none |
 | [[MI_RuinBark]] | imported | none |
@@ -102,6 +108,7 @@ Souhrn: requested 0, in_progress 2, generated 0, imported 9, verified 0 · grayb
 | [[SM_RuinPoleBark_A]] | imported | none |
 | [[SM_RuinPole_A]] | imported | none |
 | [[SM_RuinStake_A]] | imported | none |
+| [[SM_RuinStool_A]] | imported | none |
 | [[SM_RuinTimber_A]] | imported | none |
 
 <!-- hestia:generated:end -->

@@ -4,6 +4,8 @@ Polohy a seznam kusu jsou ve specech staveb (tools/ruin/*_spec.py), sem patri je
     strechy Palac_Kovarna_Pristresek (05)
   - Guesthouse_Vybaveni: vybaveni pokoje hosta u ostrohu (ostroh_spec.guesthouse_vybaveni), ram podlahy Ostroh_Podlaha,
     vysky od vrchu prken podlahy (spocitane z terenu jako pri buildu podlahy; po zmene terenu nebo podlahy pregenerovat)
+  - Brana_Straz_Vybaveni: vybaveni strazniho stanoviste nad branami (brana_spec.brana_straz_vybaveni), ram brany,
+    vysky od vrchu prken podesty Brana_Straz_Podesta (deck_z)
 
 python gen_furnishing.py [<vystup furnishing.json>] [<03_ruin/blocks/ruin_layout.json>]
 Po zmene spolecneho specu (palac_spec.py) pregeneruj i tools/constructions/gen_constructions.py.
@@ -21,6 +23,7 @@ sys.path.insert(0, os.path.join(ROOT, "06_furnishing"))
 import furn_data
 from palac_spec import frame as palac_frame, kovarna_vybaveni
 from ostroh_spec import guesthouse_vybaveni, GH_REF
+from brana_spec import straz as brana_straz_spec, brana_straz_vybaveni, B_FURN_REF
 
 
 def palac(LAY):
@@ -47,11 +50,25 @@ def guesthouse():
                  items=guesthouse_vybaveni(fz))]
 
 
+def brana(LAY):
+    """skupina Brana_Straz_Vybaveni: ram brany a vyska podlahy podesty deck_z z brana_spec.straz(), teren z cache levelu"""
+    for p in (ROOT, os.path.join(ROOT, "05_constructions")):
+        if p not in sys.path: sys.path.insert(0, p)
+    from zrlib import pipeline
+    S = brana_straz_spec(LAY["walls"]); F = S["frame"]
+    R = pipeline.load_ruin(); terr = R.Terrain(R.cached_level_terrain(R.load_layout())["terrain"])
+    O, U, V = F["origin"], F["u"], F["d"]
+    ref = (O[0] + (U[0] * B_FURN_REF[0] + V[0] * B_FURN_REF[1]) * 100, O[1] + (U[1] * B_FURN_REF[0] + V[1] * B_FURN_REF[1]) * 100)
+    fz = (S["deck_z"] - terr.z(*ref)) / 100
+    return [dict(name="Brana_Straz_Vybaveni", type="props", folder="Vybaveni/Brana/Straz", origin=O, u=U, v=V,
+                 items=brana_straz_vybaveni(fz))]
+
+
 if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "06_furnishing", "furnishing.json")
     with open(sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, "03_ruin", "blocks", "ruin_layout.json"), encoding="utf-8") as f: LAY = json.load(f)
     old = furn_data.load(out) if os.path.exists(out) else None
-    groups, msgs = furn_data.merge(old, palac(LAY) + guesthouse())
+    groups, msgs = furn_data.merge(old, palac(LAY) + guesthouse() + brana(LAY))
     furn_data.save(out, dict(version=2, units="UE cm (pozice), m (rozmery v ramu skupiny)",
                              note="Vybaveni (prenosne props). Stavby jsou v 05_constructions/constructions.json. Polohy z levelu zapisuje "
                                   "capture primo sem (captured / removed / manual), generator je pri slouceni zachova.",

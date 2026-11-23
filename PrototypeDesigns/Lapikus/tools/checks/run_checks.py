@@ -647,6 +647,25 @@ def check_brana(S):
     for gname in ("Brana_Straz_Kamen", "Brana_Straz_Podesta"):
         st = groups.get(gname, {}).get("stones", []) + groups.get(gname, {}).get("loose", [])
         rep("%s: sady etap %s" % (gname, ", ".join(sorted(set(str(s.stage) for s in st)))), st and all(s.stage in ("base", "final", "site") for s in st))
+    # --- vybaveni strazniho stanoviste (06_furnishing, Brana_Straz_Vybaveni)
+    fu = (S.get("furn") or {}).get("Brana_Straz_Vybaveni", {}).get("loose", [])
+    if fu:
+        kr_all = (groups.get("Brana_Straz_Kryty", {}).get("stones", []) + groups.get("Brana_Straz_Kryty", {}).get("loose", []))
+        c = common.collisions(fu, ruin + pod + kam + kr_all, 1.0)
+        rep("vybaveni brany (%d) x zricenina, podesta a kryty: pruniku %d %s" % (len(fu), len(c), c[:3] if c else ""), not c)
+        on_crate = lambda a, b: {a.id.split("|")[-1], b.id.split("|")[-1]} == {"Bedna_Sipy", "Naradi_Sipy"}
+        c = common.collisions(fu, fu, 1.0, skip=on_crate)
+        rep("vybaveni brany mezi sebou (mimo naradi na bedne): pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        by_id = {s.id.split("|")[-1]: s for s in fu}
+        crate_top = (by_id["Bedna_Sipy"].z + by_id["Bedna_Sipy"].sz / 2) if "Bedna_Sipy" in by_id else zt + 42.0
+        bad_z = []
+        for k, s in by_id.items():
+            bot = s.z - s.sz / 2
+            want = crate_top if k == "Naradi_Sipy" else (zt + 36.6 if k in ("Sloupek_SV_Zastupce", "Sloupek_JV_Zastupce") else zt)
+            if abs(bot - want) > 1.5: bad_z.append((k, round(bot - want, 1)))
+        rep("vybaveni brany stoji na podlaze / bedne / korune Brana_V %s" % bad_z, not bad_z)
+        out_roof = [s.id.split("|")[-1] for s in fu if not (3.70 <= fb(s)[0] and fb(s)[1] <= 8.00 and 0.25 <= fb(s)[2] and fb(s)[3] <= (3.80 if "Sloupek_" in s.id else 3.75))]
+        rep("vybaveni brany je cele pod pudorysem strisky (u 3.7-8.0, d 0.25-3.75) %s" % out_roof, not out_roof)
     return ok
 
 

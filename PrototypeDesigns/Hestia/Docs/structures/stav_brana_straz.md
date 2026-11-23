@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-23
 aliases: []
 # hra
 domain: structures
@@ -14,11 +14,12 @@ assets: []
 # Brana_Straz – stav stavby
 
 ## Souhrn
-Skutečný stav stavby strážního stanoviště nad východní bránou proti návrhu [[navrh_brana_straz]] (k 16. 11. 2026; stav má přednost před kap. 2–7 návrhu). Hotové jsou kroky 1–3 ve skriptech: úprava 03 (kapsy a nároží `Brana_V`), podesta a všechny tři kryty. V UE Jirka viděl podestu a východní kryt (16. 11. 2026), nový stav neověřen.
+Skutečný stav stavby strážního stanoviště nad východní bránou proti návrhu [[navrh_brana_straz]] (k 23. 11. 2026; stav má přednost před kap. 2–7 návrhu). Hotové jsou kroky 1–3 dostavby 05 ve skriptech (úprava 03, podesta a všechny tři kryty) a 1. návrh vybavení 06 `Brana_Straz_Vybaveni` v grayboxu (10 kusů včetně 4 zástupců sloupků stříšky). V UE Jirka viděl podestu a východní kryt (16. 11. 2026), nový stav a graybox vybavení v UE neověřeny.
 - **Podesta:** 3 trámy Ø 24 cm a čtvrtý na koruně `Brana_S`, vrch podlahy Z 3581 (návrh: 6 trámů Ø 22 cm, vrch Z 3522).
 - **Kryty:** východní kryt a podesta jsou sada `base`, severní a jižní kryt `final`.
+- **Vybavení (`Brana_Straz_Vybaveni`, 06):** 10 graybox kvádrů pod půdorysem stříšky z kůry (stolička, převrácená bedna, sada nástrojů na šípy na bedně, toulec u bedny, pohotovostní toulec a luk u SZ sloupku stříšky + 4 dočasní zástupci sloupků stříšky do její výšky).
 - **Odchylky a jejich důvod:** sekce *Co se liší od návrhu* (návrh neseděl na dnešní výšky zdí z levelu; zábradlí směrem do hradu se nestaví).
-- **Zbývá:** přístřešek z kůry, zátaras, staveniště pro etapu 1, výlez na podestu (určí Jirka).
+- **Zbývá:** přístřešek z kůry (05), výroba meshí vybavení ([[SM_RuinCrate_A]], [[SM_RuinArrowTools_A]], [[SM_RuinQuiver_A]], [[SM_RuinBow_A]]), zátaras, staveniště pro etapu 1, výlez na podestu (určí Jirka).
 
 ## Co je hotové
 | Část | Provedení | Sada |
@@ -31,6 +32,7 @@ Skutečný stav stavby strážního stanoviště nad východní bránou proti n�
 | `Brana_Straz_Kryty` (typ `palisade`), východní | 30 kůlů s kůrou Ø 18–22 cm se špičkou nahoru na koruně `Brana_V` (u = 7,5; d = −0,6 až 5,35); vrch 1,8 m nad podlahou; 3 průzory 14 × 45 cm (d = 1,5 / 3,1 / 4,6; spodek 1,35 m), kůl v průzoru je rovně seříznutý | `base` |
 | severní | 37 kůlů **u vnější hrany `Brana_S`** (d = −0,75; u = 0–7,6; za krytem se nedá stoupnout), vrch 1,25 m nad podlahou (střílí se přes vrch), 3 průzory 14 × 35 cm (u = 1,8 / 3,7 / 5,6; spodek 0,9 m) | `final` |
 | jižní | 23 kůlů na jižním okraji podesty (d = 5,15; u = 2,6–7,38, tedy východní dvě třetiny, po `Hradba_V`); stojí na podlaze, na východě na koruně `Brana_V`; vrch 1,8 m, 2 průzory (u = 4,6 a 6,0) | `final` |
+| 06: `Brana_Straz_Vybaveni` (typ `props`, graybox) | 10 graybox kvádrů pod stříškou mezi západními sloupky (strážce sedí čelem do hradu): `Stolicka` (4,78; 2,20), `Bedna_Sipy` (4,25; 2,20), na ní `Naradi_Sipy` (z = +0,42 m), u bedny `Toulec_Vyroba` (4,25; 1,70), u SZ sloupku `Toulec_Straz` (4,00; 1,08) a `Luk` (4,16; 1,30) + 4 dočasní zástupci sloupků stříšky `Sloupek_*_Zastupce` (západní 3,20 m na podlaze v u = 4,00; d = 1,30 a 3,15, východní 1,55 m na koruně `Brana_V` v u = 7,15; d = 0,80 a 3,70) | – |
 
 - **Ráhna** Ø 10 cm jsou zevnitř: jedno u spodu (východní a jižní kryt 0,55 m, severní 0,45 m nad podlahou) a druhé těsně pod průzory (1,22 m; u severního krytu 0,78 m). Přes průzory žádné nevede.
 - **Kůly jsou „utopené“ 25 cm v koruně zdi** (posádka korunu vydlabala, aby lépe držely). Ve skriptech kůl do kamene jen zasahuje, kameny koruny se kvůli tomu v 03 nemění.
@@ -51,8 +53,8 @@ Rám brány: `u` k východu podél `Brana_S`, `d` k jihu, počátek v SZ rohu v�
 | severní kryt | osa d = −0,75; vrch 1,25 m |
 
 ## Souhrn specifikace
-- Rozměry: `tools/ruin/brana_spec.py` (výšky absolutně v UE cm). Kontrola: `run_checks.py --only brana`. Náhled: `preview3d.py brana <out.png> [--stage 1|2]`, `05_constructions/Stavby_brana_straz_nahled.png` a `Stavby_brana_straz_nahled_etapa1.png`.
-- V UE: `05_constructions/stavby/Brana_Straz.py` s `RUIN = True` (přestaví část `Obvod` kvůli kapsám a nároží, dlouhé), příště stačí `RUIN = False`.
+- Rozměry: `tools/ruin/brana_spec.py` (výšky dostavby absolutně v UE cm; vybavení `B_FURN_*` a `brana_straz_vybaveni()` od vrchu podlahy `deck_z` přes `B_FURN_REF`). Kontrola: `run_checks.py --only brana`. Náhled: `preview3d.py brana <out.png> [--stage 1|2]`, `05_constructions/Stavby_brana_straz_nahled.png` a `Stavby_brana_straz_nahled_etapa1.png`.
+- V UE: dostavba i vybavení `05_constructions/stavby/Brana_Straz.py` (`VYBAVENI = True`, s `RUIN = True` jen při změně kapes v 03); samostatné vybavení `06_furnishing/vybaveni/Brana_Straz.py` a uložení ručních úprav `06_furnishing/vybaveni/Brana_Straz_Capture.py`.
 
 ## Co se liší od návrhu (a proč)
 **Návrh neseděl na dnešní data.** Od 14. 11. se polohy zdí brány převzaly z levelu. Změřeno 16. 11. 2026 (terén z levelu):

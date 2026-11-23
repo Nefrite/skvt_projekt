@@ -27,6 +27,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Aktivní předání**
 
+- [[predani_brana_prikop_stavitel]] – [[Brana]]
 - [[predani_brana_straz_striska_stavitel]] – [[Brana_Straz]]
 - [[predani_curator_fronta_t0006]]
 - [[predani_curator_scratch_kod]]
@@ -46,15 +47,6 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-23 · agent pilotu (Steward) · Palac_Kovarna_Vybaveni · karty props kovárny v used_by (blok ## Assety) · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · agent pilotu (Steward) · Roles/Crafter.md · nový profil projektové role (asset_work, ue_lookup; role_base 0.23.0), kompilát Crafter_compiled · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · agent pilotu (Steward) · Roles/Furnisher.md · asset_request, ue_lookup, požadavky jako karty místo checklistu, owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · agent pilotu (Steward) · Roles/Builder.md · asset_request, asset_work (jednoduché díly), knihovní assety vyrábí Crafter, owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · agent pilotu (Steward) · Roles/Architect.md, Roles/GameDesign.md · asset_request a pravidlo owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/queue.md · úkoly rolí T-0035–T-0040 (Builder, Crafter, Curator), podněty P-0006–P-0008; done T-0003, T-0029, T-0030, T-0032–T-0034 · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_all.py · čtecí skript core 0.23.0 (`ue_query --all --emit --apply`) pro ověření WI-44 bez restartu editoru · predani_pilot_lapikus_knihovnik_unreal P19
-- 2026-11-23 · Architect · Lapikus · navrh konvence korene sloucenych ISM actoru staveb (03 a 05) a predani pro Builder · chat:koren_actoru_staveb
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/reports/ue_*.json · reporty čtení z UE (15 entit) z výsledku 2026-11-23 20:30, format_version 3 (`ue_query --import --all --apply`; WI-44) · predani_pilot_lapikus_knihovnik_unreal P19
 - 2026-11-23 · agent pilotu (Steward) · Lapikus · navrh_lapikus_koren_actoru: validity draft → valid, status draft → selected (Varianta C schválena GameDesignerem, předáno Builderovi) · pokyn GameDesignera 2026-11-23
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/taxonomy_local/asset_sources.yaml · nový manifest knihovních assetů (LIB_MESHES, STONE_MESH_VERSION, MESH_AXES, LIB_SHAPES, data Lapikus/**/*.json, Content/Skvt/Lapikus/Ruin); T-0031 · predani_pilot_lapikus_knihovnik_unreal P20
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/asset_index.json, asset_index.md · sekce library: 59 assetů z kódu (49 klíčů × varianty), 0 klíčů bez karty · predani_pilot_lapikus_knihovnik_unreal P20
@@ -62,6 +54,9 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/queue.md · podněty P-0009 (manifest bez ROUND_MESHES, WOOD_NOMINAL, kamenů), P-0010 (výskyty v datech celé entitě Lapikus); T-0031 done · predani_pilot_lapikus_knihovnik_unreal P20
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_assets.py · čtecí skript assetů pro etapu C (54 karet od generated) · predani_pilot_lapikus_knihovnik_unreal P20
 - 2026-11-23 · Architect · Brana · navrh sijoveho prikopu, terennich valu, mostniho pilire, lavky a zatarasu pred vychodni branou a predani pro Builder · chat:prikop_pred_branou
+- 2026-11-23 · Furnisher · Brana_Straz · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
+- 2026-11-23 · Furnisher · Lapikus · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
+- 2026-11-23 · Furnisher · Brana · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
 
 <!-- hestia:generated:end -->
 

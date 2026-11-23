@@ -4,7 +4,7 @@ type: step
 validity: valid
 aliases: [README_furnishing]
 step_kind: build
-updated: 2026-11-22
+updated: 2026-11-23
 # hra
 build_step: 06_furnishing
 domains: [structures]
@@ -38,6 +38,9 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 | celá kovárna včetně vybavení | `05_constructions/stavby/Palac_Kovarna.py` (`VYBAVENI = True`) |
 | jen vybavení Guesthouse (graybox) | `06_furnishing/vybaveni/Guesthouse.py` |
 | uložit ruční úpravy Guesthouse | `06_furnishing/vybaveni/Guesthouse_Capture.py` |
+| jen vybavení strážního stanoviště nad bránou (graybox) | `06_furnishing/vybaveni/Brana_Straz.py` |
+| uložit ruční úpravy vybavení brány | `06_furnishing/vybaveni/Brana_Straz_Capture.py` |
+| celá strážnice nad bránou včetně vybavení | `05_constructions/stavby/Brana_Straz.py` (`VYBAVENI = True`) |
 | uložit ruční úpravy | **`06_furnishing/vybaveni/Palac_Kovarna_Capture.py`**; jinak `Palac_Kovarna.py` s `MODE = "capture"`, nebo `Palac_Kovarna.py` v 05 s `MODE = "capture"` (uloží stavby do `constructions_edits.json` a vybavení do `furnishing.json`) |
 | všechno vybavení | `06_furnishing/build_furnishing.py` |
 | uložit úpravy všeho vybavení | `06_furnishing/capture_furnishing.py` (skupiny bez actorů v levelu přeskočí) |
@@ -74,10 +77,10 @@ Stav: 16. 11. 2026. Vybavení se od 16. 11. 2026 staví odděleně od dostaveb (
 |---|---|
 | `build_furnishing.py` | build, capture, výpis a vrácení na spec v UE; mimo UE statistika (`python build_furnishing.py`), `list`, `reset [kusy]` |
 | `furn_data.py` | práce s `furnishing.json`: příznaky kusů, sloučení se specem (`merge`), vrácení na spec (`reset`), zápis se zálohou |
-| `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna), `Guesthouse.py` (pokoj hosta u ostrohu). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
-| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py`, `Guesthouse_Capture.py` |
+| `vybaveni\<Skupina>.py` | spuštění jedné skupiny vybavení: `Palac_Kovarna.py` (kovárna), `Guesthouse.py` (pokoj hosta u ostrohu), `Brana_Straz.py` (strážní stanoviště nad bránou). Nahoře `MODE` (`build` / `capture` / `list` / `reset`) a `ITEMS` (kusy pro `reset`) |
+| `vybaveni\<Skupina>_Capture.py` | uložení ručních úprav skupiny z levelu (capture) bez přepínání `MODE`: `Palac_Kovarna_Capture.py`, `Guesthouse_Capture.py`, `Brana_Straz_Capture.py` |
 | `furnishing.json` | **jediný zdroj poloh vybavení.** Sestaví ho `tools/furnishing/gen_furnishing.py` ze speců, capture do něj zapisuje polohy z levelu. Předchozí verze vždy v `furnishing.json.bak`. Ručně ho upravovat jde, ale běžná cesta je level + capture. |
-| `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`, `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`) |
+| `..\tools\furnishing\gen_furnishing.py` | sestaví skupiny ze speců staveb (`tools/ruin/palac_spec.py` → `kovarna_vybaveni()`, `tools/ruin/ostroh_spec.py` → `guesthouse_vybaveni()`, `tools/ruin/brana_spec.py` → `brana_straz_vybaveni()`) |
 | `..\05_constructions\zr_stavby\vybaveni.py` | typ `props` (rozmístění hotových meshí), společný s 05 (tam pro pevné kusy, např. kůl u dřeva) |
 
 ### 3. Skupiny
@@ -98,6 +101,12 @@ Kontrola: `tools/checks/run_checks.py --only palac` (průniky se zříceninou, s
 - Polohy postele, stolu, stoličky a stojanů jsou z levelu (capture, Jirka).
 
 Kontrola: `tools/checks/run_checks.py --only ostroh` (průniky se zříceninou, dostavbou, krovem a mezi sebou, kusy na podlaze, volný průchod u dveří s = 5,8–8,1; n = 0–2 m).
+
+**`Brana_Straz_Vybaveni`** – strážní stanoviště nad východní bránou ([[navrh_brana_straz]] kap. 12, stav [[stav_brana_straz]]). Rám = rám brány (`u` podél `Brana_S` k východu, `d` kolmo k jihu), výšky od vrchu prken podesty `Brana_Straz_Podesta` (`deck_z = 3581 cm`, generátor ji spočítá z terénu v bodě `B_FURN_REF`). Konstanty `B_FURN_*` a funkce `brana_straz_vybaveni()` v `tools/ruin/brana_spec.py`.
+
+- V 1. návrhu (23. 11. 2026) je všech 10 kusů **graybox**: stolička (`Stolicka`), převrácená bedna (`Bedna_Sipy`), sada nástrojů na výrobu šípů položená na vrchu bedny (`Naradi_Sipy`), toulec u bedny na vyrobené šípy (`Toulec_Vyroba`), pohotovostní toulec (`Toulec_Straz`) a luk (`Luk`) u SZ sloupku stříšky + 4 dočasní zástupci sloupků stříšky z kůry (`Sloupek_SZ_Zastupce`, `Sloupek_JZ_Zastupce`, `Sloupek_SV_Zastupce`, `Sloupek_JV_Zastupce`, 05).
+
+Kontrola: `tools/checks/run_checks.py --only brana` (průniky vybavení se zříceninou, podestou, vyrovnáním, kryty a mezi sebou, uložení na podlaze / bedně / koruně `Brana_V`, umístění pod půdorysem stříšky).
 
 ## Dopad na dokumentaci
 Doplní se při rozpadu.

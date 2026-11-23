@@ -13,7 +13,7 @@ aliases: ["SM_RuinStool"]
 # hra
 asset_kind: mesh
 asset_category: props
-used_by: ["[[Palac_Kovarna_Vybaveni]]", "[[Guesthouse]]"]
+used_by: ["[[Palac_Kovarna_Vybaveni]]", "[[Guesthouse]]", "[[Brana_Straz]]"]
 envelope: [35, 34, 46]
 stand_in: none
 asset_source: tools/meshes/mesh_props.py:stool
