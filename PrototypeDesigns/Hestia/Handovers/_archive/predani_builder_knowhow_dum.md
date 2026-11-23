@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: handover
-validity: valid
+validity: archived
 superseded_by:
 for_role: [Builder]
 updated: 2026-11-23
@@ -32,3 +32,8 @@ Pasti jsou zatím jen v archivovaném [[predani_palac_obydli_stavitel]] (kap. 5.
 ## Otevřené otázky
 
 ## Zbývá
+- [x] `pult._pult_cover` / `pult_geom`: osa `a` = osa spádu (u domu `v`) → [[Pasti_geometrie_a_data]], ověřeno testem 2026-11-23.
+- [x] výměny a závěsné tyče v `ohniste.py` pod střechou s `axis = "v"` nepostaví nic (kovárna 6 dílů, dům 0) → [[Pasti_geometrie_a_data]], ověřeno testem 2026-11-23.
+- [x] sdílené soubory domu a kovárny → [[Pasti_kod_a_soubezna_prace]].
+- [x] nepřepisovat `manual_edits.json` / `constructions_edits.json` a porovnat polohy prvků: už v [[Konvence_03_05_06_a_spec]] (bod 3) a [[Zmer_skutecny_stav]] (bod 9); „o řadu níž“: už v [[Pasti_geometrie_a_data]]. Beze změny.
+- [x] `gutter` se spádem k −s: neověřeno, do know-how nezapsáno; zůstává v [[predani_palac_obydli_5_okap]] (Platná rozhodnutí).

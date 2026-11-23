@@ -70,14 +70,16 @@ depth_structures: 3
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Brana_Straz.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana_Straz.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 4 vlastních
-- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 4
+- Třídy: StaticMesh 0, ISM 4 (203 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: base 3, final 1
-- Rozsah: 2915 × 3488 × 3893 cm
+- Rozsah: 880 × 764 × 331 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 4 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 3; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pozor: `state` stav_brana_straz (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

@@ -28,7 +28,7 @@ Builder: strop světnice, nový typ nebo rozšíření `tower_floor`, sada `fina
 - Přístup na půdu: otvor ve štítu příčky, žebřík ze síně (kulisa).
 ## Výchozí stav
 - Návrh domu: [[navrh_palac_obydli_stred]]; co platí a zamčená sada `base`: kap. 0.7 (hodnoty `base` neměň; když je to nutné, napiš Jirkovi a projdi kontroly etapy 1).
-- Postavený stav a odchylky: [[stav_palac_obydli]]; dokument kroku: [[05_constructions]].
+- Postavený stav a odchylky: [[stav_palac_obydli]]; dokument kroku: [[05_constructions]], data domu: [[05_constructions_dum]].
 - Sdílené soubory s kovárnou (`pult.py`, `ohniste.py`, `build_constructions.py`, `gen_constructions.py`, `palac_spec.py`, `config.py`): data kovárny se nesmí změnit, ověř `run_checks.py --only palac`. `manual_edits.json` a `constructions_edits.json` nikdy nepřepisuj.
 - Místnosti a pec: [[navrh_palac_obydli_stred]] kap. 4.5, 4.6.
 ## Kritéria hotovo

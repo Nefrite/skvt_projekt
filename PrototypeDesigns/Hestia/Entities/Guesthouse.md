@@ -76,14 +76,16 @@ depth_structures: 4
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Guesthouse.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Guesthouse.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 13 vlastních
-- Třídy: StaticMesh 1, Blueprint 0, BSP 0, ostatní 12
+- Třídy: StaticMesh 1, ISM 12 (1860 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 3; výchozí materiály: 0
 - Fáze: –
-- Rozsah: 4727 × 2019 × 3716 cm
+- Rozsah: 1273 × 1550 × 579 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 12 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pozor: `state` stav_guesthouse (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

@@ -28,25 +28,33 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 **Aktivní předání**
 
 - [[predani_brana_straz_striska_stavitel]] – [[Brana_Straz]]
+- [[predani_curator_fronta_t0006]]
+- [[predani_curator_scratch_kod]]
 - [[predani_guesthouse_kamna_stavitel]] – [[Guesthouse]]
 - [[predani_knihovnik_rozdeleni]]
 - [[predani_knihovnik_souhrny]]
-- [[predani_palac_obydli_stavitel]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_1_etapa1_ue]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_2_krytina]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_3_strop]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_4_podlaha]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_5_okap]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_6_zarubne]] – [[Palac_Obydli]]
+- [[predani_palac_obydli_7_vybaveni]] – [[Palac_Obydli]]
 
 **Otevřené otázky:** do 14 dní 13 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-22 · Librarian · Palac_Kovarna · doplněna sekce Souhrn (G14a) · Handovers/predani_knihovnik_souhrny.md
-- 2026-11-22 · Librarian · Palac_Kovarna_Vybaveni · doplněna sekce Souhrn (G14a) · Handovers/predani_knihovnik_souhrny.md
-- 2026-11-22 · Librarian · Palac_Obydli · doplněna sekce Souhrn (G14a) · Handovers/predani_knihovnik_souhrny.md
-- 2026-11-22 · Librarian · Vez_Pristresek · doplněna sekce Souhrn (G14a) · Handovers/predani_knihovnik_souhrny.md
-- 2026-11-22 · Librarian · Palac_Kovarna · kap. 0 návrhu přesunuta do stav_palac_kovarna (G14b) · Handovers/predani_knihovnik_rozdeleni.md
-- 2026-11-22 · Librarian · Palac_Kovarna_Vybaveni · kap. 0 návrhu kovárny přesunuta do stav_palac_kovarna (G14b) · Handovers/predani_knihovnik_rozdeleni.md
-- 2026-11-22 · Librarian · Vez_Pristresek · nový stav_vez_pristresek; kap. 3 návrhu přesunuta do navrh_vez_skody (G14b) · Handovers/predani_knihovnik_rozdeleni.md
-- 2026-11-22 · Librarian · Vez · nový navrh_vez_skody (škody z dobývání, z navrh_vez_pristresek kap. 3) · Handovers/predani_knihovnik_rozdeleni.md
-- 2026-11-22 · Librarian · Lapikus · Zricenina_03_ruin_stav: kapitoly kovárna, dům, brána a věž nahrazeny odkazy na stavy (G14b) · Handovers/predani_knihovnik_rozdeleni.md
-- 2026-11-22 · Librarian · Palac_Obydli · navrh_palac_obydli_stred rozdělen: postavené do stav_palac_obydli, kap. 9 do navrh_palac_obydli_stavenisko, 0.5a/0.5b do kap. 4, kap. 3 odpadla, připravenost odkazem na CHECKLIST; stav doplněn z předání staviteli (G14b, G14c) · Handovers/predani_knihovnik_rozdeleni.md
+- 2026-11-23 · Builder · Palac_Obydli · KnowHow: pasti pult_roof (osa a = osa spadu) a vymeny dymniku pod strechou axis v (ohniste.py); sdilene soubory dum/kovarna · predani_builder_knowhow_dum
+- 2026-11-23 · Builder · predani_builder_knowhow_dum · předání archivováno · predani_builder_knowhow_dum
+- 2026-11-23 · Builder · Lapikus · Steps/03_ruin rozdelen tematicky (G14b): 03_ruin_upravy (kap. 4, 5), 03_ruin_generator (skladba zdi, kap. 7), shared/Meshe (kap. 1.1, 1.2); Souhrn · predani_builder_rozdeleni_03
+- 2026-11-23 · Builder · predani_builder_rozdeleni_03 · předání archivováno · predani_builder_rozdeleni_03
+- 2026-11-23 · Builder · Ostroh · data staveb u ostrohu v Steps/05_constructions_ostroh · predani_builder_rozdeleni_05
+- 2026-11-23 · Builder · Palac_Kovarna · data kovarny v Steps/05_constructions_kovarna · predani_builder_rozdeleni_05
+- 2026-11-23 · Builder · Palac_Obydli · data domu v Steps/05_constructions_dum; predani 1-6/7 odkazuji na novy dokument · predani_builder_rozdeleni_05
+- 2026-11-23 · Builder · Vez · data Vez_Patra a Vez_Pristresek v Steps/05_constructions_vez · predani_builder_rozdeleni_05
+- 2026-11-23 · Builder · Lapikus · Steps/05_constructions rozdelen tematicky (G14b): casti _ostroh, _kovarna, _dum, _vez; shared/Meshe a Meshe_props; Souhrn · predani_builder_rozdeleni_05
+- 2026-11-23 · Builder · predani_builder_rozdeleni_05 · předání archivováno · predani_builder_rozdeleni_05
 
 <!-- hestia:generated:end -->
 

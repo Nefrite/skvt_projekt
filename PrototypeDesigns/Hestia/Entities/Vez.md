@@ -70,13 +70,14 @@ _Potomci nemají cíle._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Vez.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Vez.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 21 vlastních, 16 za potomky (Vez_Pristresek)
-- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 21
+- Třídy: StaticMesh 0, ISM 21 (8433 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 4; výchozí materiály: 0
 - Fáze: –
-- Rozsah: 2127 × 2342 × 4643 cm
+- Rozsah: 1618 × 1618 × 1575 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 21 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->

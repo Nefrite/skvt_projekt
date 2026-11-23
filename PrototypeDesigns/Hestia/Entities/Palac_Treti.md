@@ -57,7 +57,7 @@ _Žádné soubory._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Treti.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Treti.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 0 vlastních
 - Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0

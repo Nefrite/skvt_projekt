@@ -67,13 +67,14 @@ _Zatím žádné dokumenty._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
-- Actory: 17 vlastních, 70 za potomky (Palac_Kovarna, Palac_Kovarna_Vybaveni, Palac_Obydli, Palac_Treti)
-- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 17
+- Actory: 17 vlastních, 81 za potomky (Palac_Kovarna, Palac_Kovarna_Vybaveni, Palac_Obydli, Palac_Treti)
+- Třídy: StaticMesh 0, ISM 17 (4772 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 5; výchozí materiály: 0
 - Fáze: –
-- Rozsah: 3434 × 1873 × 3926 cm
+- Rozsah: 3434 × 1780 × 820 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 17 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->

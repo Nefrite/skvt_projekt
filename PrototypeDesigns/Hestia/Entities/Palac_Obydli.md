@@ -42,7 +42,13 @@ depth_structures: 3
 - [[stav_palac_obydli]] – state, depth 3, valid
 
 **Aktivní předání**
-- [[predani_palac_obydli_stavitel]]
+- [[predani_palac_obydli_1_etapa1_ue]]
+- [[predani_palac_obydli_2_krytina]]
+- [[predani_palac_obydli_3_strop]]
+- [[predani_palac_obydli_4_podlaha]]
+- [[predani_palac_obydli_5_okap]]
+- [[predani_palac_obydli_6_zarubne]]
+- [[predani_palac_obydli_7_vybaveni]]
 
 <!-- hestia:generated:end -->
 
@@ -75,13 +81,14 @@ depth_structures: 3
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Obydli.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Obydli.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
-- Actory: 18 vlastních
-- Třídy: StaticMesh 7, Blueprint 0, BSP 0, ostatní 11
-- Zástupné meshe (`/Engine/BasicShapes/`): 5; výchozí materiály: 0
-- Fáze: base 12, final 6
-- Rozsah: 1641 × 1312 × 3787 cm
+- Actory: 29 vlastních
+- Třídy: StaticMesh 12, ISM 17 (598 instancí), Blueprint 0, BSP 0, ostatní 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 6; výchozí materiály: 0
+- Fáze: base 12, final 7, site 10
+- Rozsah: 1554 × 1832 × 541 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 12 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 3; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->

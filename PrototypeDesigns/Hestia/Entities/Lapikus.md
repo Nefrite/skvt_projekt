@@ -150,13 +150,14 @@ _Potomci nemají cíle._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Lapikus.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Lapikus.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
-- Actory: 0 vlastních, 208 za potomky (Brana, Brana_Straz, Guesthouse, Hradby_a_Brana, Nadvori_Stan, Palac, Palac_Kovarna, Palac_Kovarna_Vybaveni, Palac_Obydli, Palac_Treti, Strazni_Vez, Vez, Vez_Pristresek)
+- Actory: 0 vlastních, 219 za potomky (Brana, Brana_Straz, Guesthouse, Hradby_a_Brana, Nadvori_Stan, Palac, Palac_Kovarna, Palac_Kovarna_Vybaveni, Palac_Obydli, Palac_Treti, Strazni_Vez, Vez, Vez_Pristresek)
 - Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: –
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pozor: `state` Zricenina_03_ruin_stav (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

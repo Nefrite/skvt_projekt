@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: handover
-validity: valid
+validity: archived
 superseded_by:
 for_role: [Builder]
 updated: 2026-11-23
@@ -30,3 +30,8 @@ Builder: rozdělit [[03_ruin]] (audit 39 913 znaků, limit 20 000) tematicky (01
 ## Otevřené otázky
 
 ## Zbývá
+- [x] návrh rozdělení schválen Jirkou 2026-11-23 (včetně `03_ruin_generator` a přesunu kap. 1.1–1.2 do sdílených meshí).
+- [x] [[03_ruin_upravy]]: kap. 4 Úpravy v datech, kap. 5 Bourací objemy (čísla kapitol zachována).
+- [x] [[03_ruin_generator]]: skladba zdi a kap. 7 Struktura kódu.
+- [x] [[Meshe]] (`Steps/shared/`): kap. 1.1 Meshe kamenů a dřeva, kap. 1.2 Materiály.
+- [x] [[03_ruin]]: *Souhrn*, odkazy na části; odkazy „kap. 1.1/1.2/4/5/7“ převedené na nové dokumenty; odkaz v [[05_constructions]] na kap. 5.3 → [[03_ruin_upravy]].

@@ -61,7 +61,7 @@ _Žádné soubory._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Kovarna_Vybaveni.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Kovarna_Vybaveni.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 37 vlastních
 - Třídy: StaticMesh 37, Blueprint 0, BSP 0, ostatní 0

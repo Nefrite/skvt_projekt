@@ -58,13 +58,14 @@ _Žádné soubory._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Strazni_Vez.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Strazni_Vez.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 14 vlastních
-- Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 14
+- Třídy: StaticMesh 0, ISM 14 (2323 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 4; výchozí materiály: 0
 - Fáze: –
-- Rozsah: 3017 × 3503 × 3783 cm
+- Rozsah: 1068 × 1097 × 963 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 14 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->

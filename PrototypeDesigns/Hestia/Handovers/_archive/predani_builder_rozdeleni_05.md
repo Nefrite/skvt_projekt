@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: handover
-validity: valid
+validity: archived
 superseded_by:
 for_role: [Builder]
 updated: 2026-11-23
@@ -31,3 +31,8 @@ Builder: rozdělit [[05_constructions]] (audit 48 717 znaků, limit 20 000) tema
 ## Otevřené otázky
 
 ## Zbývá
+- [x] návrh rozdělení schválen Jirkou 2026-11-23 (včetně sdílených meshí v `Steps/shared/`).
+- [x] [[05_constructions_ostroh]], [[05_constructions_kovarna]], [[05_constructions_dum]], [[05_constructions_vez]] (tabulka klíčů `floors` a souřadnice věže, `Vez_Pristresek`).
+- [x] [[Meshe]] (dřevo, kulatina, další knihovní meshe) a [[Meshe_props]] (props) v `Steps/shared/`.
+- [x] [[05_constructions]]: *Souhrn*, kap. 4 jako rozcestník, etapy (sady actorů) a klíč `rubble` zůstávají v hlavním dokumentu.
+- [x] T-0005 (`queue.md`) odkazuje na „[[05_constructions]] kap. 4 (Vez_Patra)“: obsah je teď v [[05_constructions_vez]]; řádek fronty jsem neměnil (fronta patří Curatorovi).

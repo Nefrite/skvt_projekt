@@ -6,7 +6,7 @@ tech: [python, ue_python]
 scope: instance
 verified: 2026-11-17
 validity: valid
-updated: 2026-11-19
+updated: 2026-11-23
 aliases: []
 ---
 # Pasti: kód a souběžná práce
@@ -17,3 +17,4 @@ aliases: []
 - **Ukládací spouštěč = přípona `_Capture`** (16. 11. 2026, rozhodl Jirka): capture skupiny má vlastní skript `<Skupina>_Capture.py` vedle `<Skupina>.py` (vybavení: `06_furnishing/vybaveni/Palac_Kovarna_Capture.py`), aby se nemuselo přepínat `MODE`.
 - **Souhrnný spouštěč skupiny staveb** (např. `Palac_Kovarna.py`) jen vyjmenuje stavby a zavolá `pipeline.constructions(seznam)`, ne spouštěče jednotlivých staveb: jeden běh, jedno načtení knihovny, nic se neduplikuje. Pořadí v seznamu je pořadí závislostí (výšky z krokví a krytiny), suť naposled.
 - **Víc relací nad stejnou složkou (15.–16. 11. 2026):** souběžně pracovala jiná relace (dům v paláci) a měnila sdílené soubory (`build_constructions.py`, `gen_constructions.py`, `palac_spec.py`, `run_checks.py`, `preview3d.py`). Pracuj v kopii, před uložením porovnej md5 souborů na disku s výchozí kopií; když se liší, vezmi aktuální verzi a své změny do ní znovu vlož (úpravy jako nahrazení textu, ne přepsání celého souboru), přegeneruj data a spusť kontroly všech dotčených staveb. `constructions.json` se vždy generuje znovu, neslučuje se.
+- **Sdílené soubory domu a kovárny** (`pult.py`, `ohniste.py`, `build_constructions.py`, `gen_constructions.py`, `palac_spec.py`, `zrlib/config.py`): nové klíče přidávej jako volitelné s výchozí hodnotou, která zachová dosavadní chování, aby se data a geometrie kovárny nezměnily; po každé změně `run_checks.py --only palac` (a `--only obydli` pro dům) a porovnej vygenerovaný `constructions.json` proti původnímu jen u očekávaných staveb. Z předání domu posádky 21. 11. 2026, ověřeno 2026-11-23 (sdílený rám a kód: test `build_hearth`).

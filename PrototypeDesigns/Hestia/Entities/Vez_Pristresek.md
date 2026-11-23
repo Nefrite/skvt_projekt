@@ -64,14 +64,16 @@ depth_structures: 4
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Vez_Pristresek.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Vez_Pristresek.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 16 vlastních
-- Třídy: StaticMesh 13, Blueprint 0, BSP 0, ostatní 3
+- Třídy: StaticMesh 13, ISM 3 (50 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: base 16
-- Rozsah: 1702 × 1607 × 4568 cm
+- Rozsah: 779 × 739 × 451 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 3 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pozor: `state` stav_vez_pristresek (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

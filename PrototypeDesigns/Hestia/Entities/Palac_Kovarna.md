@@ -76,14 +76,16 @@ _Potomci nemají cíle._
 ## Stav v UE
 <!-- hestia:generated:start -->
 
-Poslední čtení: 2026-11-21 · `Maintenance/reports/ue_Palac_Kovarna.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
+Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Kovarna.json` · etapa 1 (skript v editoru) · mapa `/Game/Skvt/LapikusPrototypeMap`
 
 - Actory: 15 vlastních, 37 za potomky (Palac_Kovarna_Vybaveni)
-- Třídy: StaticMesh 7, Blueprint 0, BSP 0, ostatní 8
+- Třídy: StaticMesh 7, ISM 8 (143 instancí), Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 2; výchozí materiály: 0
 - Fáze: –
-- Rozsah: 762 × 1494 × 3807 cm
+- Rozsah: 744 × 706 × 590 cm
+- Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 8 actorů; informace pro modelování v instanci, ne nález
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pozor: `state` stav_palac_kovarna (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 
