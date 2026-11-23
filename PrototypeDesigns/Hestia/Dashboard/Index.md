@@ -33,6 +33,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - [[predani_guesthouse_kamna_stavitel]] – [[Guesthouse]]
 - [[predani_knihovnik_rozdeleni]]
 - [[predani_knihovnik_souhrny]]
+- [[predani_lapikus_koren_actoru_stavitel]] – [[Lapikus]]
 - [[predani_palac_obydli_1_etapa1_ue]] – [[Palac_Obydli]]
 - [[predani_palac_obydli_2_krytina]] – [[Palac_Obydli]]
 - [[predani_palac_obydli_3_strop]] – [[Palac_Obydli]]
@@ -45,16 +46,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-23 · Curator · Guesthouse · doplněno target_structures 4, target_gameplay 4 · chat:L5_target
-- 2026-11-23 · Curator · Les_Lapikus · doplněno target_environment 4, target_paths 4, target_narrative 0 · chat:L5_target
-- 2026-11-23 · Curator · Nadvori_Stan · doplněno target_structures 4, target_gameplay 0 · chat:L5_target
-- 2026-11-23 · Curator · Palac_Kovarna_Vybaveni · doplněno target_structures 4, target_gameplay 0 · chat:L5_target
-- 2026-11-23 · Curator · Palac_Obydli · doplněno target_structures 4, target_gameplay 3 · chat:L5_target
-- 2026-11-23 · Curator · Strazni_Vez · doplněno target_structures 4, target_gameplay 4 · chat:L5_target
-- 2026-11-23 · Curator · Udoli_Reky · doplněno target_environment 4, target_paths 4, target_narrative 0 · chat:L5_target
-- 2026-11-23 · Curator · Vez_Pristresek · doplněno target_structures 4, target_gameplay 0 · chat:L5_target
-- 2026-11-23 · Curator · Les_Lapikus · doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) · chat:L5_target
-- 2026-11-23 · Curator · Udoli_Reky · doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) · chat:L5_target
+- 2026-11-23 · agent pilotu (Steward) · Nadvori_Stan · karty assetů v used_by (blok ## Assety): plachta, lůžko, truhlička, vak, špalek a díly stanu · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Palac_Obydli · karty assetů v used_by (blok ## Assety), požadavky staveniště (loupák, hromada hlíny, třísky, udusaná hlína, saze) · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Palac_Kovarna_Vybaveni · karty props kovárny v used_by (blok ## Assety) · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Roles/Crafter.md · nový profil projektové role (asset_work, ue_lookup; role_base 0.23.0), kompilát Crafter_compiled · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Roles/Furnisher.md · asset_request, ue_lookup, požadavky jako karty místo checklistu, owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Roles/Builder.md · asset_request, asset_work (jednoduché díly), knihovní assety vyrábí Crafter, owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Roles/Architect.md, Roles/GameDesign.md · asset_request a pravidlo owner vždy; role_base 0.23.0 · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/queue.md · úkoly rolí T-0035–T-0040 (Builder, Crafter, Curator), podněty P-0006–P-0008; done T-0003, T-0029, T-0030, T-0032–T-0034 · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_all.py · čtecí skript core 0.23.0 (`ue_query --all --emit --apply`) pro ověření WI-44 bez restartu editoru · predani_pilot_lapikus_knihovnik_unreal P19
+- 2026-11-23 · Architect · Lapikus · navrh konvence korene sloucenych ISM actoru staveb (03 a 05) a predani pro Builder · chat:koren_actoru_staveb
 
 <!-- hestia:generated:end -->
 

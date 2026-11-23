@@ -189,3 +189,5 @@ updated: 2026-11-23
 | 2026-11-23 | agent pilotu (Steward) | Roles/Architect.md, Roles/GameDesign.md | asset_request a pravidlo owner vždy; role_base 0.23.0 | predani_pilot_lapikus_knihovnik_unreal P19 |
 | 2026-11-23 | agent pilotu (Steward) | Maintenance/queue.md | úkoly rolí T-0035–T-0040 (Builder, Crafter, Curator), podněty P-0006–P-0008; done T-0003, T-0029, T-0030, T-0032–T-0034 | predani_pilot_lapikus_knihovnik_unreal P19 |
 | 2026-11-23 | agent pilotu (Steward) | Maintenance/ue/ue_query_all.py | čtecí skript core 0.23.0 (`ue_query --all --emit --apply`) pro ověření WI-44 bez restartu editoru | predani_pilot_lapikus_knihovnik_unreal P19 |
+| 2026-11-23 | Architect | Lapikus | navrh konvence korene sloucenych ISM actoru staveb (03 a 05) a predani pro Builder | chat:koren_actoru_staveb |
+| 2026-11-23 | agent pilotu (Steward) | Maintenance/reports/ue_*.json | reporty čtení z UE (15 entit) z výsledku 2026-11-23 20:30, format_version 3 (`ue_query --import --all --apply`; WI-44) | predani_pilot_lapikus_knihovnik_unreal P19 |
