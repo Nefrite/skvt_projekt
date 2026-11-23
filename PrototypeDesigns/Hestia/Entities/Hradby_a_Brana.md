@@ -28,7 +28,10 @@ _Žádné očekávané domény ani cíle._
 
 Agregace z potomků (04 kap. 3):
 
-_Potomci nemají cíle._
+| Doména | Zralost | Nejslabší článek |
+|---|---|---|
+| structures | 33 % (1 z 3) | 1 – [[Brana]] |
+| gameplay | 0 % (0 z 2) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->
 

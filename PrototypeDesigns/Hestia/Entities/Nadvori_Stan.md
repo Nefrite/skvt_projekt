@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-23
 aliases: []
 # hra
 kind: object
@@ -17,6 +17,8 @@ status: on_hold
 ue_path:
 assets: []
 depth_structures: 0
+target_structures: 4
+target_gameplay: 0
 ---
 # Nadvori_Stan
 
@@ -27,8 +29,8 @@ depth_structures: 0
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 2 | 0 | – | build | bez cíle |
-| gameplay | – | – | – | design | bez cíle |
+| structures | 2 | 0 | 4 | build | −4 |
+| gameplay | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
 

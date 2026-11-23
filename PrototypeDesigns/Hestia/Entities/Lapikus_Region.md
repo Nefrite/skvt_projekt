@@ -36,7 +36,12 @@ depth_environment: 4
 
 Agregace z potomků (04 kap. 3):
 
-_Potomci nemají cíle._
+| Doména | Zralost | Nejslabší článek |
+|---|---|---|
+| environment | 0 % (0 z 2) | 1 – [[Les_Lapikus]] |
+| structures | 57 % (4 z 7) | 1 – [[Brana]] |
+| paths | 0 % (0 z 2) | 0 – [[Les_Lapikus]] |
+| gameplay | 0 % (0 z 4) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->
 

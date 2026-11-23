@@ -32,7 +32,10 @@ depth_structures: 4
 
 Agregace z potomků (04 kap. 3):
 
-_Potomci nemají cíle._
+| Doména | Zralost | Nejslabší článek |
+|---|---|---|
+| structures | 50 % (1 z 2) | 3 – [[Palac_Obydli]] |
+| gameplay | 0 % (0 z 1) | 0 – [[Palac_Obydli]] |
 
 <!-- hestia:generated:end -->
 

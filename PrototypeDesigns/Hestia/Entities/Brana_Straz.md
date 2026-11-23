@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-23
 aliases: []
 # hra
 kind: structure
@@ -17,6 +17,8 @@ status: in_progress
 ue_path:
 assets: []
 depth_structures: 3
+target_structures: 4
+target_gameplay: 4
 ---
 # Brana_Straz
 
@@ -27,8 +29,8 @@ depth_structures: 3
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 3 | 3 | – | build | bez cíle |
-| gameplay | – | – | – | design | bez cíle |
+| structures | 3 | 3 | 4 | build | −1 |
+| gameplay | – | – | 4 | design | −4 |
 
 <!-- hestia:generated:end -->
 

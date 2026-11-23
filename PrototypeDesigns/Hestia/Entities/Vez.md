@@ -32,7 +32,9 @@ depth_structures: 4
 
 Agregace z potomků (04 kap. 3):
 
-_Potomci nemají cíle._
+| Doména | Zralost | Nejslabší článek |
+|---|---|---|
+| structures | 100 % (1 z 1) | 4 – [[Vez_Pristresek]] |
 
 <!-- hestia:generated:end -->
 

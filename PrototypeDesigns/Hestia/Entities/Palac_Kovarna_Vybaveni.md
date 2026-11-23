@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-21
+updated: 2026-11-23
 aliases: []
 # hra
 kind: object
@@ -17,6 +17,8 @@ status: in_progress
 ue_path:
 assets: []
 depth_structures: 4
+target_structures: 4
+target_gameplay: 0
 ---
 # Palac_Kovarna_Vybaveni
 
@@ -27,8 +29,8 @@ depth_structures: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | 4 | – | build | bez cíle |
-| gameplay | – | – | – | design | bez cíle |
+| structures | 4 | 4 | 4 | build | ✔ |
+| gameplay | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
 

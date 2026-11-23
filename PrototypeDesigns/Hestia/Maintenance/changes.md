@@ -161,3 +161,15 @@ updated: 2026-11-23
 | 2026-11-23 | Architect | Palac_Kovarna | navrh_palac_kovarna: odkaz na návrh domu přečíslován po rozdělení navrh_palac_obydli_stred (kap. 0.2a → kap. 3) | chat:rozdeleni_navrhu_domu |
 | 2026-11-23 | Architect | Palac_Kovarna_Vybaveni | navrh_palac_kovarna: odkaz na návrh domu přečíslován po rozdělení navrh_palac_obydli_stred (kap. 0.2a → kap. 3) | chat:rozdeleni_navrhu_domu |
 | 2026-11-23 | Architect | Palac_Obydli | navrh_palac_obydli_stred rozdělen (G14c, varianta A): plán po etapách → navrh_palac_obydli_etapy (čísla 0.1, 0.3, 0.4, 0.7 zachována), pec → navrh_palac_obydli_pec (kap. 4.6); výchozí stav 0.2/0.2a sloučen do kap. 2 a 3, kap. 5, 6 a 8 bez duplicit; odkazy ve stavenisko a stav_palac_obydli | chat:rozdeleni_navrhu_domu |
+| 2026-11-23 | Curator | Brana | doplněno target_structures 4, target_gameplay 0 | chat:L5_target |
+| 2026-11-23 | Curator | Brana_Straz | doplněno target_structures 4, target_gameplay 4 | chat:L5_target |
+| 2026-11-23 | Curator | Guesthouse | doplněno target_structures 4, target_gameplay 4 | chat:L5_target |
+| 2026-11-23 | Curator | Les_Lapikus | doplněno target_environment 4, target_paths 4, target_narrative 0 | chat:L5_target |
+| 2026-11-23 | Curator | Nadvori_Stan | doplněno target_structures 4, target_gameplay 0 | chat:L5_target |
+| 2026-11-23 | Curator | Palac_Kovarna_Vybaveni | doplněno target_structures 4, target_gameplay 0 | chat:L5_target |
+| 2026-11-23 | Curator | Palac_Obydli | doplněno target_structures 4, target_gameplay 3 | chat:L5_target |
+| 2026-11-23 | Curator | Strazni_Vez | doplněno target_structures 4, target_gameplay 4 | chat:L5_target |
+| 2026-11-23 | Curator | Udoli_Reky | doplněno target_environment 4, target_paths 4, target_narrative 0 | chat:L5_target |
+| 2026-11-23 | Curator | Vez_Pristresek | doplněno target_structures 4, target_gameplay 0 | chat:L5_target |
+| 2026-11-23 | Curator | Les_Lapikus | doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) | chat:L5_target |
+| 2026-11-23 | Curator | Udoli_Reky | doplněno depth_paths 0 (povinné k target_paths v režimu build; nic nerealizováno) | chat:L5_target |

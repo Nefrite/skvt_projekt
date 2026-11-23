@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-21
+updated: 2026-11-23
 aliases: []
 # hra
 kind: place
@@ -18,6 +18,10 @@ ue_path:
 assets: []
 scale: sector
 depth_environment: 1
+target_environment: 4
+target_paths: 4
+depth_paths: 0
+target_narrative: 0
 ---
 # Les_Lapikus
 
@@ -28,9 +32,9 @@ depth_environment: 1
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | 4 | 1 | – | build | bez cíle |
-| paths | – | – | – | build | bez cíle |
-| narrative | – | – | – | design | bez cíle |
+| environment | 4 | 1 | 4 | build | −3 |
+| paths | – | – | 4 | build | −4 |
+| narrative | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
 

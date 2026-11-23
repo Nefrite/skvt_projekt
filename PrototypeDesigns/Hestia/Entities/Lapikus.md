@@ -36,7 +36,10 @@ depth_narrative: 2
 
 Agregace z potomků (04 kap. 3):
 
-_Potomci nemají cíle._
+| Doména | Zralost | Nejslabší článek |
+|---|---|---|
+| structures | 57 % (4 z 7) | 1 – [[Brana]] |
+| gameplay | 0 % (0 z 4) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->
 
