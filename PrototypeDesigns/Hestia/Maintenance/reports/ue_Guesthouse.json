@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -21,22 +21,27 @@
    "actors": 13,
    "by_kind": {
     "static_mesh": 1,
+    "ism": 12,
     "blueprint": 0,
     "bsp": 0,
-    "other": 12
+    "other": 0
    },
-   "placeholder_meshes": 3,
+   "ism_instances": 1860,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 3,
    "default_materials": 0,
+   "pivot_far": 12,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
      -4598.578156640326,
      -1891.4289244340362,
-     -128.0
+     3008.3532190080555
     ],
     "max": [
-     128.0,
-     128.0,
+     -3326.009551100138,
+     -341.59455955801207,
      3587.6690964807594
     ]
    }
@@ -76,12 +81,14 @@
      82.3852531075861,
      10.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Ostroh_Dostavba_Drevo_Stare",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
@@ -98,21 +105,24 @@
    "folder": "Stavby/Ostroh",
    "bounds": {
     "origin": [
-     -1787.9621480016797,
-     -759.0746340788107,
-     1638.5931086016676
+     -3624.8042456164185,
+     -1381.6296744523033,
+     3386.483280351536
     ],
     "extent": [
-     1915.9621480016797,
-     887.0746340788107,
-     1766.5931086016676
+     79.12005038694087,
+     264.51959370531813,
+     18.702936851799222
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5149.4,
+   "ism_instances": 2
   },
   {
    "name": "Ostroh_Dostavba_Kamen",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -139,21 +149,24 @@
    "folder": "Stavby/Ostroh",
    "bounds": {
     "origin": [
-     -2002.3025486991537,
-     -836.5250303533604,
-     1699.0208572655338
+     -3764.826156917542,
+     -1138.2966503653797,
+     3342.6688776149476
     ],
     "extent": [
-     2130.3025486991537,
-     964.5250303533604,
-     1827.0208572655338
+     367.77894048076564,
+     662.7534103413412,
+     183.3728369161197
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5161.7,
+   "ism_instances": 381
   },
   {
    "name": "Ostroh_Dostavba_Malta",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube"
@@ -169,21 +182,24 @@
    "folder": "Stavby/Ostroh",
    "bounds": {
     "origin": [
-     -1995.6502940669093,
-     -827.3259095052058,
-     1696.1605863577488
+     -3761.570603421509,
+     -1138.041736797561,
+     3322.160586357749
     ],
     "extent": [
-     2123.6502940669093,
-     955.3259095052058,
-     1824.1605863577488
+     357.72998471230926,
+     644.6100822128502,
+     198.1605863577488
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5146.0,
+   "ism_instances": 310
   },
   {
    "name": "Ostroh_Krov_Drevo_Dehet",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
@@ -206,21 +222,24 @@
    "folder": "Stavby/Ostroh",
    "bounds": {
     "origin": [
-     -2235.289078320163,
-     -875.4070322842542,
-     1729.8345482403797
+     -3962.293853870232,
+     -1110.2043120632602,
+     3353.3345482403797
     ],
     "extent": [
-     2363.289078320163,
-     1003.4070322842542,
-     1857.8345482403797
+     636.2843027700935,
+     768.6097525052481,
+     234.33454824037972
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5308.2,
+   "ism_instances": 415
   },
   {
    "name": "Ostroh_Podlaha_Drevo",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
@@ -238,21 +257,24 @@
    "folder": "Stavby/Ostroh",
    "bounds": {
     "origin": [
-     -2116.592845346852,
-     -807.8208139525678,
-     1507.899645321918
+     -3913.7374711112616,
+     -1147.9504865236554,
+     3141.254802152529
     ],
     "extent": [
-     2244.592845346852,
-     935.8208139525678,
-     1635.899645321918
+     447.448219582443,
+     595.6911413814802,
+     2.544488491306538
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5148.1,
+   "ism_instances": 80
   },
   {
    "name": "Ostroh_Podlaha_Drevo_Dehet",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
@@ -270,21 +292,24 @@
    "folder": "Stavby/Ostroh",
    "bounds": {
     "origin": [
-     -2115.8399959793255,
-     -794.2345232653836,
-     1505.5
+     -3920.4781294216727,
+     -1151.3603446338977,
+     3132.460378576043
     ],
     "extent": [
-     2243.8399959793255,
-     922.2345232653836,
-     1633.5
+     439.2018625369783,
+     565.1087018968694,
+     6.539621423957215
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5148.6,
+   "ism_instances": 66
   },
   {
    "name": "ZBudova_S_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -307,21 +332,24 @@
    "folder": "Ruin/ZapadniBudova",
    "bounds": {
     "origin": [
-     -1992.2884811889448,
-     -857.4172621792338,
-     1539.970558944151
+     -3886.308613192835,
+     -1772.9742193676889,
+     3108.153559951891
     ],
     "extent": [
-     2120.288481188945,
-     985.4172621792338,
-     1667.970558944151
+     226.26834918505506,
+     69.86030499077913,
+     99.78755793641153
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5282.8,
+   "ism_instances": 28
   },
   {
    "name": "ZBudova_S_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -346,21 +374,24 @@
    "folder": "Ruin/ZapadniBudova",
    "bounds": {
     "origin": [
-     -1996.3429629556808,
-     -881.6294014110117,
-     1639.524859120147
+     -3866.8280065490985,
+     -1778.8763080092758,
+     3254.7869709605548
     ],
     "extent": [
-     2124.342962955681,
-     1009.6294014110117,
-     1767.524859120147
+     253.85791936226315,
+     112.3824948127475,
+     152.26274727973964
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5358.2,
+   "ism_instances": 29
   },
   {
    "name": "ZBudova_S_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -388,21 +419,24 @@
    "folder": "Ruin/ZapadniBudova",
    "bounds": {
     "origin": [
-     -1996.6085790645293,
-     -881.7144622170181,
-     1639.7838447070585
+     -3865.587575197683,
+     -1777.7543169682426,
+     3207.9604542110865
     ],
     "extent": [
-     2124.6085790645293,
-     1009.7144622170181,
-     1767.7838447070585
+     255.62958293137604,
+     113.67460746579343,
+     199.607235203031
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5328.6,
+   "ism_instances": 119
   },
   {
    "name": "ZBudova_V_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -429,21 +463,24 @@
    "folder": "Ruin/ZapadniBudova",
    "bounds": {
     "origin": [
-     -1787.8291241635898,
-     -847.2787780670226,
-     1586.859787163356
+     -3550.243021764476,
+     -1222.7611267537698,
+     3155.359787163356
     ],
     "extent": [
-     1915.8291241635898,
-     975.2787780670226,
-     1714.859787163356
+     153.41522656270377,
+     599.7964293802754,
+     146.35978716335603
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4904.7,
+   "ism_instances": 112
   },
   {
    "name": "ZBudova_V_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -469,21 +506,24 @@
    "folder": "Ruin/ZapadniBudova",
    "bounds": {
     "origin": [
-     -1807.036833281656,
-     -851.8078621960108,
-     1604.7707217855004
+     -3546.492969495069,
+     -1202.8259478984198,
+     3203.380546998447
     ],
     "extent": [
-     1935.036833281656,
-     979.8078621960108,
-     1732.7707217855004
+     195.58069706824335,
+     628.7897764936017,
+     134.16089657255452
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4928.1,
+   "ism_instances": 78
   },
   {
    "name": "ZBudova_V_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -511,16 +551,19 @@
    "folder": "Ruin/ZapadniBudova",
    "bounds": {
     "origin": [
-     -1808.8865565119663,
-     -852.9301391247252,
-     1587.9702194282754
+     -3543.5750095664316,
+     -1204.1397116235926,
+     3156.4100591185097
     ],
     "extent": [
-     1936.8865565119663,
-     980.9301391247252,
-     1715.9702194282754
+     202.1981034575008,
+     629.7205666258577,
+     147.53037973804135
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4895.9,
+   "ism_instances": 240
   }
  ]
 }

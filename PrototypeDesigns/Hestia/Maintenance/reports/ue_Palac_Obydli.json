@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -13,28 +13,34 @@
  "truncated": false,
  "summary": {
   "own": {
-   "actors": 18,
+   "actors": 29,
    "by_kind": {
-    "static_mesh": 7,
+    "static_mesh": 12,
+    "ism": 17,
     "blueprint": 0,
     "bsp": 0,
-    "other": 11
+    "other": 0
    },
-   "placeholder_meshes": 5,
+   "ism_instances": 598,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 6,
    "default_materials": 0,
+   "pivot_far": 12,
+   "pivot_far_cm": 500.0,
    "stages": {
     "base": 12,
-    "final": 6
+    "final": 7,
+    "site": 10
    },
    "bounds": {
     "min": [
-     -1512.5914023598993,
-     -1183.735213671708,
-     -128.0
+     -1778.9020655955737,
+     -2176.172876575506,
+     3118.3024136455665
     ],
     "max": [
-     128.0,
-     128.0,
+     -225.26397676716226,
+     -343.8377192228774,
      3659.0
     ]
    }
@@ -75,7 +81,9 @@
      17.28236380510714,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Obydli_Krov_VH_K1",
@@ -107,7 +115,9 @@
      17.28236380510714,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Obydli_Krov_VH_K2",
@@ -139,7 +149,9 @@
      17.28236380510714,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Obydli_Krov_VH_K3",
@@ -171,7 +183,9 @@
      17.28236380510714,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Obydli_Krov_VH_K4",
@@ -203,7 +217,9 @@
      17.28236380510714,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Obydli_Ohniste_I2",
@@ -235,7 +251,9 @@
      27.802960344156986,
      1.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Obydli_Ohniste_Poklop",
@@ -269,12 +287,194 @@
      9.208891013959487,
      20.950000762939453
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Stavenisko_V1",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Stavenisko|V1",
+    "stavba:Palac_Obydli_Stavenisko",
+    "stage:site"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1303.9268000000002,
+     -458.34240000000005,
+     3259.0
+    ],
+    "extent": [
+     22.206734569468836,
+     78.50794249737538,
+     132.49862400000802
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Stavenisko_V2",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Stavenisko|V2",
+    "stavba:Palac_Obydli_Stavenisko",
+    "stage:site"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1202.413,
+     -393.96,
+     3259.0
+    ],
+    "extent": [
+     78.50794332616329,
+     22.206729487907523,
+     132.49862400000802
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Stavenisko_V3",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Stavenisko|V3",
+    "stavba:Palac_Obydli_Stavenisko",
+    "stage:site"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1118.5134,
+     -499.8422,
+     3259.0
+    ],
+    "extent": [
+     22.206734569468836,
+     78.50794249737538,
+     132.49862400000802
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Stavenisko_V4",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Stavenisko|V4",
+    "stavba:Palac_Obydli_Stavenisko",
+    "stage:site"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1026.7582000000002,
+     -433.27559999999994,
+     3259.0
+    ],
+    "extent": [
+     68.88714753231261,
+     20.05337331166072,
+     132.23607664480005
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
+  },
+  {
+   "name": "Kamen_Palac_Obydli_Stavenisko_Zebrik",
+   "class": "StaticMeshActor",
+   "kind": "static_mesh",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinLadder_A.SM_RuinLadder_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Props/SM_RuinLadder_A.SM_RuinLadder_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinStone",
+    "id:Palac_Obydli_Stavenisko|Zebrik",
+    "stavba:Palac_Obydli_Stavenisko",
+    "stage:site"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -562.11102,
+     -660.24406,
+     3326.5
+    ],
+    "extent": [
+     50.54772054078194,
+     114.63797450298875,
+     199.46099520493453
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Palac_Obydli_Kamen_Kamen_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -302,21 +502,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -683.9432068168571,
-     -508.2597044574909,
-     1570.2380952742285
+     -886.8353457428613,
+     -747.1465987338133,
+     3193.3893020970118
     ],
     "extent": [
-     811.9432068168571,
-     636.2597044574909,
-     1698.2380952742285
+     609.051067890853,
+     397.3728101811685,
+     75.08688845144525
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3397.4,
+   "ism_instances": 193
   },
   {
    "name": "Palac_Obydli_Kamen_Malta_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube"
@@ -333,21 +536,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -670.0862681413114,
-     -503.1324930573219,
-     1569.5
+     -891.2951373581727,
+     -742.5825046139248,
+     3193.0
     ],
     "extent": [
-     798.0862681413114,
-     631.1324930573219,
-     1697.5
+     576.8773989244501,
+     391.68248150071895,
+     74.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3397.2,
+   "ism_instances": 12
   },
   {
    "name": "Palac_Obydli_Krov_Drevo_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
@@ -368,21 +574,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -584.6519202651691,
-     -527.867606835854,
-     1712.2234515523835
+     -787.7708078515575,
+     -773.593386570685,
+     3345.7234515523833
     ],
     "extent": [
-     712.6519202651691,
-     655.867606835854,
-     1840.2234515523835
+     509.5330326787807,
+     410.1418271010229,
+     206.7234515523835
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3523.2,
+   "ism_instances": 17
   },
   {
    "name": "Palac_Obydli_Krov_Drevo_Final",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
@@ -401,21 +610,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -692.2957011799497,
-     -461.74095183585393,
-     1712.2234515523835
+     -1191.461715,
+     -697.6598114472927,
+     3456.076493974973
     ],
     "extent": [
-     820.2957011799497,
-     589.7409518358539,
-     1840.2234515523835
+     321.1296873598994,
+     353.82209222441526,
+     96.3704091297941
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3721.7,
+   "ism_instances": 9
   },
   {
    "name": "Palac_Obydli_Ohniste_Kamen_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -442,21 +654,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -357.658218270911,
-     -266.1830841428103,
-     1550.29
+     -747.703671281944,
+     -564.5324965691007,
+     3178.88
     ],
     "extent": [
-     485.658218270911,
-     394.1830841428103,
-     1678.29
+     95.61276525987796,
+     95.83367171651989,
+     49.700000000000045
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3314.1,
+   "ism_instances": 45
   },
   {
    "name": "Palac_Obydli_Ohniste_Mazanina_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -475,21 +690,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -357.6002001041769,
-     -265.9722801041769,
-     1567.5
+     -747.65848,
+     -564.4026399999999,
+     3226.0
     ],
     "extent": [
-     485.6002001041769,
-     393.9722801041769,
-     1695.5
+     95.54192020835376,
+     95.54192020835384,
+     37.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3359.3,
+   "ism_instances": 2
   },
   {
    "name": "Palac_Obydli_Ohniste_Mazanina_Final",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A",
@@ -508,21 +726,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -356.8357438776417,
-     -262.5568312981568,
-     1765.5
+     -751.5900399999998,
+     -581.96812,
+     3457.0
     ],
     "extent": [
-     484.8357438776417,
-     390.5568312981568,
-     1893.5
+     90.08144775528353,
+     71.14554259631359,
+     202.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3585.3,
+   "ism_instances": 3
   },
   {
    "name": "Palac_Obydli_Ohniste_Uhli_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube"
@@ -539,21 +760,58 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -333.031321571892,
-     -260.4889960234398,
-     1549.5
+     -738.9216799999999,
+     -525.36824,
+     3210.0
     ],
     "extent": [
-     461.031321571892,
-     388.4889960234398,
-     1677.5
+     55.140963143784006,
+     47.566601080196165,
+     17.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3335.6,
+   "ism_instances": 1
+  },
+  {
+   "name": "Palac_Obydli_Ohniste_Uhli_Final",
+   "class": "Actor",
+   "kind": "ism",
+   "mesh": "/Engine/BasicShapes/Cube.Cube",
+   "meshes": [
+    "/Engine/BasicShapes/Cube.Cube"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinCharcoal.MI_RuinCharcoal"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Ohniste",
+    "stage:final"
+   ],
+   "folder": "Stavby/Palac/Obydli",
+   "bounds": {
+    "origin": [
+     -708.49002,
+     -627.4810600000001,
+     3194.5
+    ],
+    "extent": [
+     21.49693204687958,
+     21.49693204687958,
+     1.5
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3331.7,
+   "ism_instances": 1
   },
   {
    "name": "Palac_Obydli_Ohniste_Zelezo_Final",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube"
@@ -570,21 +828,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -329.2001079926345,
-     -232.27015256791844,
-     1550.625
+     -749.7334700000004,
+     -573.6733099999999,
+     3228.25
     ],
     "extent": [
-     457.2001079926345,
-     360.27015256791844,
-     1678.625
+     36.666745985268676,
+     18.866995135836987,
+     1.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3363.5,
+   "ism_instances": 1
   },
   {
    "name": "Palac_Obydli_Srub_Drevo_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
@@ -606,21 +867,24 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -646.7647955787806,
-     -510.94085459479265,
-     1625.8
+     -863.777489180029,
+     -796.8619045089567,
+     3276.5
     ],
     "extent": [
-     774.7647955787806,
-     638.9408545947927,
-     1753.8
+     557.7521019775323,
+     353.01980468062857,
+     103.09999999999991
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3480.9,
+   "ism_instances": 42
   },
   {
    "name": "Palac_Obydli_Srub_Drevo_Final",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
@@ -645,16 +909,221 @@
    "folder": "Stavby/Palac/Obydli",
    "bounds": {
     "origin": [
-     -691.9417265451559,
-     -506.8337357035999,
-     1710.534217949114
+     -905.8978252192378,
+     -743.7917782517115,
+     3396.8592179491143
     ],
     "extent": [
-     819.9417265451559,
-     634.8337357035999,
-     1838.534217949114
+     605.985627871074,
+     397.8756931554883,
+     152.20921794911396
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3593.4,
+   "ism_instances": 100
+  },
+  {
+   "name": "Palac_Obydli_Stavenisko_Kozy_Drevo_Site",
+   "class": "Actor",
+   "kind": "ism",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogPeeling_A.SM_RuinLogPeeling_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogPeeling_A.SM_RuinLogPeeling_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_B.SM_RuinPoleBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Stavenisko_Kozy",
+    "stage:site",
+    "pile:Palac_Obydli_Stavenisko_Kozy"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1257.8465000000003,
+     -1781.0304999999998,
+     3187.35
+    ],
+    "extent": [
+     283.58133959557335,
+     86.9234930473549,
+     61.29535254847906
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 59.5,
+   "ism_instances": 5
+  },
+  {
+   "name": "Palac_Obydli_Stavenisko_Kozy_bark_Site",
+   "class": "Actor",
+   "kind": "ism",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_B.SM_RuinBarkStrip_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_B.SM_RuinBarkStrip_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_C.SM_RuinBarkStrip_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Stavenisko_Kozy",
+    "stage:site",
+    "pile:Palac_Obydli_Stavenisko_Kozy"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1251.8431609840668,
+     -1789.5593914391354,
+     3130.5
+    ],
+    "extent": [
+     145.12153705073922,
+     80.6965287778437,
+     1.5
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5.0,
+   "ism_instances": 5
+  },
+  {
+   "name": "Palac_Obydli_Stavenisko_Kulatina_Drevo_Site",
+   "class": "Actor",
+   "kind": "ism",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_B.SM_RuinLog_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_C.SM_RuinLog_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Stavenisko_Kulatina",
+    "stage:site",
+    "pile:Palac_Obydli_Stavenisko_Kulatina"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1486.5074789999999,
+     -1411.4792,
+     3164.95
+    ],
+    "extent": [
+     292.39458659557386,
+     135.33374103233155,
+     35.950000000000045
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 36.4,
+   "ism_instances": 14
+  },
+  {
+   "name": "Palac_Obydli_Stavenisko_Prkna_Drevo_Site",
+   "class": "Actor",
+   "kind": "ism",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Stavenisko_Prkna",
+    "stage:site",
+    "pile:Palac_Obydli_Stavenisko_Prkna"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -1539.4903181464833,
+     -2089.0667094511628,
+     3197.75
+    ],
+    "extent": [
+     173.13421105757743,
+     87.10616712434307,
+     68.75
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 68.8,
+   "ism_instances": 134
+  },
+  {
+   "name": "Palac_Obydli_Stavenisko_Tramy_Drevo_Site",
+   "class": "Actor",
+   "kind": "ism",
+   "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+   "meshes": [
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_C.SM_RuinLogBark_C",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B",
+    "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C"
+   ],
+   "materials": [
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinBark.MI_RuinBark",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood.MI_RuinWood",
+    "/Game/Skvt/Lapikus/Ruin/Materials/MI_RuinWood_EndGrain.MI_RuinWood_EndGrain"
+   ],
+   "tags": [
+    "Zricenina_Stavby",
+    "RuinBlocks",
+    "stavba:Palac_Obydli_Stavenisko_Tramy",
+    "stage:site",
+    "pile:Palac_Obydli_Stavenisko_Tramy"
+   ],
+   "folder": "Stavby/Palac/Obydli/Stavenisko",
+   "bounds": {
+    "origin": [
+     -541.2466000000002,
+     -1594.8723,
+     3158.0
+    ],
+    "extent": [
+     315.9826232328379,
+     119.39021330852108,
+     29.0
+    ]
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 30.5,
+   "ism_instances": 14
   }
  ]
 }

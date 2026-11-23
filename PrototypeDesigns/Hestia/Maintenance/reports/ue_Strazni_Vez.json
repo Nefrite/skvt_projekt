@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,22 +16,27 @@
    "actors": 14,
    "by_kind": {
     "static_mesh": 0,
+    "ism": 14,
     "blueprint": 0,
     "bsp": 0,
-    "other": 14
+    "other": 0
    },
-   "placeholder_meshes": 4,
+   "ism_instances": 2323,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 4,
    "default_materials": 0,
+   "pivot_far": 14,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
-     -128.0,
+     1820.9292341135792,
      -3374.594660556877,
-     -128.0
+     2692.055525272135
     ],
     "max": [
      2888.7073841013325,
-     128.0,
+     -2277.546500340003,
      3655.3413557499644
     ]
    }
@@ -45,7 +50,7 @@
   {
    "name": "Brana_J_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -72,21 +77,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1005.6357932492679,
-     -1520.161069508716,
-     1698.2107670284886
+     2004.3988363218832,
+     -2774.9795785678284,
+     3183.190479085216
     ],
     "extent": [
-     1133.6357932492679,
-     1648.161069508716,
-     1826.2107670284886
+     134.87275017665263,
+     393.3425604496033,
+     341.2310549717615
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4674.5,
+   "ism_instances": 101
   },
   {
    "name": "Brana_J_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -113,21 +121,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1026.8143056690978,
-     -1543.4339657159771,
-     1711.7996893312093
+     2001.2789227258875,
+     -2794.57488205955,
+     3276.276567718406
     ],
     "extent": [
-     1154.8143056690978,
-     1671.4339657159771,
-     1839.7996893312093
+     180.34968861230823,
+     420.29304937240363,
+     275.32281094401196
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4748.6,
+   "ism_instances": 60
   },
   {
    "name": "Brana_J_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -155,21 +166,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1025.1420077185128,
-     -1543.688059525537,
-     1698.989795811543
+     1999.9791780744576,
+     -2793.983590882936,
+     3183.932216592083
     ],
     "extent": [
-     1153.1420077185128,
-     1671.688059525537,
-     1826.989795811543
+     178.30483736256804,
+     421.3925281681386,
+     342.0473750310034
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4684.4,
+   "ism_instances": 349
   },
   {
    "name": "Brana_J_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -189,21 +203,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1001.7204920759577,
-     -1414.2803756655144,
-     1666.1398393877043
+     2006.3180347376642,
+     -2765.4810162399663,
+     3370.3140722749454
     ],
     "extent": [
-     1129.7204920759577,
-     1542.2803756655144,
-     1794.1398393877043
+     125.12294941425137,
+     191.0797350910625,
+     89.96560650046285
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4799.2,
+   "ism_instances": 43
   },
   {
    "name": "Brana_Jih_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -230,21 +247,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1332.6478915045648,
-     -1270.0790496099098,
-     1608.3602265039926
+     2409.6363965412756,
+     -2498.5868102834356,
+     3146.042111754883
     ],
     "extent": [
-     1460.6478915045648,
-     1398.0790496099098,
-     1736.3602265039926
+     383.6593864678541,
+     169.57128893638333,
+     198.6783412531022
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4684.7,
+   "ism_instances": 95
   },
   {
    "name": "Brana_Jih_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -270,21 +290,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1338.1488020373745,
-     -1287.4912355320043,
-     1625.7853280469722
+     2390.8267340921375,
+     -2492.5217662005575,
+     3220.0496620623417
     ],
     "extent": [
-     1466.1488020373745,
-     1415.4912355320043,
-     1753.7853280469722
+     413.47086998261136,
+     210.46070486345116,
+     159.5209940316024
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4722.0,
+   "ism_instances": 46
   },
   {
    "name": "Brana_Jih_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -312,21 +335,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1338.9188212579693,
-     -1288.8217864694184,
-     1624.8166763064305
+     2390.7097845797903,
+     -2491.59503663942,
+     3162.465843051641
     ],
     "extent": [
-     1466.9188212579693,
-     1416.8217864694184,
-     1752.8166763064305
+     415.1278579361482,
+     214.0485362994168,
+     215.16750956121973
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4682.4,
+   "ism_instances": 278
   },
   {
    "name": "Brana_S_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -350,21 +376,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1282.5878072732926,
-     -1598.2924791547937,
-     1680.1414738815206
+     2305.863484333628,
+     -3191.1583627446407,
+     3175.545072089475
     ],
     "extent": [
-     1410.5878072732926,
-     1726.2924791547937,
-     1808.1414738815206
+     387.3121302129572,
+     133.42659556494687,
+     312.7378756735659
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5058.1,
+   "ism_instances": 136
   },
   {
    "name": "Brana_S_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -391,21 +420,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1306.5248636217716,
-     -1622.3841133446795,
-     1713.359076414802
+     2328.848822036271,
+     -3195.9361926707725,
+     3263.554520900111
     ],
     "extent": [
-     1434.5248636217716,
-     1750.3841133446795,
-     1841.359076414802
+     412.20090520727217,
+     176.83203401858623,
+     291.1636319294928
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5127.2,
+   "ism_instances": 36
   },
   {
    "name": "Brana_S_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -433,21 +465,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1306.5871655936517,
-     -1623.2973302784385,
-     1695.8474043154351
+     2325.4514284858587,
+     -3196.670429387568,
+     3191.2150892234577
     ],
     "extent": [
-     1434.5871655936517,
-     1751.2973302784385,
-     1823.8474043154351
+     415.722902701444,
+     177.924231169309,
+     328.47971940741263
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5080.4,
+   "ism_instances": 520
   },
   {
    "name": "Brana_V_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -472,21 +507,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1354.7677432417395,
-     -1573.75569882854,
-     1729.3529276599638
+     2710.619503123559,
+     -2917.0643246163227,
+     3139.4677815636896
     ],
     "extent": [
-     1482.7677432417395,
-     1701.75569882854,
-     1857.3529276599638
+     126.91598335992012,
+     358.4470730407577,
+     447.2380737562378
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5070.8,
+   "ism_instances": 132
   },
   {
    "name": "Brana_V_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -513,21 +551,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1380.3536920506663,
-     -1577.3109098204613,
-     1763.6706778749822
+     2717.411368369143,
+     -2897.2231992417137,
+     3227.676108185884
     ],
     "extent": [
-     1508.3536920506663,
-     1705.3109098204613,
-     1891.6706778749822
+     171.2960157321893,
+     385.3986203992092,
+     427.6652475640806
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5118.2,
+   "ism_instances": 66
   },
   {
    "name": "Brana_V_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -555,21 +596,24 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1379.1677430226127,
-     -1578.0413813181403,
-     1745.447427663753
+     2715.633189925007,
+     -2897.853510459508,
+     3155.4751902998205
     ],
     "extent": [
-     1507.1677430226127,
-     1706.0413813181403,
-     1873.447427663753
+     170.702296120219,
+     386.2292521767722,
+     463.41966502768514
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5072.4,
+   "ism_instances": 406
   },
   {
    "name": "Brana_V_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -591,16 +635,19 @@
    "folder": "Ruin/Brana",
    "bounds": {
     "origin": [
-     1352.2248954322376,
-     -1526.9758929141312,
-     1700.6971245144487
+     2700.881450952408,
+     -2961.586028112674,
+     3409.9541158103884
     ],
     "extent": [
-     1480.2248954322376,
-     1654.9758929141312,
-     1828.6971245144487
+     131.56833991206736,
+     220.36575771558864,
+     119.44013321850889
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5262.5,
+   "ism_instances": 55
   }
  ]
 }

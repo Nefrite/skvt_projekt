@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,22 +16,27 @@
    "actors": 53,
    "by_kind": {
     "static_mesh": 0,
+    "ism": 53,
     "blueprint": 0,
     "bsp": 0,
-    "other": 53
+    "other": 0
    },
-   "placeholder_meshes": 16,
+   "ism_instances": 7071,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 16,
    "default_materials": 0,
+   "pivot_far": 53,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
-     -4544.423726957575,
+     -4544.423726957574,
      -3194.0577729223014,
-     -128.0
+     2862.7929684561614
     ],
     "max": [
      2720.022676182083,
-     128.0,
+     103.12671646809157,
      3653.3974045929544
     ]
    }
@@ -49,7 +54,7 @@
   {
    "name": "Hradba_V_01_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -75,21 +80,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1270.9470210698726,
-     -1190.670258095849,
-     1644.3050759361931
+     2481.2205484122164,
+     -2045.1999652033446,
+     3182.2476759361934
     ],
     "extent": [
-     1398.9470210698726,
-     1318.670258095849,
-     1772.3050759361931
+     188.6734937275287,
+     464.14055098835354,
+     234.3624759361935
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4523.9,
+   "ism_instances": 90
   },
   {
    "name": "Hradba_V_01_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -116,21 +124,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1290.5692016013413,
-     -1194.4246664815803,
-     1694.7869119686889
+     2480.856473506955,
+     -2049.470124495589,
+     3268.12843185188
     ],
     "extent": [
-     1418.5692016013413,
-     1322.4246664815803,
-     1822.7869119686889
+     228.28192969572797,
+     467.3792084675714,
+     249.44539208549827
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4586.5,
+   "ism_instances": 55
   },
   {
    "name": "Hradba_V_01_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -158,21 +169,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1290.7740887155278,
-     -1194.4720637433093,
-     1678.7033075621016
+     2481.8210709967716,
+     -2054.2623229319393,
+     3216.543215111645
     ],
     "extent": [
-     1418.7740887155278,
-     1322.4720637433093,
-     1806.7033075621016
+     227.72710643428422,
+     462.6818045546793,
+     268.86340001255803
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4552.5,
+   "ism_instances": 232
   },
   {
    "name": "Hradba_V_02_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -197,21 +211,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1276.1513890858703,
-     -747.897670434179,
-     1694.80689045286
+     2589.4866184733155,
+     -1534.9741983958115,
+     3267.885910336051
     ],
     "extent": [
-     1404.1513890858703,
-     875.897670434179,
-     1822.80689045286
+     90.81615969842483,
+     88.8211424725464,
+     249.727870569669
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4443.0,
+   "ism_instances": 39
   },
   {
    "name": "Hradba_V_02_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B",
@@ -235,21 +252,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1295.5201170111125,
-     -747.468276862481,
-     1708.3025546374222
+     2590.3205505605183,
+     -1536.946632589669,
+     3326.666907716865
     ],
     "extent": [
-     1423.5201170111125,
-     875.468276862481,
-     1836.3025546374222
+     128.71968346170638,
+     85.98992113529312,
+     217.93820155797948
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4487.6,
+   "ism_instances": 8
   },
   {
    "name": "Hradba_V_02_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -276,21 +296,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1295.993892002486,
-     -750.5377465499146,
-     1695.5080752565814
+     2590.0070732121735,
+     -1539.3295268567203,
+     3268.5211141231375
     ],
     "extent": [
-     1423.993892002486,
-     878.5377465499146,
-     1823.5080752565814
+     129.98071079279862,
+     89.7459662431088,
+     250.4950363900257
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4445.3,
+   "ism_instances": 79
   },
   {
    "name": "Hradba_V_03_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -316,21 +339,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1275.7102828697493,
-     -695.2610699964365,
-     1678.5893550119777
+     2571.033377735276,
+     -1410.2297418935532,
+     3235.3165775347925
     ],
     "extent": [
-     1403.7102828697493,
-     823.2610699964365,
-     1806.5893550119777
+     108.3871880042218,
+     108.29239809931994,
+     249.8621324891635
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4366.5,
+   "ism_instances": 42
   },
   {
    "name": "Hradba_V_03_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -352,21 +378,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1287.1817729471675,
-     -691.855230071299,
-     1694.8709147892887
+     2567.0742231402755,
+     -1398.4683576398756,
+     3285.1614855042244
     ],
     "extent": [
-     1415.1817729471675,
-     819.855230071299,
-     1822.8709147892887
+     135.28932275405964,
+     113.24210250272233,
+     232.58034407435275
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4397.5,
+   "ism_instances": 10
   },
   {
    "name": "Hradba_V_03_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -394,21 +423,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1296.0113380910416,
-     -692.1543395111119,
-     1694.7566537841208
+     2577.8991103377784,
+     -1397.727577998582,
+     3251.4298403597277
     ],
     "extent": [
-     1424.0113380910416,
-     820.1543395111119,
-     1822.7566537841208
+     142.12356584430495,
+     114.58110102364174,
+     266.08346720851387
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4378.5,
+   "ism_instances": 63
   },
   {
    "name": "Hradba_V_04_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -431,21 +463,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1247.5321285875607,
-     -644.7957142659616,
-     1659.6097571120908
+     2500.955175773147,
+     -1294.1759100511972,
+     3216.336979634905
     ],
     "extent": [
-     1375.5321285875607,
-     772.7957142659616,
-     1787.6097571120908
+     122.10908140197466,
+     123.41551848072606,
+     230.88253458927647
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4274.9,
+   "ism_instances": 34
   },
   {
    "name": "Hradba_V_04_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -466,21 +501,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1264.261780120635,
-     -642.3657765267035,
-     1678.3364897450788
+     2513.0384106008987,
+     -1278.0519261652562,
+     3420.5764572171975
     ],
     "extent": [
-     1392.261780120635,
-     770.3657765267035,
-     1806.3364897450788
+     143.485149640371,
+     134.67962688815078,
+     64.0965222729601
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4432.7,
+   "ism_instances": 7
   },
   {
    "name": "Hradba_V_04_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -508,21 +546,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1265.038351228864,
-     -651.9965718387909,
-     1659.7645920878363
+     2507.5387110638594,
+     -1286.9666090874812,
+     3216.437778663443
     ],
     "extent": [
-     1393.038351228864,
-     779.9965718387909,
-     1787.7645920878363
+     150.53799139386888,
+     145.02653459010094,
+     231.09140551222936
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4276.6,
+   "ism_instances": 72
   },
   {
    "name": "Hradba_V_05_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -547,21 +588,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1189.9568033962935,
-     -594.0616967634828,
-     1678.5989897450786
+     2376.891904522449,
+     -1191.1582241995475,
+     3216.5415897450785
     ],
     "extent": [
-     1317.9568033962935,
-     722.0616967634828,
-     1806.5989897450786
+     131.02170227013812,
+     124.96516932741827,
+     268.65638974507897
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4173.1,
+   "ism_instances": 42
   },
   {
    "name": "Hradba_V_05_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -584,21 +628,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1202.230015035787,
-     -606.7598906034947,
-     1694.8373969216748
+     2385.7746308678793,
+     -1186.7194757094503,
+     3422.1855807418888
     ],
     "extent": [
-     1330.230015035787,
-     734.7598906034947,
-     1822.8373969216748
+     146.68539920369494,
+     154.80030549753894,
+     95.48921310146056
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4337.2,
+   "ism_instances": 13
   },
   {
    "name": "Hradba_V_05_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -626,21 +673,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1203.2837618948429,
-     -607.7956481660187,
-     1679.6703264182893
+     2384.637051444329,
+     -1187.0002301452068,
+     3217.5102339678333
     ],
     "extent": [
-     1331.2837618948429,
-     735.7956481660187,
-     1807.6703264182893
+     149.93047234535675,
+     156.59106618683052,
+     269.83041886874594
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4177.1,
+   "ism_instances": 101
   },
   {
    "name": "Hradba_V_06_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -663,21 +713,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1107.3606533525733,
-     -547.9636577419919,
-     1678.454939826131
+     2202.12670567158,
+     -1100.5236317513927,
+     3216.397539826131
     ],
     "extent": [
-     1235.3606533525733,
-     675.9636577419919,
-     1806.454939826131
+     140.5946010335665,
+     123.40368373259105,
+     268.51233982613144
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4050.4,
+   "ism_instances": 49
   },
   {
    "name": "Hradba_V_06_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -700,21 +753,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1115.696421871883,
-     -562.0780300868789,
-     1694.4631878936198
+     2209.8975232054,
+     -1096.2970477049244,
+     3330.4109518361192
     ],
     "extent": [
-     1243.696421871883,
-     690.0780300868789,
-     1822.4631878936198
+     149.4953205383665,
+     155.85901246883355,
+     186.51542395112006
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4144.5,
+   "ism_instances": 13
   },
   {
    "name": "Hradba_V_06_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -741,21 +797,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1116.6933333002983,
-     -565.0422709458426,
-     1660.6406641670687
+     2207.0228196504972,
+     -1098.5234558278617,
+     3198.4805717166123
     ],
     "extent": [
-     1244.6933333002983,
-     693.0422709458426,
-     1788.6406641670687
+     154.3638469500993,
+     159.56108606382367,
+     250.80075661752517
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4038.3,
+   "ism_instances": 110
   },
   {
    "name": "Hradba_V_07_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -780,21 +839,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1000.3035327045307,
-     -506.950545385891,
-     1628.018132175975
+     1975.8619636417702,
+     -1024.3526580492623,
+     3165.960732175975
     ],
     "extent": [
-     1128.3035327045307,
-     634.950545385891,
-     1756.018132175975
+     152.74510176729098,
+     117.54843272251946,
+     218.07553217597547
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3870.0,
+   "ism_instances": 42
   },
   {
    "name": "Hradba_V_07_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -819,21 +881,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1005.8394489686339,
-     -523.8043820780573,
-     1644.8067401158214
+     1976.8430814645503,
+     -1020.9714005627818,
+     3280.754504058321
     ],
     "extent": [
-     1133.8394489686339,
-     651.8043820780573,
-     1772.8067401158214
+     162.83581647271728,
+     154.63736359333274,
+     136.8589761733217
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3964.0,
+   "ism_instances": 13
   },
   {
    "name": "Hradba_V_07_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -861,21 +926,24 @@
    "folder": "Ruin/Hradba/Hradba_V",
    "bounds": {
     "origin": [
-     1006.7299568144931,
-     -524.9808984429599,
-     1628.6165977847459
+     1977.0224194486786,
+     -1021.7942204617732,
+     3166.4565053342894
     ],
     "extent": [
-     1134.729956814493,
-     652.9808984429599,
-     1756.6165977847459
+     164.4374941803079,
+     156.1675764241465,
+     218.77669023520207
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3870.3,
+   "ism_instances": 128
   },
   {
    "name": "Hradba_Z_S_01_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -896,21 +964,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1355.2380826662402,
-     -70.87712914014452,
-     1669.8001340864062
+     -2659.096207700536,
+     -112.11250723932173,
+     3215.0423779024504
     ],
     "extent": [
-     1483.2380826662402,
-     198.87712914014452,
-     1797.8001340864062
+     179.37995763194476,
+     157.6417510409673,
+     252.5578902703619
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4173.7,
+   "ism_instances": 26
   },
   {
    "name": "Hradba_Z_S_01_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -934,21 +1005,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1357.3722509863458,
-     -88.11271137516093,
-     1683.7244580533402
+     -2632.311083312618,
+     -101.17569587180878,
+     3296.130336931591
     ],
     "extent": [
-     1485.3722509863458,
-     216.11271137516093,
-     1811.7244580533402
+     210.43341866007358,
+     203.04972687851307,
+     199.31857917508955
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4219.5,
+   "ism_instances": 23
   },
   {
    "name": "Hradba_Z_S_01_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -976,21 +1050,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1362.2602314696796,
-     -89.06196955507596,
-     1650.677241665402
+     -2637.687953715018,
+     -101.49861132103017,
+     3195.824341322651
     ],
     "extent": [
-     1490.2602314696796,
-     217.06196955507596,
-     1778.677241665402
+     214.83250922434104,
+     204.62532778912174,
+     233.53014200815278
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4145.0,
+   "ism_instances": 109
   },
   {
    "name": "Hradba_Z_S_02_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1016,21 +1093,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1933.3013936742482,
-     -269.5658386564752,
-     1683.511821869422
+     -3384.026045995529,
+     -420.83981907033126,
+     3228.7540656854662
     ],
     "extent": [
-     2061.301393674248,
-     397.5658386564752,
-     1811.511821869422
+     610.5767413529677,
+     246.29185824261904,
+     266.2695780533775
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4696.1,
+   "ism_instances": 146
   },
   {
    "name": "Hradba_Z_S_02_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1058,21 +1138,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1941.3186789800684,
-     -286.9142922914324,
-     1712.2104510317604
+     -3383.958701659356,
+     -422.7788238055235,
+     3364.2557948382446
     ],
     "extent": [
-     2069.3186789800684,
-     414.9142922914324,
-     1840.2104510317604
+     626.6786563007811,
+     279.0497607773414,
+     188.16510722527642
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4790.4,
+   "ism_instances": 69
   },
   {
    "name": "Hradba_Z_S_02_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1100,21 +1183,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1942.1475245590846,
-     -286.40981652888655,
-     1698.8758460403756
+     -3383.7756073655983,
+     -420.5300455866536,
+     3244.035945697625
     ],
     "extent": [
-     2070.1475245590846,
-     414.40981652888655,
-     1826.8758460403756
+     628.5194417525706,
+     280.2895874711195,
+     281.7157463831263
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4706.4,
+   "ism_instances": 545
   },
   {
    "name": "Hradba_Z_S_03_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1136,21 +1222,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2163.1162376458924,
-     -463.0737002152514,
-     1634.8847011743883
+     -4198.37957419416,
+     -814.0307971986942,
+     3180.1269449904325
     ],
     "extent": [
-     2291.1162376458924,
-     591.0737002152514,
-     1762.8847011743883
+     255.85290109762445,
+     240.1166032318086,
+     217.64245735834402
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5329.4,
+   "ism_instances": 93
   },
   {
    "name": "Hradba_Z_S_03_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1178,21 +1267,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2173.0359029248984,
-     -466.8875954865149,
-     1650.372731067539
+     -4200.607413829689,
+     -800.4437584755196,
+     3263.0251799402586
     ],
     "extent": [
-     2301.0359029248984,
-     594.8875954865149,
-     1778.372731067539
+     273.4643920201079,
+     261.3314324975102,
+     165.72028219481876
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5379.0,
+   "ism_instances": 48
   },
   {
    "name": "Hradba_Z_S_03_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1220,21 +1312,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2180.770387052504,
-     -472.2687733826921,
-     1634.913696923401
+     -4210.869355619519,
+     -804.963297329149,
+     3180.07379658065
     ],
     "extent": [
-     2308.770387052504,
-     600.2687733826921,
-     1762.913696923401
+     278.6714184854877,
+     267.57424943623516,
+     217.75359726615147
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5337.8,
+   "ism_instances": 270
   },
   {
    "name": "Hradba_Z_S_03_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -1258,21 +1353,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2105.0398897971827,
-     -418.6800936387415,
-     1619.6599137237613
+     -4220.602234778383,
+     -850.1149661579318,
+     3251.7014256986467
     ],
     "extent": [
-     2233.0398897971827,
-     546.6800936387415,
-     1747.6599137237613
+     117.47754481598167,
+     115.24522111955133,
+     115.61840174887607
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5395.3,
+   "ism_instances": 35
   },
   {
    "name": "Hradba_Z_S_04_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1296,21 +1394,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2188.7849252904753,
-     -661.7545112802638,
-     1634.97927175117
+     -4432.624789824609,
+     -1219.4251032747693,
+     3180.2215155672143
     ],
     "extent": [
-     2316.7849252904753,
-     789.7545112802638,
-     1762.97927175117
+     72.94506075634172,
+     232.0839192857585,
+     217.73702793512575
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5590.1,
+   "ism_instances": 76
   },
   {
    "name": "Hradba_Z_S_04_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1336,21 +1437,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2207.822025587121,
-     -661.3488285405747,
-     1650.3727310675388
+     -4437.514990148724,
+     -1210.244533728161,
+     3263.0251799402586
     ],
     "extent": [
-     2335.822025587121,
-     789.3488285405747,
-     1778.3727310675388
+     106.1290610255187,
+     240.4531233529882,
+     165.72028219481876
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5639.5,
+   "ism_instances": 43
   },
   {
    "name": "Hradba_Z_S_04_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1377,21 +1481,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2208.2118634787876,
-     -669.4665863094898,
-     1634.913696923401
+     -4435.014665204641,
+     -1217.3208040422326,
+     3180.07379658065
     ],
     "extent": [
-     2336.2118634787876,
-     797.4665863094898,
-     1762.913696923401
+     109.40906175293367,
+     249.6123685767471,
+     217.75359726615147
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5591.4,
+   "ism_instances": 195
   },
   {
    "name": "Hradba_Z_S_04_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -1415,21 +1522,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2207.132836470828,
-     -624.0686278442372,
-     1619.6599137237613
+     -4443.868876273493,
+     -1271.6434103355218,
+     3251.7014256986467
     ],
     "extent": [
-     2335.132836470828,
-     752.0686278442372,
-     1747.6599137237613
+     98.39679666816346,
+     104.49384535295269,
+     115.61840174887607
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5651.4,
+   "ism_instances": 40
   },
   {
    "name": "Hradba_Z_S_05_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1452,21 +1562,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2167.9100941981014,
-     -937.9601526220717,
-     1697.9037346667596
+     -4098.773557444739,
+     -1701.5090775418091,
+     3243.145978482804
     ],
     "extent": [
-     2295.9100941981014,
-     1065.9601526220717,
-     1825.9037346667596
+     365.04663095146293,
+     302.4112277023344,
+     280.6614908507154
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5496.6,
+   "ism_instances": 128
   },
   {
    "name": "Hradba_Z_S_05_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1494,21 +1607,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2185.964543096653,
-     -954.9797407909944,
-     1712.0151188510354
+     -4112.322711571119,
+     -1718.2958650665898,
+     3324.930067723755
     ],
     "extent": [
-     2313.964543096653,
-     1082.9797407909941,
-     1840.0151188510354
+     387.6063746221869,
+     319.66361651539864,
+     227.10016997831553
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5560.5,
+   "ism_instances": 53
   },
   {
    "name": "Hradba_Z_S_05_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1536,21 +1652,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2186.873595780191,
-     -955.6496803523844,
-     1698.0567420101424
+     -4112.6010663461275,
+     -1712.7490427934845,
+     3243.2168416673917
     ],
     "extent": [
-     2314.873595780191,
-     1083.6496803523844,
-     1826.0567420101424
+     389.1461252142542,
+     326.5503179112842,
+     280.8966423528932
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5510.5,
+   "ism_instances": 367
   },
   {
    "name": "Hradba_Z_S_06_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1576,21 +1695,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1831.9518685465227,
-     -1098.738659641322,
-     1744.1926268161606
+     -3235.441018774026,
+     -2113.3700217041956,
+     3289.4348706322053
     ],
     "extent": [
-     1959.9518685465227,
-     1226.738659641322,
-     1872.1926268161606
+     556.46271831902,
+     212.1072975784483,
+     326.9503830001165
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5074.9,
+   "ism_instances": 208
   },
   {
    "name": "Hradba_Z_S_06_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1617,21 +1739,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1840.7819960868546,
-     -1117.8425232617494,
-     1762.6987022964772
+     -3248.468171528918,
+     -2121.442650434091,
+     3375.3511511691972
     ],
     "extent": [
-     1968.7819960868546,
-     1245.8425232617494,
-     1890.6987022964772
+     561.095820644792,
+     242.24239608940786,
+     278.0462534237572
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5142.6,
+   "ism_instances": 70
   },
   {
    "name": "Hradba_Z_S_06_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1659,21 +1784,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1841.412043969336,
-     -1118.6174817518627,
-     1744.072836236292
+     -3243.261832147963,
+     -2121.942421444719,
+     3289.2329358935413
     ],
     "extent": [
-     1969.412043969336,
-     1246.6174817518627,
-     1872.072836236292
+     567.5622557907088,
+     243.29254205900645,
+     326.91273657904253
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5083.3,
+   "ism_instances": 660
   },
   {
    "name": "Hradba_Z_S_06_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -1697,21 +1825,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1655.4781630359416,
-     -1080.6500668070148,
-     1743.9669114365265
+     -3150.320712124146,
+     -2132.228936224805,
+     3376.008423411412
     ],
     "extent": [
-     1783.4781630359416,
-     1208.6500668070148,
-     1871.9669114365265
+     288.63561394773706,
+     157.07119738922506,
+     239.9253994616413
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5086.1,
+   "ism_instances": 54
   },
   {
    "name": "Hradba_Z_S_07_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1738,21 +1869,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1290.0345779583188,
-     -1124.7579478961952,
-     1698.1756414857068
+     -1548.926829535753,
+     -2300.911865866659,
+     3243.417885301751
     ],
     "extent": [
-     1418.0345779583188,
-     1252.7579478961952,
-     1826.1756414857068
+     1159.1423263808845,
+     76.60402992573108,
+     280.93339766966255
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4267.7,
+   "ism_instances": 245
   },
   {
    "name": "Hradba_Z_S_07_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1780,21 +1914,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1292.4008836840708,
-     -1143.922877000376,
-     1712.466038905558
+     -1549.5902024314646,
+     -2299.360298485181,
+     3325.118487778278
     ],
     "extent": [
-     1420.4008836840708,
-     1271.922877000376,
-     1840.466038905558
+     1163.211564936677,
+     116.48545551557118,
+     227.81359003283796
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4329.5,
+   "ism_instances": 125
   },
   {
    "name": "Hradba_Z_S_07_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1822,21 +1959,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -1293.2561103778235,
-     -1143.5887154592015,
-     1698.314552159713
+     -1549.767357902217,
+     -2299.997345031821,
+     3243.4746518169623
     ],
     "extent": [
-     1421.2561103778235,
-     1271.5887154592015,
-     1826.314552159713
+     1164.7448628534294,
+     115.18008588658199,
+     281.154452502464
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4267.5,
+   "ism_instances": 801
   },
   {
    "name": "Hradba_Z_S_07_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -1860,21 +2000,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -531.6512526688209,
-     -1136.0439068260976,
-     1619.6599137237613
+     -1091.1224339508603,
+     -2307.302213102934,
+     3251.7014256986467
     ],
     "extent": [
-     659.6512526688209,
-     1264.0439068260976,
-     1747.6599137237613
+     100.18007138678149,
+     92.78560054926129,
+     115.61840174887607
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4133.7,
+   "ism_instances": 30
   },
   {
    "name": "Hradba_Z_S_08_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -1898,21 +2041,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     88.51318894353716,
-     -1269.904115819305,
-     1698.0786218921548
+     88.51318894353713,
+     -2471.340654366363,
+     3193.51792128166
     ],
     "extent": [
      509.67543401107434,
-     1397.904115819305,
-     1826.0786218921548
+     196.46757727224667,
+     330.63932250264884
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4039.0,
+   "ism_instances": 126
   },
   {
    "name": "Hradba_Z_S_08_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -1940,21 +2086,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     94.05158085988688,
-     -1288.5721372761027,
-     1712.6874160485977
+     94.0515808598868,
+     -2476.851838933745,
+     3275.68686780439
     ],
     "extent": [
-     515.1775197702068,
-     1416.5721372761027,
-     1840.6874160485977
+     515.1775197702067,
+     228.29243561846056,
+     277.6879642928059
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4107.8,
+   "ism_instances": 67
   },
   {
    "name": "Hradba_Z_S_08_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -1982,21 +2131,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     92.30705204891649,
-     -1288.7202467287966,
-     1698.9500977040807
+     92.30705204891655,
+     -2470.1410498022083,
+     3194.3465819321614
     ],
     "extent": [
-     518.5362101330307,
-     1416.7202467287966,
-     1826.9500977040807
+     518.5362101330309,
+     235.2994436553845,
+     331.553613476
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4039.1,
+   "ism_instances": 450
   },
   {
    "name": "Hradba_Z_S_08_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -2020,21 +2172,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     -2.5430263052742816,
-     -1247.1824077285683,
-     1619.6599137237613
+     -2.543026305274253,
+     -2432.377853205717,
+     3198.869158177197
     ],
     "extent": [
-     400.2068423302126,
-     1375.1824077285683,
-     1747.6599137237613
+     400.2068423302127,
+     189.98696225141975,
+     168.45066927032576
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4018.6,
+   "ism_instances": 81
   },
   {
    "name": "Hradba_Z_S_09_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -2059,21 +2214,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     909.7549573809936,
-     -1513.0275660844568,
-     1634.8847011743883
+     1255.359825343092,
+     -2862.62536393166,
+     3130.324000563894
     ],
     "extent": [
-     1037.7549573809936,
-     1641.0275660844568,
-     1762.8847011743883
+     692.1500894188948,
+     291.42976823725326,
+     267.4454017848825
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4423.7,
+   "ism_instances": 140
   },
   {
    "name": "Hradba_Z_S_09_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -2101,21 +2259,24 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     915.6149557497351,
-     -1533.0288864611507,
-     1651.1823882998183
+     1261.7628075459863,
+     -2864.253097975767,
+     3146.884187689324
     ],
     "extent": [
-     1043.6149557497351,
-     1661.0288864611507,
-     1779.1823882998183
+     697.4671039534842,
+     329.8046749465343,
+     283.48058891031246
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4438.3,
+   "ism_instances": 80
   },
   {
    "name": "Hradba_Z_S_09_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -2143,16 +2304,19 @@
    "folder": "Ruin/Hradba/Hradba_Z_S",
    "bounds": {
     "origin": [
-     916.7908678714641,
-     -1532.5297708625376,
-     1635.7135619355945
+     1255.6589147520185,
+     -2863.0064176115275,
+     3131.110046163675
     ],
     "extent": [
-     1044.7908678714641,
-     1660.5297708625376,
-     1763.7135619355945
+     705.9228209909099,
+     330.0531241135475,
+     268.3170777075136
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4424.6,
+   "ism_instances": 426
   }
  ]
 }

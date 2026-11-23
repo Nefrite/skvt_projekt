@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,25 +16,30 @@
    "actors": 4,
    "by_kind": {
     "static_mesh": 0,
+    "ism": 4,
     "blueprint": 0,
     "bsp": 0,
-    "other": 4
+    "other": 0
    },
+   "ism_instances": 203,
    "placeholder_meshes": 0,
+   "placeholder_ignored": 0,
    "default_materials": 0,
+   "pivot_far": 4,
+   "pivot_far_cm": 500.0,
    "stages": {
     "base": 3,
     "final": 1
    },
    "bounds": {
     "min": [
-     -128.0,
-     -3360.2986173780773,
-     -128.0
+     1906.291806725186,
+     -3360.298617378078,
+     3434.3290308312717
     ],
     "max": [
      2786.666866512858,
-     128.0,
+     -2596.325778665325,
      3764.9948158506254
     ]
    }
@@ -48,7 +53,7 @@
   {
    "name": "Brana_Straz_Kamen_Kamen_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -76,21 +81,24 @@
    "folder": "Stavby/Brana",
    "bounds": {
     "origin": [
-     1270.6856511309811,
-     -1579.7137947934798,
-     1711.90249014661
+     2304.3122626380864,
+     -3006.716077075873,
+     3506.6218777306885
     ],
     "extent": [
-     1398.6856511309811,
-     1707.7137947934798,
-     1839.90249014661
+     365.0590396238757,
+     280.71151251108654,
+     45.18310256253153
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5162.0,
+   "ism_instances": 58
   },
   {
    "name": "Brana_Straz_Kryty_Drevo_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
@@ -114,21 +122,24 @@
    "folder": "Stavby/Brana",
    "bounds": {
     "origin": [
-     1329.333433256429,
-     -1603.6670118863658,
-     1818.4974079253127
+     2708.7683329368083,
+     -3034.697350966814,
+     3629.2091454852102
     ],
     "extent": [
-     1457.333433256429,
-     1731.6670118863658,
-     1946.4974079253127
+     77.89853357605011,
+     300.6366728059172,
+     135.78567036541517
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5451.4,
+   "ism_instances": 32
   },
   {
    "name": "Brana_Straz_Kryty_Drevo_Final",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A",
@@ -154,21 +165,24 @@
    "folder": "Stavby/Brana",
    "bounds": {
     "origin": [
-     1317.8573146915764,
-     -1616.1493086890387,
-     1818.4924717396702
+     2335.0032180541693,
+     -3005.4565618406746,
+     3599.656987155306
     ],
     "extent": [
-     1445.8573146915764,
-     1744.1493086890387,
-     1946.4924717396702
+     428.71141132898333,
+     354.8420555374032,
+     165.3279563240344
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5238.6,
+   "ism_instances": 65
   },
   {
    "name": "Brana_Straz_Podesta_Drevo_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
@@ -191,16 +205,19 @@
    "folder": "Stavby/Brana",
    "bounds": {
     "origin": [
-     1280.328140410022,
-     -1583.2505089827173,
-     1726.5
+     2310.138881023716,
+     -2945.4133983153797,
+     3566.5
     ],
     "extent": [
-     1408.328140410022,
-     1711.2505089827173,
-     1854.5
+     378.5173997963277,
+     349.0876196500549,
+     14.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 5170.3,
+   "ism_instances": 48
   }
  ]
 }

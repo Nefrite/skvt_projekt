@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,12 +16,17 @@
    "actors": 37,
    "by_kind": {
     "static_mesh": 37,
+    "ism": 0,
     "blueprint": 0,
     "bsp": 0,
     "other": 0
    },
+   "ism_instances": 0,
    "placeholder_meshes": 0,
+   "placeholder_ignored": 0,
    "default_materials": 0,
+   "pivot_far": 0,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
@@ -74,7 +79,9 @@
      70.59546972512248,
      52.650001525878906
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Drevo0",
@@ -97,7 +104,7 @@
    "folder": "Vybaveni/Palac/Kovarna",
    "bounds": {
     "origin": [
-     57.41947999999956,
+     57.41947999999957,
      -891.13656,
      3197.2
     ],
@@ -106,7 +113,9 @@
      74.4344824638024,
      68.19999694824219
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Drevo1",
@@ -129,7 +138,7 @@
    "folder": "Vybaveni/Palac/Kovarna",
    "bounds": {
     "origin": [
-     27.277519999999633,
+     27.277519999999637,
      -1025.8052400000001,
      3191.744
     ],
@@ -138,7 +147,9 @@
      74.4344824638024,
      62.74399719238272
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Drevo2",
@@ -170,7 +181,9 @@
      74.4344824638024,
      66.15399703979483
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Hrebovnice",
@@ -200,7 +213,9 @@
      12.629026525198583,
      1.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_KaliciSud",
@@ -233,7 +248,9 @@
      36.55570571354042,
      40.150001525878906
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0",
@@ -264,7 +281,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_2",
@@ -295,7 +314,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_2_2",
@@ -326,7 +347,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_3",
@@ -357,7 +380,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_4",
@@ -388,7 +413,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik0_5",
@@ -419,7 +446,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1",
@@ -450,7 +479,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1_2",
@@ -481,7 +512,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1_3",
@@ -512,7 +545,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kolik1_4",
@@ -543,7 +578,9 @@
      6.182788365249735,
      1.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kos",
@@ -573,7 +610,9 @@
      26.21942333276661,
      18.25
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Kovadlina",
@@ -603,7 +642,9 @@
      12.77198011520079,
      12.149999618530273
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Lista",
@@ -633,7 +674,9 @@
      15.963094503891853,
      5.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Mechy",
@@ -665,7 +708,9 @@
      111.98644237432802,
      69.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Mechy_Lano",
@@ -695,7 +740,9 @@
      5.076782024128306,
      19.206011383802434
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi0",
@@ -725,7 +772,9 @@
      18.173496604988145,
      2.0380454905962324
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi1",
@@ -755,7 +804,9 @@
      1.8794816450906637,
      25.100000381469727
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi2",
@@ -787,7 +838,9 @@
      3.2993928334533393,
      18.200000762939453
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi3",
@@ -819,7 +872,9 @@
      18.557780104477388,
      2.399167208878225
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi4",
@@ -849,7 +904,9 @@
      1.6719866110133808,
      10.300000190734863
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Naradi5",
@@ -879,7 +936,9 @@
      1.6723452457052872,
      1.6720542431712602
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Paka",
@@ -910,7 +969,9 @@
      102.76247205246693,
      10.493487190781252
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Paka_Lano",
@@ -940,7 +1001,9 @@
      1.0,
      103.29458839284098
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Ponk",
@@ -971,7 +1034,9 @@
      117.45704584233908,
      42.599998474121094
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Pruty",
@@ -1001,7 +1066,9 @@
      6.414564345984672,
      50.33352734215396
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Pruty_2",
@@ -1031,7 +1098,9 @@
      12.798107240369063,
      50.33352734215396
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Spalek",
@@ -1063,7 +1132,9 @@
      29.77091405424835,
      31.688285517692748
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Spalek2",
@@ -1095,7 +1166,9 @@
      21.07253821517469,
      27.500000449268555
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Stolicka",
@@ -1126,7 +1199,9 @@
      20.108190928244767,
      22.700000762939453
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Truhlik",
@@ -1157,7 +1232,9 @@
      52.48670190647442,
      40.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Vybaveni_Truhlik_Viko",
@@ -1187,7 +1264,9 @@
      48.45862204274249,
      57.82231773148533
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   }
  ]
 }

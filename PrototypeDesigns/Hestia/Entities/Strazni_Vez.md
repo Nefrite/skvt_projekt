@@ -62,7 +62,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Strazni_Vez.json` · et
 
 - Actory: 14 vlastních
 - Třídy: StaticMesh 0, ISM 14 (2323 instancí), Blueprint 0, BSP 0, ostatní 0
-- Zástupné meshe (`/Engine/BasicShapes/`): 4; výchozí materiály: 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0 (vynecháno podle `placeholder_ignore`: 4); výchozí materiály: 0
 - Fáze: –
 - Rozsah: 1068 × 1097 × 963 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 14 actorů; informace pro modelování v instanci, ne nález

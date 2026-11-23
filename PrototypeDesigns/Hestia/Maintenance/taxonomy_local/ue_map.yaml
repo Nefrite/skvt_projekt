@@ -7,6 +7,8 @@
 # Ostroh, Nadvori, Pristup_JV, Characters, Characters_Animace_Sezeni.
 map: /Game/Skvt/LapikusPrototypeMap
 stage_tag_prefix: "stage:"
+# Lapikus staví kameny záměrně z BasicShapes Cube (zrlib/config.py CUBE_MESH), nejde o proxy (GameDesigner 2026-11-23, CR-024).
+placeholder_ignore: ["/Engine/BasicShapes/Cube.Cube"]
 defaults:
   structure: {tags: ["stavba:{entity}*"]}
   object:    {tags: ["vybaveni:{entity}*"]}

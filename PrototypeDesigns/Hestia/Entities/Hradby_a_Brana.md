@@ -62,7 +62,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Hradby_a_Brana.json` ·
 
 - Actory: 53 vlastních, 18 za potomky (Brana, Brana_Straz, Strazni_Vez)
 - Třídy: StaticMesh 0, ISM 53 (7071 instancí), Blueprint 0, BSP 0, ostatní 0
-- Zástupné meshe (`/Engine/BasicShapes/`): 16; výchozí materiály: 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0 (vynecháno podle `placeholder_ignore`: 16); výchozí materiály: 0
 - Fáze: –
 - Rozsah: 7264 × 3297 × 791 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 53 actorů; informace pro modelování v instanci, ne nález

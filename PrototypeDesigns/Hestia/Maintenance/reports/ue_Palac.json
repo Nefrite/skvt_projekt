@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -21,31 +21,36 @@
    "actors": 17,
    "by_kind": {
     "static_mesh": 0,
+    "ism": 17,
     "blueprint": 0,
     "bsp": 0,
-    "other": 17
+    "other": 0
    },
-   "placeholder_meshes": 5,
+   "ism_instances": 4772,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 5,
    "default_materials": 0,
+   "pivot_far": 17,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
      -2645.486240016249,
      -1744.719248808075,
-     -128.0
+     2977.6068600588396
     ],
     "max": [
-     788.8410967400741,
-     128.0,
+     788.841096740074,
+     35.43615584951317,
      3798.030442033203
     ]
    }
   },
   "descendants": {
-   "actors": 70,
+   "actors": 81,
    "entities": {
     "Palac_Kovarna": 15,
-    "Palac_Obydli": 18,
+    "Palac_Obydli": 29,
     "Palac_Treti": 0,
     "Palac_Kovarna_Vybaveni": 37
    }
@@ -55,7 +60,7 @@
   {
    "name": "Palac_J_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -82,21 +87,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -802.7559571340255,
-     -325.3626418441226,
-     1787.4690981836184
+     -802.7559571340256,
+     -396.2029634768476,
+     3340.4019702764353
     ],
     "extent": [
-     1583.1457944221768,
-     453.3626418441226,
-     1915.4690981836184
+     1583.1457944221766,
+     382.52232021139764,
+     362.5362260908014
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3458.3,
+   "ism_instances": 460
   },
   {
    "name": "Palac_J_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -124,21 +132,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -826.0796304650862,
-     -344.19351265951553,
-     1835.0152210166016
+     -826.0796304650861,
+     -391.89277089290044,
+     3441.9468094975855
     ],
     "extent": [
      1606.6803208933497,
-     472.19351265951553,
-     1963.0152210166016
+     424.49425442613074,
+     356.0836325356179
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3561.3,
+   "ism_instances": 205
   },
   {
    "name": "Palac_J_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -166,21 +177,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -822.8226120665886,
-     -344.75789094179385,
-     1819.3300487766696
+     -822.8226120665887,
+     -391.03981301703726,
+     3372.1334788060894
     ],
     "extent": [
      1611.6637088066627,
-     472.75789094179385,
-     1947.3300487766696
+     426.47596886655043,
+     394.52661874725004
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3493.0,
+   "ism_instances": 1831
   },
   {
    "name": "Palac_J_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -204,21 +218,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -794.6989854245974,
-     -321.4474437197988,
-     1787.2750540825145
+     -794.6989854245971,
+     -405.91384231399644,
+     3423.7812429150963
     ],
     "extent": [
-     1368.9490077628473,
-     449.4474437197988,
-     1915.2750540825145
+     1368.949007762847,
+     364.98104512560116,
+     278.768865249933
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3538.2,
+   "ism_instances": 195
   },
   {
    "name": "Palac_S_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -246,21 +263,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -1011.4598662228682,
-     -789.2790164183712,
-     1698.1844706197612
+     -1011.4598662228683,
+     -1323.4412336550563,
+     3266.684470619761
     ],
     "extent": [
      1583.562350084846,
-     917.2790164183712,
-     1826.1844706197612
+     383.1167991816861,
+     257.6844706197612
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3666.8,
+   "ism_instances": 247
   },
   {
    "name": "Palac_S_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -289,20 +309,23 @@
    "bounds": {
     "origin": [
      -1030.7352643984398,
-     -807.802618524202,
-     1715.3079200587358
+     -1318.3839543545246,
+     3313.610342952354
     ],
     "extent": [
      1611.064372274427,
-     935.802618524202,
-     1843.3079200587358
+     425.2212826938793,
+     245.0054971651175
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3712.2,
+   "ism_instances": 200
   },
   {
    "name": "Palac_S_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -331,20 +354,23 @@
    "bounds": {
     "origin": [
      -1030.844005360216,
-     -808.3596244040375,
-     1698.1522300176434
+     -1318.1140058688081,
+     3266.653636347129
     ],
     "extent": [
      1611.5534289894447,
-     936.3596244040375,
-     1826.1522300176434
+     426.6052429392668,
+     257.65082368815774
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3670.3,
+   "ism_instances": 585
   },
   {
    "name": "Palac_S_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -364,21 +390,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -1059.4784886859984,
-     -519.7266219767564,
-     1672.8826715095342
+     -2118.803495237343,
+     -1074.9936683765413,
+     3411.5076715095342
     ],
     "extent": [
-     1187.4784886859984,
-     647.7266219767564,
-     1800.8826715095342
+     128.15348213465415,
+     92.45957557697113,
+     62.25767150953425
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4157.3,
+   "ism_instances": 22
   },
   {
    "name": "Palac_Z_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -404,21 +433,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -1233.2872220176037,
-     -442.575347938286,
-     1730.6408529795963
+     -2457.4554873831157,
+     -528.1515911501136,
+     3299.1408529795963
     ],
     "extent": [
-     1361.2872220176037,
-     570.575347938286,
-     1858.6408529795963
+     137.1189566520918,
+     484.9991047264583,
+     290.14085297959605
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4147.6,
+   "ism_instances": 108
   },
   {
    "name": "Palac_Z_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -445,21 +477,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -1258.2049642489208,
-     -465.94802654093144,
-     1766.4168525170926
+     -2461.915842442275,
+     -547.7438209842749,
+     3363.6192151788364
     ],
     "extent": [
-     1386.2049642489208,
-     593.9480265409314,
-     1894.4168525170926
+     182.49408605556664,
+     512.152232097588,
+     297.2144898553488
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4204.2,
+   "ism_instances": 54
   },
   {
    "name": "Palac_Z_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -487,21 +522,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -1258.7431200081246,
-     -466.74862975044493,
-     1746.8079835163812
+     -2461.9239228713614,
+     -547.7329742769051,
+     3315.250063301308
     ],
     "extent": [
-     1386.7431200081246,
-     594.7486297504449,
-     1874.8079835163812
+     183.56231714488808,
+     513.7642852239848,
+     306.36590373145464
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4165.6,
+   "ism_instances": 378
   },
   {
    "name": "Palac_pricka_1_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -527,21 +565,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -706.4150982333072,
-     -540.4463535543307,
-     1553.091490471635
+     -1427.4772651627122,
+     -739.1606024867629,
+     3121.5914904716346
     ],
     "extent": [
-     834.4150982333072,
-     668.4463535543307,
-     1681.091490471635
+     113.35293130390221,
+     469.73210462189854,
+     112.59149047163487
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3511.2,
+   "ism_instances": 63
   },
   {
    "name": "Palac_pricka_1_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -568,21 +609,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -721.9506052967306,
-     -543.4246188768775,
-     1571.492965707616
+     -1424.9795044005018,
+     -722.6466544487986,
+     3140.255465707616
     ],
     "extent": [
-     849.9506052967306,
-     671.4246188768775,
-     1699.492965707616
+     146.9217061929594,
+     492.2025833049564,
+     130.73046570761585
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3523.3,
+   "ism_instances": 57
   },
   {
    "name": "Palac_pricka_1_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -610,21 +654,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -722.1613772665348,
-     -544.1242238202333,
-     1554.1356383525213
+     -1400.7237522153182,
+     -723.3491389358223,
+     3122.6292360567104
     ],
     "extent": [
-     850.1613772665348,
-     672.1242238202333,
-     1682.1356383525213
+     171.59900231775146,
+     492.89930870464445,
+     113.64204064833234
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3498.0,
+   "ism_instances": 148
   },
   {
    "name": "Palac_pricka_2_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -648,21 +695,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -194.67358937994817,
-     -654.8959143408772,
-     1539.681602822667
+     -403.71625275879353,
+     -967.6481001263433,
+     3108.1816028226667
     ],
     "extent": [
-     322.67358937994817,
-     782.8959143408772,
-     1667.681602822667
+     113.63092600110284,
+     470.14372855541114,
+     99.18160282266695
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3280.3,
+   "ism_instances": 48
   },
   {
    "name": "Palac_pricka_2_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -689,21 +739,24 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -209.3741859904443,
-     -657.8255958781004,
-     1556.335478226958
+     -400.3580536897195,
+     -952.861631649916,
+     3153.721040309509
     ],
     "extent": [
-     337.3741859904443,
-     785.8255958781004,
-     1684.335478226958
+     146.39031829116908,
+     490.7895601062848,
+     86.94991614440687
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3318.8,
+   "ism_instances": 52
   },
   {
    "name": "Palac_pricka_2_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -731,16 +784,19 @@
    "folder": "Ruin/Palac",
    "bounds": {
     "origin": [
-     -209.9246637095569,
-     -658.3979749656238,
-     1572.4877457609796
+     -399.62880513213486,
+     -947.2497542853787,
+     3140.960538835438
     ],
     "extent": [
-     337.9246637095569,
-     786.3979749656238,
-     1700.4877457609796
+     148.22052228697896,
+     497.5461956458689,
+     132.0149526865207
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3304.9,
+   "ism_instances": 119
   }
  ]
 }

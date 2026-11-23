@@ -152,3 +152,5 @@ updated: 2026-11-23
 | 2026-11-23 | Builder | Vez | data Vez_Patra a Vez_Pristresek v Steps/05_constructions_vez | predani_builder_rozdeleni_05 |
 | 2026-11-23 | Builder | Lapikus | Steps/05_constructions rozdelen tematicky (G14b): casti _ostroh, _kovarna, _dum, _vez; shared/Meshe a Meshe_props; Souhrn | predani_builder_rozdeleni_05 |
 | 2026-11-23 | Builder | predani_builder_rozdeleni_05 | předání archivováno | predani_builder_rozdeleni_05 |
+| 2026-11-23 | Steward | structure_log | T-0028: 9 záznamů cr: – → cr: none (8×) a cr: CR-015_ue_query_cesty_ve_skriptu (1×), nic k exportu (schválil GameDesigner) | T-0028 |
+| 2026-11-23 | Steward | ue_map | placeholder_ignore: /Engine/BasicShapes/Cube.Cube (CR-024, schválil GameDesigner); ue_query_all.py znovu vygenerován | P18 |

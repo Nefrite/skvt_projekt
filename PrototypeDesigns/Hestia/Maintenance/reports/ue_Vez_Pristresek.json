@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,24 +16,29 @@
    "actors": 16,
    "by_kind": {
     "static_mesh": 13,
+    "ism": 3,
     "blueprint": 0,
     "bsp": 0,
-    "other": 3
+    "other": 0
    },
+   "ism_instances": 50,
    "placeholder_meshes": 0,
+   "placeholder_ignored": 0,
    "default_materials": 0,
+   "pivot_far": 3,
+   "pivot_far_cm": 500.0,
    "stages": {
     "base": 16
    },
    "bounds": {
     "min": [
-     -128.0,
-     -1478.6731414794942,
-     -128.0
+     794.8505811061661,
+     -1478.673141479494,
+     3988.992093659056
     ],
     "max": [
      1574.2295819035367,
-     128.0,
+     -739.2222163356889,
      4440.008986313478
     ]
    }
@@ -74,7 +79,9 @@
      19.764022354122176,
      11.4399999999996
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_A1",
@@ -106,7 +113,9 @@
      19.764022354122176,
      11.4399999999996
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P0",
@@ -138,7 +147,9 @@
      19.764021510567773,
      10.017562188887496
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P1a",
@@ -170,7 +181,9 @@
      19.764022354122176,
      13.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P1b",
@@ -202,7 +215,9 @@
      17.78761935951104,
      14.656870546355094
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P2",
@@ -234,7 +249,9 @@
      19.764022354122176,
      10.529999999999745
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P3",
@@ -266,7 +283,9 @@
      19.764022354122176,
      10.529999999999745
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P4a",
@@ -298,7 +317,9 @@
      19.764022354122176,
      13.260000000000218
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_P4b",
@@ -330,7 +351,9 @@
      17.78761935951104,
      14.982508398420578
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_W0",
@@ -362,7 +385,9 @@
      18.50012792507289,
      13.516022037721086
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_W1",
@@ -394,7 +419,9 @@
      18.50012792507289,
      13.516022037721086
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_W2",
@@ -426,7 +453,9 @@
      18.500128625326965,
      13.516022292593334
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Vez_Pristresek_W3",
@@ -458,12 +487,14 @@
      18.500128625326965,
      13.516022292593334
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Vez_Pristresek_Drevo_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_B.SM_RuinForkHead_B",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_B.SM_RuinForkHead_B",
@@ -488,21 +519,24 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     673.2734551047172,
-     -675.3365707397471,
-     2153.3467150518886
+     1134.7250099574117,
+     -1152.5982418824738,
+     4211.842761881417
     ],
     "extent": [
-     801.2734551047172,
-     803.3365707397471,
-     2281.3467150518886
+     339.82190025202266,
+     326.07489959702036,
+     222.8506682223608
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4511.7,
+   "ism_instances": 17
   },
   {
    "name": "Vez_Pristresek_canvas_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A",
@@ -520,21 +554,24 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     673.1211151998456,
-     -624.5049067979016,
-     2154.537750152588
+     1134.5464057529286,
+     -1101.7106763475085,
+     4346.8330000000005
     ],
     "extent": [
-     801.1211151998456,
-     752.5049067979016,
-     2282.537750152588
+     339.6958246467625,
+     275.29913724829476,
+     90.24250030517578
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4625.6,
+   "ism_instances": 2
   },
   {
    "name": "Vez_Pristresek_rope_Base",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A",
@@ -554,16 +591,19 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     709.7697221895389,
-     -623.4682601125766,
-     2156.004493156739
+     1175.833834600002,
+     -1074.5788261118278,
+     4343.776329642034
     ],
     "extent": [
-     837.7697221895389,
-     751.4682601125766,
-     2284.004493156739
+     371.70560977907576,
+     300.35769411332524,
+     96.23265667144415
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4626.6,
+   "ism_instances": 31
   }
  ]
 }

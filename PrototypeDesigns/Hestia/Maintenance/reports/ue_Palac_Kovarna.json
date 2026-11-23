@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,22 +16,27 @@
    "actors": 15,
    "by_kind": {
     "static_mesh": 7,
+    "ism": 8,
     "blueprint": 0,
     "bsp": 0,
-    "other": 8
+    "other": 0
    },
-   "placeholder_meshes": 2,
+   "ism_instances": 143,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 2,
    "default_materials": 0,
+   "pivot_far": 8,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
-     -128.0,
+     -109.22004630570292,
      -1365.5329223101708,
-     -128.0
+     3089.0
     ],
     "max": [
-     634.4830322849095,
-     128.0000000000001,
+     634.4830322849094,
+     -659.6266848663156,
      3679.0
     ]
    }
@@ -75,7 +80,9 @@
      5.0,
      95.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Okap_S",
@@ -109,7 +116,9 @@
      30.876872070474974,
      40.150001525878906
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Pristresek_VE_K0",
@@ -140,7 +149,9 @@
      22.356808384716942,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Pristresek_VE_K1",
@@ -171,7 +182,9 @@
      22.356808384716942,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Pristresek_VW_K0",
@@ -202,7 +215,9 @@
      22.35680932875482,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Pristresek_VW_K1",
@@ -233,7 +248,9 @@
      22.35680932875482,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Kamen_Palac_Kovarna_Pristresek_VW_K2",
@@ -264,12 +281,14 @@
      22.356808384716942,
      7.2800000000002
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 0.0
   },
   {
    "name": "Palac_Kovarna_Okap_Drevo",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_A.SM_RuinForkHead_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_A.SM_RuinForkHead_A",
@@ -290,21 +309,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     0.0,
-     -564.7916175668421,
-     1610.673996551295
+     -11.99312000000009,
+     -958.6049599999999,
+     3219.173996551295
     ],
     "extent": [
-     128.0,
-     692.7916175668421,
-     1738.673996551295
+     76.18793890622288,
+     298.9782751336843,
+     130.17399655129498
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3358.9,
+   "ism_instances": 7
   },
   {
    "name": "Palac_Kovarna_Pristresek_Drevo",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A",
@@ -331,21 +353,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     253.24151614245477,
-     -618.7664611550854,
-     1740.1754158555664
+     282.3949195030483,
+     -1014.5421178787968,
+     3373.6754158555664
     ],
     "extent": [
-     381.24151614245477,
-     746.7664611550854,
-     1868.1754158555664
+     352.0881127818611,
+     350.99080443137393,
+     234.67541585556637
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3534.2,
+   "ism_instances": 71
   },
   {
    "name": "Palac_Kovarna_Stena_Drevo",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
@@ -363,21 +388,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     5.164551619326062,
-     -503.86597161932605,
-     1608.5
+     95.05899999999997,
+     -961.046,
+     3222.0
     ],
     "extent": [
-     133.16455161932606,
-     631.865971619326,
-     1736.5
+     43.27010323865216,
+     174.6859432386521,
+     123.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3363.6,
+   "ism_instances": 4
   },
   {
    "name": "Palac_Kovarna_Stena_Mazanina",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A",
@@ -396,21 +424,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     16.55145258761479,
-     -541.6258522699482,
-     1605.5
+     98.2261086643028,
+     -946.8959416189109,
+     3232.5
     ],
     "extent": [
-     144.5514525876148,
-     669.6258522699482,
-     1733.5
+     62.87679651092678,
+     264.3557629209854,
+     106.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3369.8,
+   "ism_instances": 20
   },
   {
    "name": "Palac_Kovarna_Vyhen_Drevo",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A",
@@ -429,21 +460,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     250.62119242894266,
-     -391.3647760276232,
-     1713.7462703174738
+     548.0988127948556,
+     -837.0059753458543,
+     3439.972259586648
     ],
     "extent": [
-     378.62119242894266,
-     519.3647760276232,
-     1841.7462703174738
+     81.1435720630297,
+     73.72357670939215,
+     115.52028104829947
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3582.5,
+   "ism_instances": 6
   },
   {
    "name": "Palac_Kovarna_Vyhen_Kamen",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -465,21 +499,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     252.49862089126782,
-     -403.87805040506976,
-     1560.35
+     568.7697930841408,
+     -852.8274974333503,
+     3188.99
     ],
     "extent": [
-     380.4986208912678,
-     531.8780504050698,
-     1688.35
+     64.22744869839482,
+     82.92860337678911,
+     59.70999999999981
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3349.7,
+   "ism_instances": 28
   },
   {
    "name": "Palac_Kovarna_Vyhen_Mazanina",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -498,21 +535,24 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     252.3992592146198,
-     -391.42086456874665,
-     1775.5
+     549.7384136140788,
+     -837.0011,
+     3441.5
     ],
     "extent": [
-     380.3992592146198,
-     519.4208645687468,
-     1903.5
+     83.06010481516077,
+     73.84062913749347,
+     237.5
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3584.2,
+   "ism_instances": 6
   },
   {
    "name": "Palac_Kovarna_Vyhen_Uhli",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube"
@@ -528,16 +568,19 @@
    "folder": "Stavby/Palac",
    "bounds": {
     "origin": [
-     221.98939002604396,
-     -366.4432900260442,
-     1539.0
+     548.0932999999995,
+     -837.0011,
+     3205.0
     ],
     "extent": [
-     349.98939002604396,
-     494.4432900260442,
-     1667.0
+     23.885480052088383,
+     23.885480052088496,
+     1.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3357.5,
+   "ism_instances": 1
   }
  ]
 }

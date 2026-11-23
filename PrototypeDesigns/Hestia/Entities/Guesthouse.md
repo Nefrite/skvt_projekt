@@ -80,7 +80,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Guesthouse.json` · eta
 
 - Actory: 13 vlastních
 - Třídy: StaticMesh 1, ISM 12 (1860 instancí), Blueprint 0, BSP 0, ostatní 0
-- Zástupné meshe (`/Engine/BasicShapes/`): 3; výchozí materiály: 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0 (vynecháno podle `placeholder_ignore`: 3); výchozí materiály: 0
 - Fáze: –
 - Rozsah: 1273 × 1550 × 579 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 12 actorů; informace pro modelování v instanci, ne nález

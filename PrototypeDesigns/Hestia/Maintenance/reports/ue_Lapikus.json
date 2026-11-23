@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -16,17 +16,22 @@
    "actors": 0,
    "by_kind": {
     "static_mesh": 0,
+    "ism": 0,
     "blueprint": 0,
     "bsp": 0,
     "other": 0
    },
+   "ism_instances": 0,
    "placeholder_meshes": 0,
+   "placeholder_ignored": 0,
    "default_materials": 0,
+   "pivot_far": 0,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": null
   },
   "descendants": {
-   "actors": 208,
+   "actors": 219,
    "entities": {
     "Guesthouse": 13,
     "Hradby_a_Brana": 53,
@@ -37,7 +42,7 @@
     "Strazni_Vez": 14,
     "Nadvori_Stan": 0,
     "Palac_Kovarna": 15,
-    "Palac_Obydli": 18,
+    "Palac_Obydli": 29,
     "Palac_Treti": 0,
     "Vez_Pristresek": 16,
     "Palac_Kovarna_Vybaveni": 37

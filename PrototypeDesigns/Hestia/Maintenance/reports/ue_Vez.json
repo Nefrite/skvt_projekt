@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-21T12:17:30",
+ "generated": "2026-11-23T10:57:10",
  "unreal_version": "5.8.3-58210709+++UE5+Release-5.8",
  "map": "/Game/Skvt/LapikusPrototypeMap",
  "path": "etapa 1 (skript v editoru)",
@@ -21,22 +21,27 @@
    "actors": 21,
    "by_kind": {
     "static_mesh": 0,
+    "ism": 21,
     "blueprint": 0,
     "bsp": 0,
-    "other": 21
+    "other": 0
    },
-   "placeholder_meshes": 4,
+   "ism_instances": 8433,
+   "placeholder_meshes": 0,
+   "placeholder_ignored": 4,
    "default_materials": 0,
+   "pivot_far": 21,
+   "pivot_far_cm": 500.0,
    "stages": {},
    "bounds": {
     "min": [
-     -128.0,
+     381.08577861024537,
      -2214.134689560606,
-     -128.0
+     2939.8199999999997
     ],
     "max": [
      1998.7977536573762,
-     128.0,
+     -596.2098669117788,
      4514.810013757058
     ]
    }
@@ -52,7 +57,7 @@
   {
    "name": "Vez_Dlazba_Podlaha",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinAshlar.SM_RuinAshlar",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinAshlar.SM_RuinAshlar"
@@ -69,21 +74,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     783.5921088295249,
-     -891.4062469942621,
-     1513.675220952634
+     1188.7548971382816,
+     -1404.8370117149866,
+     3142.2791132002267
     ],
     "extent": [
-     911.5921088295249,
-     1019.4062469942621,
-     1641.675220952634
+     506.42932052076816,
+     505.9754822735377,
+     13.071328705040969
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3641.5,
+   "ism_instances": 155
   },
   {
    "name": "Vez_J_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -109,21 +117,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     868.7019016132788,
-     -472.2339092668874,
-     2105.929880597869
+     1266.8582917401532,
+     -859.623277107333,
+     3657.429880597869
     ],
     "extent": [
-     996.7019016132788,
-     600.2339092668874,
-     2233.929880597869
+     598.5455114864044,
+     212.84454142644176,
+     682.4298805978692
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3964.9,
+   "ism_instances": 338
   },
   {
    "name": "Vez_J_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -150,21 +161,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     872.5524398887158,
-     -491.98425161092666,
-     2141.0765171479975
+     1248.7954271360254,
+     -854.0891850668161,
+     3762.5765171479975
     ],
     "extent": [
-     1000.5524398887158,
-     619.9842516109267,
-     2269.0765171479975
+     624.3094526414059,
+     257.8793181550373,
+     647.5765171479975
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4055.4,
+   "ism_instances": 78
   },
   {
    "name": "Vez_J_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -192,21 +206,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     873.0702491232292,
-     -491.7982489336099,
-     2141.09
+     1248.4475284473438,
+     -854.7183290875412,
+     3692.5
     ],
     "extent": [
-     1001.0702491232292,
-     619.7982489336099,
-     2269.09
+     625.6929697991147,
+     256.8781687796787,
+     717.6800000000001
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3990.5,
+   "ism_instances": 1472
   },
   {
    "name": "Vez_J_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -230,21 +247,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     651.3771712019452,
-     -442.6663620397886,
-     2053.375
+     1303.1215414251847,
+     -877.0606809502044,
+     3692.5
     ],
     "extent": [
-     779.3771712019452,
-     570.6663620397885,
-     2181.375
+     127.63280097870597,
+     136.27204312937272,
+     542.25
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4012.7,
+   "ism_instances": 145
   },
   {
    "name": "Vez_Patra_Drevo",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
@@ -265,21 +285,24 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     784.8281076908024,
-     -892.5451249130246,
-     1938.9975952641917
+     1190.8427725128618,
+     -1405.806304908601,
+     3574.0
     ],
     "extent": [
-     912.8281076908024,
-     1020.5451249130246,
-     2066.9975952641917
+     506.813442868743,
+     507.28394491744797,
+     431.9951905283833
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4020.9,
+   "ism_instances": 111
   },
   {
    "name": "Vez_Patra_Drevo_Dehet",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A",
@@ -299,21 +322,24 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     799.492523701954,
-     -895.1551197465992,
-     1929.1845126528015
+     1189.1544967392495,
+     -1405.5997097857978,
+     3568.1845126528015
     ],
     "extent": [
-     927.492523701954,
-     1023.1551197465992,
-     2057.1845126528015
+     537.8305506646584,
+     512.7105297074006,
+     418.18451265280146
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4015.2,
+   "ism_instances": 18
   },
   {
    "name": "Vez_Patra_Drevo_Krev",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
@@ -333,21 +359,24 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     416.28696715201227,
-     -1023.1577226398745,
-     1720.5
+     819.5969916498435,
+     -2066.161825714397,
+     3508.9402020253556
     ],
     "extent": [
-     544.2869671520123,
-     1151.1577226398745,
-     1848.5
+     140.97694265418113,
+     108.15361956535207,
+     60.05979797464465
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4153.7,
+   "ism_instances": 9
   },
   {
    "name": "Vez_Patra_Drevo_Stare",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A",
@@ -367,21 +396,24 @@
    "folder": "Stavby/Vez",
    "bounds": {
     "origin": [
-     784.2311202784293,
-     -892.7604235983312,
-     1930.7576756474973
+     1189.6117784619016,
+     -1406.4066197667928,
+     3986.5262144883136
     ],
     "extent": [
-     912.2311202784293,
-     1020.7604235983312,
-     2058.7576756474973
+     506.85046209495704,
+     507.1142274298695,
+     2.9891368066816995
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4391.5,
+   "ism_instances": 84
   },
   {
    "name": "Vez_S_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -406,21 +438,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     790.2139699747758,
-     -1018.6379321106194,
-     2106.0901829461136
+     1110.4444889889864,
+     -1945.6318087128484,
+     3657.5901829461136
     ],
     "extent": [
-     918.2139699747758,
-     1146.6379321106194,
-     2234.0901829461136
+     597.983450960565,
+     219.64405550839047,
+     682.5901829461136
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4289.1,
+   "ism_instances": 384
   },
   {
    "name": "Vez_S_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -447,21 +482,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     813.4139734404168,
-     -1042.2211741314925,
-     2141.004783289826
+     1129.3445166212894,
+     -1955.8665184294541,
+     3762.504783289826
     ],
     "extent": [
-     941.4139734404168,
-     1170.2211741314925,
-     2269.004783289826
+     625.4834302595444,
+     256.57582983353086,
+     647.5047832898258
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4388.3,
+   "ism_instances": 96
   },
   {
    "name": "Vez_S_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -489,21 +527,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     814.1065642996409,
-     -1043.067344780303,
-     2123.7642897759433
+     1130.1374812863735,
+     -1957.3371221561724,
+     3675.174289775943
     ],
     "extent": [
-     942.1065642996409,
-     1171.067344780303,
-     2251.7642897759433
+     626.0756473129086,
+     256.7975674044337,
+     700.3542897759432
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4314.5,
+   "ism_instances": 1444
   },
   {
    "name": "Vez_S_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -527,21 +568,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     537.6861132334102,
-     -971.6586059029344,
-     2053.375
+     979.5872284066627,
+     -1914.7465176493824,
+     3885.0
     ],
     "extent": [
-     665.6861132334102,
-     1099.6586059029344,
-     2181.375
+     223.7849980601577,
+     156.5706941564863,
+     349.75
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4440.6,
+   "ism_instances": 94
   },
   {
    "name": "Vez_V_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -566,21 +610,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     910.0365465057221,
-     -977.2107704387597,
-     2071.0
+     1735.2478555694056,
+     -1484.4885853956362,
+     3605.0
     ],
     "extent": [
-     1038.036546505722,
-     1105.2107704387597,
-     2199.0
+     212.8252374420382,
+     597.9329554818833,
+     665.0
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4267.4,
+   "ism_instances": 323
   },
   {
    "name": "Vez_V_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -606,21 +653,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     935.3988768286881,
-     -981.1744190537697,
-     2106.478853548545
+     1740.6693341025805,
+     -1464.4859512419687,
+     3798.241353548545
     ],
     "extent": [
-     1063.3988768286881,
-     1109.1744190537697,
-     2234.478853548545
+     258.12841955479576,
+     625.8628868655708,
+     542.7163535485449
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4427.3,
+   "ism_instances": 79
   },
   {
    "name": "Vez_V_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -648,21 +698,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     934.5491973734574,
-     -981.4886753714777,
-     2089.4709073903996
+     1740.377492441491,
+     -1464.817580820686,
+     3623.3809073903994
     ],
     "extent": [
-     1062.5491973734574,
-     1109.4886753714777,
-     2217.4709073903996
+     256.72090230542415,
+     626.1597699222694,
+     683.5609073903995
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4278.3,
+   "ism_instances": 1450
   },
   {
    "name": "Vez_V_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -685,21 +738,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     863.1586059029341,
-     -759.3540372232403,
-     1983.375
+     1718.4231357942322,
+     -1519.1454991045266,
+     3832.5
     ],
     "extent": [
-     991.1586059029341,
-     887.3540372232403,
-     2111.375
+     135.89407601163646,
+     127.56257534195424,
+     262.25
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4466.4,
+   "ism_instances": 66
   },
   {
    "name": "Vez_Z_Jadro",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Engine/BasicShapes/Cube.Cube",
    "meshes": [
     "/Engine/BasicShapes/Cube.Cube",
@@ -725,21 +781,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     364.1791617645147,
-     -899.8807905694264,
-     2158.728610809882
+     642.9828875616296,
+     -1328.577019740391,
+     3710.228610809882
     ],
     "extent": [
-     492.1791617645147,
-     1027.8807905694264,
-     2286.728610809882
+     213.37543596739965,
+     599.1845613984615,
+     735.228610809882
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 3993.0,
+   "ism_instances": 349
   },
   {
    "name": "Vez_Z_Koruna",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A",
@@ -767,21 +826,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     383.0379008955847,
-     -922.0666812298118,
-     2193.405006878529
+     639.2470307634924,
+     -1346.6119390305716,
+     3780.167506878529
     ],
     "extent": [
-     511.0379008955847,
-     1050.0666812298118,
-     2321.405006878529
+     254.82877102767696,
+     625.5214234290518,
+     734.642506878529
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4063.5,
+   "ism_instances": 89
   },
   {
    "name": "Vez_Z_Lic",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A",
@@ -809,21 +871,24 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     384.35000687845366,
-     -922.6674133563645,
-     2176.372898444302
+     638.8928961835763,
+     -1347.1578480862247,
+     3727.782898444302
     ],
     "extent": [
-     512.3500068784537,
-     1050.6674133563645,
-     2304.372898444302
+     257.80711757333097,
+     626.1769786265043,
+     752.9628984443018
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4014.9,
+   "ism_instances": 1538
   },
   {
    "name": "Vez_Z_Osteni",
    "class": "Actor",
-   "kind": "other",
+   "kind": "ism",
    "mesh": "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
    "meshes": [
     "/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A",
@@ -847,16 +912,19 @@
    "folder": "Ruin/Vez",
    "bounds": {
     "origin": [
-     336.947496098732,
-     -651.7884520814614,
-     2070.875
+     658.6464697589433,
+     -1293.5964248686123,
+     3920.0
     ],
     "extent": [
-     464.947496098732,
-     779.7884520814614,
-     2198.875
+     143.24852243852064,
+     137.98047929431027,
+     349.75
     ]
-   }
+   },
+   "bounds_from": "geometry",
+   "pivot_offset": 4180.1,
+   "ism_instances": 111
   }
  ]
 }

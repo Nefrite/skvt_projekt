@@ -85,7 +85,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac_Obydli.json` · e
 
 - Actory: 29 vlastních
 - Třídy: StaticMesh 12, ISM 17 (598 instancí), Blueprint 0, BSP 0, ostatní 0
-- Zástupné meshe (`/Engine/BasicShapes/`): 6; výchozí materiály: 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0 (vynecháno podle `placeholder_ignore`: 6); výchozí materiály: 0
 - Fáze: base 12, final 7, site 10
 - Rozsah: 1554 × 1832 × 541 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 12 actorů; informace pro modelování v instanci, ne nález

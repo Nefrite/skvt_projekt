@@ -71,7 +71,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Palac.json` · etapa 1 
 
 - Actory: 17 vlastních, 81 za potomky (Palac_Kovarna, Palac_Kovarna_Vybaveni, Palac_Obydli, Palac_Treti)
 - Třídy: StaticMesh 0, ISM 17 (4772 instancí), Blueprint 0, BSP 0, ostatní 0
-- Zástupné meshe (`/Engine/BasicShapes/`): 5; výchozí materiály: 0
+- Zástupné meshe (`/Engine/BasicShapes/`): 0 (vynecháno podle `placeholder_ignore`: 5); výchozí materiály: 0
 - Fáze: –
 - Rozsah: 3434 × 1780 × 820 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 17 actorů; informace pro modelování v instanci, ne nález
