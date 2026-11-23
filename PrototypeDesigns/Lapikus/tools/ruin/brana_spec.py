@@ -13,12 +13,13 @@ WALL_S, WALL_J, WALL_V = "Brana_S", "Brana_J", "Brana_V"
 
 B_BEAM_Z = 3552.0                # spodek tramu (UE cm) = spara rad Brana_V (rada 3552-3585 nad obloukem brany, vrch oblouku 3529);
                                  # kapsa se zarovnava na rady kamene -> pri zmene zdi zmer znovu (run_checks.py --only brana)
-B_BEAM = dict(d=0.24, pos=(1.3, 3.15, 5.0),                      # tramy: loupana kulatina, polohy d (m); rozpeti 5.4 m mezi lici;
-                                                                 # 3 kusy (Jirka 16. 11. 2026: sest bylo zbytecne moc), prkna 5 cm na 1.85 m
-              wall=dict(d=-0.2, u=(0.1, 6.2)),                   # 4. tram lezi na vyrovnane korune Brana_S (podesta sahá az nad zed)
+B_BEAM = dict(d=0.24, pos=(0.8, 2.2, 3.6, 5.0),                  # tramy: loupana kulatina, polohy d (m); rozpeti 5.4 m mezi lici;
+                                                                 # 4 kusy v kapsach Brana_V po 1.4 m (Jirka 23. 11. 2026: zvyseno ze 4 na 5 kulatin celkem,
+                                                                 # aby zapadni sloupky strisky d = 0.78 a 3.57 m staly nad 2. a 4. kulatinou), prkna 5 cm na 1.4 m
+              wall=dict(d=-0.2, u=(0.1, 6.2)),                   # 1. (severni) tram lezi na vyrovnane korune Brana_S (podesta saha az nad zed)
               u=(0.1, 6.63))                                     # od - do: na zapade 0.8 m na korune Brana_J, na vychode 0.33 m v kapse
 B_POCKET = dict(w=0.32, h=0.33)  # kapsa v Brana_V: sirka, vyska (= rada kamene), hloubka = licovy kamen (0.38 m)
-B_LEVEL = dict(u=(0.2, 0.65), d=(0.9, 5.3), bottom=3440.0)       # vyrovnavaci rada z kamene rozvalin na korune Brana_J (vrch = spodek tramu);
+B_LEVEL = dict(u=(0.2, 0.65), d=(0.65, 5.3), bottom=3440.0)      # vyrovnavaci rada z kamene rozvalin na korune Brana_J (vrch = spodek tramu);
                                  # bottom = nejnizsi spodek (cm): pod korunou (3455) je portal a dutiny ve zdi, ty se nezazdivaji
 B_LEVEL_V = dict(depth=0.38, d=(1.1, 5.2), bottom=3480.0)       # podlozeni tramu ve vnitrnim lici Brana_V: nad obloukem brany a u Brana_S
                                  # chybi pod kapsami licovy kamen (mezera 26-39 cm) -> doplni se kamenem z rozvalin

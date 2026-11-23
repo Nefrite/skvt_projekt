@@ -47,16 +47,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-23 · agent pilotu (Steward) · Lapikus · navrh_lapikus_koren_actoru: validity draft → valid, status draft → selected (Varianta C schválena GameDesignerem, předáno Builderovi) · pokyn GameDesignera 2026-11-23
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/taxonomy_local/asset_sources.yaml · nový manifest knihovních assetů (LIB_MESHES, STONE_MESH_VERSION, MESH_AXES, LIB_SHAPES, data Lapikus/**/*.json, Content/Skvt/Lapikus/Ruin); T-0031 · predani_pilot_lapikus_knihovnik_unreal P20
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/asset_index.json, asset_index.md · sekce library: 59 assetů z kódu (49 klíčů × varianty), 0 klíčů bez karty · predani_pilot_lapikus_knihovnik_unreal P20
-- 2026-11-23 · agent pilotu (Steward) · Assets/ · blok *Z kódu* (generovaný) v 64 kartách meshí; ruční opis odstraněn u 47 karet, u 17 mimo LIB_MESHES ponechán s vysvětlením · predani_pilot_lapikus_knihovnik_unreal P20
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/queue.md · podněty P-0009 (manifest bez ROUND_MESHES, WOOD_NOMINAL, kamenů), P-0010 (výskyty v datech celé entitě Lapikus); T-0031 done · predani_pilot_lapikus_knihovnik_unreal P20
 - 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_assets.py · čtecí skript assetů pro etapu C (54 karet od generated) · predani_pilot_lapikus_knihovnik_unreal P20
 - 2026-11-23 · Architect · Brana · navrh sijoveho prikopu, terennich valu, mostniho pilire, lavky a zatarasu pred vychodni branou a predani pro Builder · chat:prikop_pred_branou
 - 2026-11-23 · Furnisher · Brana_Straz · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
 - 2026-11-23 · Furnisher · Lapikus · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
 - 2026-11-23 · Furnisher · Brana · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
+- 2026-11-23 · agent pilotu (Steward) · Maintenance/reports/ue_assets.json · čtení assetů z UE (etapa C): current 54, outdated 0, missing 0 · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · agent pilotu (Steward) · Assets/ · blok *Stav v UE* (generovaný) ve 43 kartách imported, ruční text nahrazen · predani_pilot_lapikus_knihovnik_unreal P20
+- 2026-11-23 · Builder · Brana · Brana_Straz_Podesta: zvýšen počet trámů podesty ze 4 na 5 kulatin (d = -0,20 na Brana_S + 4 v kapsách Brana_V v d = 0,80 / 2,20 / 3,60 / 5,00 m), B_LEVEL na Brana_J d = 0,65-5,30 m, přegenerovány ruin_layout.json a constructions.json; instrukce ke sloupkům stříšky zaneseny do predani_brana_straz_striska_stavitel.md, T-0041 uzavřen · T-0041
+- 2026-11-23 · Builder · Lapikus · Brana_Straz_Podesta: zvýšen počet trámů podesty ze 4 na 5 kulatin (d = -0,20 na Brana_S + 4 v kapsách Brana_V v d = 0,80 / 2,20 / 3,60 / 5,00 m), B_LEVEL na Brana_J d = 0,65-5,30 m, přegenerovány ruin_layout.json a constructions.json; instrukce ke sloupkům stříšky zaneseny do predani_brana_straz_striska_stavitel.md, T-0041 uzavřen · T-0041
+- 2026-11-23 · Builder · Brana_Straz · Brana_Straz_Podesta: zvýšen počet trámů podesty ze 4 na 5 kulatin (d = -0,20 na Brana_S + 4 v kapsách Brana_V v d = 0,80 / 2,20 / 3,60 / 5,00 m), B_LEVEL na Brana_J d = 0,65-5,30 m, přegenerovány ruin_layout.json a constructions.json; instrukce ke sloupkům stříšky zaneseny do predani_brana_straz_striska_stavitel.md, T-0041 uzavřen · T-0041
 
 <!-- hestia:generated:end -->
 
