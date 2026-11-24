@@ -24,6 +24,7 @@ import furn_data
 from palac_spec import frame as palac_frame, kovarna_vybaveni
 from ostroh_spec import guesthouse_vybaveni, GH_REF
 from brana_spec import straz as brana_straz_spec, brana_straz_vybaveni, B_FURN_REF
+from nadvori_spec import stan_frame as nadvori_stan_frame, stan_vybaveni as nadvori_stan_vybaveni
 
 
 def palac(LAY):
@@ -64,11 +65,18 @@ def brana(LAY):
                  items=brana_straz_vybaveni(fz))]
 
 
+def nadvori_stan(LAY):
+    """skupina Nadvori_Stan_Vybaveni: ram stanu (nadvori_spec.stan_frame), etapa 1 (stage='site')"""
+    F = nadvori_stan_frame(LAY["walls"])
+    return [dict(name="Nadvori_Stan_Vybaveni", type="props", folder="Vybaveni/Nadvori/Stan", stage="site",
+                 origin=F["origin"], u=F["u"], v=F["v"], items=nadvori_stan_vybaveni())]
+
+
 if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "06_furnishing", "furnishing.json")
     with open(sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, "03_ruin", "blocks", "ruin_layout.json"), encoding="utf-8") as f: LAY = json.load(f)
     old = furn_data.load(out) if os.path.exists(out) else None
-    groups, msgs = furn_data.merge(old, palac(LAY) + guesthouse() + brana(LAY))
+    groups, msgs = furn_data.merge(old, palac(LAY) + guesthouse() + brana(LAY) + nadvori_stan(LAY))
     furn_data.save(out, dict(version=2, units="UE cm (pozice), m (rozmery v ramu skupiny)",
                              note="Vybaveni (prenosne props). Stavby jsou v 05_constructions/constructions.json. Polohy z levelu zapisuje "
                                   "capture primo sem (captured / removed / manual), generator je pri slouceni zachova.",

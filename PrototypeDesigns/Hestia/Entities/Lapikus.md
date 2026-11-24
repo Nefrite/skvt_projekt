@@ -38,7 +38,7 @@ Agregace z potomků (04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| structures | 71 % (5 z 7) | 3 – [[Brana_Straz]] |
+| structures | 75 % (6 z 8) | 3 – [[Brana_Straz]] |
 | gameplay | 0 % (0 z 4) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->

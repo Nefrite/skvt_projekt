@@ -23,7 +23,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 | Entita | environment | structures | paths | npc | gameplay | narrative |
 |---|---|---|---|---|---|---|
 | [[Characters]] | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle |
-| [[Lapikus_Region]] | 0 % (1) | 71 % (3) | 0 % (0) | bez cíle | 0 % (0) | bez cíle |
+| [[Lapikus_Region]] | 0 % (1) | 75 % (3) | 0 % (0) | bez cíle | 0 % (0) | bez cíle |
 
 **Aktivní předání**
 
@@ -46,16 +46,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-24 · Builder · Brana_Straz · Brana: sijovy prikop, celni valy, uvoz a unikova rampa (gen_moat.py), Brana_Pilir a Brana_Opera (03), Brana_Most_Kamen, Brana_Most a Brana_Zataras (05), stav_brana zalozen; T-0036 uzavren · predani_brana_prikop_stavitel
-- 2026-11-24 · Builder · Lapikus_Region · Brana: sijovy prikop, celni valy, uvoz a unikova rampa (gen_moat.py), Brana_Pilir a Brana_Opera (03), Brana_Most_Kamen, Brana_Most a Brana_Zataras (05), stav_brana zalozen; T-0036 uzavren · predani_brana_prikop_stavitel
-- 2026-11-24 · Builder · Brana · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
-- 2026-11-24 · Builder · Strazni_Vez · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
-- 2026-11-24 · Builder · Hradby_a_Brana · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
-- 2026-11-24 · Builder · Lapikus_Region · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
-- 2026-11-24 · Builder · Lapikus · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
-- 2026-11-24 · Builder · Brana · Brana: sijovy prikop bez valu, mostni pilir, opera, lavka Brana_Most a zataras Brana_Zataras overeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4, predani archivovano · predani_brana_prikop_stavitel
 - 2026-11-24 · Builder · Lapikus · Brana: sijovy prikop bez valu, mostni pilir, opera, lavka Brana_Most a zataras Brana_Zataras overeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4, predani archivovano · predani_brana_prikop_stavitel
 - 2026-11-24 · Builder · Handovers/predani_brana_prikop_stavitel.md · předání archivováno · predani_brana_prikop_stavitel
+- 2026-11-24 · Builder · Lapikus · Nový typ tent (zr_stavby/stan.py), stavba Nadvori_Stan (stage=site, pile=True) u Hradba_Z_S mezi Guesthouse a prkny s vchodem na jih a vybavení Nadvori_Stan_Vybaveni (06_furnishing, stage=site: 1 lůžko, truhlička a vak uvnitř, špalek venku); entita Nadvori_Stan převedena na built a založen stav_nadvori_stan · chat:T-0035
+- 2026-11-24 · Builder · Nadvori_Stan · Nový typ tent (zr_stavby/stan.py), stavba Nadvori_Stan (stage=site, pile=True) u Hradba_Z_S mezi Guesthouse a prkny s vchodem na jih a vybavení Nadvori_Stan_Vybaveni (06_furnishing, stage=site: 1 lůžko, truhlička a vak uvnitř, špalek venku); entita Nadvori_Stan převedena na built a založen stav_nadvori_stan · chat:T-0035
+- 2026-11-24 · Builder · Lapikus · Oprava ue_assets.mesh_slots() pro jednoslotové LIB_MESHES (SM_RuinCanvasTent, SM_RuinRope, SM_RuinLashing): pile actor Nadvori_Stan nyní správně přiřadí MI_RuinCanvas a MI_RuinRope místo MI_RuinWood · chat:T-0035-fix-canvas-mat
+- 2026-11-24 · Builder · Nadvori_Stan · Oprava ue_assets.mesh_slots() pro jednoslotové LIB_MESHES (SM_RuinCanvasTent, SM_RuinRope, SM_RuinLashing): pile actor Nadvori_Stan nyní správně přiřadí MI_RuinCanvas a MI_RuinRope místo MI_RuinWood · chat:T-0035-fix-canvas-mat
+- 2026-11-24 · Builder · Lapikus · Sjednocení článků lan STAN_ROPE na d=0,015 m a link=1,0 m (stejně jako Vez_Pristresek): 8 článků 80–92 cm místo 32 stlačených 20–23 cm, celkem 33 dílců · chat:T-0035-ropes
+- 2026-11-24 · Builder · Nadvori_Stan · Sjednocení článků lan STAN_ROPE na d=0,015 m a link=1,0 m (stejně jako Vez_Pristresek): 8 článků 80–92 cm místo 32 stlačených 20–23 cm, celkem 33 dílců · chat:T-0035-ropes
+- 2026-11-24 · Builder · Lapikus · Nadvori_Stan a Nadvori_Stan_Vybaveni vizuálně ověřeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4 · chat:T-0035-ue-ok
+- 2026-11-24 · Builder · Nadvori_Stan · Nadvori_Stan a Nadvori_Stan_Vybaveni vizuálně ověřeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4 · chat:T-0035-ue-ok
 
 <!-- hestia:generated:end -->
 

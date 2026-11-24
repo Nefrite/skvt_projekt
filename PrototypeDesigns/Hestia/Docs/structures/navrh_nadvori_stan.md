@@ -2,9 +2,9 @@
 # orchestrace
 type: design
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-24
 # hra
-status: on_hold
+status: built
 domain: structures
 depth: 2
 entity: "[[Nadvori_Stan]]"
@@ -156,3 +156,9 @@ Stan stojí u paty severní hradby v nejvyšším úseku (s = 21,5–23,9), hře
 - **Půdorys:** stan 2,4 × 2,2 m leží u paty severní hradby, delší stranou podél ní, 0,4 m od líce. Na východ na něj navazuje stříška z kůry 2 × 2 m. Kolem stanu stružka. Jižně od stanu průchod nádvořím, za ním hromady dřeva u zdi paláce.
 - **Řez sever–jih:** hradba 4,0–4,4 m, před ní trojúhelník stanu vysoký 1,9 m se šňůrami ke kolíkům. Uvnitř dvě nízká lůžka na kládách.
 - **Pohled od východu (od věže):** v popředí stříška z kůry na čtyřech vidlicích, nižší u hradby, vyšší k nádvoří. Za ní otevřený štít stanu s odhrnutou chlopní, za stanem stěna hradby.
+
+### 2026-11-24 – upřesnění při stavbě (Builder)
+- GameDesigner schválil zařazení stanu do hry (`status: built`) v etapě 1 (`stage: site`, `pile: True`).
+- Poloha přesunuta u severní hradby `Hradba_Z_S` mezi Guesthouse a prkna staveniště (`s = 1,5 m; n = 18,8 m` v rámci paláce), vchod otočen na jih (`+X = -n`, odhrnutá chlopeň na západ), mezera zadního kolíku k hradbě `0,33 m`, terén rovný (`Z = 3129 cm`).
+- Vybavení přesunuto do `06_furnishing` (`Nadvori_Stan_Vybaveni`, `stage: site`): uvnitř 1 lůžko (`Luzko`), `Truhlicka` a `Vak`; před vchodem `Spalek`.
+- Stříška z kůry (`Nadvori_Stan_Striska`, `bark_roof`) odložena na později; stružka kolem stanu se neřeší. Viz [[stav_nadvori_stan]].

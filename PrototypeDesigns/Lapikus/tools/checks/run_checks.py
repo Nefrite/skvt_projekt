@@ -838,11 +838,55 @@ def check_vez(S):
     return ok
 
 
+def check_stan(S):
+    groups, walls, terr = S["groups"], S["walls"], S["terr"]
+    g = groups.get("Nadvori_Stan")
+    ok = True
+    def rep(msg, cond):
+        nonlocal ok; print("stan: %s -> %s" % (msg, "OK" if cond else "CHYBA")); ok &= bool(cond)
+    if not g:
+        rep("stavba Nadvori_Stan v constructions.json", False); return False
+    st = g.get("stones", [])
+    ad = next(a for a in S["data"].get("addons", []) if a["name"] == "Nadvori_Stan")
+    O, U, V = ad["origin"], ad["u"], ad["v"]; Z0 = terr.z(O[0], O[1])
+    rep("pile pivot %s, dilcu %d, vse stage=site" % (g.get("pile"), len(st)),
+        bool(g.get("pile")) and len(st) > 20 and all(s.stage == "site" for s in st))
+    # kolize se zriceninou, Guesthouse a stavenistem
+    ruin = walls["Hradba_Z_S"]["stones"] + walls["Hradba_Z_S"].get("loose", [])
+    other = []
+    for k, v in groups.items():
+        if k.startswith(("Ostroh_", "Palac_Obydli_Stavenisko")):
+            other += v.get("stones", []) + v.get("loose", [])
+    c_ruin = common.collisions(st, ruin, 2)
+    c_oth = common.collisions(st, other, 2)
+    rep("kolize s Hradba_Z_S: %d, s Guesthouse/stavenistem: %d" % (len(c_ruin), len(c_oth)), not c_ruin and not c_oth)
+    # mezera k Hradba_Z_S (nejblizsi kamen hradby k nejsevernejsimu dilci stanu)
+    d_wall = min(math.hypot(a.x - b.x, a.y - b.y) - (max(a.sx, a.sy) + max(b.sx, b.sy)) / 2
+                 for a in st for b in ruin if abs(a.x - b.x) < 400 and abs(a.y - b.y) < 400) / 100.0
+    rep("mezera od Hradba_Z_S %.2f m (>= 0,30)" % d_wall, d_wall >= 0.30)
+    # plachta doseda k zemi, hreben ~1,90 m
+    cs = next(s for s in st if s.id.endswith("|C"))
+    rg = next(s for s in st if s.id.endswith("|R"))
+    rep("plachta spodek %.1f cm nad terenem (<= 5), hreben vrch %.2f m (1,88..1,92)" % (
+        (cs.z - cs.sz / 2) - Z0, (rg.z + rg.sz / 2 - Z0) / 100.0),
+        abs((cs.z - cs.sz / 2) - Z0) <= 5.0 and 1.88 <= (rg.z + rg.sz / 2 - Z0) / 100.0 <= 1.92)
+    # vybaveni v 06_furnishing
+    import json
+    fpath = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "06_furnishing", "furnishing.json"))
+    fdata = json.load(open(fpath, encoding="utf-8"))
+    fg = next((x for x in fdata.get("groups", []) if x["name"] == "Nadvori_Stan_Vybaveni"), None)
+    inside_ids = {i["id"]: i for i in (fg["items"] if fg else []) if i["id"] in ("Luzko", "Truhlicka", "Vak")}
+    inside_ok = (len(inside_ids) == 3 and all(-1.15 <= i["a"] <= 1.15 and abs(i["c"]) <= 0.85 for i in inside_ids.values()))
+    rep("06_furnishing Nadvori_Stan_Vybaveni (stage=site, 1 luzko + truhlicka a vak uvnitr)",
+        fg is not None and fg.get("stage") == "site" and inside_ok)
+    return ok
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--layout"); ap.add_argument("--only")
     a = ap.parse_args()
-    only = a.only.split(",") if a.only else ["openings", "floating", "ostroh", "palac", "obydli", "brana", "vez"]
-    S = common.state(a.layout, with_constructions=bool({"ostroh", "palac", "obydli", "brana", "vez"} & set(only)))
+    only = a.only.split(",") if a.only else ["openings", "floating", "ostroh", "palac", "obydli", "brana", "vez", "stan"]
+    S = common.state(a.layout, with_constructions=bool({"ostroh", "palac", "obydli", "brana", "vez", "stan"} & set(only)))
     res = {}
     if "openings" in only: res["openings"] = check_openings(S)
     if "floating" in only: res["floating"] = check_floating(S)
@@ -851,6 +895,7 @@ def main():
     if "obydli" in only: res["obydli"] = check_obydli(S)
     if "brana" in only: res["brana"] = check_brana(S)
     if "vez" in only: res["vez"] = check_vez(S)
+    if "stan" in only: res["stan"] = check_stan(S)
     print("\nSOUHRN: " + ", ".join("%s %s" % (k, "OK" if v else "CHYBA") for k, v in res.items()))
     sys.exit(0 if all(res.values()) else 1)
 

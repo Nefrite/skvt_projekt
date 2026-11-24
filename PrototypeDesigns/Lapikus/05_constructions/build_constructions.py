@@ -73,7 +73,7 @@ _boot()
 from zrlib.config import CONSTR_TAG, CUBE_MESH, STAGE_TAG, STAGES
 from zrlib.geom import inside_poly
 from zrlib import pipeline, ue_assets, ue_actors, validate
-from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap, vybaveni, srub, podesta, kryty, pristresek
+from zr_stavby import vez, krov, dostavba, podlaha, pult, ohniste, zdivo, stena, okap, vybaveni, srub, podesta, kryty, pristresek, stan
 from zr_stavby.krov import ostroh_geom, roof_under, build_fan_roof, _pt          # noqa: F401  (pro nastroje)
 from zr_stavby.dostavba import build_stone_addon, addon_polygon                 # noqa: F401
 from zr_stavby.podlaha import build_plank_floor                                 # noqa: F401
@@ -107,6 +107,7 @@ TYPES = {
     "platform":    lambda s, c: podesta.build_platform(s, c["terr"]),
     "palisade":    lambda s, c: kryty.build_palisade(s, c["walls"], c["terr"]),
     "canvas_shelter": lambda s, c: pristresek.build_canvas_shelter(s, c["walls"], c["terr"]),
+    "tent":        lambda s, c: stan.build_tent(s, c["terr"]),
 }
 # povinne klice dat (kontrola se srozumitelnou chybou misto KeyError uprostred vypoctu)
 REQUIRED = {
@@ -124,6 +125,7 @@ REQUIRED = {
     "platform":    ["name", "origin", "u", "v", "z", "beams", "planks"],
     "palisade":    ["name", "origin", "u", "v", "lines"],
     "canvas_shelter": ["name", "origin", "u", "v", "z_ref", "floor_top", "posts", "ridge", "eave", "rafters", "canvas", "gable"],
+    "tent":        ["name", "origin", "u", "v", "mesh"],
 }
 SECTIONS = (("floors", "tower_floor"), ("frames", None), ("addons", None))   # sekce constructions.json a vychozi typ
 
@@ -208,7 +210,7 @@ def _pile(name, sts, moved):
     if not sts: return None
     for s in sts: s.loose = False
     px = sum(s.x for s in sts) / len(sts); py = sum(s.y for s in sts) / len(sts)
-    hz = lambda s: (s.sx / 2 * abs(math.sin(math.radians(s.pitch)))) if s.shape == "stake2" and s.pitch else s.sz / 2
+    hz = lambda s: (s.sx / 2 * abs(math.sin(math.radians(s.pitch)))) if (s.shape == "stake2" and s.pitch) or abs(s.pitch) > 85 else s.sz / 2
     pz = min(s.z - hz(s) for s in sts)
     m = moved.get(PILE_KEY + name)
     if not m: return [round(px, 2), round(py, 2), round(pz, 2), 0.0]
@@ -236,7 +238,7 @@ def _rubble(R, data, rb, walls, P, terr, removed):
 # ------------------------------------------------------------------ Unreal
 CNAME = {"wood": "Drevo", "wood_tar": "Drevo_Dehet", "wood_oil": "Drevo_Olej", "wood_blood": "Drevo_Krev",
          "wood_old": "Drevo_Stare", "wood_peeled": "Drevo_Loupane", "floor": "Podlaha", "face": "Kamen", "core": "Malta", "frame": "Kvadr",
-         "daub": "Mazanina", "charcoal": "Uhli", "iron": "Zelezo"}
+         "daub": "Mazanina", "charcoal": "Uhli", "iron": "Zelezo", "canvas": "Platno", "rope": "Lano"}
 
 
 def build_in_unreal():
@@ -251,11 +253,14 @@ def build_in_unreal():
         ue_actors.destroy_tagged(eas, tag, lambda a: not ONLY or ue_actors.tag_value(a, "stavba:") in ONLY)
         for name, g in groups.items():
             st_tag = "stavba:" + g.get("stavba", name)
-            bycat = {}                                              # actor = material x sada etapy (prepinani etap podle tagu stage:<sada>)
-            for s in g["stones"]: bycat.setdefault((s.cat, s.stage or ""), []).append(s)
+            bycat = {}                                              # actor = material x sada etapy (u pile: vsechny meshe do jednoho actoru na sadu)
+            for s in g["stones"]:
+                key = ("" if g.get("pile") else s.cat, s.stage or "")
+                bycat.setdefault(key, []).append(s)
             for (cat, stage), sts in sorted(bycat.items()):
-                label = "%s_%s%s" % (name, CNAME.get(cat, cat), "_" + stage.capitalize() if stage else "")
-                n += ue_actors.place_ism(unreal, eas, label, g["folder"], sts, cube, meshes, mats.get(cat), tag,
+                mc = cat or next((s.cat for s in sts if s.cat.startswith("wood")), sts[0].cat)
+                label = "%s_%s%s" % (name, CNAME.get(mc, mc), "_" + stage.capitalize() if stage else "")
+                n += ue_actors.place_ism(unreal, eas, label, g["folder"], sts, cube, meshes, mats.get(mc), tag,
                                          [st_tag] + ([STAGE_TAG + stage] if stage else []) + ([PILE_KEY + name] if g.get("pile") else []),
                                          pivot=g.get("pile"))
             for s in g["loose"]:

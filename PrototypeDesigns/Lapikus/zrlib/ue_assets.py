@@ -619,15 +619,16 @@ def _resolve(unreal, s, cube, meshes):
     return m, (h * r, d, h)
 
 def mesh_slots(mesh_name):
-    """sloty meshe s vice materialy v poradi v OBJ (kulatina, kura, prouti ...), jinak None (jeden material)"""
+    """sloty meshe v poradi v OBJ (kulatina, kura, prouti, platno, lano ...), jinak None"""
     if not mesh_name: return None
     pref = mesh_name.rsplit("_", 1)[0]
     if pref in ROUND_MESHES: return ROUND_MESHES[pref][2]
-    if pref in LIB_MESHES and len(LIB_MESHES[pref][3]) > 1: return LIB_MESHES[pref][3]
+    if pref in LIB_MESHES and LIB_MESHES[pref][3]: return LIB_MESHES[pref][3]
     return None
 
 def is_multi_slot(mesh_name):
-    return mesh_slots(mesh_name) is not None
+    s = mesh_slots(mesh_name)
+    return s is not None and len(s) > 1
 
 _KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "sackcloth", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "straw", "wool", "wood")
 

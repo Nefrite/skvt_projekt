@@ -20,6 +20,7 @@ from tower_spec import VEZ_F, VEZ_ST, spec as tower_spec
 from ostroh_spec import spec as ostroh_spec
 from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_kul, obydli as obydli_spec, obydli_stavenisko
 from brana_spec import straz as straz_spec, most as most_spec
+from nadvori_spec import stan as nadvori_stan_spec
 from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, project_s, point_at
 
 # --- uzavreni obytne casti u ostrohu (05, zricenina se nemeni): jednoradove kamenne dostavby na korunach zdi az pod strechu
@@ -443,6 +444,15 @@ def vez_pristresek(D):
                  bark=True, finish="raw")]
 
 
+def nadvori(LAY):
+    """stan na nadvori (etapa 1, sada site, pile=True; rozmery nadvori_spec.stan, navrh_nadvori_stan.md)"""
+    S = nadvori_stan_spec(LAY["walls"]); F = S["frame"]
+    return [dict(name="Nadvori_Stan", type="tent", folder="Stavby/Nadvori", stage="site", pile=True,
+                 origin=F["origin"], u=F["u"], v=F["v"], mesh=S["mesh"], pole_sink=S["pole_sink"],
+                 peg=S["peg"], rope=S["rope"], guys=S["guys"], clear_poly=S["clear_poly"],
+                 bark=True, finish="raw")]
+
+
 if __name__ == "__main__":
     D = json.load(open(sys.argv[1]))
     LAY = json.load(open(sys.argv[3] if len(sys.argv) > 3 else os.path.join(HERE, "..", "..", "03_ruin", "blocks", "ruin_layout.json")))
@@ -451,6 +461,7 @@ if __name__ == "__main__":
     p_frames, p_addons = palac(LAY); frames += p_frames; addons += p_addons
     addons += brana(LAY)
     addons += vez_pristresek(D)
+    addons += nadvori(LAY)
     out = dict(version=1, units="UE cm (pozice), m (rozmery v ramu veze)",
                note="Drevene vestavby a sut. Zricenina (zdi, kapsy, dlazba) je v 03_ruin/blocks/ruin_layout.json.",
                rubble=dict(enabled=True, folder="Stavby/Sut"),

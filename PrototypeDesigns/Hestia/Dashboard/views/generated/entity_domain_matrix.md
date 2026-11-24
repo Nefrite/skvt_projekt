@@ -24,7 +24,7 @@ Zkušební pohled 2 pro rozhodnutí Q1 (zadání 04 kap. 2.1 a 5.1), varianta sk
 | [[Lapikus_Region]] | place | bez cíle |  | bez cíle |  |  | návrh 0/1 ⚠ |
 | [[Les_Lapikus]] | place | 1/4 ⚠ (návrh 4) |  | 0/4 ⚠ |  |  | bez cíle |
 | [[Nadvori]] | place | bez cíle |  | bez cíle |  |  | bez cíle |
-| [[Nadvori_Stan]] | object |  | 0/4 ⚠ (návrh 2) |  |  | bez cíle |  |
+| [[Nadvori_Stan]] | object |  | 4/4 |  |  | bez cíle |  |
 | [[Ostroh]] | place | bez cíle |  | bez cíle |  |  | bez cíle |
 | [[Palac]] | structure |  | bez cíle |  |  | bez cíle |  |
 | [[Palac_Kovarna]] | structure |  | bez cíle |  |  | bez cíle |  |

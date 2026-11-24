@@ -41,7 +41,7 @@ def _boot():
         for k in [k for k in sys.modules if k.split(".")[0] in ("zrlib", "zr_stavby", "furn_data")]: del sys.modules[k]
 _boot()
 
-from zrlib.config import FURN_TAG, CONSTR_TAG, CUBE_MESH, MAT_GRAYBOX
+from zrlib.config import FURN_TAG, CONSTR_TAG, CUBE_MESH, MAT_GRAYBOX, STAGE_TAG, STAGES
 from zrlib import pipeline, ue_assets, ue_actors, validate
 from zr_stavby import vybaveni
 import importlib, furn_data
@@ -112,7 +112,9 @@ def compute(R, data, ctx=None):
     ctx = ctx or context(R); out = {}
     for spec in data.get("groups", []):
         if ONLY and spec["name"] not in ONLY: continue
-        out[spec["name"]] = dict(folder=spec.get("folder", "Vybaveni"), loose=_stones(R, spec, ctx))
+        st = spec.get("stage")
+        if st and st not in STAGES: raise ValueError("%s: neznama sada etapy %s (STAGES v zrlib/config.py)" % (spec["name"], st))
+        out[spec["name"]] = dict(folder=spec.get("folder", "Vybaveni"), stage=st, loose=_stones(R, spec, ctx))
     return out
 
 
@@ -181,8 +183,9 @@ def build_in_unreal():
         # vybaveni postavene drive jako stavba 05 (stejne jmeno skupiny): smazat, jinak by v levelu zustalo dvakrat
         ue_actors.destroy_tagged(eas, unreal.Name(CONSTR_TAG), lambda a: ue_actors.tag_value(a, "stavba:") in names)
         for name, g in groups.items():
+            st_tags = [STAGE_TAG + g["stage"]] if g.get("stage") else []
             for s in g["loose"]:
-                act = ue_actors.spawn_loose(unreal, eas, s, cube, meshes, [tag, "id:" + s.id, "vybaveni:" + name], g["folder"], mats.get(s.cat))
+                act = ue_actors.spawn_loose(unreal, eas, s, cube, meshes, [tag, "id:" + s.id, "vybaveni:" + name] + st_tags, g["folder"], mats.get(s.cat))
                 if act is not None: n += 1
     cnt = lambda k: sum(1 for g in data.get("groups", []) if g["name"] in groups for it in g["items"] if it.get(k))
     unreal.log("Vybaveni: %d kusu ve %d skupinach (%s); z levelu %d, smazanych %d, pridanych %d." % (

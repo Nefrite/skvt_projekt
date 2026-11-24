@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: []
 # hra
 kind: object
@@ -10,13 +10,13 @@ located_in: []
 derived_from:
 alternative_to: []
 pattern:
-status: on_hold
+status: built
 # depth_<domain> / target_<domain>: očekávané domény podle kind (01, kap. 8), jiné jen když se řeší
 # depth_* = realizace (Unreal, data, StateTree); hloubka návrhu se počítá z dokumentů (01, kap. 5)
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
-depth_structures: 0
+depth_structures: 4
 target_structures: 4
 target_gameplay: 0
 ---
@@ -29,7 +29,7 @@ target_gameplay: 0
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 2 | 0 | 4 | build | −4 |
+| structures | 2 | 4 | 4 | build | ✔ |
 | gameplay | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
@@ -38,14 +38,17 @@ target_gameplay: 0
 <!-- hestia:generated:start -->
 
 **structures**
-- [[navrh_nadvori_stan]] – design, depth 2, valid, on_hold
+- [[navrh_nadvori_stan]] – design, depth 2, valid, built
+- [[stav_nadvori_stan]] – state, depth 4, valid
 
 <!-- hestia:generated:end -->
 
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_Zatím žádné kroky._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[05_constructions]] | – | [[stav_nadvori_stan]] |
 
 <!-- hestia:generated:end -->
 
@@ -67,7 +70,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Nadvori_Stan.json` · e
 - Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: –
-- Pro srovnání `depth_*`: structures 0; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->
 
@@ -104,7 +107,7 @@ Souhrn: requested 0, in_progress 1, generated 0, imported 19, verified 0 · gray
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-- Fronta T-0035 (role:Builder, [[Nadvori_Stan]]): Typ `tent` (stojky, hřeben, kolíky, šňůry jako řetěz [[SM_RuinRope_A]]) a stříška stanu typem `bark_roof` (typ zakládá [[predani_brana_straz_striska_stavitel]]); plachtu [[SM_RuinCanvasTent_A]] posadit podle `center` v `meshes/textile/SM_RuinCanvasTent_A.json` (doklad: [[CHECKLIST_assets_navrhy]] kap. 6.5, 7; [[navrh_nadvori_stan]]; entita `on_hold`)
+- Fronta T-0035 (role:Builder, [[Nadvori_Stan]]): Stříška stanu typem `bark_roof` (typ zakládá [[predani_brana_straz_striska_stavitel]]; samotný stan `Nadvori_Stan` typu `tent` a vybavení `Nadvori_Stan_Vybaveni` hotové 2026-11-24, viz [[stav_nadvori_stan]])
 
 <!-- hestia:generated:end -->
 
