@@ -1,15 +1,20 @@
-"""brana_spec.py - spolecne rozmery strazniho stanoviste nad branami (03 i 05), navrh new_designs/navrh_brana_straz.md.
+"""brana_spec.py - spolecne rozmery strazniho stanoviste nad branami a premosteni sijoveho prikopu (03, 05, 06),
+navrhy Docs/structures/navrh_brana_straz.md a Docs/structures/navrh_brana_prikop.md.
 Ram brany: pocatek = SZ roh strazni veze (prusecik os Brana_S a Brana_J), u (m) podel Brana_S k vychodu, d (m) kolmo k jihu.
 Vysky jsou ABSOLUTNE v UE cm (Z): teren v prujezdu je sikmy a zdi maji kazda jinou patu (Brana_V ma podstavbu a z_offset).
-Stav dat 16. 11. 2026 (polohy zdi prevzate z levelu): koruna Brana_V 3617-3654, vrch vychodniho oblouku 3529, koruna Brana_J
-3455-3549, Brana_S 3459-3552. Navrh pocital s nizsi Brana_V (podesta Z 3522) -> Jirka 16. 11. 2026: tramy na vychode do kapes
-v Brana_V (03), na zapade na korune Brana_J; vychodni zed vycniva nad podestu jako kamenne predprsi.
-03 (gen_layout.py -> ruin_edits): kapsy pro tramy ve vnitrnim lici Brana_V (z_abs = absolutni vyska spodku).
-05 (gen_constructions.py -> brana): Brana_Straz_Kamen (vyrovnani koruny Brana_J), Brana_Straz_Podesta (tramy, prkna, zabradli).
-Kdyz se tu neco zmeni, pregeneruj gen_layout.py i gen_constructions.py a postav 03 (cast Obvod) i 05."""
+Stav dat 16.-23. 11. 2026 (polohy zdi prevzate z levelu): koruna Brana_V 3617-3654, vrch vychodniho oblouku 3529, koruna Brana_J
+3455-3549, Brana_S 3459-3552, prah 1. brany Z 3040, dno sijoveho prikopu Z 2700.
+03 (gen_layout.py -> prikop_walls, ruin_edits): kapsy pro tramy a vnejsi ozub prahu v Brana_V, pilir Brana_Pilir a opera Brana_Opera.
+05 (gen_constructions.py -> brana): Brana_Straz_Kamen, Brana_Straz_Podesta, Brana_Straz_Kryty, Brana_Most_Kamen, Brana_Most, Brana_Zataras.
+Kdyz se tu neco zmeni, pregeneruj gen_layout.py i gen_constructions.py a postav 03 (cast Obvod) i 05.
+entities: [Brana, Brana_Straz, Strazni_Vez]
+docs: [navrh_brana_straz, stav_brana_straz, navrh_brana_prikop, stav_brana]
+build_step: 03_ruin
+domains: structures"""
 import math
 
 WALL_S, WALL_J, WALL_V = "Brana_S", "Brana_J", "Brana_V"
+WALL_PILIR, WALL_OPERA = "Brana_Pilir", "Brana_Opera"
 
 B_BEAM_Z = 3552.0                # spodek tramu (UE cm) = spara rad Brana_V (rada 3552-3585 nad obloukem brany, vrch oblouku 3529);
                                  # kapsa se zarovnava na rady kamene -> pri zmene zdi zmer znovu (run_checks.py --only brana)
@@ -96,12 +101,91 @@ def _covers(F, deck_z):
 
 
 def ruin_edits(walls):
-    """upravy zriceniny (03) pro gen_layout.py: kapsy pro tramy podesty ve vnitrnim lici Brana_V (z_abs = absolutni Z spodku)"""
+    """upravy zriceniny (03) pro gen_layout.py: kapsy pro tramy podesty ve vnitrnim lici Brana_V, vnejsi ozub prahu mostu
+    v Brana_V a zarovnani korun mostniho pilire Brana_Pilir a opery Brana_Opera na Z 3011 cm."""
     F = frame(walls)
     pockets = [dict(kind="kapsa", s=round(F["v_d0"] - d, 3), w=B_POCKET["w"], sill=0.0, h=B_POCKET["h"], z_abs=B_BEAM_Z,
                     _="tram strazni podesty (brana_spec.py)") for d in B_BEAM["pos"]]
+    rb = B_BRIDGE_REBATE
+    pockets.append(dict(kind="kapsa", s=round(F["v_d0"] - rb["d"], 3), w=rb["w"], sill=0.0, h=rb["h"], z_abs=rb["z_abs"],
+                        outer=True, _="vnejsi ozub prahu mostu (brana_spec.py)"))
     cut = dict(s0=round(F["v_d0"] - B_CUT_NE["d1"], 3), s1=round(F["v_d0"] + 1.5, 3), z=B_CUT_NE["z"])    # SV narozi rozebrane po uroven paty krytu
-    return {WALL_V: dict(openings=pockets, cap=[cut])}
+    p0, p1, pm = B_PILIR["protect"]; pc0, pc1 = B_PILIR["cap"]
+    o0, o1, om = B_OPERA["protect"]; oc0, oc1 = B_OPERA["cap"]
+    return {
+        WALL_V: dict(openings=pockets, cap=[cut]),
+        WALL_PILIR: dict(protect=[dict(s0=p0, s1=p1, min=pm)], cap=[dict(s0=pc0, s1=pc1, z=B_BRIDGE_BEAM_Z)]),
+        WALL_OPERA: dict(protect=[dict(s0=o0, s1=o1, min=om)], cap=[dict(s0=oc0, s1=oc1, z=B_BRIDGE_BEAM_Z)]),
+    }
+
+
+# ------------------------------------------------------------------ sijovy prikop, mostni pilir, lavka a zataras (navrh_brana_prikop.md)
+B_MOAT_FLOOR_Z = 2700.0          # dno sijoveho prikopu pred branou (UE cm)
+B_BRIDGE_BEAM_Z = 3011.0         # spodek mostnich tramu (UE cm): +24 cm tram + 5 cm prkno = vrch mostovky Z 3040 (= prah brany)
+B_BRIDGE_REBATE = dict(d=3.10, w=2.50, z_abs=3003.0, h=0.37)   # vnejsi ozub (kapsa) v prahu Brana_V (rada 9, Z 3003-3040) pro ulozeni mostu
+B_PILIR = dict(u=12.20, d=(4.60, 1.60), H0=3.5, t=1.4, access=0.45, seed=64, protect=(0.35, 2.65, 3.15), cap=(-0.10, 3.10))
+B_OPERA = dict(u=16.30, d=(4.70, 1.50), H0=2.2, t=1.2, access=0.40, seed=65, z_offset=-1.2, protect=(0.15, 3.05, 1.45), cap=(-0.10, 3.30))
+B_BRIDGE_BEAM = dict(
+    d=0.24,
+    pos=(1.98, 2.98, 3.98, 2.23, 3.23, 4.23),                  # 3 zapadni + 3 vychodni klady prelozene vedle sebe nad pilirem (vule 1 cm, stred d = 3.105)
+    spans=[(7.84, 12.40)] * 3 + [(12.00, 16.55)] * 3,
+    a=(7.84, 16.55),
+    bark=False,
+    stage="base",
+)
+B_BRIDGE_DECK = dict(
+    a=(7.82, 16.50), c=(1.90, 4.30),                           # delka 8.68 m (od otesaneho jadra prahu Brana_V u=7.79 k opere u=16.50), sirka lavky 2.40 m
+    t=0.05, w=(0.22, 0.32), gap=0.010, max_len=2.6, stage="base",
+)
+B_BRIDGE_FILL = [
+    dict(id="pilir", a=(11.65, 12.75), c=(1.80, 4.40), bottom_abs=2940.0, top_abs=B_BRIDGE_BEAM_Z),
+    dict(id="opera", a=(15.85, 16.75), c=(1.80, 4.40), bottom_abs=2960.0, top_abs=B_BRIDGE_BEAM_Z),
+]
+B_BRIDGE_CLEAR = dict(u=(16.20, 19.20), d=(1.40, 4.80))        # predmosti a hrdlo uvozu bez volne suti (pod zatarasem a cestou)
+B_ZATARAS = dict(
+    u=17.20, d=3.10, ref=(16.53, 3.10),                        # predmosti v hrdle uvozu valu (0.7 m pred lavkou, Z = 3040 cm)
+    log_d=0.18, log_len=3.40, log_z=0.566,                     # kmen s kurou SM_RuinLogBark_A (osa v pruseciku kulu 1.60*sin(45)/2)
+    stake_d=0.07, stake_len=1.60, stake_offs=(-1.25, -0.42, 0.42, 1.25), stake_pair_dc=0.04,
+    stage="base",
+)
+
+
+def prikop_walls(nw, ne, sw):
+    """zdi mostniho pilire a opery v 03_ruin (Ruin/Brana) ze souradnic rohu strazni veze"""
+    ux, uy = ne[0] - nw[0], ne[1] - nw[1]; ln = math.hypot(ux, uy); ux, uy = ux / ln, uy / ln
+    dx, dy = -uy, ux
+    if (sw[0] - nw[0]) * dx + (sw[1] - nw[1]) * dy < 0: dx, dy = -dx, -dy
+    P = lambda u, d: [round(nw[0] + (ux * u + dx * d) * 100), round(nw[1] + (uy * u + dy * d) * 100)]
+    return [
+        dict(name=WALL_PILIR, folder="Ruin/Brana", points=[P(B_PILIR["u"], B_PILIR["d"][0]), P(B_PILIR["u"], B_PILIR["d"][1])],
+             H0=B_PILIR["H0"], thickness=B_PILIR["t"], access=B_PILIR["access"], seed=B_PILIR["seed"], rubble="both", extend_start=False),
+        dict(name=WALL_OPERA, folder="Ruin/Brana", points=[P(B_OPERA["u"], B_OPERA["d"][0]), P(B_OPERA["u"], B_OPERA["d"][1])],
+             H0=B_OPERA["H0"], thickness=B_OPERA["t"], access=B_OPERA["access"], seed=B_OPERA["seed"], z_offset=B_OPERA["z_offset"],
+             rubble="out", extend_start=False),
+    ]
+
+
+def most(walls):
+    """rozmery mostni lavky Brana_Most, vyrovnani Brana_Most_Kamen a zatarasu Brana_Zataras v ramu brany (05_constructions)"""
+    F = frame(walls)
+    deck_z = B_BRIDGE_BEAM_Z + B_BRIDGE_BEAM["d"] * 100 + B_BRIDGE_DECK["t"] * 100
+    Z = B_ZATARAS; u0, d0 = Z["u"], Z["d"]; ref = list(Z["ref"]); r = lambda v: round(v, 3)
+    hl = Z["stake_len"] * math.cos(math.radians(45.0)) / 2.0
+    hz = Z["stake_len"] * math.sin(math.radians(45.0))
+    zc = r(hz / 2.0)
+    zitems = [
+        dict(id="Kmen", shape="round", d=Z["log_d"], bark=True,
+             p0=[u0, r(d0 - Z["log_len"] / 2.0), zc], p1=[u0, r(d0 + Z["log_len"] / 2.0), zc], ref=ref),
+    ]
+    dc = Z["stake_pair_dc"]
+    for k, off in enumerate(Z["stake_offs"]):
+        di = d0 + off
+        zitems.append(dict(id="Kul%dA" % (k + 1), shape="stake2", d=Z["stake_d"], bark=False,
+                           p0=[r(u0 - hl), r(di - dc), 0.0], p1=[r(u0 + hl), r(di - dc), r(hz)], ref=ref))
+        zitems.append(dict(id="Kul%dB" % (k + 1), shape="stake2", d=Z["stake_d"], bark=False,
+                           p0=[r(u0 + hl), r(di + dc), 0.0], p1=[r(u0 - hl), r(di + dc), r(hz)], ref=ref))
+    return dict(frame=F, beam_z=B_BRIDGE_BEAM_Z, deck_z=deck_z, beam=dict(B_BRIDGE_BEAM), deck=dict(B_BRIDGE_DECK),
+                fill=[dict(p) for p in B_BRIDGE_FILL], clear=dict(B_BRIDGE_CLEAR), zataras=zitems, zataras_spec=dict(B_ZATARAS))
 
 
 # ------------------------------------------------------------------ vybaveni Brana_Straz (06_furnishing, typ props)

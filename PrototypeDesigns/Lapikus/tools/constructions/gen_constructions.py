@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..")))          # 
 from tower_spec import VEZ_F, VEZ_ST, spec as tower_spec
 from ostroh_spec import spec as ostroh_spec
 from palac_spec import frame as palac_frame, kovarna as kovarna_spec, kovarna_kul, obydli as obydli_spec, obydli_stavenisko
-from brana_spec import straz as straz_spec
+from brana_spec import straz as straz_spec, most as most_spec
 from zrlib.geom import unit, offset_polyline, cut_polyline, polyline_hits, project_s, point_at
 
 # --- uzavreni obytne casti u ostrohu (05, zricenina se nemeni): jednoradove kamenne dostavby na korunach zdi az pod strechu
@@ -403,7 +403,26 @@ def brana(LAY):
     kryty = dict(name="Brana_Straz_Kryty", type="palisade", stage="base", **base,
                  lines=B["covers"],                                           # vychodni (base), severni a jizni (final)
                  finish=dict(stakes="raw", rails="raw"))
-    return [kamen, podesta, kryty]
+    M = most_spec(LAY["walls"]); MB = M["beam"]; MD = M["deck"]; MC = M["clear"]
+    P_ = lambda u, d: [round(F["origin"][0] + (F["u"][0] * u + F["d"][0] * d) * 100, 1),
+                       round(F["origin"][1] + (F["u"][1] * u + F["d"][1] * d) * 100, 1)]
+    cu0, cu1 = MC["u"]; cd0, cd1 = MC["d"]
+    most_kamen = dict(name="Brana_Most_Kamen", type="stone_fill", stage="base", **base,
+                      ref=[12.20, 3.10],
+                      parts=[dict(id=p["id"], a=list(p["a"]), c=list(p["c"]), top_abs=p["top_abs"], bottom_abs=p["bottom_abs"]) for p in M["fill"]],
+                      mortar=0.45,
+                      stone=dict(len=(LAY["params"]["STONE_MIN"], 0.6), course=(LAY["params"]["COURSE_MIN"], LAY["params"]["COURSE_MAX"]),
+                                 joint=LAY["params"]["JOINT"], row=0.45, sink=0.0),
+                      clear_poly=[P_(cu0, cd0), P_(cu1, cd0), P_(cu1, cd1), P_(cu0, cd1)])
+    most = dict(name="Brana_Most", type="platform", stage="base", **base, z=M["beam_z"],
+                beams=dict(d=MB["d"], pos=list(MB["pos"]), a=list(MB["a"]), spans=[list(s) for s in MB["spans"]],
+                           bark=MB["bark"], stage=MB["stage"]),
+                planks=dict(t=MD["t"], w=list(MD["w"]), gap=MD["gap"], a=list(MD["a"]), c=list(MD["c"]),
+                            max_len=MD["max_len"], stage=MD["stage"]),
+                rails=[], finish=dict(beams="old", planks="old"))
+    zataras = dict(name="Brana_Zataras", type="props", stage="base", pile=True, **base,
+                   items=M["zataras"])
+    return [kamen, podesta, kryty, most_kamen, most, zataras]
 
 
 def vez_pristresek(D):

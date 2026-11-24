@@ -8,12 +8,12 @@ owner: Builder
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinLog"]
 # hra
 asset_kind: mesh
 asset_category: wood
-used_by: ["[[Palac_Obydli]]", "[[Palac_Kovarna]]", "[[Brana_Straz]]"]
+used_by: ["[[Palac_Obydli]]", "[[Palac_Kovarna]]", "[[Brana_Straz]]", "[[Brana]]"]
 envelope: [100, 20, 20]
 stand_in: none
 asset_source: tools/meshes/mesh_log.py:make_log

@@ -202,12 +202,14 @@ PILE_KEY = "pile:"                       # klic v constructions_edits.json -> mo
 
 
 def _pile(name, sts, moved):
-    """hranice materialu (data "pile": true): vsechny kusy do jednoho actoru (Instanced Static Mesh) s pivotem dole uprostred.
+    """hranice materialu / slozeny objekt (data "pile": true): vsechny kusy do jednoho actoru (Instanced Static Mesh) s pivotem dole uprostred.
     Poloha z levelu moved["pile:<jmeno>"] = [x, y, z, roll, pitch, yaw] (ulozi capture) posune pivot a natoci celou hranici
     kolem svisle osy (naklon se nebere). -> pivot [x, y, z, yaw] pro build"""
     if not sts: return None
     for s in sts: s.loose = False
-    px = sum(s.x for s in sts) / len(sts); py = sum(s.y for s in sts) / len(sts); pz = min(s.z - s.sz / 2 for s in sts)
+    px = sum(s.x for s in sts) / len(sts); py = sum(s.y for s in sts) / len(sts)
+    hz = lambda s: (s.sx / 2 * abs(math.sin(math.radians(s.pitch)))) if s.shape == "stake2" and s.pitch else s.sz / 2
+    pz = min(s.z - hz(s) for s in sts)
     m = moved.get(PILE_KEY + name)
     if not m: return [round(px, 2), round(py, 2), round(pz, 2), 0.0]
     x, y, z, yaw = m[0], m[1], m[2], m[5]; c, sn = math.cos(math.radians(yaw)), math.sin(math.radians(yaw))

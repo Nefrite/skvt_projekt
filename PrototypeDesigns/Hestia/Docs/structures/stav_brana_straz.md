@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: []
 # hra
 domain: structures
@@ -19,7 +19,7 @@ Skutečný stav stavby strážního stanoviště nad východní bránou proti n�
 - **Kryty:** východní kryt a podesta jsou sada `base`, severní a jižní kryt `final`.
 - **Vybavení (`Brana_Straz_Vybaveni`, 06):** 10 graybox kvádrů pod půdorysem stříšky z kůry (stolička, převrácená bedna, sada nástrojů na šípy na bedně, toulec u bedny, pohotovostní toulec a luk u SZ sloupku stříšky + 4 dočasní zástupci sloupků stříšky do její výšky).
 - **Odchylky a jejich důvod:** sekce *Co se liší od návrhu* (návrh neseděl na dnešní výšky zdí z levelu; zábradlí směrem do hradu se nestaví).
-- **Zbývá:** přístřešek z kůry (05), výroba meshí vybavení ([[SM_RuinCrate_A]], [[SM_RuinArrowTools_A]], [[SM_RuinQuiver_A]], [[SM_RuinBow_A]]), zátaras, staveniště pro etapu 1, výlez na podestu (určí Jirka).
+- **Zbývá:** přístřešek z kůry (05), výroba meshí vybavení ([[SM_RuinCrate_A]], [[SM_RuinArrowTools_A]], [[SM_RuinQuiver_A]], [[SM_RuinBow_A]]), staveniště pro etapu 1, výlez na podestu (určí Jirka). Přenosný zátaras `Brana_Zataras` je již postaven ve skriptech na předmostí šíjového příkopu pod entitou [[Brana]] (viz [[stav_brana]]).
 
 ## Co je hotové
 | Část | Provedení | Sada |
@@ -79,11 +79,11 @@ Rám brány: `u` k východu podél `Brana_S`, `d` k jihu, počátek v SZ rohu v�
 **Kroky 1 až 3 hotové (podesta se zvýšeným počtem 5 kulatin podle T-0041 a všechny tři kryty; ve skriptech). V UE Jirka viděl podestu se 4 kulatinami a východní kryt (16. 11. 2026) a 23. 11. 2026 v levelu rozmístil a uložil (capture) graybox vybavení `Brana_Straz_Vybaveni` i 4 zástupce sloupků stříšky; po rozšíření podesty na 5 kulatin (23. 11. 2026, změna kapes v `Brana_V`) a opravě výšek s `ref` při capture je potřeba spustit v UE `05_constructions/stavby/Brana_Straz.py` s `RUIN = True` a `VYBAVENI = True`.**
 
 ## Co zbývá
-**Zbývá:** přístřešek z kůry (`bark_roof`; návrh a instrukce pro stavitele: [[predani_brana_straz_striska_stavitel]], nahrazuje kap. 4.4), výroba meshí vybavení ([[SM_RuinCrate_A]], [[SM_RuinArrowTools_A]], [[SM_RuinQuiver_A]], [[SM_RuinBow_A]]), zátaras, staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
+**Zbývá:** přístřešek z kůry (`bark_roof`; návrh a instrukce pro stavitele: [[predani_brana_straz_striska_stavitel]], nahrazuje kap. 4.4), výroba meshí vybavení ([[SM_RuinCrate_A]], [[SM_RuinArrowTools_A]], [[SM_RuinQuiver_A]], [[SM_RuinBow_A]]), staveniště pro etapu 1, výstup na podestu (určí Jirka; západní třetina jižní strany a západní strana jsou volné).
 
 ### Mimo stříšku (z předání stříšky)
 
-- **Zátaras** (`Brana_Zataras`, španělský jezdec, jeden samostatný actor): návrh kap. 4.5.
+- **Zátaras** (`Brana_Zataras`, španělský jezdec, jeden samostatný actor `pile: True` na předmostí v `u = 17,20 m, d = 3,10 m, Z = 3040 cm`): **postaveno ve skriptech** (`05_constructions/stavby/Brana.py`, `Brana_Zataras.py`; viz [[navrh_brana_prikop]] a [[stav_brana]]).
 - **Staveniště pro etapu 1** (sada `site`): žebřík, hromada kůlů, svitky kůry.
 - **Výlez na podestu:** určí Jirka. Volná je západní strana a západní třetina jižní strany.
 - **Otevřené u Jirky:** severní a jižní kryt jsou teď `final`; v etapě 1 je severní hrana podesty nad zdí bez krytu.

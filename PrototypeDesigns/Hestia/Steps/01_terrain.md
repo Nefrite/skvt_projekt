@@ -4,7 +4,7 @@ type: step
 validity: valid
 aliases: [README_terrain]
 step_kind: build
-updated: 2026-11-14
+updated: 2026-11-24
 # hra
 build_step: 01_terrain
 domains: [environment]
@@ -241,8 +241,10 @@ Debug switch je statický, takže v hotové hře nic nestojí. Lze ho v materiá
 
 | Soubor | K čemu |
 |---|---|
-| `Zricenina_heightmap_505_50cm.png` | Heightmapa k importu (16 bit, 505 × 505 px, 0,5 m/px = 252 × 252 m) |
-| `Zricenina_preview_orez.png` | Náhled sklonu terénu: zelená < 8°, oranžová 8–18°, růžová 18–28°, magenta > 28°, vrstevnice po 5 m |
+| `Zricenina_heightmap_505_50cm.png` | Heightmapa k importu (16 bit, 505 × 505 px, 0,5 m/px = 252 × 252 m; včetně šíjového příkopu, úvozu a únikové rampy z `..\tools\terrain\gen_moat.py`, bez čelních valů) |
+| `Zricenina_preview_orez.png` | Náhled sklonu terénu: zelená < 8°, oranžová 8–18°, růžová 18–28°, magenta > 28° |
+| `UE_Prikop_Landscape.py` | Pomocný skript pro UE Editor: kontrola výšek příkopu line-tracem, uložení `terrain_from_level.json` (`MODE = "verify"`) a záložní zápis PNG přes RenderTarget (`MODE = "import_and_verify"`) |
+| `..\tools\terrain\gen_moat.py` | Generátor šíjového příkopu, přístupového úvozu a severní únikové rampy (bez čelních valů) nad `Zricenina_heightmap_505_50cm.png` a `terrain_from_level.json` ([[navrh_brana_prikop]]) |
 | [[M_Landscape_Forest_Auto]] | Krátký tahák s nastavením materiálu (do dokumentace) |
 | [[01_terrain]] | Tento návod |
 

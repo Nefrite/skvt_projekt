@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: []
 # hra
 kind: structure
@@ -16,7 +16,7 @@ status: built
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
-depth_structures: 1
+depth_structures: 4
 target_structures: 4
 target_gameplay: 0
 ---
@@ -29,7 +29,7 @@ target_gameplay: 0
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | 1 | 4 | build | −3 |
+| structures | 4 | 4 | 4 | build | ✔ |
 | gameplay | – | – | 0 | design | ✔ |
 
 <!-- hestia:generated:end -->
@@ -39,9 +39,7 @@ target_gameplay: 0
 
 **structures**
 - [[navrh_brana_prikop]] – design, depth 4, valid, in_progress
-
-**Aktivní předání**
-- [[predani_brana_prikop_stavitel]]
+- [[stav_brana]] – state, depth 4, valid
 
 <!-- hestia:generated:end -->
 
@@ -50,8 +48,9 @@ target_gameplay: 0
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
+| [[01_terrain]] | `UE_Prikop_Landscape.py`, `gen_moat.py` | – |
 | [[03_ruin]] | `brana_spec.py` | – |
-| [[05_constructions]] | – | [[navrh_brana_prikop]] |
+| [[05_constructions]] | `Brana.py`, `Brana_Capture.py`, `Brana_Most.py`, `Brana_Most_Kamen.py`, `Brana_Zataras.py` | [[navrh_brana_prikop]], [[stav_brana]] |
 
 <!-- hestia:generated:end -->
 
@@ -61,6 +60,13 @@ target_gameplay: 0
 | Soubor | Role | Krok | Pravidlo |
 |---|---|---|---|
 | `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | 03_ruin | name |
+| `/PrototypeDesigns/Lapikus/01_terrain/UE_Prikop_Landscape.py` | entry | 01_terrain | folder |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Capture.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Most.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Most_Kamen.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Zataras.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/tools/terrain/gen_moat.py` | entry | 01_terrain | header |
 
 <!-- hestia:generated:end -->
 
@@ -75,18 +81,20 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Brana.json` · etapa 1 
 - Třídy: StaticMesh 0, Blueprint 0, BSP 0, ostatní 0
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: –
-- Pro srovnání `depth_*`: structures 1; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->
 
 ## Assety
 <!-- hestia:generated:start -->
 
-Souhrn: requested 0, in_progress 0, generated 0, imported 2, verified 0 · graybox 0 · outdated v UE 0 (signál vedle `depth_*`, hloubka se z něj nepočítá)
+Souhrn: requested 0, in_progress 0, generated 0, imported 4, verified 0 · graybox 0 · outdated v UE 0 (signál vedle `depth_*`, hloubka se z něj nepočítá)
 
 | Asset | Stav | Náhrada v levelu |
 |---|---|---|
 | [[SM_RuinLogBark_A]] | imported | none |
+| [[SM_RuinLog_A]] | imported | none |
+| [[SM_RuinPlank_A]] | imported | none |
 | [[SM_RuinStakeSmall_A]] | imported | none |
 
 <!-- hestia:generated:end -->
@@ -99,7 +107,6 @@ Souhrn: requested 0, in_progress 0, generated 0, imported 2, verified 0 · grayb
 
 - Fronta F-0003 (G4, [[Brana]]): status built bez platného dokumentu state
 - Fronta F-0029 (G3, [[Brana]]): bez dokumentu v doméně structures (target_structures 4)
-- Fronta T-0036 (role:Builder, [[Brana]]): Španělský jezdec `Brana_Zataras` jako jeden actor: kmen s kůrou Ø 18 × 3,4 m ([[SM_RuinLogBark_A]]) a 4 páry kůlů Ø 7 × 1,6 m ([[SM_RuinStakeSmall_A]]); zátaras zbývá podle [[stav_brana_straz]] (doklad: [[CHECKLIST_assets_navrhy]] kap. 6.4, 11.3 „zatím ne“)
 
 <!-- hestia:generated:end -->
 

@@ -211,8 +211,8 @@ el = ((xs - (cx - 6)) / 34) ** 2 + ((ys - cy) / 13) ** 2
 pl = 1 - ss(0.75, 1.25, el)
 plat = 30.0 + fall[ci]
 H = H * (1 - pl) + plat * pl
-ditch = np.exp(-((t_rel - 37.0) / 3.5) ** 2) * (1 - ss(9, 15, np.abs(across)))
-H -= 6.0 * ditch
+# Pozn. (11/2026, navrh_brana_prikop.md): puvodni prikop t_rel = 37 m zrušen (po posunu strazni veze v Pudorysu v3 vychazel pod ni);
+# novy sijovy prikop, celni valy, uvoz a unikova rampa se aplikuji pres tools/terrain/gen_moat.py na orez 505x505 px.
 
 # ------------------------------------------------------------------ channel (after erosion)
 u = d * np.where(outer > 0.5, 1, -1)              # + toward outer bank

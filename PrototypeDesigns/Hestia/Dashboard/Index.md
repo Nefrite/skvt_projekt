@@ -23,11 +23,10 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 | Entita | environment | structures | paths | npc | gameplay | narrative |
 |---|---|---|---|---|---|---|
 | [[Characters]] | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle |
-| [[Lapikus_Region]] | 0 % (1) | 57 % (1) | 0 % (0) | bez cíle | 0 % (0) | bez cíle |
+| [[Lapikus_Region]] | 0 % (1) | 71 % (3) | 0 % (0) | bez cíle | 0 % (0) | bez cíle |
 
 **Aktivní předání**
 
-- [[predani_brana_prikop_stavitel]] – [[Brana]]
 - [[predani_brana_straz_striska_stavitel]] – [[Brana_Straz]]
 - [[predani_curator_fronta_t0006]]
 - [[predani_curator_scratch_kod]]
@@ -47,16 +46,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/ue/ue_query_assets.py · čtecí skript assetů pro etapu C (54 karet od generated) · predani_pilot_lapikus_knihovnik_unreal P20
-- 2026-11-23 · Architect · Brana · navrh sijoveho prikopu, terennich valu, mostniho pilire, lavky a zatarasu pred vychodni branou a predani pro Builder · chat:prikop_pred_branou
-- 2026-11-23 · Furnisher · Brana_Straz · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
-- 2026-11-23 · Furnisher · Lapikus · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
-- 2026-11-23 · Furnisher · Brana · Brana_Straz_Vybaveni: 1. navrh vybaveni strazniho stanoviste nad branou v grayboxu (stolicka, prevracena bedna, sada nastroju na sipy, 2 toulce, luk + 4 zastupci sloupku strisky) a karty pozadavku na assety · chat:task
-- 2026-11-23 · agent pilotu (Steward) · Maintenance/reports/ue_assets.json · čtení assetů z UE (etapa C): current 54, outdated 0, missing 0 · predani_pilot_lapikus_knihovnik_unreal P20
-- 2026-11-23 · agent pilotu (Steward) · Assets/ · blok *Stav v UE* (generovaný) ve 43 kartách imported, ruční text nahrazen · predani_pilot_lapikus_knihovnik_unreal P20
-- 2026-11-23 · Builder · Brana · Brana_Straz_Podesta: zvýšen počet trámů podesty ze 4 na 5 kulatin (d = -0,20 na Brana_S + 4 v kapsách Brana_V v d = 0,80 / 2,20 / 3,60 / 5,00 m), B_LEVEL na Brana_J d = 0,65-5,30 m, přegenerovány ruin_layout.json a constructions.json; instrukce ke sloupkům stříšky zaneseny do predani_brana_straz_striska_stavitel.md, T-0041 uzavřen · T-0041
-- 2026-11-23 · Builder · Lapikus · Brana_Straz_Podesta: zvýšen počet trámů podesty ze 4 na 5 kulatin (d = -0,20 na Brana_S + 4 v kapsách Brana_V v d = 0,80 / 2,20 / 3,60 / 5,00 m), B_LEVEL na Brana_J d = 0,65-5,30 m, přegenerovány ruin_layout.json a constructions.json; instrukce ke sloupkům stříšky zaneseny do predani_brana_straz_striska_stavitel.md, T-0041 uzavřen · T-0041
-- 2026-11-23 · Builder · Brana_Straz · Brana_Straz_Podesta: zvýšen počet trámů podesty ze 4 na 5 kulatin (d = -0,20 na Brana_S + 4 v kapsách Brana_V v d = 0,80 / 2,20 / 3,60 / 5,00 m), B_LEVEL na Brana_J d = 0,65-5,30 m, přegenerovány ruin_layout.json a constructions.json; instrukce ke sloupkům stříšky zaneseny do predani_brana_straz_striska_stavitel.md, T-0041 uzavřen · T-0041
+- 2026-11-24 · Builder · Brana_Straz · Brana: sijovy prikop, celni valy, uvoz a unikova rampa (gen_moat.py), Brana_Pilir a Brana_Opera (03), Brana_Most_Kamen, Brana_Most a Brana_Zataras (05), stav_brana zalozen; T-0036 uzavren · predani_brana_prikop_stavitel
+- 2026-11-24 · Builder · Lapikus_Region · Brana: sijovy prikop, celni valy, uvoz a unikova rampa (gen_moat.py), Brana_Pilir a Brana_Opera (03), Brana_Most_Kamen, Brana_Most a Brana_Zataras (05), stav_brana zalozen; T-0036 uzavren · predani_brana_prikop_stavitel
+- 2026-11-24 · Builder · Brana · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
+- 2026-11-24 · Builder · Strazni_Vez · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
+- 2026-11-24 · Builder · Hradby_a_Brana · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
+- 2026-11-24 · Builder · Lapikus_Region · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
+- 2026-11-24 · Builder · Lapikus · Brana: zruseny celni terenni valy pred sijovym prikopem (rozhodnuti GameDesignera 2026-11-24, takticka vyhoda utocniku); pregenerovan vyskopis, terrain_from_level.json, ruin_layout.json, constructions.json a nahledy · chat:zruseni_valu_brana
+- 2026-11-24 · Builder · Brana · Brana: sijovy prikop bez valu, mostni pilir, opera, lavka Brana_Most a zataras Brana_Zataras overeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4, predani archivovano · predani_brana_prikop_stavitel
+- 2026-11-24 · Builder · Lapikus · Brana: sijovy prikop bez valu, mostni pilir, opera, lavka Brana_Most a zataras Brana_Zataras overeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4, predani archivovano · predani_brana_prikop_stavitel
+- 2026-11-24 · Builder · Handovers/predani_brana_prikop_stavitel.md · předání archivováno · predani_brana_prikop_stavitel
 
 <!-- hestia:generated:end -->
 

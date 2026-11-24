@@ -183,6 +183,8 @@ wall("Brana_J", "Ruin/Brana", [GT_NW, GT_SW], 10.0, 1.8, 0.45, seed=61, mid=0.92
      openings=[op("portal", 3.5, 2.8, 0, 3.8, protect=True)],
      protect=[dict(s0=1.2, s1=5.8, min=4.8), dict(s0=-1.0, s1=1.2, to=[dict(wall="Brana_J", opening=0, dz=0.1)])], rubble="in")
 wall("Brana_Jih", "Ruin/Brana", [GT_SW, GT_SE], 10.0, 1.8, 0.35, seed=63, rubble="both")
+from brana_spec import prikop_walls as brana_prikop_walls
+walls.extend(brana_prikop_walls(GT_NW, GT_NE, GT_SW))                           # Brana_Pilir a Brana_Opera v sijovem prikopu
 # --- zapadni budova (vnejsi zdi tvori hradba) ---
 wall("ZBudova_V", "Ruin/ZapadniBudova", [WB[1], WB[2]], 7.0, 1.2, 0.35, seed=70, access_points=[6],
      openings=[op("dvere", 6, 1.0, 0, 2.2)], raise_=[dict(s0=-1, s1=99, dh=0.7)], rubble="both")   # o 2 rady vys
@@ -199,7 +201,7 @@ wall("ZBudova_S", "Ruin/ZapadniBudova", [WB[2], ZB_S_END], 7.0, 1.2, 0.35, seed=
 ramps = [dict(name="Rampa_SZ", folder="Ruin/Rampa", start=[-2950, -1250], end=[-2950, -2120], top=5.2, width=3.0)]
 
 # --- terenni mrizka (cm) pro paty zdi ---
-x0, y0, x1, y1, st = -5200, -3800, 3600, 400, 100      # mrizka pokryva i strazni vez
+x0, y0, x1, y1, st = -5200, -3800, 4400, 400, 100      # mrizka pokryva i strazni vez, sijovy prikop, pilir, operu a valy
 xs = np.arange(x0, x1 + 1, st); ys = np.arange(y0, y1 + 1, st)
 Z = [[round(float(H[int(np.clip(y / 50 + 252, 0, 504)), int(np.clip(x / 50 + 252, 0, 504))]) * 100) for x in xs] for y in ys]
 # --- zapadni cast u ostrohu: hradba cilene snizena a zarovnana, ve korune zlabky pro paprskovite tramy

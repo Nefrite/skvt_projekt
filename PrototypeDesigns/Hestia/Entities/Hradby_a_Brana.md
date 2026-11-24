@@ -30,7 +30,7 @@ Agregace z potomků (04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| structures | 33 % (1 z 3) | 1 – [[Brana]] |
+| structures | 33 % (1 z 3) | 3 – [[Brana]] |
 | gameplay | 0 % (0 z 2) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->
@@ -45,14 +45,18 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_Zatím žádné kroky._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[01_terrain]] | `gen_moat.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_Žádné soubory._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/terrain/gen_moat.py` | entry | 01_terrain | header |
 
 <!-- hestia:generated:end -->
 

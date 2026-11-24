@@ -38,7 +38,7 @@ Agregace z potomků (04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| structures | 57 % (4 z 7) | 1 – [[Brana]] |
+| structures | 71 % (5 z 7) | 3 – [[Brana_Straz]] |
 | gameplay | 0 % (0 z 4) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->
@@ -69,7 +69,7 @@ Agregace z potomků (04 kap. 3):
 | Krok | Skripty | Dokumenty |
 |---|---|---|
 | [[03_ruin]] | `Zricenina_Brana_S_nahled.png`, `Zricenina_bloky_nahled.png`, `Zricenina_kameny_detail.png`, `Zricenina_kameny_koruny.png`, `Zricenina_koruna_nahled.png`, `Zricenina_lic_pred_po.png`, `Zricenina_strilna_preklad_pred_po.png`, `Zricenina_strilny_osteni_nahled.png`, `build_ruin_blocks.py`, `Obvod.py`, `detach_stones.py`, `gen_stones.py`, `manual_edits.json`, `ruin_layout.json`, `terrain_from_level.json`, `Zricenina_blockout_nahled.png`, `build_ruin.py`, `ruin_layout.json`, `navrh_vez_okna_podesta.png`, `navrh_vez_patra_strilny.png`, `navrh_vez_schody.png`, `navrh_vez_vyklenky_kvadry.png`, `ruin_layout_draft.json`, `build_ruin.py`, `check3d.py`, `check_blocks.py`, `decay.py`, `elev.py`, `export_level_layout.py`, `gen_layout.py`, `layout_from_level.json`, `massing.py`, `tower_spec.py` | [[README_ruin]], [[Zricenina_03_ruin_stav]] |
-| [[05_constructions]] | `Knihovna_meshe_nahled.png`, `Knihovna_textury_nahled.png`, `Kulatina_meshe_nahled.png`, `Kulatina_textury_nahled.png`, `Props_kovarna_nahled.png`, `Props_textury_nahled.png`, `Stan_luzko_nahled.png`, `Stan_luzko_slozena_nahled.png`, `Stan_plachta_nahled.png`, `Stan_truhlicka_nahled.png`, `Stan_vak_nahled.png`, `Stavby_brana_straz_nahled.png`, `Stavby_brana_straz_nahled_etapa1.png`, `Stavby_drevo_nahled.png`, `Stavby_ostroh_dostavba_nahled.png`, `Stavby_ostroh_nahled.png`, `Stavby_ostroh_podlaha_nahled.png`, `Stavby_ostroh_tramovi_nahled.png`, `Stavby_palac_kovarna_nahled.png`, `Stavby_palac_obydli_nahled.png`, `Stavby_palac_obydli_nahled_etapa1.png`, `Stavby_vez_nahled.png`, `Stavby_vez_pristresek_nahled.png`, `build_constructions.py`, `constructions.json`, `constructions_edits.json`, `Etapa.py`, `Sut.py` | [[navrh_lapikus_koren_actoru]] |
+| [[05_constructions]] | `Knihovna_meshe_nahled.png`, `Knihovna_textury_nahled.png`, `Kulatina_meshe_nahled.png`, `Kulatina_textury_nahled.png`, `Props_kovarna_nahled.png`, `Props_textury_nahled.png`, `Stan_luzko_nahled.png`, `Stan_luzko_slozena_nahled.png`, `Stan_plachta_nahled.png`, `Stan_truhlicka_nahled.png`, `Stan_vak_nahled.png`, `Stavby_brana_prikop_nahled.png`, `Stavby_brana_straz_nahled.png`, `Stavby_brana_straz_nahled_etapa1.png`, `Stavby_drevo_nahled.png`, `Stavby_ostroh_dostavba_nahled.png`, `Stavby_ostroh_nahled.png`, `Stavby_ostroh_podlaha_nahled.png`, `Stavby_ostroh_tramovi_nahled.png`, `Stavby_palac_kovarna_nahled.png`, `Stavby_palac_obydli_nahled.png`, `Stavby_palac_obydli_nahled_etapa1.png`, `Stavby_vez_nahled.png`, `Stavby_vez_pristresek_nahled.png`, `build_constructions.py`, `constructions.json`, `constructions_edits.json`, `Etapa.py`, `Sut.py` | [[navrh_lapikus_koren_actoru]] |
 | [[06_furnishing]] | `build_furnishing.py`, `capture_furnishing.py`, `furn_data.py`, `furnishing.json` | – |
 
 <!-- hestia:generated:end -->
@@ -128,6 +128,7 @@ Agregace z potomků (04 kap. 3):
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_plachta_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_truhlicka_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_vak_nahled.png` | data | 05_constructions | folder |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_prikop_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled_etapa1.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_drevo_nahled.png` | data | 05_constructions | folder |
@@ -162,7 +163,6 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Lapikus.json` · etapa 
 - Zástupné meshe (`/Engine/BasicShapes/`): 0; výchozí materiály: 0
 - Fáze: –
 - Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
-- Pozor: `state` Zricenina_03_ruin_stav (2026-11-22) je starší než čtení z UE (2026-11-23); ověř § *V levelu*; report potvrzuje jen „v levelu je“, vzhled a funkci § *Vizuálně ověřeno*
 
 <!-- hestia:generated:end -->
 

@@ -101,7 +101,7 @@ def build_stone_fill(ad, walls, terr):
         nq = max(1, int(round((q1 - q0) / roww))); qw = (q1 - q0) / nq
         zg = min(terr.z(*P(*( (p, (q0 + q1) / 2) if along_a else ((q0 + q1) / 2, p) ))) for p in (p0, (p0 + p1) / 2, p1))
         zb = zg - sink * 100; ztop = pt["top_abs"] if "top_abs" in pt else z0 + pt["top"] * 100   # top_abs = absolutni Z (cm)
-        if "bottom_abs" in pt: zb = max(zb, pt["bottom_abs"])          # zdivo az od teto vysky (vyrovnani koruny nad otvorem, ne jeho zazdeni)
+        if "bottom_abs" in pt: zb = pt["bottom_abs"] if "top_abs" in pt else max(zb, pt["bottom_abs"])   # vyrovnani koruny (vcetne zapustene zdi s z_offset)
         rows = []; z = zb
         while z < ztop - 1:
             h = rng.uniform(cmin, cmax) * 100

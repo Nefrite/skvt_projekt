@@ -44,14 +44,20 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_Zatím žádné kroky._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[01_terrain]] | `gen_moat.py` | – |
+| [[03_ruin]] | `brana_spec.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_Žádné soubory._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | 03_ruin | name |
+| `/PrototypeDesigns/Lapikus/tools/terrain/gen_moat.py` | entry | 01_terrain | header |
 
 <!-- hestia:generated:end -->
 

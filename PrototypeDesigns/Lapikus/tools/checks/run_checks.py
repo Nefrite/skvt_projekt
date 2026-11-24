@@ -666,6 +666,45 @@ def check_brana(S):
         rep("vybaveni brany stoji na podlaze / bedne / korune Brana_V %s" % bad_z, not bad_z)
         out_roof = [s.id.split("|")[-1] for s in fu if not (3.15 <= fb(s)[0] and fb(s)[1] <= 8.00 and 0.25 <= fb(s)[2] and fb(s)[3] <= 3.80)]
         rep("vybaveni brany je cele pod pudorysem strisky (u 3.15-8.0, d 0.25-3.80) %s" % out_roof, not out_roof)
+    # --- premosteni prikopu a zataras (Brana_Pilir, Brana_Opera, Brana_Most_Kamen, Brana_Most, Brana_Zataras)
+    md = next((a for a in S["data"].get("addons", []) if a["name"] == "Brana_Most"), None)
+    if md and "Brana_Most" in groups:
+        pil = walls.get("Brana_Pilir", {}).get("stones", []); ope = walls.get("Brana_Opera", {}).get("stones", [])
+        rep("pilir Brana_Pilir (%d) a opera Brana_Opera (%d) v 03_ruin" % (len(pil), len(ope)), bool(pil and ope))
+        mk = groups.get("Brana_Most_Kamen", {}).get("stones", []) + groups.get("Brana_Most_Kamen", {}).get("loose", [])
+        ms = groups["Brana_Most"]["stones"] + groups["Brana_Most"]["loose"]
+        mbeams = [s for s in ms if "|B" in s.id]; mplanks = [s for s in ms if "|P" in s.id]
+        c = common.collisions(ms + [s for s in mk if s.cat != "core"], ruin, 1.5)
+        rep("most a vyrovnani pilire/opery x zricenina: pruniku %d %s" % (len(c), c[:3] if c else ""), not c)
+        c = [x for x in common.collisions(mbeams, mbeams, 0.5) if x[1] < x[2]]
+        rep("mostni klady (%d) mezi sebou (prelozeni nad pilirem): pruniku %d %s" % (len(mbeams), len(c), c[:2] if c else ""),
+            len(mbeams) == len(md["beams"]["pos"]) and not c)
+        mzt = deck_top(md); mtops = [s.z + s.sz / 2 for s in mplanks]
+        rep("mostovka vodorovna, vrch Z %.0f (prken %d)" % (mzt, len(mplanks)), mtops and abs(mzt - 3040.0) < 0.5 and max(abs(t - mzt) for t in mtops) < 0.5)
+        sup_all = [(fb(s), s.z + s.sz / 2) for s in pil + ope + mk + walls["Brana_V"]["stones"] if s.cat != "core"]
+        mbad = []
+        for s in mbeams:
+            b = fb(s); cc = (b[2] + b[3]) / 2; bz = md["z"]
+            w_sup = [t for (q, t) in sup_all if q[0] < b[0] + 0.50 and q[1] > b[0] + 0.02 and q[2] - 0.05 <= cc <= q[3] + 0.05 and t <= bz + 2]
+            e_sup = [t for (q, t) in sup_all if q[0] < b[1] - 0.02 and q[1] > b[1] - 0.95 and q[2] - 0.05 <= cc <= q[3] + 0.05 and t <= bz + 2]
+            if not w_sup or bz - max(w_sup) > 10 or not e_sup or bz - max(e_sup) > 4:
+                mbad.append((s.id, round(bz - max(w_sup)) if w_sup else None, round(bz - max(e_sup)) if e_sup else None))
+        rep("vsech %d mostnich klad podepreno na obou koncich %s" % (len(mbeams), mbad), not mbad)
+        (ma0, ma1), (mc0, mc1) = md["planks"]["a"], md["planks"]["c"]; mmiss = mn_all = 0; mpb = [fb(s) for s in mplanks]
+        for i in range(int((ma1 - ma0) / 0.1)):
+            for j in range(int((mc1 - mc0 - 0.1) / 0.2)):
+                a_, c_ = ma0 + 0.05 + i * 0.1, mc0 + 0.1 + j * 0.2; mn_all += 1
+                mmiss += not any(b[0] - 0.015 <= a_ <= b[1] + 0.015 and b[2] - 0.015 <= c_ <= b[3] + 0.015 for b in mpb)
+        rep("prkna mostu pokryvaji %.2f x %.2f m (mezer %d z %d bodu)" % (ma1 - ma0, mc1 - mc0, mmiss, mn_all), mmiss <= mn_all * 0.005)
+        zg_grp = groups.get("Brana_Zataras", {}); zs = zg_grp.get("stones", []) + zg_grp.get("loose", []); pv = zg_grp.get("pile")
+        sut_all = [s for n_, gg in groups.items() if n_.endswith("_Sut") for s in gg["loose"]]
+        c = common.collisions(zs, ruin + ms + mk + sut_all, 1.0)
+        rep("zataras Brana_Zataras (%d dilcu, 1 actor pile=%s) mimo zriceninu, most a sut: pruniku %d %s" % (
+            len(zs), pv[:3] if pv else None, len(c), c[:2] if c else ""),
+            len(zs) == 9 and pv is not None and abs(pv[2] - 3040.0) < 2.0 and not c)
+        for gname in ("Brana_Most_Kamen", "Brana_Most", "Brana_Zataras"):
+            gst = groups.get(gname, {}).get("stones", []) + groups.get(gname, {}).get("loose", [])
+            rep("%s: sada etapy %s" % (gname, ", ".join(sorted(set(str(s.stage) for s in gst)))), gst and all(s.stage == "base" for s in gst))
     return ok
 
 

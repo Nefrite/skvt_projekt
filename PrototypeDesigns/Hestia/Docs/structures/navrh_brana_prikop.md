@@ -4,7 +4,7 @@ type: design
 validity: valid
 derived_from:
 alternative_to: []
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: []
 # hra
 status: in_progress
@@ -204,6 +204,13 @@ B_ZATARAS = dict(
   - Pod prahem brány (`Z 3040 cm`) klesá kamenná podstavba `Brana_V` po skalní skarpě (`56°`) až na dno příkopu (`Z 2700 cm`).
   - Ze dna příkopu (`Z 2700 cm`) vystupuje uprostřed (`u = 12,2 m`) kamenný pilíř `Brana_Pilir` do výšky `Z 3011 cm`. Na něm a na opěře `Brana_Opera` (`u = 16,3 m`) leží klády Ø 24 cm (`Z 3011–3035 cm`) a prkna mostovky (`vrch Z 3040 cm`) v jedné vodorovné rovině s prahem brány.
   - Vpravo za opěrou (`u = 16,3 m, Z 3040 cm`) stojí na předmostí španělský jezdec (`u = 17,2 m`), po obou stranách úvozu se tyčí křídla čelního valu (`Z 3250` na severu, `Z 3420` na jihu) a dno úvozu stoupá mírným sklonem (`14,4°`) na hřbet šíje k cestě `PCG_Path` (`u = 24,5 m, Z 3250 cm`).
+
+### 2026-11-23 – upřesnění při stavbě (Builder)
+- **Vnější ozub prahu v `Brana_V` (`B_BRIDGE_REBATE`):** v 9. řadě podstavby `Brana_V` (`Z 3003–3040 cm`, vnější líc `u = 7,71 .. 8,10 m`, šířka `2,50 m` v `d = 1,85 .. 4,35 m`) byl doplněn vnější ozub (`kapsa` s `outer = True`), do kterého usedají západní konce mostních klád (`u = 7,84 .. 12,40 m`) a prkna mostovky (`u = 7,82 .. 16,50 m`) bez kolize s lícovými kameny; jádro prahu v průjezdu (`u <= 7,79 m`) zůstává na `Z = 3040 cm`.
+- **Souměrné uložení klád `Brana_Most`:** dvojice klád byly vystředěny kolem `d = 3,10 m` na `pos = (1,98; 2,98; 3,98; 2,23; 3,23; 4,23)` s roztečí `0,25 m` v páru (vůle `1 cm` při Ø `0,24 m` v přesahu `u = 12,00 .. 12,40 m`) a východní konce zkráceny na `u = 16,55 m` (`0,85 m` na `Brana_Opera`), aby nekolidovaly se špičkami kůlů `Brana_Zataras` (`u = 16,634 m`). `Brana_Zataras` se staví s `pile = True` jako jeden actor s pivotem v `u = 17,20 m, d = 3,10 m, Z = 3040 cm`.
+- **Koruna `Brana_Pilir` a `Brana_Opera`:** parametr `cap` na `Z = 3011 cm` je uplatněn přes celou délku obou zdí (v `zr_ruin/wall.py` se vyhodnocuje podle středu kamene délky až `0,90 m`), s `protect` uprostřed proti rozpadu pod úroveň `Brana_Most_Kamen` při `ROBBING = 7,0`.
+- **Terén úvozu a únikové rampy (`tools/terrain/gen_moat.py`):** přístupový úvoz se modeluje před výkopem příkopu (s posunem vnější hrany kontraskarpy v pásu mostu na `u = 16,52 m`, aby landscape neprolézal prkny lávky); severní úniková rampa je zaříznuta funkcí `min(27,00 + 2,90 * t, H_base)` do rostlého severního svahu ostrožny (`Z ≈ 2938 cm` v `u = 15,9 m, d = -4,8 m`), takže vyúsťuje bez terénního stupně (`max sklon 26,1° < 44°`).
+- **2026-11-24 – zrušení čelních valů (rozhodnutí GameDesignera):** čelní terénní valy (kap. 1.3 a bod 4 specifikace výše) byly zrušeny, protože útočníkům dávaly výškovou výhodu až na úroveň hradeb. Před vnější hranou příkopu zůstává rostlý terén šíje s přístupovým úvozem (`d = 1,50 .. 4,70 m`, předmostí `Z = 3040 cm`).
 
 ## Vazby a závislosti
 - **Vazba na [[Brana_Straz]] ([[navrh_brana_straz]], [[stav_brana_straz]]):**

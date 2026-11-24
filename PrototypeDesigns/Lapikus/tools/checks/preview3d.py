@@ -138,19 +138,19 @@ def brana_scene(S, stage=2):
     ud = lambda x, y: (((x - O[0]) * U[0] + (y - O[1]) * U[1]) / 100, ((x - O[0]) * V[0] + (y - O[1]) * V[1]) / 100)
     z0 = S["layout"]["plateau_z_cm"]
     P = lambda u, d, z: ((O[0] + (U[0] * u + V[0] * d) * 100) / 100, (O[1] + (U[1] * u + V[1] * d) * 100) / 100, (z - z0) / 100)
-    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if -9 < ud(s.x, s.y)[0] < 14 and -6 < ud(s.x, s.y)[1] < 16]
+    ruin = [s for w in S["walls"].values() for s in w["stones"] + w.get("loose", []) if -9 < ud(s.x, s.y)[0] < 20 and -6 < ud(s.x, s.y)[1] < 16]
     show = ("base", "site") if stage == 1 else ("base", "final")
     new = [s for n, g in S["groups"].items() if n.startswith("Brana_") for s in g.get("stones", []) + g.get("loose", []) if s.stage in show or s.stage is None]
     col = dict(COL, wood=(0.66, 0.54, 0.38), face=(0.80, 0.68, 0.50), bark=(0.36, 0.27, 0.20))
     bx = stone_boxes(ruin, lambda s: COL.get(s.cat, (0.6, 0.6, 0.6)), z0) + \
          stone_boxes(new, lambda s: (0.42, 0.33, 0.24) if s.bark else col.get(s.cat, (0.6, 0.6, 0.6)), z0)
     zt = ad["z"] + 30
-    V_ = [dict(title="od vychodu pred branou (etapa %d)" % stage, eye=P(21.0, 2.0, 3250), target=P(7.2, 3.0, 3450), fov=45),
-          dict(title="shora od severozapadu", eye=P(-8.0, -9.0, 4700), target=P(3.6, 3.0, zt), fov=42),
+    V_ = [dict(title="od vychodu pred lavkou a zatarasem (etapa %d)" % stage, eye=P(23.5, 1.5, 3300), target=P(10.5, 3.1, 3150), fov=48),
+          dict(title="prikop, pilir a lavka od severovychodu", eye=P(18.5, -5.0, 3250), target=P(11.5, 3.1, 2950), fov=50),
+          dict(title="shora od severozapadu", eye=P(-8.0, -9.0, 4700), target=P(7.5, 3.0, zt), fov=45),
           dict(title="z prujezdu vzhuru k podeste", eye=P(1.6, 5.2, 3200), target=P(4.6, 2.2, zt), fov=70),
-          dict(title="z podesty k vychodu", eye=P(1.0, 4.4, zt + 165), target=P(7.2, 2.6, zt + 110), fov=70),
-          dict(title="z nadvori od zapadu", eye=P(-9.0, 4.0, 3300), target=P(0.0, 3.2, 3420), fov=50),
-          dict(title="pudorys (sever nahore)", eye=P(3.6, 3.3, 7500), target=P(3.6, 3.1, 3000), ortho=14.0)]
+          dict(title="z podesty k vychodu na lavku", eye=P(1.0, 4.4, zt + 165), target=P(12.2, 3.1, 3040), fov=65),
+          dict(title="pudorys (sever nahore)", eye=P(8.5, 3.3, 7500), target=P(8.5, 3.1, 3000), ortho=24.0)]
     return bx, V_
 
 

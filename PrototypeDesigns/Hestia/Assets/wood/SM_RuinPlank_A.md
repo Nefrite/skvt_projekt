@@ -8,12 +8,12 @@ owner: Builder
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinPlank"]
 # hra
 asset_kind: mesh
 asset_category: wood
-used_by: ["[[Palac_Kovarna]]", "[[Palac_Obydli]]", "[[Vez_Pristresek]]", "[[Brana_Straz]]", "[[Guesthouse]]"]
+used_by: ["[[Palac_Kovarna]]", "[[Palac_Obydli]]", "[[Vez_Pristresek]]", "[[Brana_Straz]]", "[[Guesthouse]]", "[[Brana]]"]
 envelope: [100, 25, 5]
 stand_in: none
 asset_source: tools/meshes/mesh_wood.py:make_timber

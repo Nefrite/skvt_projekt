@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-24
 # hra
 domain: structures
 depth: 4
@@ -15,8 +15,8 @@ build_step: 03_ruin
 Platný stav kroku `03_ruin` (zřícenina z bloků, půdorys v3, 11/2026) a přehled staveb na ní v `05_constructions`. Řádek „Hrad“ v `Zricenina_README_PROJEKT.md` je zastaralý, platí tento dokument.
 - **Generování:** `build_ruin_blocks.py`, data `gen_layout.py` → `ruin_layout.json`, terén se měří z levelu; `manual_edits.json` se nepřepisuje (kap. *Pracovní postup*, *Jak se teď generuje*).
 - **Zřícenina (03):** půdorys v3, úpravy zdí, materiály a dřevo, věž (kap. *Půdorys v3*, *Úpravy zdí*, *Věž*; škody z dobývání a přístřešek hlídky v [[stav_vez_pristresek]]). Dělení 03 (zdi, kámen) / 05 (dřevěné vestavby, suť) a spouštěče: kap. *Rozdělení 03 / 05*.
-- **Stavby po částech:** západní část u ostrohu (krov, dostavba); palác – kovárna (všechny kroky hotové, v UE ověřeny jen zčásti); palác – dům posádky (kroky 1–3 hotové, staveniště ověřeno jen mimo UE); brána – strážní stanoviště (kroky 1–2).
-- **Otevřené:** most nebo rampa k 1. bráně, přístřešek a zátaras na bráně, krytina, strop a vybavení domu, ověření v UE (kap. *Otevřené / další kroky* a stavy staveb). Optimalizace (34,5 mil. trojúhelníků, s Nanite bez problému) se zatím neřeší.
+- **Stavby po částech:** západní část u ostrohu (krov, dostavba); palác – kovárna (všechny kroky hotové, v UE ověřeny jen zčásti); palác – dům posádky (kroky 1–3 hotové, staveniště ověřeno jen mimo UE); brána – strážní stanoviště (kroky 1–3 ve skriptech) a šíjový příkop s mostní lávkou a zátarasem (ověřeno v UE 24. 11. 2026, [[stav_brana]]).
+- **Otevřené:** přístřešek z kůry nad bránou, krytina, strop a vybavení domu, ověření posledních úprav ostatních staveb v UE (kap. *Otevřené / další kroky* a stavy staveb). Optimalizace (34,5 mil. trojúhelníků, s Nanite bez problému) se zatím neřeší.
 - **Přednost:** u domu a brány platí kap. 0 návrhů [[navrh_palac_obydli_stred]] a [[navrh_brana_straz]]. Koruny `Palac_J` jsou v návrhu domu o 0,31 m výš než skutečnost ([[stav_palac_kovarna]]).
 
 Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zastaralý, platí tento dokument.
@@ -47,7 +47,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 - **`Hradba_V`** vede od jižní stěny strážní věže obloukem k JV rohu hlavní věže, asi 5–7 m od věže.
 - **`Hradba_Z_S`** končí pootočeným úsekem 08 a napojením na SZ roh strážní věže.
 - **Vstup do hlavní věže:** průlom 1,6 × 2,45 m ve `Vez_S` (s = 8,0 m), pod původními dveřmi v 1. patře (s = 7,62 m). Mezi vrchem průlomu a kapsami ochozu (3,85 m) zůstává 1,4 m zdiva.
-- **Příkop:** starý šíjový příkop je zasypaný (terén v UE). Nový se vykope ručně před linií strážní věže a hradby.
+- **Příkop a přemostění (11/2026):** starý příkop pod strážní věží je v heightmapě zasypaný výškami z levelu; před `Brana_V` a `Hradba_V` je vygenerován šíjový příkop (`Z 2700 cm`) bez čelních valů (zrušeny 24. 11. 2026), přístupový úvoz, severní úniková rampa, v `03_ruin` mostní pilíř `Brana_Pilir` a opěra `Brana_Opera` a v `05_constructions` lávka `Brana_Most` se zátarasem `Brana_Zataras` ([[navrh_brana_prikop]], [[stav_brana]]).
 - **Předhradí** se zatím nedělá.
 
 ## Úpravy zdí (hotové)
@@ -100,8 +100,7 @@ Doplňuje `Zricenina_README_PROJEKT.md`. Řádek „Hrad“ v jeho kap. 1 je zas
 
 ## Otevřené / další kroky
 
-- Provizorní hlídková konstrukce nad branami: rozestavěno, viz kapitola „Brána – strážní stanoviště“.
-- Most nebo rampa k 1. bráně, zbytky mostního pilíře v příkopu.
+- Provizorní hlídková konstrukce nad branami: rozestavěno (chybí přístřešek z kůry), viz kapitola „Brána – strážní stanoviště“.
 - Náhledy na skutečném terénu: po buildu poslat `terrain_from_level.json`.
 - Nárožní kvádry na zlomech lomené hradby (prosvítá jádro).
 
@@ -128,6 +127,10 @@ Návrh [[navrh_palac_obydli_stred]], stav stavby [[stav_palac_obydli]], předán
 ## Brána – strážní stanoviště nad oblouky (11/2026)
 
 Návrh [[navrh_brana_straz]], stav stavby [[stav_brana_straz]].
+
+## Brána – šíjový příkop, mostní pilíř, lávka a zátaras (11/2026)
+
+Návrh [[navrh_brana_prikop]], stav stavby [[stav_brana]] (v `03_ruin` vnější ozub prahu `Brana_V`, pilíř `Brana_Pilir` a opěra `Brana_Opera`, rozšířená mřížka `terrain` na `x1 = 4400`; v `05_constructions` vyrovnání `Brana_Most_Kamen`, lávka `Brana_Most` a zátaras `Brana_Zataras`).
 
 ## Optimalizace do budoucna (zatím není potřeba)
 

@@ -1,10 +1,10 @@
 ---
 # orchestrace
 type: handover
-validity: valid
+validity: archived
 superseded_by:
 for_role: [Builder]
-updated: 2026-11-23
+updated: 2026-11-24
 # hra
 domain: structures
 entity: "[[Brana]]"
@@ -48,4 +48,5 @@ Pro roli **Builder**: podle schváleného návrhu [[navrh_brana_prikop]] vygener
 _Žádné otevřené otázky (všechny body zadání rozhodl GameDesigner 2026-11-23 v [[navrh_brana_prikop]])._
 
 ## Zbývá
-- Upravit výškopis terénu (01), doplnit `Brana_Pilir` a `Brana_Opera` (03) a `Brana_Most_Kamen`, `Brana_Most`, `Brana_Zataras` (05), přestavět v UE a ověřit podle [[navrh_brana_prikop]] § *Ověření*.
+- [x] Upravit výškopis terénu (`01_terrain`: `tools/terrain/gen_moat.py` → `Zricenina_heightmap_505_50cm.png`, `Zricenina_preview_orez.png`, `terrain_from_level.json` rozšířený na `x1 = 4400`, záložní/ověřovací skript `01_terrain/UE_Prikop_Landscape.py`; **čelní valy zrušeny 2026-11-24 na pokyn GameDesignera**), doplnit vnější ozub v `Brana_V`, `Brana_Pilir` a `Brana_Opera` (`03_ruin`) a `Brana_Most_Kamen`, `Brana_Most`, `Brana_Zataras` (`05_constructions`, včetně `T-0036`) a ověřit mimo UE (`run_checks.py` bez chyby, náhled `05_constructions/Stavby_brana_prikop_nahled.png`, stav zapsán v [[stav_brana]]) — Builder, 2026-11-24.
+- [x] Reimport terénu, přestavění `Obvod` a `Brana.py` a ověření v UE Editoru (`/Game/Skvt/LapikusPrototypeMap`) — GameDesigner (Jirka), 2026-11-24.

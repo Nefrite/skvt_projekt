@@ -39,7 +39,7 @@ Agregace z potomků (04 kap. 3):
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
 | environment | 0 % (0 z 2) | 1 – [[Les_Lapikus]] |
-| structures | 57 % (4 z 7) | 1 – [[Brana]] |
+| structures | 57 % (4 z 7) | 3 – [[Brana]] |
 | paths | 0 % (0 z 2) | 0 – [[Les_Lapikus]] |
 | gameplay | 0 % (0 z 4) | 0 – [[Brana_Straz]] |
 
@@ -61,7 +61,7 @@ Agregace z potomků (04 kap. 3):
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[01_terrain]] | `Zricenina_heightmap_505_50cm.png`, `Zricenina_preview_orez.png` | [[M_Landscape_Forest_Auto]] |
+| [[01_terrain]] | `UE_Prikop_Landscape.py`, `Zricenina_heightmap_505_50cm.png`, `Zricenina_preview_orez.png`, `gen_moat.py` | [[M_Landscape_Forest_Auto]] |
 
 <!-- hestia:generated:end -->
 
@@ -70,6 +70,8 @@ Agregace z potomků (04 kap. 3):
 
 | Soubor | Role | Krok | Pravidlo |
 |---|---|---|---|
+| `/PrototypeDesigns/Lapikus/01_terrain/UE_Prikop_Landscape.py` | entry | 01_terrain | folder |
+| `/PrototypeDesigns/Lapikus/tools/terrain/gen_moat.py` | entry | 01_terrain | header |
 | `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_heightmap_505_50cm.png` | data | 01_terrain | folder |
 | `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_preview_orez.png` | data | 01_terrain | folder |
 

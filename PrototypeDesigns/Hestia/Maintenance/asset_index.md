@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-24
 ---
 # Asset index
 
@@ -17,6 +17,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Characters/NPC/npc_make_patrol_route.py` | entry | Characters | Characters | NPC | npc, gameplay | folder | – |
 | `/PrototypeDesigns/Characters/NPC/npc_nav_bounds.py` | entry | Characters | Characters | NPC | npc, gameplay | folder | – |
 | `/PrototypeDesigns/Characters/NPC/npc_report.py` | entry | Characters | Characters | NPC | npc, gameplay | folder | – |
+| `/PrototypeDesigns/Lapikus/01_terrain/UE_Prikop_Landscape.py` | entry | Lapikus_Region | Brana, Lapikus_Region | 01_terrain | structures, environment | folder | navrh_brana_prikop, stav_brana, 01_terrain |
 | `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_heightmap_505_50cm.png` | data | Lapikus_Region | Lapikus_Region | 01_terrain | environment | folder | – |
 | `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_preview_orez.png` | data | Lapikus_Region | Lapikus_Region | 01_terrain | environment | folder | – |
 | `/PrototypeDesigns/Lapikus/02_river/T_RiverMask_505.png` | data | Udoli_Reky | Udoli_Reky | 02_river | environment | folder | – |
@@ -79,6 +80,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_plachta_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_truhlicka_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_vak_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_prikop_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled_etapa1.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_drevo_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
@@ -94,10 +96,15 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/05_constructions/build_constructions.py` | entry | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/constructions.json` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/constructions_edits.json` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana.py` | entry | Brana | Brana | 05_constructions | structures | name | navrh_brana_prikop, stav_brana |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Capture.py` | entry | Brana | Brana | 05_constructions | structures | name | navrh_brana_prikop, stav_brana |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Most.py` | entry | Brana | Brana | 05_constructions | structures | name | navrh_brana_prikop, stav_brana |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Most_Kamen.py` | entry | Brana | Brana | 05_constructions | structures | name | navrh_brana_prikop, stav_brana |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | navrh_brana_straz |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kamen.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kryty.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Podesta.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Zataras.py` | entry | Brana | Brana | 05_constructions | structures | name | navrh_brana_prikop, stav_brana |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Etapa.py` | entry | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
@@ -339,7 +346,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Stan.py` | library | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/tools/meshes/ukazka/Ukazka_Textil.py` | library | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/tools/preview_slope.py` | entry | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | Brana | Brana | 03_ruin | structures | name | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | Brana | Brana, Brana_Straz, Strazni_Vez | 03_ruin | structures | name | navrh_brana_straz, stav_brana_straz, navrh_brana_prikop, stav_brana |
 | `/PrototypeDesigns/Lapikus/tools/ruin/build_ruin.py` | entry | Lapikus | Lapikus | 03_ruin | structures | folder | README_ruin |
 | `/PrototypeDesigns/Lapikus/tools/ruin/check3d.py` | entry | Lapikus | Lapikus | 03_ruin | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/check_blocks.py` | entry | Lapikus | Lapikus | 03_ruin | structures | folder | – |
@@ -352,6 +359,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | Ostroh | Ostroh | 03_ruin | structures | name | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | Palac | Palac | 03_ruin | structures | name | navrh_palac_obydli_stred |
 | `/PrototypeDesigns/Lapikus/tools/ruin/tower_spec.py` | spec | Lapikus | Lapikus | 03_ruin | structures | folder | navrh_vez_pristresek |
+| `/PrototypeDesigns/Lapikus/tools/terrain/gen_moat.py` | entry | – | Brana, Strazni_Vez, Hradby_a_Brana, Lapikus_Region | 01_terrain | structures, environment | header | navrh_brana_prikop, stav_brana, 01_terrain |
 | `/PrototypeDesigns/Lapikus/tools/textures/gen_textures.py` | generator | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/zrlib/__init__.py` | library | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/zrlib/config.py` | library | – | – | – | – | – | – |
