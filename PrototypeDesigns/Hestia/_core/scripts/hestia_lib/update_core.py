@@ -149,10 +149,22 @@ def remove_local_values(text: str, key: str, values: set[str]) -> str:
     return "".join(out)
 
 
-def stale_compiled(vault: Vault, new_version: str) -> list[str]:
+def stale_compiled(vault: Vault, new_version: str, core_root: Path | None = None) -> list[str]:
+    """Kompiláty, které by nové složení s core `core_root` změnilo (obsah bez hlavičky, zadání 0.28, CR-034);
+    kompilát se starší verzí v hlavičce a stejným obsahem starý není. Bez `core_root` podle verze v hlavičce."""
     out = []
     d = vault.root / "Roles" / "_compiled"
     for p in sorted(d.glob("*_compiled.md")) if d.is_dir() else []:
+        if core_root is not None:
+            from . import compose
+            role = p.stem.removesuffix(compose.COMPILED_SUFFIX)
+            try:
+                if compose.plan(vault, [role], core_root=core_root)[0].status == "unchanged":
+                    continue
+            except Exception:  # noqa: BLE001 – profil chybí nebo je chybný: kompilát je starý
+                pass
+            out.append(p.name)
+            continue
         m = COMPILED_HEADER_RE.search("\n".join(read_text(p).splitlines()[:3]))
         if not m or m.group(1) != new_version:
             out.append(p.name)
@@ -455,7 +467,7 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
     if applied and not no_after:
         after_code, after, after_err = run_after_subprocess(vault, old_v, getattr(args, "quiet", False))
 
-    stale = stale_compiled(vault, new_v)
+    stale = stale_compiled(vault, new_v, (vault.root / "_core") if applied else new_core)
     payload = {"command": "update_core", "applied": applied, "from": old_v, "to": new_v, "source": tag or None,
                "upgrade": upl.as_dict(), "after": after, "after_error": after_err or None,
                "added": added, "removed": removed, "modified": modified,

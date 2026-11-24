@@ -5,7 +5,7 @@ trigger: always
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-24
 ---
 # Kontrakt agentů Hestia (L0)
 
@@ -44,6 +44,9 @@ Režim určuje přístup k vaultu: `vault` (vidíš soubory projektu, zapisuješ
 | výroba nebo změna knihovního assetu | `asset_work` |
 | předání jiné roli nebo relaci | `handover_out` |
 | problém s Hestií jako nástrojem | `hestia_feedback` |
+| aktualizace core, ruční úkoly z manifestu (Steward) | `core_update` |
+| týdenní běh, kontrola zdraví (Steward) | `instance_health` |
+| podněty a hlášení pro HearthLore (Steward) | `hearthlore_report` |
 | práce v režimu chat | `chat_entry` |
 | konec tasku | `task_close` |
 

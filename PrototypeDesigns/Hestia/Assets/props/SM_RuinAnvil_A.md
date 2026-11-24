@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Furnisher
-requested: 2026-11-14
+requested_by: legacy
+requested:
 owner: Crafter
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinAnvil"]
 # hra
 asset_kind: mesh
@@ -64,4 +64,4 @@ Osy: nejdelší rozměr podél X (podle rozměru meshe); pivot ve středu boundi
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->
 
 ## Poznámky
-- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 6.1 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 6.1 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

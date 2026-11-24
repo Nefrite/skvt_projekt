@@ -32,6 +32,14 @@ _PREVIEW_RE = re.compile(r"!\[\[[^\]|#]+\.(png|jpe?g|webp|gif|svg)(\|[^\]]*)?\]\
 _DATE_IN_TEXT_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
 
 
+LEGACY_REQUEST = "legacy"          # requested_by: asset vyrobený před zavedením karet (zadání 0.28, CR-036)
+
+
+def is_legacy_request(fm: dict) -> bool:
+    return [str(x).strip().casefold() for x in as_list(fm.get("requested_by")) if str(x or "").strip()] \
+        == [LEGACY_REQUEST]
+
+
 class Checker:
     def __init__(self, vault: Vault):
         self.v = vault
@@ -139,6 +147,8 @@ class Checker:
                 continue
             if not fd.required.evaluate(fm, t):
                 continue
+            if t == "asset" and fd.name == "requested" and is_legacy_request(fm):
+                continue                      # asset vyrobený před zavedením karet (zadání 0.28, CR-036)
             if fd.name not in fm:
                 self.add("G7", note, f"chybí povinné pole {fd.name}")
             elif is_empty(fm[fd.name]) and not fd.allow_empty:
@@ -163,6 +173,9 @@ class Checker:
 
         if self.game:
             self._check_game_rules(note, t)
+            if fm.get("status") == "rejected" and fm.get("validity") == "valid":     # zadání 0.28, CR-040
+                self.add("G7", note, "status: rejected s validity: valid: nastav validity: superseded nebo archived "
+                                     "(zavržený dokument je neaktivní, 13 kap. 10.21)", severity="warning")
             if t == "asset":
                 self.check_asset(note)
         self.check_sections(note)
@@ -218,10 +231,13 @@ class Checker:
             else:
                 need_section("Z kódu", why)
             purpose = sec(ASSET_PURPOSE)
-            if not (_AXES_RE.search(purpose) and _PIVOT_RE.search(purpose)):
+            # osy a pivot jen u meshe a Blueprintu; materiál a textura místo nich náhled textury nebo vzorníku
+            # (zadání 0.28, CR-036)
+            if kind in ("mesh", "blueprint") and not (_AXES_RE.search(purpose) and _PIVOT_RE.search(purpose)):
                 self.add("G7", note, f"karta assetu ({why}): v ## {ASSET_PURPOSE} chybí osy a pivot")
             if not _PREVIEW_RE.search(purpose):
-                self.add("G7", note, f"karta assetu ({why}): v ## {ASSET_PURPOSE} chybí vložený náhled (![[…png]])")
+                what = ("náhled textury nebo vzorníku" if kind in ("material", "texture") else "náhled")
+                self.add("G7", note, f"karta assetu ({why}): v ## {ASSET_PURPOSE} chybí vložený {what} (![[…png]])")
         if status in ("imported", "verified"):
             need_field("ue_path", f"{status}, od imported")
             if self.asset_in_ue_report(note):              # etapa C: Stav v UE = blok, je-li asset v reportu

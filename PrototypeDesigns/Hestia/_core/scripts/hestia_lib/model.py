@@ -1,10 +1,12 @@
 """Model vaultu pro audit a huby: entity, hierarchie `parent`, dokumenty entit, zralost (zadání 04 kap. 3).
 
-relevant(E,d) = listoví potomci E (nebo E bez potomků) s target_d > 0 a status mimo rejected/on_hold;
+relevant(E,d) = jednotky podstromu E (E a všichni potomci podle `parent`) s vlastním target_d > 0 a status mimo
+                rejected/on_hold; cíl a realizace rodiče patří jen jeho vlastní části, rodič bez cíle je obálka
+                (zadání 0.27, CR-035; 04 kap. 3, 01 kap. 5);
 reached(x,d)  = depth_d (realizace) v režimu build, hloubka návrhu v režimu design (zadání 0.13, 01 kap. 5);
 maturity = |reached ≥ target_d| / |relevant|; depth(E,d) = min reached přes relevant („nejslabší článek“).
-Hloubka návrhu entity v doméně = nejvyšší `depth` platných (`validity: valid`) dokumentů `design` a `spec`
-s touto entitou a doménou, bez zavržených alternativ (`status: rejected`); nezapisuje se.
+Hloubka návrhu entity v doméně = nejvyšší `depth` platných (`validity: valid`) dokumentů `concept`, `design`
+a `spec` (concept od zadání 0.27) s touto entitou a doménou, bez zavržených alternativ (`status: rejected`); nezapisuje se.
 """
 from __future__ import annotations
 
@@ -18,7 +20,7 @@ EXCLUDED_STATUS = {"rejected", "on_hold"}
 INACTIVE_VALIDITY = {"superseded", "archived"}
 # typy, které se počítají jako dokumentace entity v doméně (G3) a ukazují v sekci Dokumenty hubu
 DOC_TYPES = ["concept", "design", "spec", "state", "handover", "guide", "checklist", "reference", "decision"]
-DESIGN_TYPES = ("design", "spec")           # nesou hloubku návrhu (01 kap. 5)
+DESIGN_TYPES = ("concept", "design", "spec")  # nesou hloubku návrhu (01 kap. 5; concept od zadání 0.27)
 OPEN_Q_RE = r"^\s*[-*]\s+\[ \]\s+(.+)$"
 
 
@@ -37,24 +39,14 @@ class Maturity:
         return round(100 * len(self.met) / len(self.relevant)) if self.relevant else 0
 
 
-class Model:
+class LinkResolver:
+    """Rozlišení odkazů a entit dokumentu jen přes jména souborů vaultu (bez čtení ostatních poznámek);
+    základ `Model`, samostatně pro obnovu záznamů `doc_index` (zadání 0.28, CR-033)."""
+
     def __init__(self, vault: Vault):
         self.v = vault
-        self.tx = vault.taxonomy
-        self.notes = [n for n in vault.lint_notes() if n.fm]
-        self.entities: dict[str, Note] = {n.name: n for n in self.notes if n.type == "entity"}
-        self.children: dict[str, list[str]] = {name: [] for name in self.entities}
         self._entity_cache: dict[int, list[str]] = {}
-        self._docs_by_entity: dict[str | None, list[Note]] | None = None
-        self._design_cache: dict[tuple[str, str], int | None] = {}
-        for name, n in self.entities.items():
-            p = self.parent(n)
-            if p in self.children:
-                self.children[p].append(name)
-        for v in self.children.values():
-            v.sort()
 
-    # ------------------------------------------------------------ odkazy
     def link_name(self, value) -> str | None:
         """Jméno poznámky z hodnoty wikilinku (rozlišené ve vaultu, jinak text odkazu)."""
         names = links_in_value(value)
@@ -72,9 +64,6 @@ class Model:
             out.append(rel.rsplit("/", 1)[-1].removesuffix(".md") if status == "ok" and rel else t)
         return out
 
-    def parent(self, n: Note) -> str | None:
-        return self.link_name(n.fm.get("parent"))
-
     def entities_of(self, n: Note) -> list[str]:
         """Všechny entity dokumentu (`entity`: wikilink nebo seznam); dokument se počítá u každé
         z nich, žádná není upřednostněná (01 kap. 9, zadání 0.13.5)."""
@@ -82,6 +71,26 @@ class Model:
         if key not in self._entity_cache:
             self._entity_cache[key] = list(dict.fromkeys(self.link_names(n.fm.get("entity"))))
         return self._entity_cache[key]
+
+
+class Model(LinkResolver):
+    def __init__(self, vault: Vault):
+        super().__init__(vault)
+        self.tx = vault.taxonomy
+        self.notes = [n for n in vault.lint_notes() if n.fm]
+        self.entities: dict[str, Note] = {n.name: n for n in self.notes if n.type == "entity"}
+        self.children: dict[str, list[str]] = {name: [] for name in self.entities}
+        self._docs_by_entity: dict[str | None, list[Note]] | None = None
+        self._design_cache: dict[tuple[str, str], int | None] = {}
+        for name, n in self.entities.items():
+            p = self.parent(n)
+            if p in self.children:
+                self.children[p].append(name)
+        for v in self.children.values():
+            v.sort()
+
+    def parent(self, n: Note) -> str | None:
+        return self.link_name(n.fm.get("parent"))
 
     def entity_of(self, n: Note) -> str | None:
         """První entita dokumentu, jen pro výpis (výpočty berou `entities_of`)."""
@@ -162,19 +171,26 @@ class Model:
             return self.design_depth(name, domain) or 0
         return self.realization(name, domain) or 0
 
+    def own_target(self, name: str, domain: str) -> int | None:
+        """Vlastní cíl entity v doméně (> 0), u rodiče cíl jeho vlastní části (zadání 0.27)."""
+        t = self.num(self.entities[name].fm, f"target_{domain}")
+        return t if t and t > 0 else None
+
     def maturity(self, name: str, domain: str) -> Maturity:
+        """Zralost nad jednotkami podstromu: každá entita podstromu včetně `name` s vlastním cílem
+        (04 kap. 3, zadání 0.27, CR-035)."""
         m = Maturity()
-        for leaf in self.leaves(name):
-            fm = self.entities[leaf].fm
-            target = self.num(fm, f"target_{domain}")
-            if not target or target <= 0 or fm.get("status") in EXCLUDED_STATUS:
+        for unit in sorted(self.subtree(name)):
+            fm = self.entities[unit].fm
+            target = self.own_target(unit, domain)
+            if not target or fm.get("status") in EXCLUDED_STATUS:
                 continue
-            depth = self.reached(leaf, domain)
-            m.relevant.append(leaf)
+            depth = self.reached(unit, domain)
+            m.relevant.append(unit)
             if depth >= target:
-                m.met.append(leaf)
-            if m.weakest is None or (depth, leaf) < m.weakest:
-                m.weakest = (depth, leaf)
+                m.met.append(unit)
+            if m.weakest is None or (depth, unit) < m.weakest:
+                m.weakest = (depth, unit)
         return m
 
     def maturity_cell(self, name: str, domain: str) -> str:
@@ -202,17 +218,30 @@ class Model:
         return n.type == "handover" and n.fm.get("validity") not in INACTIVE_VALIDITY \
             and not n.rel.startswith("Handovers/_archive/")
 
-    def handover_fulfilled(self, n: Note) -> bool:
-        """Splněné předání: sekce Zbývá má položky a žádná není otevřená (12 kap. 5, G5)."""
+    @staticmethod
+    def remaining_items(n: Note) -> tuple[int, int] | None:
+        """(hotové, otevřené) položky sekce Zbývá; None = sekce chybí."""
         sec = section_text(n.body.replace("\r\n", "\n"), "Zbývá")
         if sec is None:
-            return False
+            return None
         import re
-        done = re.findall(r"^\s*[-*]\s+\[[xX]\]", sec, re.M)
-        open_ = re.findall(r"^\s*[-*]\s+\[ \]", sec, re.M)
-        return bool(done) and not open_
+        return (len(re.findall(r"^\s*[-*]\s+\[[xX]\]", sec, re.M)),
+                len(re.findall(r"^\s*[-*]\s+\[ \]", sec, re.M)))
 
-    def open_questions(self, n: Note) -> list[str]:
+    @staticmethod
+    def has_remaining(n: Note) -> bool:
+        """Sekce Zbývá má aspoň jednu položku (prázdná = „sekce Zbývá je prázdná“, zadání 0.28, CR-038)."""
+        items = Model.remaining_items(n)
+        return bool(items and sum(items))
+
+    @staticmethod
+    def handover_fulfilled(n: Note) -> bool:
+        """Splněné předání: sekce Zbývá má položky a žádná není otevřená (12 kap. 5, G5)."""
+        items = Model.remaining_items(n)
+        return bool(items and items[0] and not items[1])
+
+    @staticmethod
+    def open_questions(n: Note) -> list[str]:
         import re
         sec = section_text(n.body.replace("\r\n", "\n"), "Otevřené otázky")
         if not sec:

@@ -4,7 +4,9 @@ Jen čte, nic nezapisuje, bez sítě. Každá kontrola má výsledek OK, UPOZORN
 návod. Část Python a PyYAML běží i bez PyYAML (modul nic z core závislého na PyYAML na začátku neimportuje;
 config.yaml se bez PyYAML čte záložně po řádcích).
 
-- Python >= 3.11 (verze, interpret), PyYAML (verze);
+- Python >= 3.11 (verze, interpret), PyYAML (verze); při starším Pythonu vypíše nalezené vhodné interprety
+  (PATH, `~/venv*`, `~/py*`) a navrhne `hestia_python` (zadání 0.28, CR-039); `hestia_python` z `config.yaml`
+  ověří (spustí ho jen s `-c` a výpisem verze);
 - git (verze), vault v gitovém repozitáři, počet necommitnutých změn (upozornění);
 - vault nalezen (`--vault` nebo nejbližší `Hestia/`), `_core/VERSION`, právo zápisu do vaultu (bez zápisu souboru);
 - `core_source`: existuje, je repozitář se značkami `vX.Y.Z`, nejvyšší značka proti `_core/VERSION`;
@@ -17,6 +19,7 @@ from __future__ import annotations
 
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -108,14 +111,72 @@ def is_remote_fs(fstype: str) -> bool:
     return t in REMOTE_FS or t.startswith("fuse.") or t.startswith("fuse")
 
 
-def checks(vault_arg: str | None, version_info=None, yaml_importer=None, mounts_file: str | None = None) -> list[dict]:
+PROBE = ("import sys\ntry:\n    import yaml\n    y = 1\nexcept ImportError:\n    y = 0\n"
+         "print('%d.%d.%d %d' % (sys.version_info[0], sys.version_info[1], sys.version_info[2], y))")
+INTERPRETER_NAMES = ("python3.13", "python3.12", "python3.11", "python3", "python", "py")
+
+
+def probe_interpreter(exe: str) -> tuple[tuple[int, int, int], bool] | None:
+    """(verze, má PyYAML) interpretu; None = nejde spustit."""
+    try:
+        r = subprocess.run([exe, "-c", PROBE], capture_output=True, text=True, timeout=15)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    m = re.match(r"(\d+)\.(\d+)\.(\d+) ([01])", r.stdout.strip()) if r.returncode == 0 else None
+    return ((int(m[1]), int(m[2]), int(m[3])), m[4] == "1") if m else None
+
+
+def candidate_interpreters(home: Path | None = None, path_env: str | None = None) -> list[str]:
+    """Kandidáti na interpret core (zadání 0.28, CR-039): jména v PATH a prostředí `~/venv*`, `~/py*`."""
+    out: list[str] = []
+    for name in INTERPRETER_NAMES:
+        hit = shutil.which(name, path=path_env)
+        if hit:
+            out.append(hit)
+    home = Path(home) if home is not None else Path.home()
+    for pattern in ("venv*", "py*", ".venv*"):
+        for d in sorted(home.glob(pattern)) if home.is_dir() else []:
+            for rel in ("bin/python3", "bin/python", "Scripts/python.exe", "python.exe"):
+                p = d / rel
+                if p.is_file():
+                    out.append(str(p))
+                    break
+    seen, uniq = set(), []
+    for x in out:
+        key = str(Path(x).resolve()).lower()
+        if key not in seen:
+            seen.add(key)
+            uniq.append(x)
+    return uniq
+
+
+def suitable_interpreters(home: Path | None = None, path_env: str | None = None, probe=None) -> list[tuple[str, str]]:
+    """(cesta, verze) interpretů s Pythonem >= 3.11 a PyYAML."""
+    probe = probe or probe_interpreter
+    out = []
+    for exe in candidate_interpreters(home, path_env):
+        res = probe(exe)
+        if res and res[0][:2] >= envcheck.MIN_PYTHON and res[1]:
+            out.append((exe, ".".join(str(x) for x in res[0])))
+    return out
+
+
+def checks(vault_arg: str | None, version_info=None, yaml_importer=None, mounts_file: str | None = None,
+           home: Path | None = None, path_env: str | None = None, probe=None) -> list[dict]:
     out: list[dict] = []
 
     def add(name: str, status: str, message: str, help_: str = "") -> None:
         out.append({"name": name, "status": status, "message": message, "help": help_})
 
     ok, msg = envcheck.check_python(version_info)
-    add("python", OK if ok else ERR, msg, "" if ok else envcheck.HELP)
+    help_ = ""
+    if not ok:                     # nalezené vhodné interprety a návrh hestia_python (zadání 0.28, CR-039)
+        found = suitable_interpreters(home, path_env, probe)
+        help_ = (("Nalezené vhodné interprety (Python >= 3.11 s PyYAML):\n"
+                  + "\n".join(f"  {exe} ({ver})" for exe, ver in found)
+                  + f"\nNávrh do Maintenance/config.yaml: hestia_python: \"{found[0][0]}\"\n"
+                  "a spouštěj hestia.py tímto interpretem.") if found else envcheck.HELP)
+    add("python", OK if ok else ERR, msg, help_)
     ok, msg = envcheck.check_yaml(yaml_importer)
     add("pyyaml", OK if ok else ERR, msg, "" if ok else envcheck.HELP)
 
@@ -151,6 +212,16 @@ def checks(vault_arg: str | None, version_info=None, yaml_importer=None, mounts_
                 "bez gitu chybí historie změn a lint bez argumentů kontroluje celý vault")
 
     cfg = read_config(vault)
+    hp = cfg.get("hestia_python")
+    if hp:                                                   # interpret instance (zadání 0.28, CR-039)
+        res = (probe or probe_interpreter)(str(hp))
+        if res is None:
+            add("hestia_python", ERR, f"hestia_python {hp} nejde spustit", "oprav cestu v config.yaml")
+        elif res[0][:2] < envcheck.MIN_PYTHON or not res[1]:
+            add("hestia_python", ERR, f"hestia_python {hp}: Python {'.'.join(map(str, res[0]))}"
+                + ("" if res[1] else " bez PyYAML"), "zvol interpret s Pythonem >= 3.11 a PyYAML")
+        else:
+            add("hestia_python", OK, f"hestia_python {hp} (Python {'.'.join(map(str, res[0]))})")
     cs = cfg.get("core_source")
     if not cs:
         add("core_source", WARN, "core_source v config.yaml chybí",

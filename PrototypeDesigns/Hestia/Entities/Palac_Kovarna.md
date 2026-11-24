@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-24
 aliases: []
 # hra
 kind: structure
@@ -17,6 +17,8 @@ status: built
 ue_path:
 assets: []
 depth_structures: 4
+target_structures: 4
+target_gameplay: 0
 ---
 # Palac_Kovarna
 
@@ -27,14 +29,14 @@ depth_structures: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 4 | 4 | – | build | bez cíle |
-| gameplay | – | – | – | design | bez cíle |
+| structures | 4 | 4 | 4 | build | ✔ |
+| gameplay | – | – | 0 | design | ✔ |
 
-Agregace z potomků (04 kap. 3):
+Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| structures | 100 % (1 z 1) | 4 – [[Palac_Kovarna_Vybaveni]] |
+| structures | 100 % (2 z 2) | 4 – [[Palac_Kovarna]] |
 
 <!-- hestia:generated:end -->
 

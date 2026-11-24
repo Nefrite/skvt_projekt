@@ -15,8 +15,11 @@ protected_files: []                # soubory, které skripty nepřepisují (file
 # doc_summary_chars: 6000          # nad prahem čtení po sekcích a povinný ## Souhrn (G14a); výchozí z defaults.yaml
 # doc_split_chars: 20000           # nad prahem doporučení rozdělit dokument (G14b)
 # handover_max_chars: 4000         # předání nad prahem obsahuje víc než zadání a odkazy (G14c)
+# task_close_seconds: 150          # task_close po překročení skončí s výpisem nedokončených kroků (task_close --resume)
 # ue_pivot_far_cm: 500             # kořen actoru dál od středu geometrie = signál pivot_far v reportu z UE
 # queue_task_days: 14              # úkol pro roli (code: role:<Role>) otevřený déle = G5 v auditu
 # asset_default_owner: Crafter     # komu agenda ukáže karty assetů requested bez owner
+steward_active: false              # true = Steward vlastní export_cr a weekly; false = náhradník Curator (rozhodne GameDesigner)
+hestia_python:                     # cesta k interpretu Python ≥ 3.11 (naplánovaná úloha weekly, pokyny první zprávy)
 # asset_request_days: 30           # karta requested bez převzetí déle = G15 (informace)
 # asset_envelope_tolerance_cm: 0.5 # skutečný rozměr assetu větší než envelope o víc = G15

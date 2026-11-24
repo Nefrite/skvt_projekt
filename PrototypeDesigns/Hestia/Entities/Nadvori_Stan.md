@@ -48,14 +48,23 @@ target_gameplay: 0
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[05_constructions]] | – | [[stav_nadvori_stan]] |
+| [[03_ruin]] | `nadvori_spec.py` | – |
+| [[05_constructions]] | `Nadvori_Stan.py`, `Nadvori_Stan_Capture.py`, `stan.py` | [[stav_nadvori_stan]] |
+| [[06_furnishing]] | `Nadvori_Stan.py`, `Nadvori_Stan_Capture.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_Žádné soubory._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/ruin/nadvori_spec.py` | spec | 03_ruin | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Nadvori_Stan.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Nadvori_Stan_Capture.py` | entry | 05_constructions | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Nadvori_Stan.py` | entry | 06_furnishing | name |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Nadvori_Stan_Capture.py` | entry | 06_furnishing | name |
+| `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/stan.py` | library | 05_constructions | header |
 
 <!-- hestia:generated:end -->
 

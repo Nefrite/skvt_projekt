@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Furnisher
-requested: 2026-11-21
+requested_by: legacy
+requested:
 owner: Crafter
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinChestLocked"]
 # hra
 asset_kind: mesh
@@ -65,4 +65,4 @@ Osy: **zámek a závěra −Y**, pásové závěsy +Y, držadla s kruhy ±X, del
 
 ## Poznámky
 - Konstrukce: hoblovaná prkna na soklu, klenuté víko, černé kování bez rzi (`IronClean`): rohovníky, 2 svislé pásy přes korpus a víko, vodorovný pás, nýty, zámková deska s klíčovou dírkou.
-- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.8 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.8 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

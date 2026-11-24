@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Furnisher
-requested: 2026-11-21
+requested_by: legacy
+requested:
 owner: Crafter
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinCampBed"]
 # hra
 asset_kind: mesh
@@ -47,7 +47,7 @@ Osy: X podél lůžka, **hlava −X**; pivot ve středu bounding boxu. Společn�
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBed_A.SM_RuinCampBed_A`
 - `.uasset` na disku: ano
 - Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:269`
-- Data: bez výskytu
+- Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->
 
@@ -68,4 +68,4 @@ Osy: X podél lůžka, **hlava −X**; pivot ve středu bounding boxu. Společn�
 ## Poznámky
 - Konstrukce: 2 příčné klády s kůrou Ø 15 × 75 cm (26 a 24 cm od konců), 10 tyčí s kůrou Ø 5 × 200 cm, sláma (pod hlavou o 3 cm víc), houně s převisem 10 cm; pomocná funkce `_pole`.
 - Funkční: vrch slámy asi 25 cm nad zemí.
-- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.5 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.5 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

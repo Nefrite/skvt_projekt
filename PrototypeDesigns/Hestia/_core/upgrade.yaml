@@ -119,3 +119,21 @@ versions:
       - id: asset_envelope
         text: "Doplnit envelope u karet meshí a Blueprintů od generated (obal skutečného rozměru z bloku Z kódu, zaokrouhleno nahoru na cm); lint ho od 0.23.0 hlásí jako chybu"
     crs: [CR-027_asset_index_knihovni_meshe, CR-028_ue_query_assety, CR-029_prace_s_assety]
+  - version: 0.24.0
+    after: [hubs, compose_role]
+    manual:
+      - id: own_targets
+        text: "Projít cíle a realizaci entit s potomky (target_*, depth_*): od 0.24.0 patří jen vlastní části rodiče (zdivo stavby, terén regionu, hradby) a rodič s cílem se počítá do zralosti jako další jednotka; souhrn potomků z rodiče odebrat, rodič bez vlastní části (obálka) cíl ani depth nemá (01 kap. 5, 04 kap. 3). Návrh dat dělá Curator, rozhoduje GameDesigner"
+    crs: [CR-035_zralost_rodicu_a_matice]
+  - version: 0.25.0
+    after: [compose_role]
+    manual:
+      - id: steward_active
+        text: "Rozhodnout steward_active v Maintenance/config.yaml (GameDesigner): true = Steward vlastní export_cr a weekly (profil core _core/agents/Steward.md, kompilát compose_role Steward), false (výchozí) = export_cr dělá Curator jako náhradník a weekly spouští člověk (13 kap. 10.20)"
+      - id: hestia_python
+        text: "Zapsat hestia_python do Maintenance/config.yaml: cesta k interpretu Python >= 3.11 s PyYAML pro příkazy core (při starém Pythonu ji navrhne doctor); uvést ji i s cestou k vaultu v pokynech první zprávy agentů (šablona v README core, CR-039)"
+      - id: weekly_task
+        text: "Volitelně nastavit naplánovanou úlohu weekly --apply (Claude scheduled task, cron nebo Plánovač úloh Windows) s pevnou cestou k interpretu z hestia_python, na připojené složce s --work-copy; návod v README core (13 kap. 10.20, rozhodnutí GameDesignera)"
+      - id: outbox_sent
+        text: "Založit Maintenance/outbox/sent/ a přesunout do něj už odeslané CR a hlášení (odesílá a přesouvá člověk; export_cr ani lint sent/ nekontrolují)"
+    crs: [CR-033_vykon_pripojena_slozka, CR-034_kompilaty_hlavicka_verze, CR-036_assety_po_prevodu, CR-037_manifest_assetu_tabulky_a_data, CR-038_pravidla_roli_v_dokumentaci, CR-039_start_cesta_a_interpret, CR-040_drobne_opravy_kontrol]

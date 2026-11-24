@@ -23,7 +23,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 | Entita | environment | structures | paths | npc | gameplay | narrative |
 |---|---|---|---|---|---|---|
 | [[Characters]] | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle | bez cíle |
-| [[Lapikus_Region]] | 0 % (1) | 75 % (3) | 0 % (0) | bez cíle | 0 % (0) | bez cíle |
+| [[Lapikus_Region]] | 33 % (1) | 83 % (3) | 0 % (0) | bez cíle | 0 % (0) | 0 % (0) |
 
 **Aktivní předání**
 

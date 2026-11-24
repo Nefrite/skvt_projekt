@@ -231,8 +231,10 @@ Debug switch je statický, takže v hotové hře nic nestojí. Lze ho v materiá
 
 | Skript | Role | Entity | Dokumenty |
 |---|---|---|---|
+| `/PrototypeDesigns/Lapikus/01_terrain/UE_Prikop_Landscape.py` | entry | [[Brana]], [[Lapikus_Region]] | [[navrh_brana_prikop]], [[stav_brana]], [[01_terrain]] |
 | `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_heightmap_505_50cm.png` | data | [[Lapikus_Region]] | – |
 | `/PrototypeDesigns/Lapikus/01_terrain/Zricenina_preview_orez.png` | data | [[Lapikus_Region]] | – |
+| `/PrototypeDesigns/Lapikus/tools/terrain/gen_moat.py` | entry | [[Brana]], [[Strazni_Vez]], [[Hradby_a_Brana]], [[Lapikus_Region]] | [[navrh_brana_prikop]], [[stav_brana]], [[01_terrain]] |
 
 <!-- hestia:generated:end -->
 

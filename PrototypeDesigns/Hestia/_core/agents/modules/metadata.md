@@ -5,7 +5,7 @@ trigger: zápis frontmatteru
 requires: []
 modes: [vault]
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-24
 ---
 # Metadata
 
@@ -21,6 +21,9 @@ Zakládáš dokument nebo měníš jeho frontmatter, případně frontmatter hub
    Zbytek (kategorie, aliasy, vazby) doplní Curator.
 3. Hodnoty ber z taxonomie (`_core/taxonomy/` a `Maintenance/taxonomy_local/`); novou hodnotu nevymýšlej, navrhni ji Curatorovi.
 4. Frontmatter upravuj po řádcích: neměň pořadí klíčů, komentáře `# orchestrace` / `# hra` ani uvozovky.
+   **Zralost (04 kap. 3):** jednotky = entita a všichni potomci podle `parent`, kteří mají v doméně vlastní `target_d` > 0 (bez `status` `rejected`, `on_hold`); cíl a `depth_d` rodiče patří jen jeho vlastní části, rodič bez cíle je obálka.
+   - dosaženo: `depth_d` v režimu `build`, hloubka návrhu (nejvyšší `depth` platných `concept`, `design`, `spec`) v režimu `design`;
+   - zralost = splněné jednotky / jednotky; hloubka = nejslabší jednotka.
 5. `kind`, `parent`, `located_in`, `derived_from`, `alternative_to` hubu měníš jen po schváleném návrhu; `target_*` jen určená role nebo člověk, se zápisem do `changes.md`.
 6. Změnu metadat ve více než 10 souborech nech předem schválit (seznam změn z dry-run).
 

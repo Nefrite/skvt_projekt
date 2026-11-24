@@ -84,6 +84,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled_etapa1.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_drevo_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stavby_nadvori_stan_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_ostroh_dostavba_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_ostroh_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_ostroh_podlaha_nahled.png` | data | Lapikus | Lapikus | 05_constructions | structures | folder | – |
@@ -106,6 +107,8 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Podesta.py` | entry | Brana_Straz | Brana_Straz | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Zataras.py` | entry | Brana | Brana | 05_constructions | structures | name | navrh_brana_prikop, stav_brana |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Etapa.py` | entry | Lapikus | Lapikus | 05_constructions | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Nadvori_Stan.py` | entry | Nadvori_Stan | Nadvori_Stan | 05_constructions | structures | name | navrh_nadvori_stan, 05_constructions |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Nadvori_Stan_Capture.py` | entry | Nadvori_Stan | Nadvori_Stan | 05_constructions | structures | name | navrh_nadvori_stan, 05_constructions |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | Guesthouse | Guesthouse | 05_constructions | structures | alias | – |
@@ -137,6 +140,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/pristresek.py` | library | – | – | 05_constructions | structures | step | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/pult.py` | library | – | – | 05_constructions | structures | step | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/srub.py` | library | – | – | 05_constructions | structures | step | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/stan.py` | library | – | Nadvori_Stan | 05_constructions | structures | header | navrh_nadvori_stan, 05_constructions |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/stena.py` | library | – | – | 05_constructions | structures | step | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/vez.py` | library | Vez | Vez | 05_constructions | structures | name | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/vybaveni.py` | library | – | – | 05_constructions | structures | step | – |
@@ -149,168 +153,17 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Brana_Straz_Capture.py` | entry | Brana_Straz | Brana_Straz | 06_furnishing | structures | name | navrh_brana_straz, stav_brana_straz, 06_furnishing |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing, Katalog_props |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Guesthouse_Capture.py` | entry | Guesthouse | Guesthouse | 06_furnishing | structures | name | navrh_guesthouse_vybaveni, stav_guesthouse, 06_furnishing |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Nadvori_Stan.py` | entry | Nadvori_Stan | Nadvori_Stan | 06_furnishing | structures | name | navrh_nadvori_stan, 06_furnishing |
+| `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Nadvori_Stan_Capture.py` | entry | Nadvori_Stan | Nadvori_Stan | 06_furnishing | structures | name | navrh_nadvori_stan, 06_furnishing |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna.py` | entry | Palac_Kovarna | Palac_Kovarna | 06_furnishing | structures | name | – |
 | `/PrototypeDesigns/Lapikus/06_furnishing/vybaveni/Palac_Kovarna_Capture.py` | entry | Palac_Kovarna | Palac_Kovarna | 06_furnishing | structures | name | – |
 | `/PrototypeDesigns/Lapikus/README.txt` | data | – | – | – | – | header | README_PROJEKT |
 | `/PrototypeDesigns/Lapikus/build_fullscope.py` | entry | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/build_normal.py` | entry | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinAnvil_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinArmorStand_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinAxe_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBarrel_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBasket_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBedFolded_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBedLarge_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBed_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBellows_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBroadaxe_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinBundle_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinCampBedFolded_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinCampBed_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinChestLocked_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinChestSmall_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinChest_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinChisel_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinCoalBoxLid_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinCoalBox_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinCrosscutSaw_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinDoor_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinGrindstoneTreadle_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinGrindstone_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinHammer_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinIronBars_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinLadder_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinMallet_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinNailHammer_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinNailHeader_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinOvenDoor_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinShelf_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinShutter_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinStool_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinStump_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinStump_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinTable_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinTongs_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinWoodpile_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/props/SM_RuinWorkbench_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinAshlar.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R12_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R12_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R18_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R18_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R26_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R26_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R34_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R34_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R12_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R12_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R12_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R18_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R18_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R18_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R26_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R26_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R26_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R34_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R34_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R34_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R12_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R12_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R12_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R18_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R18_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R18_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R26_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R26_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R26_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R34_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R34_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R34_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasSample_A.obj` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasTent_A.json` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasTent_A.obj` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVezGable_A.json` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVezGable_A.obj` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVez_A.json` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVez_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinLashing_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinLashing_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinRope_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinRope_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinChimney_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinChimney_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinOvenDome_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinOvenDome_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinSmokeHood_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinSmokeHood_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinWattlePanel_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinWattlePanel_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wattle/SM_RuinWattlePanel_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinBarkStrip_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinBarkStrip_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinBarkStrip_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinForkHead_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinForkHead_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinGutterBark_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinGutterBark_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinGutter_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinGutter_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLogBark_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLogBark_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLogBark_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLogPeeling_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLogPeeling_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLog_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLog_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinLog_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPlank_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPlank_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPlank_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPoleBark_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPoleBark_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPoleBark_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPole_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPole_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPole_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPost_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPost_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinPost_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinStakeSmall_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinStakeSmall_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinStake_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinStake_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinStake_C.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinTimber_A.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinTimber_B.obj` | output | – | – | – | structures | – | – |
-| `/PrototypeDesigns/Lapikus/meshes/wood/SM_RuinTimber_C.obj` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/new_designs/navrh_palac_obydli_puvodni_pudorys.png` | data | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinBark_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinBark_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinCanvasMacro_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinCanvas_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinCanvas_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinCharcoal_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinCharcoal_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinDaub_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinDaub_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinEndGrain_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinEndGrain_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinIronClean_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinIronClean_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinIron_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinIron_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinLeather_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinLeather_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinRope_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinRope_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinStraw_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinStraw_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinWater_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinWater_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinWattle_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinWattle_N.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinWool_D.png` | output | – | – | – | – | – | – |
-| `/PrototypeDesigns/Lapikus/textures/T_RuinWool_N.png` | output | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/tools/1_gen_heightmap_1009.py` | entry | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/tools/2_derive_505.py` | entry | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/tools/checks/UE_Kontrola_Transformaci.py` | check | – | – | – | – | – | – |
@@ -356,6 +209,7 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/tools/ruin/gen_layout.py` | entry | Lapikus | Lapikus | 03_ruin | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/layout_from_level.json` | data | Lapikus | Lapikus | 03_ruin | structures | folder | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/massing.py` | entry | Lapikus | Lapikus | 03_ruin | structures | folder | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/nadvori_spec.py` | spec | Nadvori | Nadvori_Stan, Nadvori | 03_ruin | structures | name | navrh_nadvori_stan, 05_constructions, 06_furnishing |
 | `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | Ostroh | Ostroh | 03_ruin | structures | name | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | Palac | Palac | 03_ruin | structures | name | navrh_palac_obydli_stred |
 | `/PrototypeDesigns/Lapikus/tools/ruin/tower_spec.py` | spec | Lapikus | Lapikus | 03_ruin | structures | folder | navrh_vez_pristresek |
@@ -396,7 +250,7 @@ Z kódu podle `taxonomy_local/asset_sources.yaml` (literály, kód se nespoušt�
 | `SM_RuinCanvasSample_A` | textile | 300 × 221.6 × 93.8 | 1 (SM_RuinCanvasSample) | /Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasSample_A.SM_RuinCanvasSample_A | ano | Assets/textile/SM_RuinCanvasSample_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:232 |
 | `SM_RuinCanvasVez_A` | textile | 600 × 430 × 180.5 | 1 (SM_RuinCanvasVez) | /Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVez_A.SM_RuinCanvasVez_A | ano | Assets/textile/SM_RuinCanvasVez_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:234 |
 | `SM_RuinCanvasVezGable_A` | textile | 2 × 269 × 111.8 | 1 (SM_RuinCanvasVez) | /Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A | ano | Assets/textile/SM_RuinCanvasVezGable_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:235 |
-| `SM_RuinCanvasTent_A` | textile | 246 × 227.7 × 189.6 | 1 (SM_RuinCanvasTent) | /Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasTent_A.SM_RuinCanvasTent_A | ano | Assets/textile/SM_RuinCanvasTent_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:236 |
+| `SM_RuinCanvasTent_A` | textile | 246 × 227.7 × 189.6 | 1 (SM_RuinCanvasTent) | /Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasTent_A.SM_RuinCanvasTent_A | ano | Assets/textile/SM_RuinCanvasTent_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:236 |
 | `SM_RuinStump_A` | props | 53.6 × 49.7 × 46.7 | 1 (SM_RuinStump) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_A.SM_RuinStump_A | ano | Assets/props/SM_RuinStump_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:238 |
 | `SM_RuinStump_B` | props | 53.6 × 49.7 × 46.7 | 1 (SM_RuinStump) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinStump_B.SM_RuinStump_B | ano | Assets/props/SM_RuinStump_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:238 |
 | `SM_RuinAnvil_A` | props | 59.1 × 18.1 × 24.3 | 3 (SM_RuinAnvil) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinAnvil_A.SM_RuinAnvil_A | ano | Assets/props/SM_RuinAnvil_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:239 |
@@ -429,10 +283,77 @@ Z kódu podle `taxonomy_local/asset_sources.yaml` (literály, kód se nespoušt�
 | `SM_RuinDoor_A` | props | 101.8 × 9.3 × 219.3 | 1 (SM_RuinDoor) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinDoor_A.SM_RuinDoor_A | ano | Assets/props/SM_RuinDoor_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:266 |
 | `SM_RuinShutter_A` | props | 61.4 × 8.4 × 59.2 | 1 (SM_RuinShutter) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinShutter_A.SM_RuinShutter_A | ano | Assets/props/SM_RuinShutter_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:267 |
 | `SM_RuinOvenDoor_A` | props | 45.9 × 8.6 × 41.9 | 1 (SM_RuinOvenDoor) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinOvenDoor_A.SM_RuinOvenDoor_A | ano | Assets/props/SM_RuinOvenDoor_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:268 |
-| `SM_RuinCampBed_A` | props | 198.8 × 76.2 × 28.8 | 1 (SM_RuinCampBed) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBed_A.SM_RuinCampBed_A | ano | Assets/props/SM_RuinCampBed_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:269 |
+| `SM_RuinCampBed_A` | props | 198.8 × 76.2 × 28.8 | 1 (SM_RuinCampBed) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBed_A.SM_RuinCampBed_A | ano | Assets/props/SM_RuinCampBed_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:269 |
 | `SM_RuinCampBedFolded_A` | props | 200 × 76.5 × 32.1 | 1 (SM_RuinCampBedFolded) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBedFolded_A.SM_RuinCampBedFolded_A | ano | Assets/props/SM_RuinCampBed_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:270 |
-| `SM_RuinChestSmall_A` | props | 59.3 × 38 × 31.7 | 1 (SM_RuinChestSmall) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestSmall_A.SM_RuinChestSmall_A | ano | Assets/props/SM_RuinChestSmall_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:271 |
-| `SM_RuinBundle_A` | props | 76 × 43.4 × 22.5 | 2 (SM_RuinBundle) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinBundle_A.SM_RuinBundle_A | ano | Assets/props/SM_RuinBundle_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:272 |
+| `SM_RuinChestSmall_A` | props | 59.3 × 38 × 31.7 | 1 (SM_RuinChestSmall) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestSmall_A.SM_RuinChestSmall_A | ano | Assets/props/SM_RuinChestSmall_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:271 |
+| `SM_RuinBundle_A` | props | 76 × 43.4 × 22.5 | 2 (SM_RuinBundle) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinBundle_A.SM_RuinBundle_A | ano | Assets/props/SM_RuinBundle_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:272 |
 | `SM_RuinChestLocked_A` | props | 94.2 × 54.2 × 50.7 | 1 (SM_RuinChestLocked) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestLocked_A.SM_RuinChestLocked_A | ano | Assets/props/SM_RuinChestLocked_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:273 |
 | `SM_RuinBedLarge_A` | props | 250.2 × 109.1 × 95 | 2 (SM_RuinBedLarge) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinBedLarge_A.SM_RuinBedLarge_A | ano | Assets/props/SM_RuinBedLarge_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:274 |
 | `SM_RuinArmorStand_A` | props | 60.1 × 60.3 × 175 | 3 (SM_RuinArmorStand) | /Game/Skvt/Lapikus/Ruin/Props/SM_RuinArmorStand_A.SM_RuinArmorStand_A | ano | Assets/props/SM_RuinArmorStand_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:275 |
+| `SM_RuinLog_A` | wood | 100 × 20 × 20 | 1 (SM_RuinLog) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A | ano | Assets/wood/SM_RuinLog_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:194 |
+| `SM_RuinLog_B` | wood | 100 × 20 × 20 | 1 (SM_RuinLog) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_B.SM_RuinLog_B | ano | Assets/wood/SM_RuinLog_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:194 |
+| `SM_RuinLog_C` | wood | 100 × 20 × 20 | 1 (SM_RuinLog) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_C.SM_RuinLog_C | ano | Assets/wood/SM_RuinLog_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:194 |
+| `SM_RuinLogBark_A` | wood | 100 × 20 × 20 | 1 (SM_RuinLog) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_A.SM_RuinLogBark_A | ano | Assets/wood/SM_RuinLogBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:195 |
+| `SM_RuinLogBark_B` | wood | 100 × 20 × 20 | 1 (SM_RuinLog) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_B.SM_RuinLogBark_B | ano | Assets/wood/SM_RuinLogBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:195 |
+| `SM_RuinLogBark_C` | wood | 100 × 20 × 20 | 1 (SM_RuinLog) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogBark_C.SM_RuinLogBark_C | ano | Assets/wood/SM_RuinLogBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:195 |
+| `SM_RuinLogPeeling_A` | wood | 100 × 20 × 20 | 1 (SM_RuinLogPeeling) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogPeeling_A.SM_RuinLogPeeling_A | ano | Assets/wood/SM_RuinLogPeeling_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:196 |
+| `SM_RuinLogPeeling_B` | wood | 100 × 20 × 20 | 1 (SM_RuinLogPeeling) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLogPeeling_B.SM_RuinLogPeeling_B | ano | Assets/wood/SM_RuinLogPeeling_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:196 |
+| `SM_RuinPole_A` | wood | 100 × 8 × 8 | 1 (SM_RuinPole) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_A.SM_RuinPole_A | ano | Assets/wood/SM_RuinPole_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:197 |
+| `SM_RuinPole_B` | wood | 100 × 8 × 8 | 1 (SM_RuinPole) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_B.SM_RuinPole_B | ano | Assets/wood/SM_RuinPole_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:197 |
+| `SM_RuinPole_C` | wood | 100 × 8 × 8 | 1 (SM_RuinPole) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPole_C.SM_RuinPole_C | ano | Assets/wood/SM_RuinPole_A.md | Lapikus | PrototypeDesigns/Lapikus/zrlib/config.py:197 |
+| `SM_RuinPoleBark_A` | wood | 100 × 8 × 8 | 1 (SM_RuinPole) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_A.SM_RuinPoleBark_A | ano | Assets/wood/SM_RuinPoleBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:198 |
+| `SM_RuinPoleBark_B` | wood | 100 × 8 × 8 | 1 (SM_RuinPole) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_B.SM_RuinPoleBark_B | ano | Assets/wood/SM_RuinPoleBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:198 |
+| `SM_RuinPoleBark_C` | wood | 100 × 8 × 8 | 1 (SM_RuinPole) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPoleBark_C.SM_RuinPoleBark_C | ano | Assets/wood/SM_RuinPoleBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:198 |
+| `SM_RuinStake_A` | wood | 200 × 20 × 20 | 1 (SM_RuinStake) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_A.SM_RuinStake_A | ano | Assets/wood/SM_RuinStake_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:199 |
+| `SM_RuinStake_B` | wood | 200 × 20 × 20 | 1 (SM_RuinStake) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_B.SM_RuinStake_B | ano | Assets/wood/SM_RuinStake_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:199 |
+| `SM_RuinStake_C` | wood | 200 × 20 × 20 | 1 (SM_RuinStake) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStake_C.SM_RuinStake_C | ano | Assets/wood/SM_RuinStake_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:199 |
+| `SM_RuinStakeSmall_A` | wood | 160 × 7 × 7 | 1 (SM_RuinStake) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStakeSmall_A.SM_RuinStakeSmall_A | ano | Assets/wood/SM_RuinStakeSmall_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:200 |
+| `SM_RuinStakeSmall_B` | wood | 160 × 7 × 7 | 1 (SM_RuinStake) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStakeSmall_B.SM_RuinStakeSmall_B | ano | Assets/wood/SM_RuinStakeSmall_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:200 |
+| `SM_RuinForkHead_A` | wood | 45 × 30 × 12 | 1 (SM_RuinForkHead) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_A.SM_RuinForkHead_A | ano | Assets/wood/SM_RuinForkHead_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:201 |
+| `SM_RuinForkHead_B` | wood | 45 × 30 × 12 | 1 (SM_RuinForkHead) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinForkHead_B.SM_RuinForkHead_B | ano | Assets/wood/SM_RuinForkHead_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:201 |
+| `SM_RuinGutter_A` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutter_A.SM_RuinGutter_A | ano | Assets/wood/SM_RuinGutter_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:202 |
+| `SM_RuinGutter_B` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutter_B.SM_RuinGutter_B | ano | Assets/wood/SM_RuinGutter_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:202 |
+| `SM_RuinGutterBark_A` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutterBark_A.SM_RuinGutterBark_A | ano | Assets/wood/SM_RuinGutterBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:203 |
+| `SM_RuinGutterBark_B` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutterBark_B.SM_RuinGutterBark_B | ano | Assets/wood/SM_RuinGutterBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:203 |
+| `SM_RuinTimber_A` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinTimber_B` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinTimber_C` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPlank_A` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPlank_B` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPlank_C` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPost_A` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPost_B` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_B.SM_RuinPost_B | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPost_C` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_C.SM_RuinPost_C | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinAshlar` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinAshlar.SM_RuinAshlar | ano | Assets/stone/SM_RuinAshlar.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinAshlar.obj |
+| `SM_RuinDressed_R12_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R12_A.obj |
+| `SM_RuinDressed_R12_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R12_B.obj |
+| `SM_RuinDressed_R18_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_A.SM_RuinDressed_R18_A | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R18_A.obj |
+| `SM_RuinDressed_R18_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R18_B.SM_RuinDressed_R18_B | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R18_B.obj |
+| `SM_RuinDressed_R26_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_A.SM_RuinDressed_R26_A | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R26_A.obj |
+| `SM_RuinDressed_R26_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R26_B.SM_RuinDressed_R26_B | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R26_B.obj |
+| `SM_RuinDressed_R34_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_A.SM_RuinDressed_R34_A | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R34_A.obj |
+| `SM_RuinDressed_R34_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R34_B.SM_RuinDressed_R34_B | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R34_B.obj |
+| `SM_RuinStone_R12_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_A.SM_RuinStone_R12_A | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R12_A.obj |
+| `SM_RuinStone_R12_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_B.SM_RuinStone_R12_B | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R12_B.obj |
+| `SM_RuinStone_R12_C` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R12_C.SM_RuinStone_R12_C | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R12_C.obj |
+| `SM_RuinStone_R18_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_A.SM_RuinStone_R18_A | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R18_A.obj |
+| `SM_RuinStone_R18_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_B.SM_RuinStone_R18_B | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R18_B.obj |
+| `SM_RuinStone_R18_C` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R18_C.SM_RuinStone_R18_C | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R18_C.obj |
+| `SM_RuinStone_R26_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_A.SM_RuinStone_R26_A | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R26_A.obj |
+| `SM_RuinStone_R26_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_B.SM_RuinStone_R26_B | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R26_B.obj |
+| `SM_RuinStone_R26_C` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R26_C.SM_RuinStone_R26_C | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R26_C.obj |
+| `SM_RuinStone_R34_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_A.SM_RuinStone_R34_A | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R34_A.obj |
+| `SM_RuinStone_R34_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_B.SM_RuinStone_R34_B | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R34_B.obj |
+| `SM_RuinStone_R34_C` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_R34_C.SM_RuinStone_R34_C | ano | Assets/stone/SM_RuinStone_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_R34_C.obj |
+| `SM_RuinStone_W_R12_A` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_A.SM_RuinStone_W_R12_A | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R12_A.obj |
+| `SM_RuinStone_W_R12_B` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_B.SM_RuinStone_W_R12_B | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R12_B.obj |
+| `SM_RuinStone_W_R12_C` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R12_C.SM_RuinStone_W_R12_C | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R12_C.obj |
+| `SM_RuinStone_W_R18_A` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_A.SM_RuinStone_W_R18_A | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R18_A.obj |
+| `SM_RuinStone_W_R18_B` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_B.SM_RuinStone_W_R18_B | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R18_B.obj |
+| `SM_RuinStone_W_R18_C` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R18_C.SM_RuinStone_W_R18_C | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R18_C.obj |
+| `SM_RuinStone_W_R26_A` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_A.SM_RuinStone_W_R26_A | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R26_A.obj |
+| `SM_RuinStone_W_R26_B` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_B.SM_RuinStone_W_R26_B | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R26_B.obj |
+| `SM_RuinStone_W_R26_C` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R26_C.SM_RuinStone_W_R26_C | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R26_C.obj |
+| `SM_RuinStone_W_R34_A` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_A.SM_RuinStone_W_R34_A | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R34_A.obj |
+| `SM_RuinStone_W_R34_B` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_B.SM_RuinStone_W_R34_B | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R34_B.obj |
+| `SM_RuinStone_W_R34_C` | stone | – | 2 (SM_RuinStone_W_) | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinStone_W_R34_C.SM_RuinStone_W_R34_C | ano | Assets/stone/SM_RuinStone_W_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinStone_W_R34_C.obj |

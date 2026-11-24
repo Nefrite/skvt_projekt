@@ -78,9 +78,9 @@ def key_of(f) -> tuple:
 
 
 class Auditor:
-    def __init__(self, vault: Vault, day: _dt.date | None = None):
+    def __init__(self, vault: Vault, day: _dt.date | None = None, model: Model | None = None):
         self.v = vault
-        self.m = Model(vault)
+        self.m = model or Model(vault)
         self.tx = vault.taxonomy
         self.th = vault.config.thresholds
         self.day = day or today()
@@ -229,7 +229,9 @@ class Auditor:
                                                                  ("doc_split_chars", 20000),
                                                                  ("handover_max_chars", 4000)))
         for n in self.m.notes:
-            if n.rel.startswith(("Maintenance/", "Dashboard/", "Roles/_compiled/"))                     or n.fm.get("validity") in INACTIVE_VALIDITY:
+            # status: rejected je neaktivní jako validity: superseded (zadání 0.28, CR-040)
+            if (n.rel.startswith(("Maintenance/", "Dashboard/", "Roles/_compiled/"))
+                    or n.fm.get("validity") in INACTIVE_VALIDITY or n.fm.get("status") == "rejected"):
                 continue
             chars = content_chars(n)
             if n.type == "handover":

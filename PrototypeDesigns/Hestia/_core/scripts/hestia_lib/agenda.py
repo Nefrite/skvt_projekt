@@ -148,6 +148,9 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         if asset_part["requests"]:
             lines.append(f"Moje požadavky na assety ({len(asset_part['requests'])}):")
             lines += [assets.card_line(c, with_owner=True) for c in asset_part["requests"]]
+        if asset_part.get("imported_without_stand_in"):     # jen počtem (zadání 0.28, CR-036)
+            lines.append(f"Moje požadavky: {asset_part['imported_without_stand_in']} vyrobených bez grayboxu "
+                         f"(imported, stand_in: none; čekají na ověření)")
     if part is not None:
         lines.append(f"{part['label']}: {part['count']}")
         for i in part["items"][:20]:

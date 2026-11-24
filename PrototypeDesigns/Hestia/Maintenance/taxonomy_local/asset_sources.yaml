@@ -9,6 +9,28 @@ meshes:
     ue_root: {variable: MESH_ROOT}
     ue_dirs: {variable: MESH_DIRS}
     content_dir: Content/Skvt/Lapikus/Ruin
+  - file: PrototypeDesigns/Lapikus/zrlib/config.py      # kulatina (CR-037: pevná category)
+    variable: ROUND_MESHES
+    fields: [size, variants, slots]
+    category: wood
+    name: "{key}_{variant}"
+    ue_root: {variable: MESH_ROOT}
+    ue_dirs: {variable: MESH_DIRS}
+    content_dir: Content/Skvt/Lapikus/Ruin
+  - file: PrototypeDesigns/Lapikus/zrlib/config.py      # hraněné dřevo: hodnota = rozměr (CR-037)
+    variable: WOOD_NOMINAL
+    fields: [size]
+    category: wood
+    variants: ABC
+    name: "{key}_{variant}"
+    ue_root: {variable: MESH_ROOT}
+    ue_dirs: {variable: MESH_DIRS}
+    content_dir: Content/Skvt/Lapikus/Ruin
+  - files: {dir: PrototypeDesigns/Lapikus/meshes/stone, pattern: "SM_Ruin*.obj"}   # kameny bez tabulky (CR-037)
+    category: stone
+    ue_root: {file: PrototypeDesigns/Lapikus/zrlib/config.py, variable: MESH_ROOT}
+    ue_dirs: {file: PrototypeDesigns/Lapikus/zrlib/config.py, variable: MESH_DIRS}
+    content_dir: Content/Skvt/Lapikus/Ruin
 versions:
   - file: PrototypeDesigns/Lapikus/zrlib/config.py
     variable: STONE_MESH_VERSION

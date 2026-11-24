@@ -1,7 +1,7 @@
 ---
 type: reference
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-24
 ---
 # Pravidla zápisu (výchozí, core)
 
@@ -45,6 +45,21 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 | Kód, data, assety projektu | ✔ | ✘ | ✘ | ✔ (stavitel, furnisher …) |
 | Přesun a přejmenování | ✔ | po schválení | ✘ | ✘ |
 | Mazání | ✔ | ✘ (jen `_to_delete`) | ✘ | ✘ (jen `_to_delete`) |
+
+## Steward (05 kap. 3.2b)
+
+Steward spravuje Hestii jako nástroj (verze core, zdraví instance, komunikace s HearthLore). Při `steward_active: false` (`config.yaml`, výchozí) není aktivní: `export_cr` dělá Curator jako náhradník a `update_core` člověk.
+
+| Oblast | Steward |
+|---|---|
+| `_core/` | jen `update_core` (dry-run sám, `--apply` po schválení) |
+| `config.yaml`, `taxonomy_local/ue_map.yaml` | ✔ po schválení (klíče související s verzí core a ručními úkoly) |
+| `Roles/` (profily, lokální moduly) | ✔ jen na výslovný pokyn GameDesignera nebo podle schváleného ručního úkolu |
+| `Roles/_compiled/`, `doc_index`, generované výstupy | ✔ (skripty) |
+| `outbox/` (change requesty, hlášení) | ✔ připravuje (CR sdíleně s Curatorem, hlášení sám); odesílá člověk, odeslané přesune do `outbox/sent/` |
+| `queue.md`, `reports/` | ✔ |
+| `changes.md`, `structure_version.md`, `structure_log.md` | ✔ jen připisovat |
+| Obsah (`Docs/`, huby, `depth_*`, `target_*`, `KnowHow/`, `Handovers/`, `Inbox/`, `Scratch/`) | ✘ |
 
 ## Knihovník (`Librarian`, 05 kap. 3.2a)
 

@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Furnisher
-requested: 2026-11-21
+requested_by: legacy
+requested:
 owner: Crafter
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinChestSmall"]
 # hra
 asset_kind: mesh
@@ -46,7 +46,7 @@ Osy: **zámek (oko na zámek) −Y**, držadla ±X; pivot ve středu bounding bo
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestSmall_A.SM_RuinChestSmall_A`
 - `.uasset` na disku: ano
 - Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:271`
-- Data: bez výskytu
+- Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->
 
@@ -65,4 +65,4 @@ Osy: **zámek (oko na zámek) −Y**, držadla ±X; pivot ve středu bounding bo
 
 ## Poznámky
 - Železo s patinou rzi (`Iron`).
-- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.5 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.5 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

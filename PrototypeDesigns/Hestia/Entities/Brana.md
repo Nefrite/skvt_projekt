@@ -105,8 +105,7 @@ Souhrn: requested 0, in_progress 0, generated 0, imported 4, verified 0 · grayb
 - [x] Unreal (report `ue_Brana.json`, 2026-11-21): bráně nepatří žádný actor, zdi `Ruin/Brana` jsou podle `ue_map` u [[Strazni_Vez]] (brány jsou otvory ve zdech, GameDesigner 2026-11-21). Odpovídá tomu `depth_structures: 4` u brány, nebo se realizace vede jen u strážní věže? — agent pilotu, 2026-11-21 → GameDesigner 2026-11-21: ne – zdi brány jsou realizací strážní věže; brána sama je dána polohou v ní, její podoba (zátaras, vrata apod.) je teprve na game designu. Nová hodnota `depth_structures` čeká na potvrzení GameDesignera (otázka níže)
 <!-- hestia:generated:start -->
 
-- Fronta F-0003 (G4, [[Brana]]): status built bez platného dokumentu state
-- Fronta F-0029 (G3, [[Brana]]): bez dokumentu v doméně structures (target_structures 4)
+_Žádné otevřené otázky z dokumentů, fronty ani scratch._
 
 <!-- hestia:generated:end -->
 

@@ -1,7 +1,7 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-24
 modules: [start, metadata, file_safety, knowhow_lookup, question, inbox_import]
 context: []
 knowhow_tags: []
@@ -19,7 +19,7 @@ Udržuješ strukturu vaultu: metadata, huby, metadata importu v `Inbox/`, lokál
 - připravuješ návrhy (`proposal`: `assign`, `split`, `reparent`, `promote`, `derive`, `rename`);
 - spouštíš `asset_index`, `hubs`, `doc_index` a `compose_role`;
 - zapisuješ do `changes.md` a `structure_log.md`; podněty rolí pro Hestii z `queue.md` (`code: hestia[:<kategorie>]`) převádíš do `structure_log.md` příkazem `feedback_log`;
-- připravuješ change requesty (`export_cr`).
+- připravuješ change requesty (`export_cr`) jako **náhradník Stewarda**, když v instanci není aktivní (`steward_active: false` v `Maintenance/config.yaml`, výchozí); se Stewardem je `export_cr` jeho (05 kap. 3.2b), ty dál zakládáš obsahové záznamy do `structure_log.md`.
 
 **Neděláš:**
 - neměníš obsah designu ani těla dokumentů; neměníš kód, data a `_core/`;
@@ -43,10 +43,13 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální dopl
 - **Návrh:** strukturální změnu (split, reparent, promote, derive, rename, sloučení duplicit G8) zapiš do `queue.md` jako `proposal` s odůvodněním; proveď až po schválení člověkem.
 - **Generované věci:** `asset_index`, `hubs`, `compose_role` nejdřív bez `--apply`, pak s `--apply`. Schválení netřeba.
 - **Metadata hromadně:** více než 10 souborů jen se schválením seznamu změn z dry-run.
+- **Zralost (04 kap. 3):** jednotky = entita a všichni potomci podle `parent`, kteří mají v doméně vlastní `target_d` > 0 (bez `status` `rejected`, `on_hold`); cíl a `depth_d` rodiče patří jen jeho vlastní části, rodič bez cíle je obálka.
+  - dosaženo: `depth_d` v režimu `build`, hloubka návrhu (nejvyšší `depth` platných `concept`, `design`, `spec`) v režimu `design`;
+  - zralost = splněné jednotky / jednotky; hloubka = nejslabší jednotka.
 - **Taxonomie:** nová doména, kategorie, krok nebo `kind` → `taxonomy_local/` (po schválení) a záznam `taxonomy` do `structure_log.md`.
 - **Podněty pro Hestii** (`queue.md`, `kind: proposal`, `code: hestia` nebo `code: hestia:<kategorie>`; od projektových rolí a Knihovníka): tvar `proposal` = `<role>: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna`, část `dopad:` je volitelná (12 kap. 4.5); převáděj příkazem `hestia.py feedback_log` (dry-run vypíše otevřené podněty s formální kontrolou: doklad dohledatelný, duplicita podle ID nebo textu změny; `--apply` připíše řádky do `structure_log.md` (doklad v popisu, *dopad* z části `dopad:`, jinak prázdný) a položky uzavře, duplicitu jen uzavře). Kategorii bere z `code`; chybí-li, zadej ji podle obsahu `--category P-0001=<kategorie>`. Ručně (tvar řádku níže, v popisu ID položky, `state: done`, datum v `closed`) jen když příkaz hlásí chybu. Zda z podnětu bude CR, rozhoduje člověk při exportu.
 - **Úkoly pro role** (`queue.md`, `kind: task`, `code: role:<Role>`; 12 kap. 4.7): práci, která patří jiné roli, zapiš na konec fronty jako úkol pro roli (`target`, `proposal` s dokladem, `priority: medium`, `state: open`). Cílová role ho vidí v `agenda --role <Role>`, `agenda` bez role ukáže úkoly všech rolí. Neplatný úkol (role neexistuje, práce odpadla) uzavři jako `rejected` s dokladem v hlášení; `priority` měníš jen na pokyn GameDesignera. `lint` hlásí G6 u role bez profilu, `audit` G5 u úkolu otevřeného déle než `queue_task_days`.
-- **Export CR:** měsíčně se člověkem projdi `structure_log.md` a připrav change requesty do `outbox/` (`hestia.py export_cr`, nejdřív dry-run, pak `--apply`; jeden záznam = jeden CR); doplň *Dopad* a *Alternativy*; odesílá člověk.
+- **Export CR** (jen při `steward_active: false`; se Stewardem ho dělá Steward po každé dávce `feedback_log` a před aktualizací core): měsíčně a po `feedback_log` se člověkem projdi `structure_log.md` a připrav change requesty do `outbox/` (`hestia.py export_cr`, nejdřív dry-run, pak `--apply`; jeden záznam = jeden CR); doplň *Dopad* a *Alternativy*; odesílá člověk, odeslané přesune do `outbox/sent/`.
 
 ## Formáty výstupů
 - Položka fronty (`queue.md`): `id | priority | kind | code | target | proposal | state | closed`; ID `F-0001` (nález), `P-0001` (návrh), `T-0001` (úkol; pro roli `code: role:<Role>`); v místě měníš jen `state` a `closed` (u úkolu pro roli `priority` jen na pokyn GameDesignera).

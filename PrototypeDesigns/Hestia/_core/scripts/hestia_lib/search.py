@@ -8,6 +8,8 @@ Stejné hledání používá `compose_context --query` (13 kap. 10.10).
 - Když index najde méně než 3 výsledky, doplní je hledání v textu poznámek z indexu (označené „v textu“, se
   sekcí a řádkem); `--text` hledá v textu vždy.
 - Filtry `--type`, `--entity`, `--for-role` (pole `for_role` předání, 01 kap. 9.1). Jen čte.
+- Příkaz `find` běží nad líně načteným vaultem: záznamy a text bere z `doc_index.json` a mezipaměti textu
+  (`doc_index.fresh`), soubor čte jen u poznámky novější než index nebo nad `doc_split_chars` (zadání 0.28, CR-033).
 """
 from __future__ import annotations
 
@@ -19,6 +21,7 @@ from . import CORE_ROOT
 from . import doc_index, glossary
 from .errors import EXIT_OK, UsageError
 from .fileio import read_text
+from .frontmatter import split as split_frontmatter
 from .links import headings
 from .model import Model
 from .util import as_list
@@ -80,9 +83,13 @@ class Candidate:
 
 
 class Finder:
-    def __init__(self, vault: Vault, m: Model, terms: list[glossary.Term]):
-        self.v, self.m, self.terms = vault, m, terms
-        self.records = doc_index.build(vault, m)
+    """Hledání nad záznamy `doc_index`. S `fresh` (příkaz find) bez modelu vaultu: entity, dokumenty entit
+    a text z indexu a mezipaměti (zadání 0.28, CR-033); bez něj z modelu (compose_context)."""
+
+    def __init__(self, vault: Vault, m: Model | None, terms: list[glossary.Term], fresh=None):
+        self.v, self.m, self.terms, self.fresh = vault, m, terms, fresh
+        self.records = fresh.records if fresh is not None else doc_index.build(vault, m)
+        self.by_path = {r["path"]: r for r in self.records}
         self.fixed = TEMPLATE_HEADINGS | {str(s.get("heading")) for s in vault.taxonomy.hub_sections}
         for tpl in sorted((CORE_ROOT / "templates").glob("tpl_*.md")):     # nadpisy šablon dokumentů
             self.fixed |= {h for lvl, h, _ in headings(read_text(tpl)) if lvl in (2, 3)}
@@ -117,9 +124,10 @@ class Finder:
         for t in self.terms:
             ws = set().union(*(matched(q, name) for name in t.names)) if t.names else set()
             target = self.v.note_by_name(t.main) if t.main else None
-            if ws and target is not None and target.fm and not exclude(target):
+            known = target is not None and (target.rel in self.by_path if self.fresh is not None else target.fm)
+            if ws and known and not exclude(target):
                 self._cand(out, target).add(ws, f"glosář {t.term}")
-        for name, hub in self.m.entities.items():                 # shoda s entitou: hub a platné dokumenty
+        for name, hub in self.entities().items():                 # shoda s entitou: hub a platné dokumenty
             ws = matched(q, name.replace("_", " "))
             if not ws or exclude(hub):
                 continue
@@ -135,11 +143,16 @@ class Finder:
             n = self.v.notes[r["path"]]
             if exclude(n) or (only_new and n.rel in out):
                 continue
-            off = (n.split.body_line - 1) if n.split and n.split.has_frontmatter else 0
+            if self.fresh is not None:                         # text z mezipaměti (zadání 0.28, CR-033)
+                sp = split_frontmatter(doc_index.text_of(self.v, self.fresh, n.rel))
+                body, off = sp.body, (sp.body_line - 1) if sp.has_frontmatter else 0
+            else:
+                body = n.body
+                off = (n.split.body_line - 1) if n.split and n.split.has_frontmatter else 0
             secs = r.get("sections") or []
             ws_all: set[str] = set()
             hits = []
-            for no, line in enumerate(n.body.split("\n"), start=1):
+            for no, line in enumerate(body.replace("\r\n", "\n").split("\n"), start=1):
                 ws = matched(q, line) if line.strip() else set()
                 if not ws:
                     continue
@@ -172,31 +185,50 @@ class Finder:
             had = len(out)
             if self._text(q, exclude, out, only_new=True):
                 mode = "doplněno" if had else "záložně"
-        ranked = sorted(out.values(), key=lambda c: (c.in_text, -len(c.words), c.note.type != "entity",
-                                                     TYPE_ORDER.get(c.note.type, 99), c.note.name))
+        ranked = sorted(out.values(), key=lambda c: (c.in_text, -len(c.words), self.type_of(c.note) != "entity",
+                                                     TYPE_ORDER.get(self.type_of(c.note), 99), c.note.name))
         return ranked, mode
 
+    def type_of(self, n: Note):
+        r = self.by_path.get(n.rel)
+        return r.get("type") if r is not None else n.type
+
+    def entities(self) -> dict[str, Note]:
+        if self.m is not None:
+            return self.m.entities
+        if not hasattr(self, "_entities"):
+            self._entities = {self.v.notes[r["path"]].name: self.v.notes[r["path"]]
+                              for r in self.records if r.get("type") == "entity" and r["path"] in self.v.notes}
+        return self._entities
+
     def entity_docs(self, name: str) -> list[Note]:
+        if self.m is None:                                         # z indexu (find, zadání 0.28)
+            docs = [r for r in self.records if name in (r.get("entity") or []) and r.get("type") in ENTITY_TYPES
+                    and r.get("validity") == "valid" and r.get("status") != "rejected" and r["path"] in self.v.notes
+                    and r["path"] not in self.entities_paths()]
+            return sorted((self.v.notes[r["path"]] for r in docs), key=lambda n: n.name)
         return [n for n in self.m.docs_of(name, include_inactive=False)
                 if n.type in ENTITY_TYPES and n.fm.get("validity") == "valid" and n.fm.get("status") != "rejected"]
+
+    def entities_paths(self) -> set[str]:
+        return {n.rel for n in self.entities().values()}
 
 
 # ---------------------------------------------------------------- příkaz find
 
-def _filter(m: Model, args):
+def _filter(finder: Finder, args):
+    """Filtry find nad záznamy indexu (`type`, `entity` – u karty assetu z `used_by`, `for_role`)."""
     types = {t.strip() for t in as_list(args.type) for t in str(t).split(",") if t.strip()} if args.type else set()
     entity = (args.entity or "").strip().strip("[]") or None
     role = (args.for_role or "").strip().casefold() or None
 
     def exclude(n: Note) -> bool:
-        fm = n.fm or {}
-        if types and fm.get("type") not in types:
+        r = finder.by_path.get(n.rel) or {}
+        if types and r.get("type") not in types:
             return True
-        # karta assetu patří entitám z used_by (13 kap. 10.16, zadání 0.23)
-        ents = m.link_names(fm.get("used_by")) if fm.get("type") == "asset" else m.entities_of(n)
-        if entity and not (n.name == entity or entity in ents):
+        if entity and not (n.name == entity or entity in (r.get("entity") or [])):
             return True
-        if role and role not in {str(r).casefold() for r in as_list(fm.get("for_role")) if r}:
+        if role and role not in {str(x).casefold() for x in r.get("for_role") or []}:
             return True
         return False
     return exclude
@@ -213,10 +245,12 @@ def _where(c: Candidate) -> str:
 def run(args, vault: Vault) -> tuple[int, dict, str]:
     if not (args.query or "").strip():
         raise UsageError("find: zadej dotaz")
-    m = Model(vault)
     terms, _problem = glossary.read(vault)
-    ranked, mode = Finder(vault, m, terms).search(args.query, exclude=_filter(m, args), in_text=args.text)
-    results = [{"path": c.note.rel, "type": c.note.type, "validity": (c.note.fm or {}).get("validity"),
+    fr = doc_index.fresh(vault)                     # bez čtení vaultu (zadání 0.28, CR-033)
+    finder = Finder(vault, None, terms, fresh=fr)
+    ranked, mode = finder.search(args.query, exclude=_filter(finder, args), in_text=args.text)
+    rec = finder.by_path
+    results = [{"path": c.note.rel, "type": rec[c.note.rel].get("type"), "validity": rec[c.note.rel].get("validity"),
                 "reasons": c.reasons, "sections": c.sections, "lines": c.lines, "in_text": c.in_text}
                for c in ranked]
     head = f"find „{args.query}“: {len(results)} výsledků"

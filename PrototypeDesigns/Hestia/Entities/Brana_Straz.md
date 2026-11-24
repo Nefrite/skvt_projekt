@@ -51,6 +51,7 @@ target_gameplay: 4
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
+| [[03_ruin]] | `brana_spec.py` | – |
 | [[05_constructions]] | `Brana_Straz.py`, `Brana_Straz_Kamen.py`, `Brana_Straz_Kryty.py`, `Brana_Straz_Podesta.py` | [[navrh_brana_straz]], [[stav_brana_straz]] |
 | [[06_furnishing]] | `Brana_Straz.py`, `Brana_Straz_Capture.py` | – |
 
@@ -61,6 +62,7 @@ target_gameplay: 4
 
 | Soubor | Role | Krok | Pravidlo |
 |---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | 03_ruin | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz.py` | entry | 05_constructions | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kamen.py` | entry | 05_constructions | name |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kryty.py` | entry | 05_constructions | name |

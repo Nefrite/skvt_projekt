@@ -5,7 +5,7 @@ trigger: problém nebo možnost zlepšení Hestie jako nástroje
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-24
 ---
 # Podnět ke změně Hestie
 
@@ -23,5 +23,5 @@ Položka fronty `P-…` s kódem `hestia` nebo `hestia:<kategorie>` (nebo sekce 
 
 ## Známé pasti
 - Založit CR přímo v `outbox/` nebo v repozitáři projektu: zůstane mimo kanál a nikdo ho nezpracuje.
-- Podnět bez dokladu, nebo s dokladem, který nejde dohledat (wikilink na existující poznámku nebo existující cesta v backtickách): `feedback_log` ho nezapíše. Doklad „řádek ve changes.md“ bez odkazu neprojde.
+- Podnět bez dokladu, nebo s dokladem, který nejde dohledat: `feedback_log` ho nezapíše a vypíše ho s ID a důvodem jako „k ruční opravě“. Platný doklad: wikilink na existující poznámku, existující cesta v backtickách ve vaultu nebo v projektu (i mimo vault, od kořene projektu), nebo URL. Doklad „řádek ve changes.md“ bez odkazu neprojde. Závorka `(doklad: …)` končí párovou závorkou, vnořené závorky v ní nevadí (např. „`hestia.py audit` (dry-run)“).
 - Zaměnit podnět s otázkou (`question`) nebo s nálezem údržby (zapisuje Auditor), nebo s prací pro jinou roli (úkol pro roli `code: role:<Role>`, `write_rules.md`).

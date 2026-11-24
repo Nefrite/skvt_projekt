@@ -5,7 +5,7 @@ trigger: začátek tasku
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-24
 ---
 # Start tasku
 
@@ -21,10 +21,10 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 **Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
 
-**Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka, `inbox_import`) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi), nebo se zeptej GameDesignera.
+**Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka a Stewarda, `inbox_import`, assety) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi, aktualizaci core Stewardovi), nebo se zeptej GameDesignera.
 
 Pak načti v tomto pořadí a nic navíc:
-1. kontrakt a profil své role, případně složené profily (`combines`);
+1. **nejdřív ověř přístup k vaultu** (`ls <cesta k vaultu>` z pokynů první zprávy), pak čti; vault nehledej procházením projektu. Příkazy core spouštěj interpretem z pokynů nebo z `hestia_python` v `Maintenance/config.yaml`; kontrakt a profil své role, případně složené profily (`combines`);
 2. zadání tasku: chat nebo aktivní předání v `Handovers/`;
 3. huby entit, kterých se task týká, a jejich `state`;
 4. dokumenty z `context` profilu (master lore, pravidla návrhu);
@@ -45,6 +45,7 @@ Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, o
 Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého stavu vycházíš a co je nejasné. Nejasnost řeš modulem `question` dřív, než začneš.
 
 ## Známé pasti
+- Hledat vault `find`/`ls` přes celý projekt, když pokyny první zprávy uvádějí cestu; nebo zakládat nové prostředí Pythonu, když je `hestia_python` (při starém Pythonu ho navrhne `doctor`).
 - Spustit první skript v novém prostředí bez `doctor`: selže na chybějícím PyYAML nebo starém Pythonu a hledání příčiny stojí víc než kontrola.
 - Pracovat podle kompilátu (balíčky, zápis Hestia), když relace vault vidí, třeba přes připojenou složku; hlavní práce pak běží nad ručně přenášenými výňatky.
 - Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným. Totéž dlouhý dokument celý místo osnovy a sekcí.

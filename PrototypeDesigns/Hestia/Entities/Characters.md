@@ -30,9 +30,9 @@ depth_gameplay: 5
 |---|---|---|---|---|---|
 | gameplay | – | 5 | – | design | bez cíle |
 
-Agregace z potomků (04 kap. 3):
+Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
-_Potomci nemají cíle._
+_Žádná jednotka podstromu nemá cíl._
 
 <!-- hestia:generated:end -->
 

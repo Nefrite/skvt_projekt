@@ -60,18 +60,39 @@ def _table(header: list[str], rows: list[list[str]]) -> list[str]:
     return out + ["| " + " | ".join(r) + " |" for r in rows]
 
 
-def matrix_cell(model, n, domain: str) -> str:
-    """Buňka podle režimu cíle (zadání 0.13; 04 kap. 2.1): build `realizace/cíl`, u vyšší hloubky návrhu
-    „(návrh N)“ (G13); design „návrh N/cíl“; ⚠ = mezera; „bez cíle“ = očekávaná doména podle kind bez cíle;
-    jinak prázdné."""
-    target = model.num(n.fm, f"target_{domain}")
-    if not target:
-        return "bez cíle" if domain in model.expected_domains(n) else ""
+def own_cell(model, n, domain: str, target: int) -> str:
+    """Vlastní cíl entity podle režimu (zadání 0.13): build `realizace/cíl`, u vyšší hloubky návrhu
+    „(návrh N)“ (G13); design „návrh N/cíl“; ⚠ = mezera."""
     design = model.design_depth(n.name, domain) or 0
     if model.mode(n.name, domain) == "design":
         return f"návrh {design}/{target}" + (" ⚠" if design < target else "")
     depth = model.realization(n.name, domain) or 0
     return f"{depth}/{target}" + (" ⚠" if depth < target else "") + (f" (návrh {design})" if design > depth else "")
+
+
+def matrix_cell(model, n, domain: str) -> str:
+    """Buňka matice (04 kap. 2.1 a 3). Entita bez potomků: vlastní cíl (`own_cell`). Entita s potomky:
+    zralost podstromu jako audit („podstrom splněno/jednotek“, ⚠ = některá jednotka cíl nesplnila,
+    nejslabší hloubka) a vlastní cíl rodiče zvlášť („vlastní …“; zadání 0.27, CR-035). „Bez cíle“ =
+    očekávaná doména podle kind, v níž cíl nemá žádná jednotka podstromu (G2); jinak prázdné."""
+    target = model.own_target(n.name, domain)
+    if not model.children.get(n.name):
+        if not target:
+            return "bez cíle" if domain in model.expected_domains(n) else ""
+        return own_cell(model, n, domain, target)
+    has_target = any(model.own_target(x, domain) for x in model.subtree(n.name))
+    if not has_target:
+        return "bez cíle" if domain in model.expected_domains(n) else ""
+    mt = model.maturity(n.name, domain)
+    parts = []
+    if mt.defined:
+        parts.append(f"podstrom {len(mt.met)}/{len(mt.relevant)}"
+                     + (" ⚠" if len(mt.met) < len(mt.relevant) else "") + f" (min {mt.weakest[0]})")
+    else:                                   # cíle jen u jednotek mimo výpočet (rejected, on_hold)
+        parts.append("podstrom bez platné jednotky")
+    if target:
+        parts.append("vlastní " + own_cell(model, n, domain, target))
+    return "; ".join(parts)
 
 
 def matrix_block(model) -> str:

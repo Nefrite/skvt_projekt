@@ -23,7 +23,10 @@ VAULT_COMMANDS = {"lint": "lint", "compose_role": "compose", "asset_index": "ass
                   "update_core": "update_core", "export_cr": "export_cr", "doc_index": "doc_index",
                   "compose_context": "context", "ue_query": "ue",
                   "inbox_import": "inbox_import", "section": "section", "find": "search",
-                  "role_diff": "instructions", "agenda": "agenda", "feedback_log": "feedback"}
+                  "role_diff": "instructions", "agenda": "agenda", "feedback_log": "feedback",
+                  "health": "health", "weekly": "weekly"}
+# příkazy nad líně načteným vaultem: poznámky se čtou až při přístupu (připojená složka; zadání 0.28, CR-033)
+LAZY_COMMANDS = {"section", "find", "task_close"}
 
 
 class _Parser(argparse.ArgumentParser):
@@ -103,8 +106,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("task_close", parents=[common], help="uzavření tasku: changes.md, updated, hubs, lint, G11")
     p.add_argument("files", nargs="*", help="dotčené soubory (výchozí: změněné podle gitu)")
-    p.add_argument("--role", required=True, help="role, která task dělala")
-    p.add_argument("--source", required=True, help="zdroj: dokument, předání nebo chat:<task>")
+    p.add_argument("--role", help="role, která task dělala (povinné, kromě --resume)")
+    p.add_argument("--source", help="zdroj: dokument, předání nebo chat:<task> (povinné, kromě --resume)")
+    p.add_argument("--resume", action="store_true",
+                   help="dokončí kroky přerušeného běhu (task_close_seconds; Maintenance/task_close_resume.json)")
     p.add_argument("--note", help="popis změny společný pro všechny dotčené entity")
     p.add_argument("--change", action="append", default=[], metavar='ENTITA="text"',
                    help="popis po entitách (opakovatelné; přednost před --note)")
@@ -190,6 +195,14 @@ def build_parser() -> argparse.ArgumentParser:
     sub.add_parser("doctor", parents=[common],
                    help="kontrola prostředí: Python, PyYAML, git, vault, core_source, připojená složka")
 
+    sub.add_parser("health", parents=[common],
+                   help="kontrola zdraví instance (jen čte; report s --apply; 13 kap. 10.20)")
+    p = sub.add_parser("weekly", parents=[common],
+                       help="týdenní běh: doc_index, asset_index, hubs, audit, health (naplánovaná úloha; 13 kap. 10.20)")
+    p.add_argument("--work-copy", nargs="?", const="", default=None, metavar="ADRESÁŘ",
+                   help="běh v lokální pracovní kopii, zpět jen Maintenance/ a generované bloky (připojená složka)")
+    p.add_argument("--keep-work-copy", action="store_true", help="pracovní adresář po běhu nemazat")
+
     p = sub.add_parser("export_cr", parents=[common], help="change requesty ze structure_log do outbox/")
     p.add_argument("--area", help="oblast CR (výchozí: taxonomy u kategorie taxonomy, jinak process)")
     p.add_argument("--include-works", action="store_true", help="exportovat i kategorii works")
@@ -228,7 +241,7 @@ def main(argv: list[str] | None = None) -> int:
             import importlib
             from .vault import Vault, find_vault
             module = importlib.import_module(f".{VAULT_COMMANDS[args.command]}", __package__)
-            vault = Vault.load(args.vault if args.vault else find_vault())
+            vault = Vault.load(args.vault if args.vault else find_vault(), lazy=args.command in LAZY_COMMANDS)
             code, payload, text = module.run(args, vault)
         else:
             print(f"hestia: příkaz {args.command} přijde ve fázi {COMMANDS_LATER[args.command]}", file=sys.stderr)

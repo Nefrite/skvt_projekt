@@ -4,9 +4,9 @@ zadání 0.22, CR-031).
 - Vstup: položky `queue.md` s `kind: proposal` a `code: hestia` nebo `code: hestia:<kategorie>`, které nejsou
   uzavřené (`state` jiný než `done`, `rejected`); `--id P-0001` (opakovatelné) omezí výběr.
 - Tvar `proposal` (12 kap. 4.5): `<role>: co se stalo (doklad: …; dopad: …) → navrhovaná změna` (`dopad:` volitelně).
-- Formální kontrola: (1) doklad (text v závorce „doklad: …“, jinak wikilink nebo cesta v textu) je dohledatelný:
-  wikilink na existující poznámku, existující cesta v projektu, ve vaultu nebo v `_core/`, nebo jméno
-  poznámky v backtickách; (2) duplicita: ID položky v popisu řádku `structure_log.md`, nebo tam je shodný text
+- Formální kontrola: (1) doklad (text v závorce „doklad: …“ až po párovou závorku, vnořené závorky povolené;
+  jinak wikilink nebo cesta v textu) je dohledatelný: wikilink na existující poznámku, existující cesta
+  v projektu (i mimo vault), ve vaultu nebo v `_core/`, jméno poznámky v backtickách, nebo URL (zadání 0.28); (2) duplicita: ID položky v popisu řádku `structure_log.md`, nebo tam je shodný text
   navrhované změny.
 - Kategorie z `code` (`hestia:missing`), nebo `--category P-0001=missing` (přednost); platné podle 05 kap. 7.3
   (výčet `structure_log_category`). Bez kategorie, s neplatnou kategorií nebo s nedohledaným dokladem se položka
@@ -32,7 +32,8 @@ QUEUE_REL = "Maintenance/queue.md"
 LOG_REL = "Maintenance/structure_log.md"
 CLOSED_STATES = {"done", "rejected"}
 ARROW_RE = re.compile(r"\s*(?:→|->)\s*")
-DOKLAD_RE = re.compile(r"\(\s*doklad:\s*(.+?)\)\s*", re.I)
+DOKLAD_START_RE = re.compile(r"\(\s*doklad:\s*", re.I)
+URL_RE = re.compile(r"\bhttps?://\S+", re.I)
 DOPAD_SPLIT_RE = re.compile(r"\s*;\s*dopad:\s*", re.I)               # (doklad: …; dopad: …), zadání 0.24.1
 DOPAD_RE = re.compile(r"\(\s*dopad:\s*(.+?)\)\s*", re.I)
 PATH_RE = re.compile(r"`([^`]+)`|((?:/|\b)[\w.\-]+(?:/[\w.\-]+)+|\b[\w.\-]+\.(?:md|json|yaml|yml|py|base|css))")
@@ -67,16 +68,38 @@ def parse_proposal(text: str) -> tuple[str, str, str, str]:
     return role, what, doklad, change
 
 
+def find_doklad(text: str) -> tuple[int, int, str] | None:
+    """Závorka `(doklad: …)` až po **párovou** uzavírací závorku; vnořené závorky v dokladu jsou povolené
+    (zadání 0.28, CR-040). Vrací (začátek, konec včetně mezer za závorkou, obsah) nebo None. Bez párové
+    závorky bere obsah do konce textu."""
+    m = DOKLAD_START_RE.search(text)
+    if not m:
+        return None
+    depth, i = 1, m.end()
+    while i < len(text):
+        if text[i] == "(":
+            depth += 1
+        elif text[i] == ")":
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                while end < len(text) and text[end].isspace():
+                    end += 1
+                return m.start(), end, text[m.end():i].strip()
+        i += 1
+    return m.start(), len(text), text[m.end():].strip()
+
+
 def parse_parts(text: str) -> tuple[str, str, str, str, str]:
     """(role, co se stalo, doklad, dopad, navrhovaná změna) z tvaru 12 kap. 4.5
     `<role>: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna`; `dopad:` je volitelný (zadání 0.24.1)."""
     parts = ARROW_RE.split(text, maxsplit=1)
     left, change = (parts[0], parts[1]) if len(parts) == 2 else (text, "")
     doklad = dopad = ""
-    m = DOKLAD_RE.search(left)
+    m = find_doklad(left)
     if m:
-        doklad = m.group(1).strip()
-        left = (left[:m.start()] + " " + left[m.end():]).strip()
+        start, end, doklad = m
+        left = (left[:start] + " " + left[end:]).strip()
         dm = DOPAD_SPLIT_RE.search(doklad)
         if dm:
             dopad, doklad = doklad[dm.end():].strip(" ;,."), doklad[:dm.start()].strip(" ;,")
@@ -101,9 +124,12 @@ def parse_parts(text: str) -> tuple[str, str, str, str, str]:
 
 
 def doklad_found(vault: Vault, doklad: str) -> bool:
-    """Doklad je dohledatelný: aspoň jeden wikilink nebo cesta v něm existuje."""
+    """Doklad je dohledatelný: aspoň jeden wikilink nebo cesta v něm existuje (ve vaultu, v `_core/` nebo
+    v projektu, tj. i mimo vault), nebo je to URL (zadání 0.28, CR-040)."""
     if not doklad:
         return False
+    if URL_RE.search(doklad):
+        return True
     for target in links_in_value(doklad):
         if vault.resolve(target)[0]:
             return True
@@ -219,6 +245,8 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
         lines += [f"  + {p.id} [{p.category}] {p.what} → {p.change or '–'}" for p in ok]
         lines += [f"  = {p.id} duplicita ({'podle ID' if p.duplicate['by'] == 'id' else 'shodná změna'}): "
                   f"řádek {p.duplicate['date']} „{p.duplicate['description']}“; položka se uzavře" for p in dups]
+        if bad:                                              # ID a důvod (zadání 0.28, CR-040)
+            lines.append("  k ruční opravě (oprav položku ve frontě a spusť znovu):")
         lines += [f"  ! {p.id}: {'; '.join(p.problems)} – nezapíše se" for p in bad]
         if not args.apply and not cs.empty:
             lines.append(cs.diff())

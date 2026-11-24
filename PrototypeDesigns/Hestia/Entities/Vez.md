@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-24
 aliases: []
 # hra
 kind: structure
@@ -17,6 +17,8 @@ status: in_progress
 ue_path:
 assets: []
 depth_structures: 4
+target_structures: 4
+target_gameplay: 0
 ---
 # Vez
 
@@ -27,14 +29,14 @@ depth_structures: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| structures | 3 | 4 | – | build | bez cíle |
-| gameplay | – | – | – | design | bez cíle |
+| structures | 3 | 4 | 4 | build | ✔ |
+| gameplay | – | – | 0 | design | ✔ |
 
-Agregace z potomků (04 kap. 3):
+Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| structures | 100 % (1 z 1) | 4 – [[Vez_Pristresek]] |
+| structures | 100 % (2 z 2) | 4 – [[Vez]] |
 
 <!-- hestia:generated:end -->
 

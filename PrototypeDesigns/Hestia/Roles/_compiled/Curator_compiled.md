@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Curator | core: 0.23.0 | date: 2026-11-23 -->
+<!-- role: Curator | core: 0.25.0 | date: 2026-11-24 -->
 <!-- sources: _core/agents/Curator.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/hestia_feedback.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md -->
 # Curator – instrukce pro chat
 
@@ -46,6 +46,9 @@ Režim určuje přístup k vaultu: `vault` (vidíš soubory projektu, zapisuješ
 | výroba nebo změna knihovního assetu | `asset_work` |
 | předání jiné roli nebo relaci | `handover_out` |
 | problém s Hestií jako nástrojem | `hestia_feedback` |
+| aktualizace core, ruční úkoly z manifestu (Steward) | `core_update` |
+| týdenní běh, kontrola zdraví (Steward) | `instance_health` |
+| podněty a hlášení pro HearthLore (Steward) | `hearthlore_report` |
 | práce v režimu chat | `chat_entry` |
 | konec tasku | `task_close` |
 
@@ -68,10 +71,10 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 **Po aktualizaci core nebo změně profilu** (pokyn GameDesignera, `_core/VERSION` jiná než verze, se kterou jsi začal, nebo hlavička kompilátu) spusť `hestia.py role_diff <Role>` a přečti jen změny; změněný profil čti celý. „Beze změny“ hlaš jen podle `role_diff`, ne podle části souboru.
 
-**Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka, `inbox_import`) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi), nebo se zeptej GameDesignera.
+**Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka a Stewarda, `inbox_import`, assety) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi, aktualizaci core Stewardovi), nebo se zeptej GameDesignera.
 
 Pak načti v tomto pořadí a nic navíc:
-1. kontrakt a profil své role, případně složené profily (`combines`);
+1. **nejdřív ověř přístup k vaultu** (`ls <cesta k vaultu>` z pokynů první zprávy), pak čti; vault nehledej procházením projektu. Příkazy core spouštěj interpretem z pokynů nebo z `hestia_python` v `Maintenance/config.yaml`; kontrakt a profil své role, případně složené profily (`combines`);
 2. zadání tasku: chat nebo aktivní předání v `Handovers/`;
 3. huby entit, kterých se task týká, a jejich `state`;
 4. dokumenty z `context` profilu (master lore, pravidla návrhu);
@@ -92,6 +95,7 @@ Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, o
 Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého stavu vycházíš a co je nejasné. Nejasnost řeš modulem `question` dřív, než začneš.
 
 ### Známé pasti
+- Hledat vault `find`/`ls` přes celý projekt, když pokyny první zprávy uvádějí cestu; nebo zakládat nové prostředí Pythonu, když je `hestia_python` (při starém Pythonu ho navrhne `doctor`).
 - Spustit první skript v novém prostředí bez `doctor`: selže na chybějícím PyYAML nebo starém Pythonu a hledání příčiny stojí víc než kontrola.
 - Pracovat podle kompilátu (balíčky, zápis Hestia), když relace vault vidí, třeba přes připojenou složku; hlavní práce pak běží nad ručně přenášenými výňatky.
 - Číst „všechno pro jistotu“: zahltí kontext a míchá platné s neplatným. Totéž dlouhý dokument celý místo osnovy a sekcí.
@@ -235,7 +239,7 @@ V režimu `chat` vydáš předání jako dokument v odpovědi; do vaultu ho ulo�
 Aktivní předání v `Handovers/`, archivované předchozí předání, aktuální `state` a `Docs/`.
 
 ### Známé pasti
-- Předání delší než `handover_max_chars` (výchozí 4 000 znaků, G14c): obsahuje víc než zadání a odkazy; rozhodnutí patří do `Docs/` hned.
+- Předání delší než `handover_max_chars` (výchozí 4 000 znaků, G14c): obsahuje víc než zadání a odkazy; rozhodnutí patří do `Docs/` hned. Počítají se znaky těla bez frontmatteru a bez generovaných bloků; délku ukáže `section <předání> --list`. Archivované předání se nepočítá.
 - Předání bez `for_role`: role ho v `agenda` uvidí jen mezi předáními pro kohokoli.
 - Kopírovat návrh do předání: po archivaci se ztratí, nebo se rozejde s `Docs/`.
 - Nechat dvě aktivní předání pro stejnou oblast.
@@ -256,7 +260,7 @@ Položka fronty `P-…` s kódem `hestia` nebo `hestia:<kategorie>` (nebo sekce 
 
 ### Známé pasti
 - Založit CR přímo v `outbox/` nebo v repozitáři projektu: zůstane mimo kanál a nikdo ho nezpracuje.
-- Podnět bez dokladu, nebo s dokladem, který nejde dohledat (wikilink na existující poznámku nebo existující cesta v backtickách): `feedback_log` ho nezapíše. Doklad „řádek ve changes.md“ bez odkazu neprojde.
+- Podnět bez dokladu, nebo s dokladem, který nejde dohledat: `feedback_log` ho nezapíše a vypíše ho s ID a důvodem jako „k ruční opravě“. Platný doklad: wikilink na existující poznámku, existující cesta v backtickách ve vaultu nebo v projektu (i mimo vault, od kořene projektu), nebo URL. Doklad „řádek ve changes.md“ bez odkazu neprojde. Závorka `(doklad: …)` končí párovou závorkou, vnořené závorky v ní nevadí (např. „`hestia.py audit` (dry-run)“).
 - Zaměnit podnět s otázkou (`question`) nebo s nálezem údržby (zapisuje Auditor), nebo s prací pro jinou roli (úkol pro roli `code: role:<Role>`, `write_rules.md`).
 
 ## Modul `chat_entry` (L1)
@@ -315,7 +319,7 @@ Na konci každého tasku, který změnil návrh, stav, kód nebo data. **Task ne
 | # | Krok | Kam |
 |---|---|---|
 | 1 | **Přenos do finální dokumentace**: výsledek tasku ze zadání (chat, předání) do doménového dokumentu nebo `state`; rozhodnutí jako fakta (modul `decision`); odchylky od návrhu do `state` (*Co se liší od návrhu*). Nemá-li entita `state`, založ ho. Změnil-li se spec, aktualizuj *Souhrn specifikace*. Dokument nad `doc_summary_chars`, který task změnil, má aktuální *Souhrn*; obsahuje-li po změně víc témat, rozděl ho tematicky (jeden dokument, jedno téma, 01 kap. 9.2) | `Docs/<domain>/` |
-| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; předání z chatové verze se odstraní z Claude Projectu: odstraní ho jen relace připojená k tomuto projektu, jinak připrav seznam souborů k odebrání pro GameDesignera; kompiláty do Claude Projectu nahraj jen ty, které `compose_role` vypsal jako `changed`, verzi v projektu ověř podle hlavičky (první tři řádky), ne čtením celého kompilátu | `Handovers/` |
+| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; hlásí-li skript „sekce Zbývá je prázdná“, doplň do ní zbývající kroky, nebo předání archivuj; předání z chatové verze se odstraní z Claude Projectu: odstraní ho jen relace připojená k tomuto projektu, jinak připrav seznam souborů k odebrání pro GameDesignera; kompiláty do Claude Projectu nahraj jen ty, které `compose_role` vypsal jako `changed`, verzi v projektu ověř podle hlavičky (první tři řádky), ne čtením celého kompilátu | `Handovers/` |
 | 3 | **Uzavření cest**: alternativy, zodpovězené otázky → `decision` | `Docs/` |
 | 4 | **Metadata**: `updated`, `validity` dokumentů; `depth_*`, `status` hubu (modul `metadata`) | frontmatter |
 | 5 | **Know-how**: nové ověřené pasti a postupy (modul `knowhow_write`) | `KnowHow/` |
@@ -361,7 +365,7 @@ Udržuješ strukturu vaultu: metadata, huby, metadata importu v `Inbox/`, lokál
 - připravuješ návrhy (`proposal`: `assign`, `split`, `reparent`, `promote`, `derive`, `rename`);
 - spouštíš `asset_index`, `hubs`, `doc_index` a `compose_role`;
 - zapisuješ do `changes.md` a `structure_log.md`; podněty rolí pro Hestii z `queue.md` (`code: hestia[:<kategorie>]`) převádíš do `structure_log.md` příkazem `feedback_log`;
-- připravuješ change requesty (`export_cr`).
+- připravuješ change requesty (`export_cr`) jako **náhradník Stewarda**, když v instanci není aktivní (`steward_active: false` v `Maintenance/config.yaml`, výchozí); se Stewardem je `export_cr` jeho (05 kap. 3.2b), ty dál zakládáš obsahové záznamy do `structure_log.md`.
 
 **Neděláš:**
 - neměníš obsah designu ani těla dokumentů; neměníš kód, data a `_core/`;
@@ -385,10 +389,13 @@ Platí matice v `_core/agents/write_rules.md` (sloupec Curator) a lokální dopl
 - **Návrh:** strukturální změnu (split, reparent, promote, derive, rename, sloučení duplicit G8) zapiš do `queue.md` jako `proposal` s odůvodněním; proveď až po schválení člověkem.
 - **Generované věci:** `asset_index`, `hubs`, `compose_role` nejdřív bez `--apply`, pak s `--apply`. Schválení netřeba.
 - **Metadata hromadně:** více než 10 souborů jen se schválením seznamu změn z dry-run.
+- **Zralost (04 kap. 3):** jednotky = entita a všichni potomci podle `parent`, kteří mají v doméně vlastní `target_d` > 0 (bez `status` `rejected`, `on_hold`); cíl a `depth_d` rodiče patří jen jeho vlastní části, rodič bez cíle je obálka.
+  - dosaženo: `depth_d` v režimu `build`, hloubka návrhu (nejvyšší `depth` platných `concept`, `design`, `spec`) v režimu `design`;
+  - zralost = splněné jednotky / jednotky; hloubka = nejslabší jednotka.
 - **Taxonomie:** nová doména, kategorie, krok nebo `kind` → `taxonomy_local/` (po schválení) a záznam `taxonomy` do `structure_log.md`.
 - **Podněty pro Hestii** (`queue.md`, `kind: proposal`, `code: hestia` nebo `code: hestia:<kategorie>`; od projektových rolí a Knihovníka): tvar `proposal` = `<role>: co se stalo (doklad: <odkaz>; dopad: <dopad>) → navrhovaná změna`, část `dopad:` je volitelná (12 kap. 4.5); převáděj příkazem `hestia.py feedback_log` (dry-run vypíše otevřené podněty s formální kontrolou: doklad dohledatelný, duplicita podle ID nebo textu změny; `--apply` připíše řádky do `structure_log.md` (doklad v popisu, *dopad* z části `dopad:`, jinak prázdný) a položky uzavře, duplicitu jen uzavře). Kategorii bere z `code`; chybí-li, zadej ji podle obsahu `--category P-0001=<kategorie>`. Ručně (tvar řádku níže, v popisu ID položky, `state: done`, datum v `closed`) jen když příkaz hlásí chybu. Zda z podnětu bude CR, rozhoduje člověk při exportu.
 - **Úkoly pro role** (`queue.md`, `kind: task`, `code: role:<Role>`; 12 kap. 4.7): práci, která patří jiné roli, zapiš na konec fronty jako úkol pro roli (`target`, `proposal` s dokladem, `priority: medium`, `state: open`). Cílová role ho vidí v `agenda --role <Role>`, `agenda` bez role ukáže úkoly všech rolí. Neplatný úkol (role neexistuje, práce odpadla) uzavři jako `rejected` s dokladem v hlášení; `priority` měníš jen na pokyn GameDesignera. `lint` hlásí G6 u role bez profilu, `audit` G5 u úkolu otevřeného déle než `queue_task_days`.
-- **Export CR:** měsíčně se člověkem projdi `structure_log.md` a připrav change requesty do `outbox/` (`hestia.py export_cr`, nejdřív dry-run, pak `--apply`; jeden záznam = jeden CR); doplň *Dopad* a *Alternativy*; odesílá člověk.
+- **Export CR** (jen při `steward_active: false`; se Stewardem ho dělá Steward po každé dávce `feedback_log` a před aktualizací core): měsíčně a po `feedback_log` se člověkem projdi `structure_log.md` a připrav change requesty do `outbox/` (`hestia.py export_cr`, nejdřív dry-run, pak `--apply`; jeden záznam = jeden CR); doplň *Dopad* a *Alternativy*; odesílá člověk, odeslané přesune do `outbox/sent/`.
 
 ### Formáty výstupů
 - Položka fronty (`queue.md`): `id | priority | kind | code | target | proposal | state | closed`; ID `F-0001` (nález), `P-0001` (návrh), `T-0001` (úkol; pro roli `code: role:<Role>`); v místě měníš jen `state` a `closed` (u úkolu pro roli `priority` jen na pokyn GameDesignera).

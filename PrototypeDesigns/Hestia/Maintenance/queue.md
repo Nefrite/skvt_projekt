@@ -1,6 +1,6 @@
 ---
 type: queue
-updated: 2026-11-23
+updated: 2026-11-24
 ---
 # Fronta údržby
 
@@ -12,7 +12,7 @@ updated: 2026-11-23
 |---|---|---|---|---|---|---|---|
 | F-0001 | medium | finding | G5 | [[README_ruin]] | validity: outdated | open |  |
 | F-0002 | medium | finding | G2 | [[Brana]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | done | 2026-11-23 |
-| F-0003 | medium | finding | G4 | [[Brana]] | status built bez platného dokumentu state | open |  |
+| F-0003 | medium | finding | G4 | [[Brana]] | status built bez platného dokumentu state | done | 2026-11-24 |
 | F-0004 | medium | finding | G2 | [[Brana_Straz]] | očekávaná doména gameplay (kind structure) bez target_gameplay; očekávaná doména structures (kind structure) bez target_structures | done | 2026-11-23 |
 | F-0005 | medium | finding | G2 | [[Characters]] | očekávaná doména gameplay (kind system) bez target_gameplay ani u potomků | open |  |
 | F-0006 | medium | finding | G2 | [[Characters_Animace_Sezeni]] | očekávaná doména gameplay (kind system) bez target_gameplay | open |  |
@@ -67,7 +67,7 @@ updated: 2026-11-23
 | P-0001 | medium | proposal | hestia:friction | audit G14 | Architect: zavržený návrh [[navrh_palac_obydli]] měl `status: rejected` a `validity: valid`, a proto ho G14 dál hlásil jako dokument k rozdělení (doklad: [[navrh_palac_obydli]] 2026-11-23, `_core/scripts/hestia_lib/audit.py` G14 a `_core/scripts/hestia_lib/model.py` INACTIVE_VALIDITY) → dokument se `status: rejected` brát v kontrolách tvaru dokumentu (G14, Souhrn, rozdělení) jako neaktivní stejně jako `validity: superseded`/`archived`, nebo lint hlásí `status: rejected` s `validity: valid` jako rozpor | done | 2026-11-23 |
 | F-0027 | high | finding | G7 | [[Les_Lapikus]] | chybí povinné pole depth_paths | done | 2026-11-23 |
 | F-0028 | high | finding | G7 | [[Udoli_Reky]] | chybí povinné pole depth_paths | done | 2026-11-23 |
-| F-0029 | medium | finding | G3 | [[Brana]] | bez dokumentu v doméně structures (target_structures 4) | open |  |
+| F-0029 | medium | finding | G3 | [[Brana]] | bez dokumentu v doméně structures (target_structures 4) | done | 2026-11-24 |
 | F-0030 | medium | finding | G3 | [[Brana_Straz]] | bez dokumentu v doméně gameplay (target_gameplay 4) | open |  |
 | F-0031 | medium | finding | G3 | [[Guesthouse]] | bez dokumentu v doméně gameplay (target_gameplay 4) | open |  |
 | F-0032 | medium | finding | G3 | [[Les_Lapikus]] | bez dokumentu v doméně paths (target_paths 4) | open |  |
@@ -102,3 +102,23 @@ updated: 2026-11-23
 | P-0014 | medium | proposal | hestia:friction | section, find --text (připojená složka) | Steward (P17): na připojené složce je `section --list` pomalé (Builder měřil `time`) a `find --text` u Architekta vypršel; agenti se pak vracejí k `sed` s čísly řádků a `grep` přes složky, měření P17 v `HearthLore/hearthlore/pilot/lapikus/podklady/P17_mereni_cteni.md` 2026-11-23 (doklad: `Maintenance/doc_index.json`; dopad: opatření 1 a 7 se nepoužívají) → `section --list` a `find --text` číst z `doc_index` (sekce, rozsahy), procházet soubory jen při zastaralém indexu; souvisí s P-0002 | done | 2026-11-23 |
 | P-0015 | medium | proposal | hestia:friction | compose_role (hlavička kompilátu) | Steward (P17): verze core v hlavičce kompilátu změní při každé aktualizaci všech 7 kompilátů, takže „nahrávat jen změněné“ nic neušetří nahrání 0.23.0 ~280 KB čtení, měření P17 v `HearthLore/hearthlore/pilot/lapikus/podklady/P17_mereni_cteni.md` 2026-11-23 (doklad: `Roles/_compiled/Builder_compiled.md`; dopad: největší jednotlivá ztráta měření) → `changed` u `compose_role` posuzovat bez řádku verze, verzi core psát do hlavičky jen při změně obsahu role nebo ji hlásit mimo kompilát | done | 2026-11-23 |
 | P-0016 | low | proposal | hestia:friction | feedback_log (doklad) | Steward: `feedback_log` odmítl 7 z 15 podnětů jako „doklad nedohledán“ ze dvou důvodů: `DOKLAD_RE` končí doklad první uzavírací závorkou, takže vnořená závorka jako `hestia.py audit` „(dry-run)“ ho usekne (P-0009, P-0010), a doklad mimo vault, např. podklad v repozitáři HearthLore, se neuzná (P-0011 až P-0015); ani jedno není v modulu `hestia_feedback` (doklad: `_core/scripts/hestia_lib/feedback.py` 2026-11-23; dopad: podněty se musí ručně přepsat a doklad nahradit souborem ve vaultu) → doklad brát do párové závorky nebo do `; dopad:`, případně do `→`; v hlášení `k ruční opravě` vypsat ID a důvod; v `hestia_feedback` uvést, že doklad musí být ve vaultu nebo projektu a bez vnořených závorek | done | 2026-11-23 |
+| T-0042 | medium | task | update_core:0.24.0:own_targets | core 0.24.0 | Projít cíle a realizaci entit s potomky (target_*, depth_*): od 0.24.0 patří jen vlastní části rodiče (zdivo stavby, terén regionu, hradby) a rodič s cílem se počítá do zralosti jako další jednotka; souhrn potomků z rodiče odebrat, rodič bez vlastní části (obálka) cíl ani depth nemá (01 kap. 5, 04 kap. 3). Návrh dat dělá Curator, rozhoduje GameDesigner | done | 2026-11-24 |
+| T-0043 | medium | task | update_core:0.25.0:steward_active | core 0.25.0 | Rozhodnout steward_active v Maintenance/config.yaml (GameDesigner): true = Steward vlastní export_cr a weekly (profil core _core/agents/Steward.md, kompilát compose_role Steward), false (výchozí) = export_cr dělá Curator jako náhradník a weekly spouští člověk (13 kap. 10.20) | done | 2026-11-24 |
+| T-0044 | medium | task | update_core:0.25.0:hestia_python | core 0.25.0 | Zapsat hestia_python do Maintenance/config.yaml: cesta k interpretu Python >= 3.11 s PyYAML pro příkazy core (při starém Pythonu ji navrhne doctor); uvést ji i s cestou k vaultu v pokynech první zprávy agentů (šablona v README core, CR-039) | open |  |
+| T-0045 | medium | task | update_core:0.25.0:weekly_task | core 0.25.0 | Volitelně nastavit naplánovanou úlohu weekly --apply (Claude scheduled task, cron nebo Plánovač úloh Windows) s pevnou cestou k interpretu z hestia_python, na připojené složce s --work-copy; návod v README core (13 kap. 10.20, rozhodnutí GameDesignera) | open |  |
+| T-0046 | medium | task | update_core:0.25.0:outbox_sent | core 0.25.0 | Založit Maintenance/outbox/sent/ a přesunout do něj už odeslané CR a hlášení (odesílá a přesouvá člověk; export_cr ani lint sent/ nekontrolují) | open |  |
+| F-0036 | medium | finding | G15 | [[SM_RuinDressed_R12_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0037 | medium | finding | G15 | [[SM_RuinStone_R12_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0038 | medium | finding | G15 | [[SM_RuinStone_W_R12_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0039 | medium | finding | G15 | [[SM_RuinForkHead_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0040 | medium | finding | G15 | [[SM_RuinGutterBark_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0041 | medium | finding | G15 | [[SM_RuinGutter_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0042 | medium | finding | G15 | [[SM_RuinLogBark_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0043 | medium | finding | G15 | [[SM_RuinLog_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0044 | medium | finding | G15 | [[SM_RuinPlank_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0045 | medium | finding | G15 | [[SM_RuinPoleBark_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0046 | medium | finding | G15 | [[SM_RuinPole_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0047 | medium | finding | G15 | [[SM_RuinStakeSmall_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0048 | medium | finding | G15 | [[SM_RuinStake_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0049 | medium | finding | G15 | [[SM_RuinTimber_A]] | karta imported bez záznamu v kódu (asset_sources.yaml) | open |  |
+| F-0050 | medium | finding | G11 | [[Nadvori]] | změna /PrototypeDesigns/Lapikus/tools/ruin/nadvori_spec.py bez řádku v changes.md a novějšího updated | open |  |

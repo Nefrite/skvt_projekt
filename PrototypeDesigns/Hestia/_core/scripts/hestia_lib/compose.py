@@ -38,7 +38,7 @@ COMPILED_SUFFIX = "_compiled"
 _FENCE_RE = re.compile(r"^\s*(```|~~~)")
 _HEADING_RE = re.compile(r"^(#{1,6})(\s+.*)$")
 _COMMENT_RE = re.compile(r"<!--.*?-->", re.S)
-_DATE_RE = re.compile(r"date: \d{4}-\d{2}-\d{2}")
+_HEADER_RE = re.compile(r"^<!-- role: [^\n]*?-->\n", re.M)     # řádek role | core | date (zadání 0.28)
 _ROLE_RE = re.compile(r"^Roles/[^/]+\.md$")
 
 
@@ -350,8 +350,10 @@ def core_version_of(core_root: Path) -> str:
 
 # ------------------------------------------------------------------ plán a zápis
 
-def _without_date(text: str) -> str:
-    return _DATE_RE.sub("date: -", text.replace("\r\n", "\n"), count=1)
+def _without_header(text: str) -> str:
+    """Obsah kompilátu bez řádku hlavičky s rolí, verzí core a datem: změna jen verze core nebo data kompilát
+    nemění, soubor se nepřepíše a nese verzi, ze které obsah pochází (zadání 0.28, CR-034)."""
+    return _HEADER_RE.sub("", text.replace("\r\n", "\n"), count=1)
 
 
 def plan(vault: Vault, roles: list[str] | None = None, today: dt.date | None = None,
@@ -364,7 +366,7 @@ def plan(vault: Vault, roles: list[str] | None = None, today: dt.date | None = N
             items.append(Item(role, c.rel, "new", c.text, "", None, c))
             continue
         old = read_text(path)
-        if _without_date(old) == _without_date(c.text):
+        if _without_header(old) == _without_header(c.text):
             items.append(Item(role, c.rel, "unchanged", old, "", file_hash(path), c))
             continue
         diff = "".join(difflib.unified_diff(old.replace("\r\n", "\n").splitlines(keepends=True),

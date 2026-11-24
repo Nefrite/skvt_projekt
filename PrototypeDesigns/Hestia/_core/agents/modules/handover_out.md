@@ -5,7 +5,7 @@ trigger: práce se předává jiné roli nebo další relaci
 requires: []
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-24
 ---
 # Předání práce
 
@@ -30,7 +30,7 @@ V režimu `chat` vydáš předání jako dokument v odpovědi; do vaultu ho ulo�
 Aktivní předání v `Handovers/`, archivované předchozí předání, aktuální `state` a `Docs/`.
 
 ## Známé pasti
-- Předání delší než `handover_max_chars` (výchozí 4 000 znaků, G14c): obsahuje víc než zadání a odkazy; rozhodnutí patří do `Docs/` hned.
+- Předání delší než `handover_max_chars` (výchozí 4 000 znaků, G14c): obsahuje víc než zadání a odkazy; rozhodnutí patří do `Docs/` hned. Počítají se znaky těla bez frontmatteru a bez generovaných bloků; délku ukáže `section <předání> --list`. Archivované předání se nepočítá.
 - Předání bez `for_role`: role ho v `agenda` uvidí jen mezi předáními pro kohokoli.
 - Kopírovat návrh do předání: po archivaci se ztratí, nebo se rozejde s `Docs/`.
 - Nechat dvě aktivní předání pro stejnou oblast.

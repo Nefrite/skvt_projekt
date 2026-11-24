@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-24
 aliases: []
 # hra
 kind: group
@@ -16,6 +16,8 @@ status: in_progress
 # target_mode_<domain>: design | build, jen při odchylce od výchozího režimu domény
 ue_path:
 assets: []
+depth_structures: 4
+target_structures: 4
 ---
 # Hradby_a_Brana
 
@@ -24,13 +26,15 @@ assets: []
 ## Domény
 <!-- hestia:generated:start -->
 
-_Žádné očekávané domény ani cíle._
+| Doména | Návrh | Realizace | Cíl | Režim | Stav |
+|---|---|---|---|---|---|
+| structures | – | 4 | 4 | build | ✔ |
 
-Agregace z potomků (04 kap. 3):
+Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| structures | 33 % (1 z 3) | 3 – [[Brana]] |
+| structures | 75 % (3 z 4) | 3 – [[Brana_Straz]] |
 | gameplay | 0 % (0 z 2) | 0 – [[Brana_Straz]] |
 
 <!-- hestia:generated:end -->
@@ -73,7 +77,7 @@ Poslední čtení: 2026-11-23 · `Maintenance/reports/ue_Hradby_a_Brana.json` ·
 - Fáze: –
 - Rozsah: 7264 × 3297 × 791 cm
 - Kořen daleko od geometrie (`pivot_far`, víc než 500 cm): 53 actorů; informace pro modelování v instanci, ne nález
-- Pro srovnání `depth_*`: –; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
+- Pro srovnání `depth_*`: structures 4; úroveň realizace posoudí agent nebo GameDesigner (12 kap. 3b.8)
 
 <!-- hestia:generated:end -->
 

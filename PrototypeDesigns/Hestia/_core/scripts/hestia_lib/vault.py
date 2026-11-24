@@ -17,7 +17,8 @@ SKIP_DIRS = {".obsidian", ".trash", ".git", "__pycache__"}
 # Poznámky, které lint nekontroluje (core je jen ke čtení, kompiláty generované, koš).
 # _core/ ověřují akceptační testy, lint ho nekontroluje (13 kap. 2).
 LINT_EXCLUDE_PREFIXES = ("_core/", "_to_delete/", "Roles/_compiled/", "Maintenance/context/",
-                         "Maintenance/import/")      # soubory výměny importu (13 kap. 10.12, zadání 0.16)
+                         "Maintenance/import/",      # soubory výměny importu (13 kap. 10.12, zadání 0.16)
+                         "Maintenance/outbox/sent/")  # odeslané CR a hlášení (13 kap. 10.20, zadání 0.28)
 
 
 WORK_MARKER = "hestia_work.json"           # značka pracovní kopie vedle kopie vaultu (13 kap. 10.6)
@@ -50,15 +51,51 @@ def find_vault(start: Path | None = None) -> Path:
     raise UsageError("Vault Hestia/ nenalezen; zadej --vault PATH")
 
 
-@dataclass
 class Note:
-    path: Path                 # absolutní
-    rel: str                   # relativně k vaultu, s /
-    name: str                  # jméno bez .md
-    text: str
-    fm: dict | None
-    split: Split | None
-    fm_error: str | None = None
+    """Poznámka vaultu. `text`, `fm`, `split` a `fm_error` se u líně načteného vaultu (`Vault.load(lazy=True)`,
+    zadání 0.28, CR-033) čtou ze souboru až při prvním přístupu; jinak hned."""
+
+    __slots__ = ("path", "rel", "name", "_text", "_fm", "_split", "_fm_error", "_loaded")
+
+    def __init__(self, path: Path, rel: str, name: str, text: str | None = None, fm: dict | None = None,
+                 split: Split | None = None, fm_error: str | None = None, lazy: bool = False):
+        self.path, self.rel, self.name = path, rel, name      # path absolutní, rel s /, name bez .md
+        self._text, self._fm, self._split, self._fm_error = text, fm, split, fm_error
+        self._loaded = not lazy
+
+    def _load(self) -> None:
+        if self._loaded:
+            return
+        self._loaded = True
+        self._text = read_text(self.path)
+        try:
+            self._fm, self._split = parse(self._text)
+        except FrontmatterError as exc:
+            self._fm, self._split, self._fm_error = None, None, str(exc)
+
+    @property
+    def loaded(self) -> bool:
+        return self._loaded
+
+    @property
+    def text(self) -> str:
+        self._load()
+        return self._text
+
+    @property
+    def fm(self) -> dict | None:
+        self._load()
+        return self._fm
+
+    @property
+    def split(self) -> Split | None:
+        self._load()
+        return self._split
+
+    @property
+    def fm_error(self) -> str | None:
+        self._load()
+        return self._fm_error
 
     @property
     def type(self):
@@ -67,6 +104,9 @@ class Note:
     @property
     def body(self) -> str:
         return self.split.body if self.split else self.text
+
+    def __repr__(self) -> str:
+        return f"Note({self.rel!r})"
 
 
 @dataclass
@@ -80,10 +120,13 @@ class Vault:
     notes: dict[str, Note] = field(default_factory=dict)        # rel -> Note (jen .md)
     _by_name: dict[str, list[str]] = field(default_factory=dict)  # lower(jméno) -> [rel]
     _by_rel: dict[str, str] = field(default_factory=dict)         # lower(rel) -> rel
+    lazy: bool = False                # poznámky se čtou až při přístupu (zadání 0.28, CR-033)
 
     # ------------------------------------------------------------ načtení
     @classmethod
-    def load(cls, root: Path, core_root: Path = CORE_ROOT) -> "Vault":
+    def load(cls, root: Path, core_root: Path = CORE_ROOT, lazy: bool = False) -> "Vault":
+        """Načte vault. `lazy=True`: projde jen složky a poznámky čte až při přístupu (section, find, task_close
+        na připojené složce; zadání 0.28, CR-033)."""
         root = Path(root).resolve()
         if not root.is_dir():
             raise UsageError(f"Vault neexistuje: {root}")
@@ -94,7 +137,7 @@ class Vault:
             register_alias(root, origin)
         # project_root a další cesty z config.yaml jsou relativně k vaultu v projektu (u kopie k originálu)
         project_root = ((origin or root) / str(cfg.get("project_root") or "..")).resolve()
-        v = cls(root=root, project_root=project_root, taxonomy=tx, config=cfg, origin=origin)
+        v = cls(root=root, project_root=project_root, taxonomy=tx, config=cfg, origin=origin, lazy=lazy)
         v._scan()
         return v
 
@@ -109,7 +152,8 @@ class Vault:
                 stem = path.stem.lower()
                 if stem != fname:
                     self._by_name.setdefault(stem, []).append(rel)
-                self.notes[rel] = self._load_note(path, rel)
+                self.notes[rel] = (Note(path, rel, path.stem, lazy=True) if self.lazy
+                                   else self._load_note(path, rel))
 
     @staticmethod
     def _walk(root: Path):
@@ -135,6 +179,17 @@ class Vault:
             return Note(path, rel, path.stem, text, fm, sp)
         except FrontmatterError as exc:
             return Note(path, rel, path.stem, text, None, None, str(exc))
+
+    def refresh(self, paths) -> None:
+        """Po zápisu: poznámky na `paths` (absolutní) se znovu načtou při příštím přístupu (zadání 0.28)."""
+        for p in paths:
+            try:
+                rel = to_posix(Path(p).resolve().relative_to(self.root))
+            except ValueError:
+                continue
+            if rel in self.notes:
+                path = self.notes[rel].path
+                self.notes[rel] = Note(path, rel, path.stem, lazy=True)
 
     # ------------------------------------------------------------ dotazy
     @property

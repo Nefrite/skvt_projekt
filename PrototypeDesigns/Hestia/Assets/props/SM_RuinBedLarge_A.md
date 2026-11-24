@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Furnisher
-requested: 2026-11-21
+requested_by: legacy
+requested:
 owner: Crafter
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinBedLarge"]
 # hra
 asset_kind: mesh
@@ -68,4 +68,4 @@ Osy: X podél postele, **hlava −X** (čelo 95 cm), nohy +X; pivot ve středu b
 - Funkční: ložná plocha 55 cm nad podlahou, bočnice nahoře 46 cm.
 - Verze 2: sloupky a hlavice s léty svisle (`grain="long"`), ostatní díly zatím původní UV (T-0024, *Změny konvence* v [[Konvence_assetu]]).
 - Graybox `GH_BED` měl výšku 0,62 m; mesh je vyšší jen čelem v hlavě (95 cm) ❓ (z katalogu).
-- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.8 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[Katalog_props]] a [[CHECKLIST_assets_navrhy]] kap. 6.8 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

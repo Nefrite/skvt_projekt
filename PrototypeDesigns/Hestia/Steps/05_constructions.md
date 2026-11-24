@@ -105,9 +105,11 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_plachta_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_truhlicka_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_vak_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_prikop_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_brana_straz_nahled_etapa1.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_drevo_nahled.png` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/Stavby_nadvori_stan_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_ostroh_dostavba_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_ostroh_nahled.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stavby_ostroh_podlaha_nahled.png` | data | [[Lapikus]] | – |
@@ -120,11 +122,18 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 | `/PrototypeDesigns/Lapikus/05_constructions/build_constructions.py` | entry | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/constructions.json` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/constructions_edits.json` | data | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana.py` | entry | [[Brana]] | [[navrh_brana_prikop]], [[stav_brana]] |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Capture.py` | entry | [[Brana]] | [[navrh_brana_prikop]], [[stav_brana]] |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Most.py` | entry | [[Brana]] | [[navrh_brana_prikop]], [[stav_brana]] |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Most_Kamen.py` | entry | [[Brana]] | [[navrh_brana_prikop]], [[stav_brana]] |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz.py` | entry | [[Brana_Straz]] | [[navrh_brana_straz]] |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kamen.py` | entry | [[Brana_Straz]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Kryty.py` | entry | [[Brana_Straz]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Straz_Podesta.py` | entry | [[Brana_Straz]] | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Brana_Zataras.py` | entry | [[Brana]] | [[navrh_brana_prikop]], [[stav_brana]] |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Etapa.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Nadvori_Stan.py` | entry | [[Nadvori_Stan]] | [[navrh_nadvori_stan]], [[05_constructions]] |
+| `/PrototypeDesigns/Lapikus/05_constructions/stavby/Nadvori_Stan_Capture.py` | entry | [[Nadvori_Stan]] | [[navrh_nadvori_stan]], [[05_constructions]] |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Dostavba.py` | entry | [[Guesthouse]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Krov.py` | entry | [[Guesthouse]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/stavby/Ostroh_Podlaha.py` | entry | [[Guesthouse]] | – |
@@ -156,6 +165,7 @@ Trám nebo průvlak se nepostaví, když zeď u jeho kapsy spadla.
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/pristresek.py` | library | – | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/pult.py` | library | – | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/srub.py` | library | – | – |
+| `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/stan.py` | library | [[Nadvori_Stan]] | [[navrh_nadvori_stan]], [[05_constructions]] |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/stena.py` | library | – | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/vez.py` | library | [[Vez]] | – |
 | `/PrototypeDesigns/Lapikus/05_constructions/zr_stavby/vybaveni.py` | library | – | – |

@@ -31,7 +31,9 @@ NOT_FOUND = "v kódu nenalezeno"
 DEFAULT_NAME = "{key}_{variant}"
 REQUIRED_FIELDS = ("size", "category")
 TOP_KEYS = {"meshes", "versions", "global_versions", "shapes", "data_refs"}
-MESH_KEYS = {"file", "variable", "fields", "name", "ue_root", "ue_dirs", "content_dir"}
+MESH_KEYS = {"file", "variable", "fields", "name", "ue_root", "ue_dirs", "content_dir",
+             "category", "variants", "files"}      # pevná category/variants tabulky, zdroj files (zadání 0.28, CR-037)
+DATA_ENTITY_FIELDS = ("entity", "group")           # záznam v datech s ID entity (zadání 0.28, CR-037)
 FROM_GENERATED = {"generated", "imported", "verified"}
 IMPORTED = {"imported", "verified"}
 
@@ -126,9 +128,21 @@ def load_manifest(vault) -> Manifest | None:
         where = f"asset_sources meshes[{i}]"
         if set(m) - MESH_KEYS:
             man.problems.append(("G7", f"{where}: neznámé klíče {', '.join(sorted(set(m) - MESH_KEYS))}"))
+        if "files" in m:                             # jména meshí ze jmen souborů (zadání 0.28, CR-037)
+            src = m.get("files")
+            if not isinstance(src, dict) or not isinstance(src.get("dir"), str) \
+                    or not isinstance(src.get("pattern"), str):
+                man.problems.append(("G7", f"{where}: files musí být mapa s dir a pattern (text)"))
+            if not isinstance(m.get("category"), str):
+                man.problems.append(("G7", f"{where}: zdroj files potřebuje pevnou category"))
+            if "file" in m or "variable" in m or "fields" in m:
+                man.problems.append(("G7", f"{where}: zdroj files nemá file, variable ani fields"))
+            continue
         fields = m.get("fields")
-        if not isinstance(fields, list) or any(f not in fields for f in REQUIRED_FIELDS):
-            man.problems.append(("G7", f"{where}: fields musí být seznam a obsahovat size a category"))
+        need = [f for f in REQUIRED_FIELDS if not (f == "category" and isinstance(m.get("category"), str))]
+        if not isinstance(fields, list) or any(f not in fields for f in need):
+            man.problems.append(("G7", f"{where}: fields musí být seznam a obsahovat size a category "
+                                       "(category může být pevná pro celou tabulku)"))
     for i, v in enumerate(man.versions):
         if v.get("match", "prefix") != "prefix":
             man.problems.append(("G7", f"asset_sources versions[{i}]: match umí jen prefix"))
@@ -140,6 +154,8 @@ def load_manifest(vault) -> Manifest | None:
     for group in ("meshes", "versions", "global_versions", "shapes"):
         for i, item in enumerate(getattr(man, group)):
             refs = [(item.get("file"), item.get("variable"))]
+            if group == "meshes" and "files" in item:
+                refs = []                            # zdroj files: tabulka v kódu není
             if group == "meshes":
                 for k in ("ue_root", "ue_dirs"):
                     if isinstance(item.get(k), dict):
@@ -204,10 +220,25 @@ def _ref(item, default_file: str | None) -> tuple:
     return None, None
 
 
+def _files_table(vault, m: dict) -> dict:
+    """Zdroj `files: {dir, pattern}` (zadání 0.28, CR-037): klíč = jméno souboru bez přípony, hodnota
+    (cesta od kořene projektu, prázdná n-tice); soubory se nečtou (OBJ ne), rozměr chybí, verze z `versions`."""
+    src = m.get("files") or {}
+    d = vault.project_root / str(src.get("dir") or "").strip("/")
+    out = {}
+    if not d.is_dir():
+        return out
+    for p in sorted(d.glob(str(src.get("pattern") or "*"))):
+        if p.is_file():
+            out[p.stem] = (to_posix(p.relative_to(vault.project_root)), ())
+    return out
+
+
 def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | None = None,
-          folder_map: list | None = None) -> tuple[list[dict], dict, list[str]]:
+          folder_map: list | None = None, entities: set | None = None) -> tuple[list[dict], dict, list[str]]:
     """Záznamy knihovny, globální verze a upozornění. `files` = záznamy `asset_index` (entita datového souboru),
-    `cards` = karty assetů (`assets.cards`) pro párování přes jméno a `variants`."""
+    `cards` = karty assetů (`assets.cards`) pro párování přes jméno a `variants`, `entities` = jména entit
+    (výskyt v datech podle pole `entity`/`group` záznamu, zadání 0.28, CR-037)."""
     warnings: list[str] = []
     versions = []                                         # (prefix -> int, ue_tag, proměnná)
     for v in man.versions:
@@ -229,7 +260,14 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
                     shapes[str(k)] = key
     out: list[dict] = []
     for m in man.meshes:
-        table = _value(man, m.get("file"), m.get("variable"))
+        if "files" in m:
+            table, lines, src_of = _files_table(vault, m), {}, {}
+            for k, (rel, _row) in list(table.items()):
+                src_of[k] = rel
+                table[k] = _row
+        else:
+            table = _value(man, m.get("file"), m.get("variable"))
+            src_of = None
         if not isinstance(table, dict):
             continue
         fields = [str(f) for f in m.get("fields") or []]
@@ -239,10 +277,15 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
         dirs = m.get("ue_dirs")
         dirs = dirs if isinstance(dirs, dict) and "variable" not in dirs else _value(man, *_ref(dirs, m.get("file")))
         dirs = dirs if isinstance(dirs, dict) else {}
-        lines = man.values[(m.get("file"), m.get("variable"))].lines
+        if src_of is None:
+            lines = man.values[(m.get("file"), m.get("variable"))].lines
         for key, row in table.items():
             row = row if isinstance(row, (list, tuple)) else (row,)
             rec = {f: (row[i] if i < len(row) else None) for i, f in enumerate(fields)}
+            if "category" not in rec and isinstance(m.get("category"), str):     # pevně pro tabulku (CR-037)
+                rec["category"] = m["category"]
+            if rec.get("variants") is None and m.get("variants") is not None:
+                rec["variants"] = m["variants"]
             category = str(rec.get("category") or "")
             sub = dirs.get(category)
             if sub is None and category:
@@ -253,7 +296,8 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
                 e = {"name": name, "key": str(key), "variant": variant, "category": category,
                      "size": _size(rec.get("size")), "slots": rec.get("slots"), "material": rec.get("material"),
                      "version": None, "version_prefix": None, "version_tag": None, "ue_path": None, "uasset": None,
-                     "source": f"{m.get('file')}:{lines.get(key, man.values[(m.get('file'), m.get('variable'))].line)}",
+                     "source": (src_of[key] if src_of is not None else
+                                f"{m.get('file')}:{lines.get(key, man.values[(m.get('file'), m.get('variable'))].line)}"),
                      "card": None, "data": []}
                 for table_v, tag, var in versions:                    # nejdelší shodný prefix jména bez varianty
                     hit = max((p for p in table_v if base.startswith(p)), key=len, default=None)
@@ -292,19 +336,20 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
             except (ValueError, UnicodeDecodeError):
                 warnings.append(f"asset_sources data_refs: {rel} není platný JSON")
                 continue
-            hits: set[str] = set()
-            for k, val in _walk(data, set(keys)):
+            hits: dict[str, set] = {}                       # jméno assetu -> entity záznamů (None = souboru)
+            ekeys = ref.get("entity_keys") if isinstance(ref.get("entity_keys"), dict) else {}
+            for k, val, rec_id in _walk(data, set(keys)):
                 if not isinstance(val, str):
                     continue
+                rec_ent = _record_entity(rec_id, ekeys, entities)
                 if k == "shape":
                     key = shapes.get(val)
-                    hits |= {e["name"] for e in by_key.get(key or "", [])}
+                    names = {e["name"] for e in by_key.get(key or "", [])}
                 else:
                     nm = val.rsplit("/", 1)[-1].split(".", 1)[0]
-                    if nm in by_name:
-                        hits.add(nm)
-                    else:
-                        hits |= {e["name"] for e in by_key.get(nm, [])}
+                    names = {nm} if nm in by_name else {e["name"] for e in by_key.get(nm, [])}
+                for nm in names:
+                    hits.setdefault(nm, set()).add(rec_ent)
             if not hits:
                 continue
             ent = entity_of.get(rel)
@@ -312,19 +357,35 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
                 ent = next((it.get("entity") for it in fmap
                             if rel.startswith(str(it.get("path") or "").strip("/") + "/")), None)
             for nm in sorted(hits):
-                by_name[nm]["data"].append({"file": rel, "entity": ent})
+                for e_ in sorted(hits[nm], key=lambda x: (x is not None, x or "")):
+                    item = {"file": rel, "entity": e_ or ent}
+                    if item not in by_name[nm]["data"]:
+                        by_name[nm]["data"].append(item)
     return out, globals_, warnings
 
 
-def _walk(data, keys: set):
+def _walk(data, keys: set, rec_id=None):
+    """(klíč, hodnota, ID entity nejbližšího záznamu s `entity`/`group` nebo None)."""
     if isinstance(data, dict):
+        own = next((data[f] for f in DATA_ENTITY_FIELDS if isinstance(data.get(f), str) and data[f].strip()), None)
+        rec_id = own if own is not None else rec_id
         for k, v in data.items():
             if k in keys:
-                yield k, v
-            yield from _walk(v, keys)
+                yield k, v, rec_id
+            yield from _walk(v, keys, rec_id)
     elif isinstance(data, list):
         for v in data:
-            yield from _walk(v, keys)
+            yield from _walk(v, keys, rec_id)
+
+
+def _record_entity(rec_id, ekeys: dict, entities: set | None) -> str | None:
+    """Entita záznamu: ID přes `data_refs.entity_keys`, jinak ID samo, je-li to entita vaultu."""
+    if not isinstance(rec_id, str):
+        return None
+    rid = rec_id.strip()
+    if rid in ekeys:
+        return str(ekeys[rid])
+    return rid if entities is not None and rid in entities else None
 
 
 # ---------------------------------------------------------------- karta: blok Z kódu
@@ -454,6 +515,10 @@ def g15(vault, model, library: list[dict], cards: list, day: _dt.date) -> list[t
                     old_verified.setdefault(f"{e['version_prefix']}\x00{e['version']}", []).append(c.name)
             used = set(c.used_by)
             for ent in sorted({d["entity"] for x in mine for d in x.get("data") or [] if d.get("entity")} - used):
+                # used_by s potomkem entity souboru nález nedělá (zadání 0.28, CR-037)
+                if model is not None and ent in getattr(model, "entities", {}) \
+                        and used & set(model.subtree(ent)[1:]):
+                    continue
                 out.append(("info", c.name, f, f"asset je v datech entity {ent}, která není v used_by karty"))
         if not c.used_by and not any(x.get("data") for x in mine):
             out.append(("info", c.name, f, "karta bez used_by a bez výskytu v datech"))

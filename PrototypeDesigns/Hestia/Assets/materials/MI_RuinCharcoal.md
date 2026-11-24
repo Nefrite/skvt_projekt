@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Furnisher
-requested: 2026-11-14
+requested_by: legacy
+requested:
 owner: Crafter
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: []
 # hra
 asset_kind: material
@@ -45,5 +45,5 @@ Ručně do etapy C (`ue_query --assets`): `.uasset` je v `Content/Skvt/Lapikus/R
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->
 
 ## Poznámky
-- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 1, 5 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 1, 5 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Crafter. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).
 - Náhled je BaseColor textury `T_RuinCharcoal_D`, ne render materiálu v UE.

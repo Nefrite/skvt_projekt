@@ -5,7 +5,7 @@ trigger: konec tasku
 requires: [decision, idea_capture, question, knowhow_write, metadata]
 modes: [vault, chat]
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-24
 ---
 # Uzavření tasku
 
@@ -16,7 +16,7 @@ Na konci každého tasku, který změnil návrh, stav, kód nebo data. **Task ne
 | # | Krok | Kam |
 |---|---|---|
 | 1 | **Přenos do finální dokumentace**: výsledek tasku ze zadání (chat, předání) do doménového dokumentu nebo `state`; rozhodnutí jako fakta (modul `decision`); odchylky od návrhu do `state` (*Co se liší od návrhu*). Nemá-li entita `state`, založ ho. Změnil-li se spec, aktualizuj *Souhrn specifikace*. Dokument nad `doc_summary_chars`, který task změnil, má aktuální *Souhrn*; obsahuje-li po změně víc témat, rozděl ho tematicky (jeden dokument, jedno téma, 01 kap. 9.2) | `Docs/<domain>/` |
-| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; předání z chatové verze se odstraní z Claude Projectu: odstraní ho jen relace připojená k tomuto projektu, jinak připrav seznam souborů k odebrání pro GameDesignera; kompiláty do Claude Projectu nahraj jen ty, které `compose_role` vypsal jako `changed`, verzi v projektu ověř podle hlavičky (první tři řádky), ne čtením celého kompilátu | `Handovers/` |
+| 2 | **Archivace předání**: ověř, že nic z předání (návrh, kontroly, rozhodnutí) nechybí ve finální dokumentaci a že předání **nemá otevřené otázky** (`- [ ]` v *Otevřených otázkách*) – zodpověz je, nebo je výslovně přenes do navazujícího předání; pak splněné předání → `validity: archived`, přesun do `Handovers/_archive/`; částečně splněné zůstává aktivní se sekcí *Zbývá*; hlásí-li skript „sekce Zbývá je prázdná“, doplň do ní zbývající kroky, nebo předání archivuj; předání z chatové verze se odstraní z Claude Projectu: odstraní ho jen relace připojená k tomuto projektu, jinak připrav seznam souborů k odebrání pro GameDesignera; kompiláty do Claude Projectu nahraj jen ty, které `compose_role` vypsal jako `changed`, verzi v projektu ověř podle hlavičky (první tři řádky), ne čtením celého kompilátu | `Handovers/` |
 | 3 | **Uzavření cest**: alternativy, zodpovězené otázky → `decision` | `Docs/` |
 | 4 | **Metadata**: `updated`, `validity` dokumentů; `depth_*`, `status` hubu (modul `metadata`) | frontmatter |
 | 5 | **Know-how**: nové ověřené pasti a postupy (modul `knowhow_write`) | `KnowHow/` |

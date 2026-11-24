@@ -6,6 +6,9 @@ od projektu), jméno souboru, titul (`# …`) nebo alias. Nadpis se hledá bez o
 přesně, pak podle začátku; víc shod = seznam kandidátů (kód 2), nehádá se. Funguje nad každou poznámkou vaultu
 včetně předání a `Maintenance/*.md`. Jen čte.
 
+Osnovu a znaky bere `section` z `doc_index.json`, není-li soubor novější než index (jinak spočítá ze souboru);
+titul a alias hledá v indexu; čte jen zadaný dokument (líně načtený vault; zadání 0.28, CR-033).
+
 Osnovu (`sections`) a počet znaků těla (`chars`) bere i `doc_index` a G14 v `audit`: sekce = nadpisy `##` a `###`
 mimo bloky kódu a komentáře; `line` a `end_line` (včetně) jsou řádky souboru od 1, sekce končí před dalším
 nadpisem stejné nebo vyšší úrovně; `chars` = znaky sekce včetně nadpisu.
@@ -97,9 +100,16 @@ def resolve_note(vault: Vault, ref: str) -> Note:
     if status == "ok" and rel in vault.notes:
         return vault.notes[rel]
     key = raw.removesuffix(".md").casefold()
-    hits = sorted(n.rel for n in vault.notes.values()
-                  if (_title(n) or "").casefold() == key
-                  or key in {str(a).casefold() for a in as_list((n.fm or {}).get("aliases")) if a})
+    from . import doc_index
+    records = doc_index.load(vault)
+    if records is not None:                   # titul a alias z indexu, bez čtení vaultu (zadání 0.28, CR-033)
+        hits = sorted(r["path"] for r in records if isinstance(r, dict) and r.get("path") in vault.notes
+                      and (str(r.get("title") or "").casefold() == key
+                           or key in {str(a).casefold() for a in r.get("aliases") or []}))
+    else:
+        hits = sorted(n.rel for n in vault.notes.values()
+                      if (_title(n) or "").casefold() == key
+                      or key in {str(a).casefold() for a in as_list((n.fm or {}).get("aliases")) if a})
     if len(hits) == 1:
         return vault.notes[hits[0]]
     if hits or status == "ambiguous":
@@ -120,14 +130,30 @@ def _fmt_sec(s: dict) -> str:
     return f"{'#' * s['level']} {s['heading']}  (ř. {s['line']}–{s['end_line']}, {s['chars']} zn.)"
 
 
+def indexed(vault: Vault, note: Note) -> dict | None:
+    """Záznam dokumentu z `doc_index.json`, není-li soubor novější než index (zadání 0.28, CR-033)."""
+    from . import doc_index
+    p = vault.root / doc_index.JSON_REL
+    try:
+        if not p.is_file() or note.path.stat().st_mtime > p.stat().st_mtime:
+            return None
+    except OSError:
+        return None
+    rec = next((r for r in doc_index.load(vault) or [] if isinstance(r, dict) and r.get("path") == note.rel), None)
+    return rec if rec and isinstance(rec.get("sections"), list) and "chars" in rec else None
+
+
 def run(args, vault: Vault) -> tuple[int, dict, str]:
     note = resolve_note(vault, args.document)
-    secs = outline(note)
-    payload = {"command": "section", "path": note.rel, "chars": body_chars(note)}
+    rec = indexed(vault, note) if (args.list or not args.headings) else None
+    secs = rec["sections"] if rec else outline(note)
+    chars = rec["chars"] if rec else body_chars(note)
+    payload = {"command": "section", "path": note.rel, "chars": chars, "from_index": bool(rec)}
     if args.list or not args.headings:
-        summ = summary(note)
+        first = next((s for s in secs if s["level"] == 2), None)
+        summ = first if first and first["heading"].casefold() == SUMMARY.casefold() else None
         payload |= {"sections": secs, "summary": summ and "\n".join(t for _n, t in section_lines(note, summ)[1:]).strip()}
-        lines = [f"{note.rel}: {body_chars(note)} znaků, {len(secs)} sekcí"]
+        lines = [f"{note.rel}: {chars} znaků, {len(secs)} sekcí"]
         lines += [("  " * (s["level"] - 2)) + _fmt_sec(s) for s in secs]
         if summ:
             lines += ["", "Souhrn:"] + [t for _n, t in section_lines(note, summ)[1:]]

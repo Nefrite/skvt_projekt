@@ -1,7 +1,7 @@
 ---
 # orchestrace
 type: entity
-updated: 2026-11-19
+updated: 2026-11-24
 aliases: []
 # hra
 kind: place          # place|location|district|plot|structure|room|character|object|route|system|group
@@ -20,6 +20,7 @@ scale: cutout
 depth_narrative: 0
 target_narrative: 1
 depth_environment: 4
+target_environment: 4
 ---
 # Lapikus_Region
 
@@ -30,18 +31,19 @@ depth_environment: 4
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| environment | 3 | 4 | – | build | bez cíle |
+| environment | 3 | 4 | 4 | build | ✔ |
 | paths | – | – | – | build | bez cíle |
 | narrative | – | 0 | 1 | design | −1 |
 
-Agregace z potomků (04 kap. 3):
+Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
 | Doména | Zralost | Nejslabší článek |
 |---|---|---|
-| environment | 0 % (0 z 2) | 1 – [[Les_Lapikus]] |
-| structures | 57 % (4 z 7) | 3 – [[Brana]] |
+| environment | 33 % (1 z 3) | 1 – [[Les_Lapikus]] |
+| structures | 83 % (10 z 12) | 3 – [[Brana_Straz]] |
 | paths | 0 % (0 z 2) | 0 – [[Les_Lapikus]] |
 | gameplay | 0 % (0 z 4) | 0 – [[Brana_Straz]] |
+| narrative | 0 % (0 z 1) | 0 – [[Lapikus_Region]] |
 
 <!-- hestia:generated:end -->
 

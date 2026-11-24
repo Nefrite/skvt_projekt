@@ -1,7 +1,7 @@
 ---
 type: reference
 validity: valid
-updated: 2026-11-20
+updated: 2026-11-24
 ---
 # Plán kontrol (výchozí, core)
 
@@ -15,10 +15,11 @@ Kdy a kdo spouští kontroly. Výchozí plán podle zadání 05, kap. 6. Čísla
 | Při změně core nebo profilu role | `compose_role` (kompiláty pro chat) | Curator |
 | Při novém obsahu v `Inbox/` | metadata importu | Curator |
 | Na pokyn GameDesignera (typicky v chatu) | třídění inboxu `raw` → `prepared` (12 kap. 3b.7) | Knihovník + člověk |
-| Týdně | `audit` G1–G13, zralost, `asset_index`, `hubs`, otevřené otázky podle stáří, metriky Knihovníka (12 kap. 3b.9); čtecí dotaz do Unrealu, běží-li editor (12 kap. 3b.8) | Auditor, Curator |
+| Týdně | `weekly` (13 kap. 10.20): `audit` G1–G15, zralost, `asset_index`, `hubs`, `doc_index`, `health`; otevřené otázky podle stáří, metriky Knihovníka (12 kap. 3b.9); čtecí dotaz do Unrealu, běží-li editor (12 kap. 3b.8). Naplánovaná úloha instance (README core), bez zásahu do obsahu | Steward (bez Stewarda Auditor a Curator, `weekly` spouští člověk) |
+| Po každé dávce `feedback_log` a před každou aktualizací core | `export_cr` a hlášení pro HearthLore (`outbox/report_…`) | Steward |
 | Při uzavření fáze prototypu | revize `target_*`, dokumentační dluh, master lore (G12) | Auditor + člověk |
 | Při nové doméně, kategorii, kroku nebo `kind` | zápis do `taxonomy_local` a `structure_log` | Curator |
-| Měsíčně | `structure_log` → change requesty (`export_cr`) | Curator + člověk |
+| Měsíčně | `structure_log` → change requesty (`export_cr`), jen bez aktivního Stewarda (`steward_active: false`) | Curator + člověk |
 
 ## Prahy
 

@@ -327,7 +327,8 @@ class Indexer:
             if cards:
                 out.library_info = library.summary(self.v, None, [])
             return
-        out.library, out.library_globals, warns = library.build(self.v, man, out.files, cards, self.folder_map)
+        out.library, out.library_globals, warns = library.build(self.v, man, out.files, cards, self.folder_map,
+                                                                self.entities)
         out.warnings += warns
         if man.problems:
             out.warnings.append(f"{library.SOURCES_REL}: {len(man.problems)} problémů manifestu; podrobnosti `lint`")

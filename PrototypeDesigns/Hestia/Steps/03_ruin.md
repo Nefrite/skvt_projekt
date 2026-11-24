@@ -170,7 +170,7 @@ Přesunuto do [[03_ruin_upravy]] (kap. 4 *Úpravy v datech*, kap. 5 *Bourací ob
 | `/PrototypeDesigns/Lapikus/03_ruin/navrh_vez_schody.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/03_ruin/navrh_vez_vyklenky_kvadry.png` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/03_ruin/ruin_layout_draft.json` | data | [[Lapikus]] | – |
-| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | [[Brana]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/brana_spec.py` | spec | [[Brana]], [[Brana_Straz]], [[Strazni_Vez]] | [[navrh_brana_straz]], [[stav_brana_straz]], [[navrh_brana_prikop]], [[stav_brana]] |
 | `/PrototypeDesigns/Lapikus/tools/ruin/build_ruin.py` | entry | [[Lapikus]] | [[README_ruin]] |
 | `/PrototypeDesigns/Lapikus/tools/ruin/check3d.py` | entry | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/check_blocks.py` | entry | [[Lapikus]] | – |
@@ -180,6 +180,7 @@ Přesunuto do [[03_ruin_upravy]] (kap. 4 *Úpravy v datech*, kap. 5 *Bourací ob
 | `/PrototypeDesigns/Lapikus/tools/ruin/gen_layout.py` | entry | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/layout_from_level.json` | data | [[Lapikus]] | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/massing.py` | entry | [[Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/tools/ruin/nadvori_spec.py` | spec | [[Nadvori_Stan]], [[Nadvori]] | [[navrh_nadvori_stan]], [[05_constructions]], [[06_furnishing]] |
 | `/PrototypeDesigns/Lapikus/tools/ruin/ostroh_spec.py` | spec | [[Ostroh]] | – |
 | `/PrototypeDesigns/Lapikus/tools/ruin/palac_spec.py` | spec | [[Palac]] | [[navrh_palac_obydli_stred]] |
 | `/PrototypeDesigns/Lapikus/tools/ruin/tower_spec.py` | spec | [[Lapikus]] | [[navrh_vez_pristresek]] |

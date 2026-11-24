@@ -118,11 +118,15 @@ def agenda_part(vault: Vault, role: str, m: Model | None = None) -> dict | None:
             elif c.status == "in_progress" and owner == key:
                 work.append(c)
         work.sort(key=_sort_key)
-    requests = sorted((c for c in all_cards if key in {r.casefold() for r in c.requested_by}
-                       and c.status not in CLOSED), key=_sort_key)
-    if not works and not requests:
+    mine = [c for c in all_cards if key in {r.casefold() for r in c.requested_by} and c.status not in CLOSED]
+    # karty imported bez grayboxu jen počtem; seznam = požadavky čekající na výrobu a karty s grayboxem
+    # (zadání 0.28, CR-036); requested_by: legacy žádné roli nepatří
+    done = [c for c in mine if c.status == "imported" and c.stand_in == DEFAULT_STAND_IN]
+    requests = sorted((c for c in mine if c not in done), key=_sort_key)
+    if not works and not requests and not done:
         return None
-    return {"work": [c.as_dict() for c in work] if works else None, "requests": [c.as_dict() for c in requests]}
+    return {"work": [c.as_dict() for c in work] if works else None, "requests": [c.as_dict() for c in requests],
+            "imported_without_stand_in": len(done)}
 
 
 def card_line(c: dict, with_owner: bool = False) -> str:

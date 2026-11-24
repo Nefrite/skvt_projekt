@@ -2,13 +2,13 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Builder
-requested: 2026-11-14
+requested_by: legacy
+requested:
 owner: Builder
 priority: medium
 depends_on: []
 superseded_by:
-updated: 2026-11-23
+updated: 2026-11-24
 aliases: ["SM_RuinStakeSmall"]
 # hra
 asset_kind: mesh
@@ -34,15 +34,18 @@ Osy: délka podél X (nominál 160,0 cm, délka a průměr přes scale); špičk
 ## Na míru
 
 ## Z kódu
-Ručně: klíč není v `LIB_MESHES` a manifest `asset_sources.yaml` ho nepokrývá (`ROUND_MESHES`, `WOOD_NOMINAL`, kameny v `mesh_stone.py`); stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/wood/`): 160,0 × 7,0 × 7,0 cm
-- varianty v UE: `SM_RuinStakeSmall_A`, `SM_RuinStakeSmall_B`
-- sloty: `wood`, `endgrain`
-- verze: `STONE_MESH_VERSION["SM_RuinStake"]` = 1; `MESH_AXES` = 10
 <!-- hestia:generated:start -->
 
 <!-- hestia:asset_code -->
-_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+- Rozměr (skutečný): 160 × 7 × 7 cm; `envelope` 160 × 7 × 7 cm: vejde se
+- Varianty: `SM_RuinStakeSmall_A`, `SM_RuinStakeSmall_B`
+- Sloty: ['wood', 'endgrain']
+- Verze: 1 (prefix `SM_RuinStake`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinStakeSmall_A.SM_RuinStakeSmall_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:200`
+- Data: bez výskytu
 
 <!-- hestia:generated:end -->
 
@@ -53,4 +56,4 @@ Ručně do etapy C (`ue_query --assets`): `.uasset` všech 2 variant v `Content/
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->
 
 ## Poznámky
-- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 2.2 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Builder. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 2.2 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Builder. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

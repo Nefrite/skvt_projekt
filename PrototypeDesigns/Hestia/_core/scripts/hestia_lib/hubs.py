@@ -99,8 +99,8 @@ class Hubs:
                 if mt.defined:
                     agg.append([d, f"{mt.percent} % ({len(mt.met)} z {len(mt.relevant)})",
                                 f"{mt.weakest[0]} – {_link(mt.weakest[1])}"])
-            out += ["", "Agregace z potomků (04 kap. 3):", ""]
-            out += _table(["Doména", "Zralost", "Nejslabší článek"], agg) if agg else ["_Potomci nemají cíle._"]
+            out += ["", "Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):", ""]
+            out += _table(["Doména", "Zralost", "Nejslabší článek"], agg) if agg else ["_Žádná jednotka podstromu nemá cíl._"]
         return "\n".join(out)
 
     def documents_block(self, n: Note) -> str:

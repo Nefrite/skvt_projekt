@@ -288,10 +288,14 @@ def step_details(step: str, data) -> list[str]:
         return [f"změněné soubory: {len(data.get('changed') or [])}"]
     if step == "doc_index":
         return ["index změněn" if data.get("changed") else "index beze změny"]
-    if step == "compose_role":
+    if step == "compose_role":                      # changed nahrát, unchanged ne (zadání 0.28, CR-034)
         roles = data.get("roles") or []
         n = sum(1 for r in roles if r.get("status") in ("new", "changed"))
-        return [f"změněné kompiláty: {n} z {len(roles)}"]
+        changed = data.get("changed") or []
+        unchanged = data.get("unchanged") or []
+        return [f"změněné kompiláty: {n} z {len(roles)}",
+                "changed (nahrát do Claude Projectu): " + (", ".join(changed) or "žádný"),
+                "unchanged (nenahrávat): " + (", ".join(unchanged) or "žádný")]
     return []
 
 

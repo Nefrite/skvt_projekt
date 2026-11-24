@@ -31,9 +31,11 @@ scale: feature
 | paths | – | – | – | build | bez cíle |
 | narrative | – | – | – | design | bez cíle |
 
-Agregace z potomků (04 kap. 3):
+Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
-_Potomci nemají cíle._
+| Doména | Zralost | Nejslabší článek |
+|---|---|---|
+| structures | 100 % (1 z 1) | 4 – [[Nadvori_Stan]] |
 
 <!-- hestia:generated:end -->
 
@@ -47,14 +49,18 @@ _Zatím žádné dokumenty._
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_Zatím žádné kroky._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[03_ruin]] | `nadvori_spec.py` | – |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_Žádné soubory._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/tools/ruin/nadvori_spec.py` | spec | 03_ruin | name |
 
 <!-- hestia:generated:end -->
 
@@ -70,6 +76,7 @@ _Žádné soubory._
 
 - Fronta F-0011 (G2, [[Nadvori]]): očekávaná doména environment (kind place) bez target_environment ani u potomků; očekávaná doména narrative (kind place) bez target_narrative ani u potomků; očekávaná doména paths (kind place) bez target_paths ani u potomků
 - Fronta F-0012 (G4, [[Nadvori]]): status built bez platného dokumentu state
+- Fronta F-0050 (G11, [[Nadvori]]): změna /PrototypeDesigns/Lapikus/tools/ruin/nadvori_spec.py bez řádku v changes.md a novějšího updated
 
 <!-- hestia:generated:end -->
 

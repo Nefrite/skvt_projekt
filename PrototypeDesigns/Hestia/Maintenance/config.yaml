@@ -14,3 +14,4 @@ prototypes:
 engine_version: "5.8"
 protected_files: ["**/manual_edits.json", "**/constructions_edits.json", "**/furnishing.json"]   # file_safety, write_rules
 core_source: "../../../HearthLore"   # repozitář HearthLore se značkami core (update_core --latest)
+steward_active: true                 # Steward vlastní export_cr a weekly (GameDesigner 2026-11-24; 13 kap. 10.20)

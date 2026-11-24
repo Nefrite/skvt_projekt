@@ -2,8 +2,8 @@
 # orchestrace
 type: asset
 asset_status: imported
-requested_by: Builder
-requested: 2026-11-14
+requested_by: legacy
+requested:
 owner: Builder
 priority: medium
 depends_on: []
@@ -34,15 +34,18 @@ Osy: délka podél X (nominál 100,0 cm, délka a průměr přes scale); pivot v
 ## Na míru
 
 ## Z kódu
-Ručně: klíč není v `LIB_MESHES` a manifest `asset_sources.yaml` ho nepokrývá (`ROUND_MESHES`, `WOOD_NOMINAL`, kameny v `mesh_stone.py`); stav kódu 2026-11-23:
-- rozměr (bounding box OBJ `meshes/wood/`): 100,0 × 20,0 × 20,0 cm
-- varianty v UE: `SM_RuinLog_A`, `SM_RuinLog_B`, `SM_RuinLog_C`
-- sloty: `wood`, `endgrain`
-- verze: `STONE_MESH_VERSION["SM_RuinLog"]` = 1; `MESH_AXES` = 10
 <!-- hestia:generated:start -->
 
 <!-- hestia:asset_code -->
-_v kódu nenalezeno (`asset_sources.yaml`); technické údaje doplní kód, ne karta._
+- Rozměr (skutečný): 100 × 20 × 20 cm; `envelope` 100 × 20 × 20 cm: vejde se
+- Varianty: `SM_RuinLog_A`, `SM_RuinLog_B`, `SM_RuinLog_C`
+- Sloty: ['wood', 'endgrain']
+- Verze: 1 (prefix `SM_RuinLog`, `RuinStoneVersion`)
+- Globální verze: `MESH_AXES` 10
+- `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinLog_A.SM_RuinLog_A`
+- `.uasset` na disku: ano
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:194`
+- Data: bez výskytu
 
 <!-- hestia:generated:end -->
 
@@ -53,4 +56,4 @@ Ručně do etapy C (`ue_query --assets`): `.uasset` všech 3 variant v `Content/
 <!-- verified (jen GameDesigner): kdo, kdy (RRRR-MM-DD), verze -->
 
 ## Poznámky
-- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 2.2 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Builder. `requested_by` a `requested` doplněny podle role, která asset používá, a data v checklistu.
+- Převedeno z [[CHECKLIST_assets_navrhy]] kap. 2.2 při zavedení karet (P19, Steward, 2026-11-23); stav podle kódu a `.uasset`, potvrdí Builder. `requested_by: legacy` (vyrobeno před zavedením karet, CR-036).

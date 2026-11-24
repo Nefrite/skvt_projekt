@@ -6,7 +6,7 @@ requires: [completeness, canon_check]
 modes: [vault, chat]
 compile: listed
 validity: valid
-updated: 2026-11-22
+updated: 2026-11-24
 ---
 # Kam zápis patří
 
@@ -22,6 +22,7 @@ Dostaneš pokyn k zápisu („Zapiš: palisáda má tři střílny.“), v chatu
    - pojem a jeho význam → glosář;
    - rozpor s tím, co platí → modul `canon_check` (12 kap. 3b.3–3b.4).
 2. **Jeden dokument, jedno téma** (01 kap. 9.2; zadání 0.21): patří-li zápis k jinému tématu, než má cílový dokument (jiná entita nebo její samostatná část, realizace v návrhu, rozhodnutí platné i mimo dokument, nová verze návrhu jako kapitola „platí přednostně“), navrhni vlastní dokument, `state`, `decision`, přepis (`nahradit:`) nebo rozdělení; vrstvení úprav do jednoho dokumentu nepřidávej.
+   **Délka dokumentu (G14, 04 kap. 4):** počítají se znaky těla bez frontmatteru a bez generovaných bloků (`hestia:generated`); `Maintenance/` a `Dashboard/` se nepočítají, dokument se `status: rejected` nebo `validity: superseded`/`archived` je neaktivní. Velikost je v `doc_index` (pole `chars`) a v `section <dokument> --list`. Prahy z `config.yaml`: doménový dokument nebo `state` nad `doc_summary_chars` (6 000) potřebuje `## Souhrn` hned za titulem; nad `doc_split_chars` (20 000) rozdělit tematicky; předání nad `handover_max_chars` (4 000) obsahuje víc než zadání a odkazy.
 3. Urči entitu a doménu podle hubu a indexu dokumentů (`lookup`). Když nejde jednoznačně říct, je-li to návrh, nebo realizace, nebo které entity se týká, **zeptej se**; nedomýšlej.
 4. Rozliš formu (12 kap. 3b.2): **doslovná textace** GameDesignera se zapíše přímo, se zdrojem (chat, datum) a řádkem v `changes.md`, i do nového dokumentu; **přeformulování, sloučení, zkrácení** předlož ke schválení jako diff. Doslovná textace v rozporu s kánonem nikdy přímo.
 5. Před zápisem spusť `completeness`, pak zapiš na určené místo; přepis platného textu jen s `nahradit:` nebo po schválení (12 kap. 6.1).
