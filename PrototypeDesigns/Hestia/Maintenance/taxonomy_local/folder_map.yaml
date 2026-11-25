@@ -41,6 +41,11 @@ items:
     build_step: 06_furnishing
     domains: [structures]
 
+  - path: "PrototypeDesigns/Lapikus/cinematics/"
+    entity: Cinematics_Lapikus     # cutscény a promo sekvence (P24); vazba na hrad located_in v hubu
+    build_step: cinematics
+    domains: [narrative]
+
   # --- sdílený kód a nástroje
   - path: "PrototypeDesigns/Lapikus/zrlib/"
     role: library                  # Steps/shared/zrlib (B16)

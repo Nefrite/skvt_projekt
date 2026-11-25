@@ -60,6 +60,7 @@ Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3)
 **narrative**
 - [[Lore_Lapikus_pudorys]] – concept, depth 2, valid
 - [[navrh_promo_prulet_kamery]] – design, depth 3, draft
+- [[stav_promo_prulet]] – state, depth 4, valid
 
 **Aktivní předání**
 - [[predani_lapikus_koren_actoru_stavitel]]
@@ -72,8 +73,9 @@ Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3)
 | Krok | Skripty | Dokumenty |
 |---|---|---|
 | [[03_ruin]] | `Zricenina_Brana_S_nahled.png`, `Zricenina_bloky_nahled.png`, `Zricenina_kameny_detail.png`, `Zricenina_kameny_koruny.png`, `Zricenina_koruna_nahled.png`, `Zricenina_lic_pred_po.png`, `Zricenina_strilna_preklad_pred_po.png`, `Zricenina_strilny_osteni_nahled.png`, `build_ruin_blocks.py`, `Obvod.py`, `detach_stones.py`, `gen_stones.py`, `manual_edits.json`, `ruin_layout.json`, `terrain_from_level.json`, `Zricenina_blockout_nahled.png`, `build_ruin.py`, `ruin_layout.json`, `navrh_vez_okna_podesta.png`, `navrh_vez_patra_strilny.png`, `navrh_vez_schody.png`, `navrh_vez_vyklenky_kvadry.png`, `ruin_layout_draft.json`, `build_ruin.py`, `check3d.py`, `check_blocks.py`, `decay.py`, `elev.py`, `export_level_layout.py`, `gen_layout.py`, `layout_from_level.json`, `massing.py`, `tower_spec.py` | [[README_ruin]], [[Zricenina_03_ruin_stav]] |
-| [[05_constructions]] | `Knihovna_meshe_nahled.png`, `Knihovna_textury_nahled.png`, `Kulatina_meshe_nahled.png`, `Kulatina_textury_nahled.png`, `Props_kovarna_nahled.png`, `Props_textury_nahled.png`, `Stan_luzko_nahled.png`, `Stan_luzko_slozena_nahled.png`, `Stan_plachta_nahled.png`, `Stan_truhlicka_nahled.png`, `Stan_vak_nahled.png`, `Stavby_brana_prikop_nahled.png`, `Stavby_brana_straz_nahled.png`, `Stavby_brana_straz_nahled_etapa1.png`, `Stavby_drevo_nahled.png`, `Stavby_nadvori_stan_nahled.png`, `Stavby_ostroh_dostavba_nahled.png`, `Stavby_ostroh_nahled.png`, `Stavby_ostroh_podlaha_nahled.png`, `Stavby_ostroh_tramovi_nahled.png`, `Stavby_palac_kovarna_nahled.png`, `Stavby_palac_obydli_nahled.png`, `Stavby_palac_obydli_nahled_etapa1.png`, `Stavby_vez_nahled.png`, `Stavby_vez_pristresek_nahled.png`, `build_constructions.py`, `constructions.json`, `constructions_edits.json`, `Etapa.py`, `Sut.py` | [[navrh_lapikus_koren_actoru]] |
+| [[05_constructions]] | `Knihovna_meshe_nahled.png`, `Knihovna_textury_nahled.png`, `Kulatina_meshe_nahled.png`, `Kulatina_textury_nahled.png`, `Ohniste_nahled.png`, `Props_kovarna_nahled.png`, `Props_textury_nahled.png`, `Stan_luzko_nahled.png`, `Stan_luzko_slozena_nahled.png`, `Stan_plachta_nahled.png`, `Stan_truhlicka_nahled.png`, `Stan_vak_nahled.png`, `Stavby_brana_prikop_nahled.png`, `Stavby_brana_straz_nahled.png`, `Stavby_brana_straz_nahled_etapa1.png`, `Stavby_drevo_nahled.png`, `Stavby_nadvori_stan_nahled.png`, `Stavby_ostroh_dostavba_nahled.png`, `Stavby_ostroh_nahled.png`, `Stavby_ostroh_podlaha_nahled.png`, `Stavby_ostroh_tramovi_nahled.png`, `Stavby_palac_kovarna_nahled.png`, `Stavby_palac_obydli_nahled.png`, `Stavby_palac_obydli_nahled_etapa1.png`, `Stavby_vez_nahled.png`, `Stavby_vez_pristresek_nahled.png`, `build_constructions.py`, `constructions.json`, `constructions_edits.json`, `Etapa.py`, `Sut.py` | [[navrh_lapikus_koren_actoru]] |
 | [[06_furnishing]] | `build_furnishing.py`, `capture_furnishing.py`, `furn_data.py`, `furnishing.json` | – |
+| [[cinematics]] | – | [[stav_promo_prulet]] |
 
 <!-- hestia:generated:end -->
 
@@ -124,6 +126,7 @@ Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3)
 | `/PrototypeDesigns/Lapikus/05_constructions/Knihovna_textury_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Kulatina_meshe_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Kulatina_textury_nahled.png` | data | 05_constructions | folder |
+| `/PrototypeDesigns/Lapikus/05_constructions/Ohniste_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Props_kovarna_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Props_textury_nahled.png` | data | 05_constructions | folder |
 | `/PrototypeDesigns/Lapikus/05_constructions/Stan_luzko_nahled.png` | data | 05_constructions | folder |

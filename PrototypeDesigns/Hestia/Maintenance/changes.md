@@ -245,3 +245,6 @@ updated: 2026-11-25
 | 2026-11-25 | AssetGenerator | Lapikus | nový prop SM_RuinCampfire (ohniště: kruh kamenů, uhlí, polena se zuhelnatělými středy), slot Face = MI_RuinFace (SLOT_MI, _KINDS), ukázka Ukazka_Ohniste.py, karta v Katalog_props; ostatní meshe beze změny; neověřeno v UE | chat: Jirka 25. 11. 2026 (ohniště) |
 | 2026-11-25 | Architect | Lapikus | nový návrh navrh_promo_prulet_kamery (narrative): průlet kamery pro promo video, 7 záběrů s UE souřadnicemi, zoomy, postup natočení přes Sequencer a Movie Render Queue, etapa 2 | chat:promo_prulet_kamery |
 | 2026-11-25 | AssetGenerator | SM_RuinCampfire_A | karta assetu Assets/props/SM_RuinCampfire_A.md (imported, envelope 99 × 99 × 41); sekce Ohniště vrácena z Katalog_props; slot Face do Konvence_assetu kap. Materiály | chat: Jirka 25. 11. 2026 (karta ohniště) |
+| 2026-11-25 | Steward | Cinematics_Lapikus | nová entita (kind sequence, located_in Lapikus), krok cinematics (build_steps 950, folder_map narrative), kostra Steps/cinematics, složka Lapikus/cinematics, README.txt; kompilát ScreenWriter | chat:P24_screenwriter |
+| 2026-11-25 | ScreenWriter | Lapikus | data a skript promo pruletu, stav | chat:promo_prulet_realizace |
+| 2026-11-25 | ScreenWriter | Cinematics_Lapikus | promo_prulet.json, build_sequence.py (Sequencer skript), stav_promo_prulet; v UE neovereno | chat:promo_prulet_realizace |

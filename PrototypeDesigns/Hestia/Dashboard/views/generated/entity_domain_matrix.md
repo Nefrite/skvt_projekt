@@ -18,6 +18,7 @@ Zkušební pohled 2 pro rozhodnutí Q1 (zadání 04 kap. 2.1 a 5.1), varianta sk
 | [[Brana_Straz]] | structure |  | 3/4 ⚠ |  |  | návrh 0/4 ⚠ |  |
 | [[Characters]] | system |  |  |  |  | bez cíle |  |
 | [[Characters_Animace_Sezeni]] | system |  |  |  |  | bez cíle |  |
+| [[Cinematics_Lapikus]] | sequence |  |  |  |  |  | bez cíle |
 | [[Guesthouse]] | structure |  | 4/4 |  |  | návrh 0/4 ⚠ |  |
 | [[Hradby_a_Brana]] | group |  | podstrom 3/4 ⚠ (min 3); vlastní 4/4 |  |  | podstrom 0/2 ⚠ (min 0) |  |
 | [[Lapikus]] | location |  | podstrom 10/12 ⚠ (min 3) | bez cíle | bez cíle | podstrom 0/4 ⚠ (min 0) | bez cíle |

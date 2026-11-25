@@ -14,6 +14,8 @@ CHECKLIST_assets_navrhy.md - co navrhy potrebuji a co je hotove
 04_forest\   - plan smiseneho lesa: zony, druhy stromu, PCG graf, olse podel reky, checklist
                -> README_forest.md
 05_constructions\ - dodatecne stavby zriceniny (drevo, dostavby, sut) -> README_constructions.md
+06_furnishing\ - vybaveni (prenosne props) -> Hestia Steps/06_furnishing.md
+cinematics\   - cutsceny a promo sekvence (data zaberu JSON, build_sequence.py) -> Hestia Steps/cinematics.md
 build_normal.py    - UE: cely hrad (03) + vsechny stavby (05), aditivne (jen chybejici / zastarale assety)
 build_fullscope.py - UE: oprava - smaze generovane actory a meshe a vse postavi znovu
 zrlib\       - sdilena knihovna skriptu 03 + 05 (config.py = vzhled, pipeline.py = spousteni)

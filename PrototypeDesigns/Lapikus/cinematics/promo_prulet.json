@@ -1,0 +1,118 @@
+{
+ "_header": {
+  "entities": "Cinematics_Lapikus",
+  "docs": "navrh_promo_prulet_kamery, stav_promo_prulet",
+  "build_step": "cinematics",
+  "domains": "narrative",
+  "popis": "Data zaberu promo pruletu (jediny zdroj hodnot). Cte je build_sequence.py. Rucni ladeni z UE se prepisuje sem a zapisuje do stav_promo_prulet (Rucni ladeni)."
+ },
+ "version": 1,
+ "units": "UE cm (pozice, vzdalenosti), s (cas), mm (ohnisko), stupne (uhly)",
+ "sequence": {
+  "name": "LS_Promo_Prulet",
+  "folder": "/Game/Skvt/Cinematics",
+  "fps": 30,
+  "length_s": 80.0,
+  "filmback_mm": [36.0, 20.25],
+  "key_step_s": 0.5,
+  "tag": "Promo_Prulet"
+ },
+ "scene": {
+  "level": "/Game/Skvt/LapikusPrototypeMap",
+  "etapa": 2,
+  "stav": "etapa 2 (base + final), leto, zlata hodina, kour z komina domu a z vyhne",
+  "sun_hint": "slunce nizko od zapadu az jihozapadu (azimut asi 225-270 st., vyska asi 10-15 st.); hodnoty dolad v UE a posli mi, prepisu je sem"
+ },
+ "refs": {
+  "plosina_z": 3129,
+  "vez_stred": [1189, -1406],
+  "vez_koruna_z": 5029,
+  "vez_koruna_z_poznamka": "predpoklad 19 m nad plosinou (navrh, otevrena otazka Architectovi)",
+  "brana_stred": [2350, -2830],
+  "komin": [-895, -734, 3659],
+  "vyhen": [200, -1030, 3250],
+  "pruchod_palac_S": [-997, -1326]
+ },
+ "shots": [
+  {
+   "id": 1, "name": "Uvod z udoli", "t0": 0.0, "t1": 10.0,
+   "rig": "free", "ease": "out",
+   "pos": [[0, -400, 12000, 3629], [1, -400, 6000, 4329]],
+   "look": [[0, 1189, -1406, 4500], [1, 1189, -1406, 4500]],
+   "focal_mm": [[0, 85], [1, 50]],
+   "aperture": 8.0,
+   "focus": {"mode": "manual", "distance_cm": 8000},
+   "poznamka": "navrh: zoom 85 -> 50 mm (hodnoty z navrhu, viz hlaseni: slovo najeti vs. 85 -> 50)"
+  },
+  {
+   "id": 2, "name": "Podel utesu", "t0": 10.0, "t1": 20.0,
+   "rig": "rail", "ease": "linear",
+   "rail": [[-4500, 1500, 3200], [1800, 1500, 3500]],
+   "cam_rel_rot": [0, 8, -90],
+   "focal_mm": [[0, 35], [1, 35]],
+   "aperture": 8.0,
+   "focus": {"mode": "manual", "distance_cm": 2500},
+   "poznamka": "konstantni rychlost asi 6,3 m/s; pohled na sever (yaw -90), predpokladany sklon 8 st. nahoru k oknum"
+  },
+  {
+   "id": 3, "name": "Oblet veze", "t0": 20.0, "t1": 32.0,
+   "rig": "pivot", "ease": "smooth",
+   "pivot": {
+    "name": "Promo_Pivot_Vez",
+    "center_xy": "vez_stred",
+    "radius_cm": 2500,
+    "az_start_deg": 0, "sweep_deg": -270,
+    "z": [[0, 3929], [1, 5729]],
+    "look_z": [[0, 4400], [1, 5000]]
+   },
+   "focal_mm": [[0, 35], [0.875, 35], [1, 100]],
+   "aperture": 5.6,
+   "focus": {"mode": "track", "target": "vez_stred_top", "target_pos": [1189, -1406, 4800]},
+   "poznamka": "az 0 = kamera vychodne od veze, -90 = sever, -180 = zapad, -270 = jih (konec pred plachtou strazy na Vez_J); zoom v poslednich 1,5 s"
+  },
+  {
+   "id": 4, "name": "Pres prikop branou", "t0": 32.0, "t1": 44.0,
+   "rig": "rail", "ease": "linear",
+   "rail": [[6500, -2900, 3279], [1700, -2900, 3300]],
+   "rail_waypoints_poznamka": "pilire mostu X 3590 a 3190 lezi na primce kolejnice",
+   "cam_rel_rot": [0, 3, 180],
+   "focal_mm": [[0, 50], [1, 24]],
+   "zoom_law": {"law": "vertigo", "f_start": 50, "f_min": 24, "ref_axis": "x", "ref_value": 2350},
+   "aperture": 8.0,
+   "focus": {"mode": "track", "target": "brana_oblouk", "target_pos": [2350, -2830, 3500]},
+   "poznamka": "vertigo: f = f_start * vzdalenost k oblouku / vzdalenost na startu, dolem omezeno f_min; po dosazeni f_min se drzi"
+  },
+  {
+   "id": 5, "name": "Nadvori a dum", "t0": 44.0, "t1": 58.0,
+   "rig": "crane", "ease": "smooth",
+   "crane": {"arm_cm": 1000, "yaw_deg": 0, "base_z": 3300},
+   "pos": [[0, -800, -2300, 3300], [0.45, -800, -2300, 4029], [1, -997, -1326, 3400]],
+   "look": [[0, -895, -734, 3659], [1, -895, -734, 3659]],
+   "focal_mm": [[0, 35], [0.78, 35], [1, 85]],
+   "aperture": 5.6,
+   "focus": {"mode": "track", "target": "komin", "target_pos": [-895, -734, 3659]},
+   "poznamka": "jerab: model ramene = kamera v rig + (L cos p, 0, L sin p); po buildu zkontrolovat a dolaadit; zoom 35 -> 85 v poslednich 3 s"
+  },
+  {
+   "id": 6, "name": "Vlozka kovarna", "t0": 58.0, "t1": 66.0,
+   "rig": "free", "ease": "smooth",
+   "pos": [[0, -50, -1105, 3290], [1, -50, -955, 3290]],
+   "look": [[0, 200, -1030, 3250], [1, 200, -1030, 3250]],
+   "focal_mm": [[0, 85], [1, 100]],
+   "aperture": 2.8,
+   "focus": {"mode": "track", "target": "vyhen", "target_pos": [200, -1030, 3250]},
+   "poznamka": "posun 1,5 m, vse odhad (rozmery mistnosti nejsou v navrhu): zkontrolovat viewport, kolize se zdi a strechou"
+  },
+  {
+   "id": 7, "name": "Finale", "t0": 66.0, "t1": 80.0,
+   "rig": "free", "ease": "smooth", "hold_end_s": 4.0,
+   "pos": [[0, -895, -734, 3800], [1, -400, 8000, 7100]],
+   "look": [[0, -895, -1500, 3600], [1, -2200, -600, 3100]],
+   "focal_mm": [[0, 28], [1, 28]],
+   "aperture": 8.0,
+   "focus": {"mode": "manual", "distance_cm": 9000},
+   "poznamka": "poslednich 4 s bez pohybu (titulek); start kamery je nad domem, zkontrolovat strechu a komin"
+  }
+ ],
+ "manual_tuning": []
+}

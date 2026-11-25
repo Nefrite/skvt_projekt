@@ -21,6 +21,7 @@ Zkušební pohled 3 pro rozhodnutí Q1 (zadání 04 kap. 2.1 a 5.1), varianta sk
 |  | [[Ostroh]] | place |  |
 |  | [[Pristup_JV]] | place |  |
 |  | [[Udoli_Reky]] | place |  |
+| [[Lapikus]] | [[Cinematics_Lapikus]] | sequence | vlastní |
 | [[Ostroh]] | [[Brana]] | structure | zděděno od [[Lapikus]] |
 | [[Ostroh]] | [[Brana_Straz]] | structure | zděděno od [[Lapikus]] |
 | [[Ostroh]] | [[Guesthouse]] | structure | vlastní |

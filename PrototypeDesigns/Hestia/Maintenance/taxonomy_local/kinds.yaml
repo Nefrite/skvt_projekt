@@ -1,0 +1,6 @@
+# Druhy entit instance Lapikus nad core (zadání 01, kap. 8; otevřená množina).
+# sequence: GameDesigner 2026-11-25 (P24, podklad screenwriter): cutscény mají vlastní entitu s vazbou located_in na místo.
+items:
+  - id: sequence
+    expected_domains: [narrative]
+    description: Cutscéna nebo promo sekvence (Sequencer, kamera, render)

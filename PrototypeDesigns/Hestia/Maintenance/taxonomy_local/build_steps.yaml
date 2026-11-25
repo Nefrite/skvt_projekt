@@ -46,3 +46,9 @@ steps:
     order: 910
     status: active
     code: ["/PrototypeDesigns/Characters/NPC/"]
+
+  # Cutscény mimo sekvenci světa (GameDesigner 2026-11-25, P24, podklad screenwriter kap. 7); bez type jako systémy postav.
+  - id: cinematics
+    order: 950
+    status: active
+    code: ["/PrototypeDesigns/Lapikus/cinematics/"]
