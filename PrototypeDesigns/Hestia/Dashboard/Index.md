@@ -42,20 +42,20 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - [[predani_palac_obydli_6_zarubne]] – [[Palac_Obydli]]
 - [[predani_palac_obydli_7_vybaveni]] – [[Palac_Obydli]]
 
-**Otevřené otázky:** do 14 dní 16 · starší 0 · bez data 0
+**Otevřené otázky:** do 14 dní 21 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-24 · Builder · Lapikus · Brana: sijovy prikop bez valu, mostni pilir, opera, lavka Brana_Most a zataras Brana_Zataras overeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4, predani archivovano · predani_brana_prikop_stavitel
-- 2026-11-24 · Builder · Handovers/predani_brana_prikop_stavitel.md · předání archivováno · predani_brana_prikop_stavitel
-- 2026-11-24 · Builder · Lapikus · Nový typ tent (zr_stavby/stan.py), stavba Nadvori_Stan (stage=site, pile=True) u Hradba_Z_S mezi Guesthouse a prkny s vchodem na jih a vybavení Nadvori_Stan_Vybaveni (06_furnishing, stage=site: 1 lůžko, truhlička a vak uvnitř, špalek venku); entita Nadvori_Stan převedena na built a založen stav_nadvori_stan · chat:T-0035
-- 2026-11-24 · Builder · Nadvori_Stan · Nový typ tent (zr_stavby/stan.py), stavba Nadvori_Stan (stage=site, pile=True) u Hradba_Z_S mezi Guesthouse a prkny s vchodem na jih a vybavení Nadvori_Stan_Vybaveni (06_furnishing, stage=site: 1 lůžko, truhlička a vak uvnitř, špalek venku); entita Nadvori_Stan převedena na built a založen stav_nadvori_stan · chat:T-0035
-- 2026-11-24 · Builder · Lapikus · Oprava ue_assets.mesh_slots() pro jednoslotové LIB_MESHES (SM_RuinCanvasTent, SM_RuinRope, SM_RuinLashing): pile actor Nadvori_Stan nyní správně přiřadí MI_RuinCanvas a MI_RuinRope místo MI_RuinWood · chat:T-0035-fix-canvas-mat
-- 2026-11-24 · Builder · Nadvori_Stan · Oprava ue_assets.mesh_slots() pro jednoslotové LIB_MESHES (SM_RuinCanvasTent, SM_RuinRope, SM_RuinLashing): pile actor Nadvori_Stan nyní správně přiřadí MI_RuinCanvas a MI_RuinRope místo MI_RuinWood · chat:T-0035-fix-canvas-mat
-- 2026-11-24 · Builder · Lapikus · Sjednocení článků lan STAN_ROPE na d=0,015 m a link=1,0 m (stejně jako Vez_Pristresek): 8 článků 80–92 cm místo 32 stlačených 20–23 cm, celkem 33 dílců · chat:T-0035-ropes
-- 2026-11-24 · Builder · Nadvori_Stan · Sjednocení článků lan STAN_ROPE na d=0,015 m a link=1,0 m (stejně jako Vez_Pristresek): 8 článků 80–92 cm místo 32 stlačených 20–23 cm, celkem 33 dílců · chat:T-0035-ropes
-- 2026-11-24 · Builder · Lapikus · Nadvori_Stan a Nadvori_Stan_Vybaveni vizuálně ověřeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4 · chat:T-0035-ue-ok
-- 2026-11-24 · Builder · Nadvori_Stan · Nadvori_Stan a Nadvori_Stan_Vybaveni vizuálně ověřeny v UE (GameDesigner 2026-11-24); depth_structures 3 -> 4 · chat:T-0035-ue-ok
+- 2026-11-24 · agent pilotu (Steward) · Lapikus_Region · vlastní část terén: target_environment 4 (CR-035, schválil GameDesigner 2026-11-24) · predani_pilot_lapikus_knihovnik_unreal P21, P22
+- 2026-11-24 · agent pilotu (Steward) · Maintenance/structure_log.md · buňka cr u P-0001–P-0016: CR-033 až CR-040 podle zaevidování v HearthLore · predani_pilot_lapikus_knihovnik_unreal P21, P22
+- 2026-11-24 · agent pilotu (Steward) · Maintenance/reports/weekly_2026-11-24.md · první týdenní běh (doc_index, asset_index, hubs, audit, health) nad lokální kopií vaultu, zpět 26 souborů bez kolizí · predani_pilot_lapikus_knihovnik_unreal P21, P22
+- 2026-11-24 · agent pilotu (Steward) · Maintenance/taxonomy_local/asset_sources.yaml · ROUND_MESHES a WOOD_NOMINAL s pevnou category, kameny zdrojem files (CR-037); knihovna 126 assetů, 0 klíčů bez karty · predani_pilot_lapikus_knihovnik_unreal P21, P22
+- 2026-11-24 · agent pilotu (Steward) · Assets/ · requested_by: legacy u 82 karet vyrobených před zavedením karet (CR-036); blok *Z kódu* i u kulatiny, hraněného dřeva a kamenů · predani_pilot_lapikus_knihovnik_unreal P21, P22
+- 2026-11-24 · agent pilotu (Steward) · Maintenance/queue.md · done T-0042 (own_targets), T-0043 (steward_active) · predani_pilot_lapikus_knihovnik_unreal P21, P22
+- 2026-11-24 · Librarian · Lapikus · založen dokument Lore_Lapikus_pudorys (půdorys v romantizované podobě původního hradu pro potřeby hry, podklad k lore) a obrázek Lore_Lapikus_pudorys.svg · chat 2026-11-24 (GameDesigner)
+- 2026-11-25 · AssetGenerator · Lapikus · nový prop SM_RuinCampfire (ohniště: kruh kamenů, uhlí, polena se zuhelnatělými středy), slot Face = MI_RuinFace (SLOT_MI, _KINDS), ukázka Ukazka_Ohniste.py, karta v Katalog_props; ostatní meshe beze změny; neověřeno v UE · chat: Jirka 25. 11. 2026 (ohniště)
+- 2026-11-25 · Architect · Lapikus · nový návrh navrh_promo_prulet_kamery (narrative): průlet kamery pro promo video, 7 záběrů s UE souřadnicemi, zoomy, postup natočení přes Sequencer a Movie Render Queue, etapa 2 · chat:promo_prulet_kamery
+- 2026-11-25 · AssetGenerator · SM_RuinCampfire_A · karta assetu Assets/props/SM_RuinCampfire_A.md (imported, envelope 99 × 99 × 41); sekce Ohniště vrácena z Katalog_props; slot Face do Konvence_assetu kap. Materiály · chat: Jirka 25. 11. 2026 (karta ohniště)
 
 <!-- hestia:generated:end -->
 

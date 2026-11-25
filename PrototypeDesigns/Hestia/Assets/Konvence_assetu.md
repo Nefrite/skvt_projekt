@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-25
 aliases: [konvence assetů, pravidla assetů]
 ---
 # Konvence assetů
@@ -31,6 +31,7 @@ Převzato z dřívějších dokumentů [[Katalog_props]] (*Společné konvence*)
 ## Materiály
 - Materiály jsou instance na `M_RuinStone` (kámen, dřevo, kov…) a `M_RuinCloth` (plátno, oboustranné, `WindAmount`); složka `/Game/Skvt/Lapikus/Ruin/Materials`, vzhled v `MAT_LOOK`, textury v `TEXTURES` (`zrlib/config.py`).
 - **Slot `Wood`** = úprava dřeva z dat (`finish`: `raw`, `oil`, `tar`, `old`, `blood`, `peeled`; `WOOD_FINISH`, `WOOD_FINISH_DEFAULT`). Ostatní sloty jsou pevné (`SLOT_MI`, `CLOTH_MI`). Nábytek hosta: doporučená úprava `oil`; stan: `raw`.
+- **Slot `Face` = kámen líce zříceniny** (`MI_RuinFace`, `SLOT_MI["face"]`): kameny v props (kruh ohniště) mají stejný materiál jako zřícenina, nový materiál kamene se nezakládá (25. 11. 2026, [[SM_RuinCampfire_A]]).
 - **Kulatina má tři sloty:** `Wood` (plášť loupaný nebo odloupnutá místa), `EndGrain` (čela, světlejší, letokruhy), `Bark` (kůra). Zašpičatělé a osekané konce jsou vždy holé dřevo.
 - Stejné materiály jako zřícenina a dostavby (`MI_Ruin*`), stejné zvětrání shora (`MAT_TOP`) a měřítko UV (1 UV = 1 m).
 

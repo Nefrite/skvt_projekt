@@ -106,7 +106,7 @@ def ensure_materials(unreal):
     for wc in WOOD_MI:                                   # chybi-li textury, aspon stejne drevo vsude
         mats[wc] = mats[wc] or mats.get("wood")
     for sc, sn in SLOT_MI.items():                       # sloty: kura, cela, lano, prouti, mazanina, vypln spar
-        mats[sc] = _wood_mi(unreal, master, pick, sc, sn) or mats.get("wood")
+        mats[sc] = mats.get(sc) or _wood_mi(unreal, master, pick, sc, sn) or mats.get("wood")   # face = uz vytvoreny MI_RuinFace
         SLOT_MATS[sc] = mats[sc]
     cloth = _cloth_master(unreal, pick)                  # platno: oboustranny material s posunem ve vetru
     for sc, sn in CLOTH_MI.items():
@@ -630,7 +630,7 @@ def is_multi_slot(mesh_name):
     s = mesh_slots(mesh_name)
     return s is not None and len(s) > 1
 
-_KINDS = ("endgrain", "bark", "rope", "wattle", "daub", "chinking", "sackcloth", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "straw", "wool", "wood")
+_KINDS = ("endgrain", "bark", "face", "rope", "wattle", "daub", "chinking", "sackcloth", "canvas", "ironclean", "iron", "leather", "sandstone", "water", "charcoal", "straw", "wool", "wood")
 
 def apply_materials(unreal, comp, mesh, material, slots=None):
     """material na komponentu meshe. slots = poradi slotu v OBJ (mesh_slots) nebo None (jeden slot = material dilce).

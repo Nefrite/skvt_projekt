@@ -28,8 +28,8 @@ import numpy as np
 from mesh_common import waves, noise, smooth_normals, write_obj_slots
 import mesh_log
 
-SLOTS = ("Wood", "EndGrain", "Bark", "Iron", "Leather", "Sandstone", "Water", "Charcoal", "Wattle", "IronClean", "Straw", "Wool", "Canvas", "Rope", "Sackcloth")
-WOOD, END, BARK, IRON, LEATHER, SAND, WATER, COAL, WATTLE, CLEAN, STRAW, WOOL, CANVAS, ROPE, SACK = range(15)      # IRON = s patinou rzi, CLEAN = bez rzi (naradi)
+SLOTS = ("Wood", "EndGrain", "Bark", "Iron", "Leather", "Sandstone", "Water", "Charcoal", "Wattle", "IronClean", "Straw", "Wool", "Canvas", "Rope", "Sackcloth", "Face")
+WOOD, END, BARK, IRON, LEATHER, SAND, WATER, COAL, WATTLE, CLEAN, STRAW, WOOL, CANVAS, ROPE, SACK, FACE = range(16)      # IRON = s patinou rzi, CLEAN = bez rzi (naradi)
 
 
 # smer let dreva v UV: textury dreva maji leta podel U. grain="long" = U podel nejdelsiho rozmeru dilu (sloupek, noha,
@@ -1125,6 +1125,40 @@ def ladder(seed, L=450.0, wd=45.0):
     return M
 
 
+def campfire(seed):
+    """ohniste (taborak) Ø ~1 m: kruh 11 kamenu (oblazky z mista, slot Face = MI_RuinFace), loze zhaveho uhli a popela,
+    4 polena hvezdicovite (vnitrnimi konci do ohne) a 3 polena opirana do stanu. Stredy polen v ohni zuhelnatele
+    (slot Charcoal), konce mimo ohen cele. Stoji na zemi (spodek z = 0), vrch stanu polen ~38 cm."""
+    M = PM(); r = np.random.default_rng(seed)
+    Ro, Ri = 50.0, 31.0                                                          # vnejsi a vnitrni polomer kruhu
+    for k in range(11):                                                          # kameny (zaoblene, ruzne velke)
+        a = 2 * math.pi * k / 11 + r.uniform(-0.12, 0.12)
+        l, w, h = r.uniform(18, 25), r.uniform(13, 18), r.uniform(10, 15); rr = (Ro + Ri) / 2 + r.uniform(-2, 2)
+        add_box(M, (rr * math.cos(a), rr * math.sin(a), h / 2), (l, w, h), FACE, R=rot(math.degrees(a) + 90 + r.uniform(-15, 15),
+                r.uniform(-6, 6), r.uniform(-6, 6)), sub=4, rough=0.8, round_=min(w, h) * 0.42, seed=seed + 1 + k)
+    # loze uhli a popela (nizka kupka uvnitr kruhu)
+    add_lathe(M, [(0, 0), (0, Ri - 3), (1.5, Ri - 8), (3.5, 16), (4.5, 6), (4.8, 0)], (0, 0, 0), (0, 0, 1), [COAL] * 5,
+              n=28, rough=0.6, seed=seed + 20)
+    f0 = len(M.F)
+    for k in range(4):                                                           # polena hvezdicovite, vnitrni konce v ohni
+        a = math.pi / 4 + k * math.pi / 2 + r.uniform(-0.25, 0.25); R_ = r.uniform(4.0, 5.5)
+        p0 = np.array([math.cos(a) * r.uniform(4, 8), math.sin(a) * r.uniform(4, 8), 4.5 + R_ * 0.8])
+        p1 = np.array([math.cos(a) * r.uniform(40, 48), math.sin(a) * r.uniform(40, 48), 12.0 + R_])   # vnejsi konec na kameni
+        log_piece(M, p0, p1, R_, seed + 30 + k, True, n_ar=16, step=3.0, knots=1, cut=r.uniform(2, 10))
+    for k in range(3):                                                           # stan z poleny
+        a = 2 * math.pi * k / 3 + r.uniform(-0.3, 0.3); R_ = r.uniform(3.5, 4.5)
+        p0 = np.array([math.cos(a) * 20, math.sin(a) * 20, 5.0 + R_]); p1 = np.array([math.cos(a + 0.4) * 2.5, math.sin(a + 0.4) * 2.5, 36.0])
+        log_piece(M, p0, p1, R_, seed + 40 + k, k != 1, n_ar=16, step=3.0, knots=1, cut=r.uniform(15, 30))
+    # zuhelnateni: plochy polen v ohni (vodorovne blize stredu nez ~22 cm, okraj zubaty), spodek nad uhlim vic, vrsky mene
+    P = np.concatenate(M.P); Wc = waves(seed + 50, 8, 6, 18)
+    for i in range(f0, len(M.F)):
+        if M.S[i] not in (WOOD, BARK, END): continue
+        c = P[list(M.F[i])].mean(0); d = math.hypot(c[0], c[1])
+        lim = 22.0 + 4.0 * float(noise(c[None, :], Wc)[0]) + max(0.0, 8.0 - c[2]) * 1.2 - max(0.0, c[2] - 18.0) * 0.9   # vrsky stanu mene
+        if d < lim: M.S[i] = COAL
+    return M
+
+
 PROPS = [  # (jmeno, funkce, varianty, popis)
     ("SM_RuinStump", stump, "AB", "spalek"),
     ("SM_RuinAnvil", anvil, "A", "kovadlina"),
@@ -1164,6 +1198,7 @@ PROPS = [  # (jmeno, funkce, varianty, popis)
     ("SM_RuinChestLocked", chest_locked, "A", "kovana truhla na cennosti se zamkem"),
     ("SM_RuinBedLarge", bed_large, "A", "pohodlna postel hosta, houne pres slamnik"),
     ("SM_RuinArmorStand", armor_stand, "A", "stojan na brneni (kriz, jarmo, hlavice), prazdny"),
+    ("SM_RuinCampfire", campfire, "A", "ohniste: kruh kamenu, uhli, polena se zuhelnatelymi stredy"),
 ]
 NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizuje. Stejna cisla v LIB_MESHES (zrlib/config.py)
     "SM_RuinStump": (53.6, 49.7, 46.7),
@@ -1204,6 +1239,7 @@ NOMINAL = {     # jmenovity rozmer (cm) = bounding box; mesh se na nej normalizu
     "SM_RuinChestLocked": (94.2, 54.2, 50.7),
     "SM_RuinBedLarge": (250.2, 109.1, 95.0),
     "SM_RuinArmorStand": (60.1, 60.3, 175.0),
+    "SM_RuinCampfire": (98.1, 98.8, 40.7),
 }
 
 

@@ -1,6 +1,6 @@
 ---
 type: log
-updated: 2026-11-24
+updated: 2026-11-25
 ---
 # Změny
 
@@ -241,3 +241,7 @@ updated: 2026-11-24
 | 2026-11-24 | agent pilotu (Steward) | Maintenance/taxonomy_local/asset_sources.yaml | ROUND_MESHES a WOOD_NOMINAL s pevnou category, kameny zdrojem files (CR-037); knihovna 126 assetů, 0 klíčů bez karty | predani_pilot_lapikus_knihovnik_unreal P21, P22 |
 | 2026-11-24 | agent pilotu (Steward) | Assets/ | requested_by: legacy u 82 karet vyrobených před zavedením karet (CR-036); blok *Z kódu* i u kulatiny, hraněného dřeva a kamenů | predani_pilot_lapikus_knihovnik_unreal P21, P22 |
 | 2026-11-24 | agent pilotu (Steward) | Maintenance/queue.md | done T-0042 (own_targets), T-0043 (steward_active) | predani_pilot_lapikus_knihovnik_unreal P21, P22 |
+| 2026-11-24 | Librarian | Lapikus | založen dokument Lore_Lapikus_pudorys (půdorys v romantizované podobě původního hradu pro potřeby hry, podklad k lore) a obrázek Lore_Lapikus_pudorys.svg | chat 2026-11-24 (GameDesigner) |
+| 2026-11-25 | AssetGenerator | Lapikus | nový prop SM_RuinCampfire (ohniště: kruh kamenů, uhlí, polena se zuhelnatělými středy), slot Face = MI_RuinFace (SLOT_MI, _KINDS), ukázka Ukazka_Ohniste.py, karta v Katalog_props; ostatní meshe beze změny; neověřeno v UE | chat: Jirka 25. 11. 2026 (ohniště) |
+| 2026-11-25 | Architect | Lapikus | nový návrh navrh_promo_prulet_kamery (narrative): průlet kamery pro promo video, 7 záběrů s UE souřadnicemi, zoomy, postup natočení přes Sequencer a Movie Render Queue, etapa 2 | chat:promo_prulet_kamery |
+| 2026-11-25 | AssetGenerator | SM_RuinCampfire_A | karta assetu Assets/props/SM_RuinCampfire_A.md (imported, envelope 99 × 99 × 41); sekce Ohniště vrácena z Katalog_props; slot Face do Konvence_assetu kap. Materiály | chat: Jirka 25. 11. 2026 (karta ohniště) |

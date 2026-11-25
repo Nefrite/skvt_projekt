@@ -31,7 +31,7 @@ depth_narrative: 2
 | paths | – | – | – | build | bez cíle |
 | npc | – | – | – | design | bez cíle |
 | gameplay | – | – | – | design | bez cíle |
-| narrative | – | 2 | – | design | bez cíle |
+| narrative | 2 | 2 | – | design | bez cíle |
 
 Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3):
 
@@ -56,6 +56,10 @@ Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3)
 
 **gameplay**
 - [[Pohyb_postavy_a_herni_mista]] – reference, valid
+
+**narrative**
+- [[Lore_Lapikus_pudorys]] – concept, depth 2, valid
+- [[navrh_promo_prulet_kamery]] – design, depth 3, draft
 
 **Aktivní předání**
 - [[predani_lapikus_koren_actoru_stavitel]]
@@ -199,6 +203,11 @@ Souhrn: requested 0, in_progress 2, generated 0, imported 3, verified 0 · grayb
 - [[Rozhodnuti_zricenina]]: přiřazení kůra / loupané u jednotlivých staveb — z KNOWHOW_hrad, 2026-11-17
 - [[Rozhodnuti_zricenina]]: výstup na podestu brány — z KNOWHOW_hrad, 2026-11-17
 - [[Rozhodnuti_zricenina]]: poloha cisterny — z KNOWHOW_hrad, 2026-11-17
+- [[navrh_promo_prulet_kamery]]: Výška terénu v údolí pod útesem a v příkopu před branou: záběry 1, 2 a 4 mají Z odhadnuté; upravit podle levelu. — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Výška koruny věže v datech (předpoklad 19 m) pro záběr 3. — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Jsou v levelu kouř z komína a světlo výhně, nebo je dodá Furnisher / Crafter? — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Délka a hudba: drží 80 s, nebo kratší verze (30 s: záběry 1, 3, 4, 7)? — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Kdo sekvenci postaví v Sequenceru (předání s `for_role`). — Architect, 2026-11-25
 - Fronta F-0001 (G5, [[README_ruin]]): validity: outdated
 - Fronta F-0008 (G2, [[Lapikus]]): očekávaná doména gameplay (kind location) bez target_gameplay ani u potomků; očekávaná doména narrative (kind location) bez target_narrative ani u potomků; očekávaná doména npc (kind location) bez target_npc ani u potomků; očekávaná doména paths (kind location) bez target_paths ani u potomků; očekávaná doména structures (kind location) bez target_structures ani u potomků
 - Fronta T-0001 (–, [[README_ruin]]): porovnat se stavem [[Zricenina_03_ruin_stav]], pak rozhodnout o platnosti (M18, GameDesigner 2026-11-19)
