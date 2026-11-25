@@ -30,3 +30,7 @@ items:
     label: Animace postavy (sezení, rozšíření animací)
   - id: obsidian
     label: Obsidian (vault Hestia)
+  - id: sequencer
+    label: Sequencer (Level Sequence, CineCamera, rigy kamery, Camera Cuts; role ScreenWriter, 2026-11-25)
+  - id: movie_render_queue
+    label: Movie Render Queue (nastavení a render sekvencí; role ScreenWriter, 2026-11-25)
