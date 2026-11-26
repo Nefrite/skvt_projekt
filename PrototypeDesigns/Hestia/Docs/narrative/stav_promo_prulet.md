@@ -2,7 +2,7 @@
 # orchestrace
 type: state
 validity: valid
-updated: 2026-11-25
+updated: 2026-11-26
 aliases: []
 # hra
 domain: narrative
@@ -15,7 +15,7 @@ assets: []
 # Stav: promo průlet kamery kolem hradu
 
 ## Souhrn
-Podle návrhu [[navrh_promo_prulet_kamery]] jsou připravená data záběrů (`Lapikus/cinematics/promo_prulet.json`) a skript `Lapikus/cinematics/build_sequence.py`, který v editoru postaví `LS_Promo_Prulet` (7 záběrů, 80 s, 30 fps). **V Unrealu zatím nic neběželo**: skript prošel jen kontrolou syntaxe a výpočtem klíčů mimo editor (časování, oblet, jeřáb, vertigo). Hodnoty záběrů jsou odhady z návrhu; výšky terénu, koruny věže a rozměry místností se ladí v UE.
+Podle návrhu [[navrh_promo_prulet_kamery]] jsou připravená data záběrů (`Lapikus/cinematics/promo_prulet.json`) a skript `Lapikus/cinematics/build_sequence.py`, který v editoru postaví `LS_Promo_Prulet` (7 záběrů, 80 s, 30 fps). **Skript v UE 5.8 doběhl (4. běh, 2026-11-26), sekvence se postavila bez chyby; vzhled zatím neověřen**; mimo editor prošel kontrolou syntaxe a výpočtem klíčů (časování, oblet, jeřáb, vertigo). Hodnoty záběrů jsou odhady z návrhu; výšky terénu, koruny věže a rozměry místností se ladí v UE.
 
 ## Co je hotové
 - Data záběrů všech 7 záběrů podle tabulky v návrhu (časy, polohy, objektivy, clony, zaostření) v `promo_prulet.json`; jediný zdroj hodnot.
@@ -36,19 +36,37 @@ Návrh jsem neupravoval. Rozdíly a doplnění, o kterých má rozhodnout GameDe
 - **Zaostření** ve 3–6 je Tracking na prázdný cíl (`TargetPoint`), ne na actor věže, brány, komína nebo výhně; polohy cílů jsou v datech (`focus.target_pos`).
 
 ## Ověřeno v UE
-Nic. Skript v editoru nebyl spuštěn a výstup nebyl vidět.
+První běh v editoru (Jirka, 2026-11-25, log): skript doběhl, ale všech 7 záběrů selhalo na `'MovieScene3DTransformSection' object has no attribute 'get_channels'` (a stejně `MovieSceneFloatSection`); sekvence tedy bez klíčů. Oprava: pomocná funkce `channels()` (`get_all_channels` s návratem na `get_channels`), explicitní nastavení polohy po spawnu a plný traceback chyby v logu. Druhý běh (2026-11-26): `get_channels` už prošlo, všech 7 záběrů pak selhalo na `unreal.SequenceTimeUnit` (v UE 5.8 přejmenováno); klíče se nově přidávají s výchozí jednotkou (`addkey()`), interpolace linear na vytvořeném klíči. Třetí běh (2026-11-26): klíče i rigy prošly, všech 7 záběrů selhalo až na vazbě Camera Cut (`MovieSceneSequenceExtensions.make_binding_id` a `get_binding_id` v 5.8 neexistují); nově `binding_id()` zkouší `seq.make_binding_id` a zálohu přes GUID. Čtvrtý běh (2026-11-26): všech 7 záběrů „hotovo“ (21, 21, 25, 25, 29, 17 a 22 klíčů), `LS_Promo_Prulet` uložena; vzhled, pohyb rigů a kolize zatím vizuálně neověřeny.
 ### V levelu (report z UE)
 Bez reportu.
 ### Vizuálně ověřeno (kdo, kdy)
 Zatím nikdo.
 
 ## Postup v UE (Jirka)
-1. Otevřít level `/Content/Skvt/LapikusPrototypeMap`, postavit scénu běžně.
-2. `05_constructions/stavby/Etapa.py`: v souboru přepsat `ETAPA = 2` a spustit (*Tools → Execute Python Script*). Po každém buildu staveb spustit znovu.
-3. Spustit `Lapikus/cinematics/build_sequence.py` (*Execute Python Script*); v Output Logu hledat „Promo zaber N … hotovo“ a případně „selhal“.
-4. Otevřít `LS_Promo_Prulet` v Sequenceru, zamknout kameru (Camera Cut), přehrát a projít všech 7 záběrů; kolize se zdí, střechou, terénem a stromy kontrolovat ve viewportu.
-5. Slunce a kouř/světlo ručně (zlatá hodina, kouř z komína a výhně).
-6. Render: *Window → Cinematics → Movie Render Queue* podle návrhu (1920 × 1080, 30 fps, Temporal 8, Warm Up 30, `r.MotionBlurQuality 4`, výstup `Saved/MovieRenders/`).
+Podrobnější stejný postup: [[cinematics]] (*Spouštění*). Pasti API: [[Pasti_sequencer_python]].
+
+**A. Příprava scény**
+1. Otevřít level `/Content/Skvt/LapikusPrototypeMap`, scéna postavená (zřícenina, stavby, les).
+2. `05_constructions/stavby/Etapa.py`: přepsat `ETAPA = 2` a spustit (*Tools → Execute Python Script*). Po každém buildu staveb znovu.
+3. Slunce a atmosféra ručně: zlatá hodina, slunce nízko od západu až jihozápadu (viz `scene.sun_hint` v JSON). Kouř z komína domu a světlo a kouř výhně: pokud v levelu nejsou, záběry 5 a 6 je potřebují (otevřená otázka návrhu).
+
+**B. Postavení sekvence**
+4. *Tools → Execute Python Script* → `Lapikus/cinematics/build_sequence.py`. V Output Logu má být „Promo zaber N (…): hotovo“ pro N = 1–7 a na konci „LS_Promo_Prulet postavena“. Skript předchozí `LS_Promo_Prulet` a actory s tagem `Promo_Prulet` smaže, takže ho lze spouštět opakovaně; ruční úpravy v sekvenci, které nejsou v JSON, se ztratí.
+5. V Content Browseru `/Content/Skvt/Cinematics/LS_Promo_Prulet`, dvojklik otevře Sequencer. Mají být vidět Camera Cuts (7 sekcí, 0–80 s) a ve viewportu actory `Promo_Cam_01…07`, `Promo_Rail_02/04`, `Promo_Crane_05`, `Promo_Pivot_Vez`, `Promo_Fokus_*`.
+
+**C. Kontrola**
+6. V Sequenceru zapnout zámek kamery (ikona kamery u Camera Cut) a přehrát (mezerník); skákat po záběrech a pozorovat. Kontrolovat: kamera neprochází terénem, zdí, střechou ani stromem (záběry 2, 4, 5, 6 a start záběru 7 nad domem), v záběru 4 projede obloukem brány, cíl ostření je ostrý (3–6), žádné staveniště (etapa 2), titulek ve finále má 4 s klidu.
+7. Hodnoty k doladění (výšky terénu v údolí a příkopu, koruna věže, poloha kamery v kovárně, směr a výška oblětu, model jeřábu) pošli jako screenshot Sequenceru nebo jako hodnoty (poloha X, Y, Z a rotace kamery v klíči). Já je přepíšu do `promo_prulet.json` a zapíšu do *Ruční ladění*; pak skript spustíš znovu.
+
+**D. Render (Movie Render Queue)**
+8. Plugin *Movie Render Queue* zapnout (*Edit → Plugins*, restart), pak *Window → Cinematics → Movie Render Queue*.
+9. *+ Render* → vybrat `LS_Promo_Prulet` (mapa `LapikusPrototypeMap`). V sloupci *Settings* otevřít nastavení a přidat:
+   - *Output*: výstupní složka `{project_dir}/Saved/MovieRenders/`, rozlišení 1920 × 1080 (případně 3840 × 2160), snímkování 30 fps;
+   - *Image Sequence (PNG)* nebo *Apple ProRes* (potřebuje zapnutý příslušný plugin);
+   - *Anti-aliasing*: Spatial Sample Count 1, Temporal Sample Count 8, Render Warm Up Count 30;
+   - *Console Variables*: `r.MotionBlurQuality 4`, případně vyšší kvalita stínů a Lumenu.
+10. *Render (Local)*. Výstup je mimo git (`Saved/`). Zvuk, hudba a titulky se dělají ve střihovém programu; střihy na dobu, zoomy 3 a 5 na důraz.
+11. Po renderu zkontrolovat: žádné blikání Lumenu, šum na prvních snímcích, délka 75–85 s bez prázdných snímků mezi Camera Cuts.
 
 ## Ruční ladění
 Ruční úpravy v UE se přepisují do `promo_prulet.json` a sem; skript je při dalším běhu přepíše. Zatím bez záznamů.
@@ -58,7 +76,7 @@ Ruční úpravy v UE se přepisují do `promo_prulet.json` a sem; skript je při
 | – | – | – | – | – |
 
 ## Co zbývá
-- První běh v UE a oprava rozdílů API (nový Sequencer API podle verze 5.8).
+- Vizuální kontrola sekvence ve viewportu (kolize, rigy kolejnice a jeřábu, zaostření, zoomy) a první hodnoty do *Ruční ladění*.
 - Odpovědi na otevřené otázky návrhu: výška terénu v údolí a příkopu, koruna věže (předpoklad 5 029), kouř a světlo výhně, délka a hudba, kdo staví sekvenci.
 - Schválení návrhu: v návrhu je stále `validity: draft`; schvaluje GameDesigner.
 - Dokumentace kroku `Steps/cinematics.md` (Spouštění, Vstupy a výstupy, Známé pasti) po prvním běhu v UE.

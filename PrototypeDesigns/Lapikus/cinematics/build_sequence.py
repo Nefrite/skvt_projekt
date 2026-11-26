@@ -11,7 +11,7 @@ Opakovany beh smaze sekvenci a actory s tagem z dat (sequence.tag) a postavi je 
 SEQ_JSON = None               # None = promo_prulet.json vedle skriptu; jinak uplna cesta
 REBUILD = True                # True = smazat predchozi sekvenci a actory s tagem a postavit znovu
 
-import json, math, os
+import json, math, os, traceback
 
 # ---------------------------------------------------------------- cista matematika (bez unreal)
 
@@ -150,7 +150,34 @@ def main():
     def spawn(cls, name, loc=(0, 0, 0), rot=(0, 0, 0)):
         a = eas.spawn_actor_from_class(cls, V(loc), R(rot))
         a.set_actor_label(name); a.tags = [tag]
+        a.set_actor_location_and_rotation(V(loc), R(rot), False, True)   # log spawnu ukazuje pozici viewportu, nastav jistotu
         return a
+
+    def channels(sec):
+        """Kanaly sekce; nazev metody se mezi verzemi UE lisi (5.x: get_all_channels, starsi: get_channels)."""
+        for name in ("get_all_channels", "get_channels"):
+            fn = getattr(sec, name, None)
+            if fn: return list(fn())
+        return list(unreal.MovieSceneSectionExtensions.get_all_channels(sec))
+
+    def addkey(ch, t, v):
+        """Klic v display rate (vychozi jednotka add_key; nazev enumu casove jednotky se mezi verzemi UE lisi) a linearni interpolace."""
+        k = ch.add_key(fr(t), float(v))
+        try: k.set_interpolation_mode(unreal.RichCurveInterpMode.RCIM_LINEAR)
+        except Exception: pass
+
+    def binding_id(b):
+        """MovieSceneObjectBindingID pro Camera Cut; zpusob se mezi verzemi UE lisi, zkousi se postupne."""
+        errs = []
+        for fn in (lambda: seq.make_binding_id(b, unreal.MovieSceneObjectBindingSpace.LOCAL),
+                   lambda: unreal.MovieSceneSequenceExtensions.make_binding_id(seq, b, unreal.MovieSceneObjectBindingSpace.LOCAL),
+                   lambda: b.get_binding_id()):
+            try: return fn()
+            except Exception as e: errs.append(str(e))
+        bid = unreal.MovieSceneObjectBindingID()                     # zaloha: pres GUID bindingu
+        guid = b.binding_id if hasattr(b, "binding_id") else b.get_id()
+        bid.set_editor_property("guid", guid)
+        return bid
 
     def set_range(sec, t0, t1):
         try: sec.set_range_seconds(t0, t1)
@@ -161,17 +188,17 @@ def main():
         tr = binding.add_track(unreal.MovieSceneFloatTrack)
         tr.set_property_name_and_path(prop, prop)
         sec = tr.add_section(); set_range(sec, keys[0][0], keys[-1][0])
-        ch = sec.get_channels()[0]
-        for t, v in keys: ch.add_key(fr(t), float(v), 0.0, unreal.SequenceTimeUnit.DISPLAY_RATE, unreal.MovieSceneKeyInterpolation.LINEAR)
+        ch = channels(sec)[0]
+        for t, v in keys: addkey(ch, t, v)
 
     def transform_track(binding, rows):
         """rows = [(t, (x,y,z), (roll,pitch,yaw))] -> klice transformace (u pripojeneho actoru relativni)."""
         tr = binding.add_track(unreal.MovieScene3DTransformTrack)
         sec = tr.add_section(); set_range(sec, rows[0][0], rows[-1][0])
-        chs = sec.get_channels()                              # lx ly lz rx(roll) ry(pitch) rz(yaw) sx sy sz
+        chs = channels(sec)                                   # lx ly lz rx(roll) ry(pitch) rz(yaw) sx sy sz
         for t, p, r in rows:
             for i, v in enumerate(list(p) + list(r)):
-                chs[i].add_key(fr(t), float(v), 0.0, unreal.SequenceTimeUnit.DISPLAY_RATE, unreal.MovieSceneKeyInterpolation.LINEAR)
+                addkey(chs[i], t, v)
 
     def make_camera(shot, loc=(0, 0, 0), rot=(0, 0, 0)):
         cam = spawn(unreal.CineCameraActor, "Promo_Cam_%02d" % shot["id"], loc, rot)
@@ -248,12 +275,10 @@ def main():
             float_track(bcomp, "CurrentAperture", [(ts[0], shot["aperture"]), (ts[-1], shot["aperture"])])
             # Camera Cut
             sec = cut_track.add_section(); set_range(sec, shot["t0"], shot["t1"])
-            try: bid = unreal.MovieSceneSequenceExtensions.make_binding_id(seq, b, unreal.MovieSceneObjectBindingSpace.LOCAL)
-            except Exception: bid = b.get_binding_id()
-            sec.set_camera_binding_id(bid)
+            sec.set_camera_binding_id(binding_id(b))
             unreal.log("Promo zaber %d (%s): hotovo, %d klicu" % (shot["id"], rig, len(ts)))
         except Exception as e:
-            unreal.log_error("Promo zaber %s selhal: %s" % (shot.get("id"), e))
+            unreal.log_error("Promo zaber %s selhal: %s\n%s" % (shot.get("id"), e, traceback.format_exc()))
     unreal.EditorAssetLibrary.save_loaded_asset(seq)
     unreal.log("LS_Promo_Prulet postavena (%d zaberu). Dalsi krok: otevrit v Sequenceru, zkontrolovat kamery ve viewportu." % len(data["shots"]))
 

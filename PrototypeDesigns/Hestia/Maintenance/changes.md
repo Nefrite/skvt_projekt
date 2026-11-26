@@ -1,6 +1,6 @@
 ---
 type: log
-updated: 2026-11-25
+updated: 2026-11-26
 ---
 # Změny
 
@@ -248,3 +248,11 @@ updated: 2026-11-25
 | 2026-11-25 | Steward | Cinematics_Lapikus | nová entita (kind sequence, located_in Lapikus), krok cinematics (build_steps 950, folder_map narrative), kostra Steps/cinematics, složka Lapikus/cinematics, README.txt; kompilát ScreenWriter | chat:P24_screenwriter |
 | 2026-11-25 | ScreenWriter | Lapikus | data a skript promo pruletu, stav | chat:promo_prulet_realizace |
 | 2026-11-25 | ScreenWriter | Cinematics_Lapikus | promo_prulet.json, build_sequence.py (Sequencer skript), stav_promo_prulet; v UE neovereno | chat:promo_prulet_realizace |
+| 2026-11-25 | ScreenWriter | Lapikus | oprava build_sequence.py po prvnim behu v UE (get_channels) | chat:promo_prulet_oprava_api |
+| 2026-11-25 | ScreenWriter | Cinematics_Lapikus | build_sequence.py: channels() misto get_channels (UE 5.8), traceback; stav_promo_prulet: vysledek prvniho behu | chat:promo_prulet_oprava_api |
+| 2026-11-26 | ScreenWriter | Lapikus | oprava build_sequence.py po druhem behu v UE (SequenceTimeUnit) | chat:promo_prulet_oprava_api2 |
+| 2026-11-26 | ScreenWriter | Cinematics_Lapikus | build_sequence.py: addkey() misto SequenceTimeUnit (UE 5.8); stav_promo_prulet: vysledek druheho behu | chat:promo_prulet_oprava_api2 |
+| 2026-11-26 | ScreenWriter | Lapikus | oprava build_sequence.py po tretim behu v UE (binding id) | chat:promo_prulet_oprava_api3 |
+| 2026-11-26 | ScreenWriter | Cinematics_Lapikus | build_sequence.py: binding_id() pro Camera Cut (UE 5.8); stav_promo_prulet: vysledek tretiho behu | chat:promo_prulet_oprava_api3 |
+| 2026-11-26 | ScreenWriter | Lapikus | know-how pasti sequencer a postup spusteni a renderu | chat:promo_prulet_knowhow_postup |
+| 2026-11-26 | ScreenWriter | Cinematics_Lapikus | KnowHow/Pasti_sequencer_python, Steps/cinematics (Spousteni, Vstupy a vystupy), stav_promo_prulet: postup a vysledek 4. behu | chat:promo_prulet_knowhow_postup |

@@ -34,7 +34,8 @@ Cutscény a promo sekvence zříceniny Lapikus: scénář, kamera, střih a rend
 ## Dokumenty
 <!-- hestia:generated:start -->
 
-_Zatím žádné dokumenty._
+**Know-how**
+- [[Pasti_sequencer_python]]
 
 <!-- hestia:generated:end -->
 

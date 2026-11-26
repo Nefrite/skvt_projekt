@@ -47,16 +47,16 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-24 · agent pilotu (Steward) · Maintenance/taxonomy_local/asset_sources.yaml · ROUND_MESHES a WOOD_NOMINAL s pevnou category, kameny zdrojem files (CR-037); knihovna 126 assetů, 0 klíčů bez karty · predani_pilot_lapikus_knihovnik_unreal P21, P22
-- 2026-11-24 · agent pilotu (Steward) · Assets/ · requested_by: legacy u 82 karet vyrobených před zavedením karet (CR-036); blok *Z kódu* i u kulatiny, hraněného dřeva a kamenů · predani_pilot_lapikus_knihovnik_unreal P21, P22
-- 2026-11-24 · agent pilotu (Steward) · Maintenance/queue.md · done T-0042 (own_targets), T-0043 (steward_active) · predani_pilot_lapikus_knihovnik_unreal P21, P22
-- 2026-11-24 · Librarian · Lapikus · založen dokument Lore_Lapikus_pudorys (půdorys v romantizované podobě původního hradu pro potřeby hry, podklad k lore) a obrázek Lore_Lapikus_pudorys.svg · chat 2026-11-24 (GameDesigner)
-- 2026-11-25 · AssetGenerator · Lapikus · nový prop SM_RuinCampfire (ohniště: kruh kamenů, uhlí, polena se zuhelnatělými středy), slot Face = MI_RuinFace (SLOT_MI, _KINDS), ukázka Ukazka_Ohniste.py, karta v Katalog_props; ostatní meshe beze změny; neověřeno v UE · chat: Jirka 25. 11. 2026 (ohniště)
-- 2026-11-25 · Architect · Lapikus · nový návrh navrh_promo_prulet_kamery (narrative): průlet kamery pro promo video, 7 záběrů s UE souřadnicemi, zoomy, postup natočení přes Sequencer a Movie Render Queue, etapa 2 · chat:promo_prulet_kamery
-- 2026-11-25 · AssetGenerator · SM_RuinCampfire_A · karta assetu Assets/props/SM_RuinCampfire_A.md (imported, envelope 99 × 99 × 41); sekce Ohniště vrácena z Katalog_props; slot Face do Konvence_assetu kap. Materiály · chat: Jirka 25. 11. 2026 (karta ohniště)
-- 2026-11-25 · Steward · Cinematics_Lapikus · nová entita (kind sequence, located_in Lapikus), krok cinematics (build_steps 950, folder_map narrative), kostra Steps/cinematics, složka Lapikus/cinematics, README.txt; kompilát ScreenWriter · chat:P24_screenwriter
 - 2026-11-25 · ScreenWriter · Lapikus · data a skript promo pruletu, stav · chat:promo_prulet_realizace
 - 2026-11-25 · ScreenWriter · Cinematics_Lapikus · promo_prulet.json, build_sequence.py (Sequencer skript), stav_promo_prulet; v UE neovereno · chat:promo_prulet_realizace
+- 2026-11-25 · ScreenWriter · Lapikus · oprava build_sequence.py po prvnim behu v UE (get_channels) · chat:promo_prulet_oprava_api
+- 2026-11-25 · ScreenWriter · Cinematics_Lapikus · build_sequence.py: channels() misto get_channels (UE 5.8), traceback; stav_promo_prulet: vysledek prvniho behu · chat:promo_prulet_oprava_api
+- 2026-11-26 · ScreenWriter · Lapikus · oprava build_sequence.py po druhem behu v UE (SequenceTimeUnit) · chat:promo_prulet_oprava_api2
+- 2026-11-26 · ScreenWriter · Cinematics_Lapikus · build_sequence.py: addkey() misto SequenceTimeUnit (UE 5.8); stav_promo_prulet: vysledek druheho behu · chat:promo_prulet_oprava_api2
+- 2026-11-26 · ScreenWriter · Lapikus · oprava build_sequence.py po tretim behu v UE (binding id) · chat:promo_prulet_oprava_api3
+- 2026-11-26 · ScreenWriter · Cinematics_Lapikus · build_sequence.py: binding_id() pro Camera Cut (UE 5.8); stav_promo_prulet: vysledek tretiho behu · chat:promo_prulet_oprava_api3
+- 2026-11-26 · ScreenWriter · Lapikus · know-how pasti sequencer a postup spusteni a renderu · chat:promo_prulet_knowhow_postup
+- 2026-11-26 · ScreenWriter · Cinematics_Lapikus · KnowHow/Pasti_sequencer_python, Steps/cinematics (Spousteni, Vstupy a vystupy), stav_promo_prulet: postup a vysledek 4. behu · chat:promo_prulet_knowhow_postup
 
 <!-- hestia:generated:end -->
 
