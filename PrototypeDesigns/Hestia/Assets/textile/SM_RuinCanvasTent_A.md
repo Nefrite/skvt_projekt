@@ -46,7 +46,7 @@ Osy: X podél hřebene, **+X = štít se vchodem**, +Y = strana odhrnuté chlopn
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasTent_A.SM_RuinCanvasTent_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:236`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:237`
 - Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

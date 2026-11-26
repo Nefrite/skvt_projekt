@@ -45,7 +45,7 @@ Osy: délka X; pivot ve středu bounding boxu. Společná pravidla: [[Konvence_a
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinRope_A.SM_RuinRope_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:230`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:231`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

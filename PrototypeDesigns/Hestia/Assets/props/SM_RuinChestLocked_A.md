@@ -45,7 +45,7 @@ Osy: **zámek a závěra −Y**, pásové závěsy +Y, držadla s kruhy ±X, del
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinChestLocked_A.SM_RuinChestLocked_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:273`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:274`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

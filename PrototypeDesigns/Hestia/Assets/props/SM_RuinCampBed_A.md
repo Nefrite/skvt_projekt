@@ -46,7 +46,7 @@ Osy: X podél lůžka, **hlava −X**; pivot ve středu bounding boxu. Společn�
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCampBed_A.SM_RuinCampBed_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:269`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:270`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

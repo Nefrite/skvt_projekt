@@ -27,12 +27,16 @@ Cutscény a promo sekvence zříceniny Lapikus: scénář, kamera, střih a rend
 
 | Doména | Návrh | Realizace | Cíl | Režim | Stav |
 |---|---|---|---|---|---|
-| narrative | – | – | – | design | bez cíle |
+| narrative | 3 | – | – | design | bez cíle |
 
 <!-- hestia:generated:end -->
 
 ## Dokumenty
 <!-- hestia:generated:start -->
+
+**narrative**
+- [[navrh_promo_prulet_kamery]] – design, depth 3, valid
+- [[stav_promo_prulet]] – state, depth 4, valid
 
 **Know-how**
 - [[Pasti_sequencer_python]]
@@ -42,7 +46,9 @@ Cutscény a promo sekvence zříceniny Lapikus: scénář, kamera, střih a rend
 ## Postup stavby
 <!-- hestia:generated:start -->
 
-_Zatím žádné kroky._
+| Krok | Skripty | Dokumenty |
+|---|---|---|
+| [[cinematics]] | – | [[stav_promo_prulet]] |
 
 <!-- hestia:generated:end -->
 
@@ -64,7 +70,10 @@ _Žádné soubory._
 <!-- ručně zaevidované otázky k entitě: - [ ] otázka — role, RRRR-MM-DD -->
 <!-- hestia:generated:start -->
 
-_Žádné otevřené otázky z dokumentů, fronty ani scratch._
+- [[navrh_promo_prulet_kamery]]: Výška terénu v údolí pod útesem a v příkopu před branou: záběry 1, 2 a 4 mají Z odhadnuté; upravit podle levelu. — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Výška koruny věže v datech (předpoklad 19 m) pro záběr 3. — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Jsou v levelu kouř z komína a světlo výhně, nebo je dodá Furnisher / Crafter? — Architect, 2026-11-25
+- [[navrh_promo_prulet_kamery]]: Délka a hudba: drží 80 s, nebo kratší verze (30 s: záběry 1, 3, 4, 7)? — Architect, 2026-11-25
 
 <!-- hestia:generated:end -->
 

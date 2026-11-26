@@ -43,7 +43,7 @@ Osy: plech v rovině XZ, rukojeť −Y; pivot ve středu bounding boxu. Společn
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinOvenDoor_A.SM_RuinOvenDoor_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:268`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:269`
 - Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

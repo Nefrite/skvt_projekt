@@ -45,7 +45,7 @@ Osy: okenice v rovině XZ, tloušťka Y; pivot ve středu bounding boxu. Společ
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinShutter_A.SM_RuinShutter_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:267`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:268`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

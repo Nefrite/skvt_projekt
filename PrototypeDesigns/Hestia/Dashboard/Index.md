@@ -43,11 +43,10 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - [[predani_palac_obydli_6_zarubne]] – [[Palac_Obydli]]
 - [[predani_palac_obydli_7_vybaveni]] – [[Palac_Obydli]]
 
-**Otevřené otázky:** do 14 dní 21 · starší 0 · bez data 0
+**Otevřené otázky:** do 14 dní 20 · starší 0 · bez data 0
 
 **Poslední změny** (`changes.md`)
 
-- 2026-11-25 · ScreenWriter · Lapikus · data a skript promo pruletu, stav · chat:promo_prulet_realizace
 - 2026-11-25 · ScreenWriter · Cinematics_Lapikus · promo_prulet.json, build_sequence.py (Sequencer skript), stav_promo_prulet; v UE neovereno · chat:promo_prulet_realizace
 - 2026-11-25 · ScreenWriter · Lapikus · oprava build_sequence.py po prvnim behu v UE (get_channels) · chat:promo_prulet_oprava_api
 - 2026-11-25 · ScreenWriter · Cinematics_Lapikus · build_sequence.py: channels() misto get_channels (UE 5.8), traceback; stav_promo_prulet: vysledek prvniho behu · chat:promo_prulet_oprava_api
@@ -57,6 +56,7 @@ Hlavní rozcestník vaultu Hestia. Pohledy jsou v `Dashboard/views/`: do rozhodn
 - 2026-11-26 · ScreenWriter · Cinematics_Lapikus · build_sequence.py: binding_id() pro Camera Cut (UE 5.8); stav_promo_prulet: vysledek tretiho behu · chat:promo_prulet_oprava_api3
 - 2026-11-26 · ScreenWriter · Lapikus · know-how pasti sequencer a postup spusteni a renderu · chat:promo_prulet_knowhow_postup
 - 2026-11-26 · ScreenWriter · Cinematics_Lapikus · KnowHow/Pasti_sequencer_python, Steps/cinematics (Spousteni, Vstupy a vystupy), stav_promo_prulet: postup a vysledek 4. behu · chat:promo_prulet_knowhow_postup
+- 2026-11-26 · Steward · Cinematics_Lapikus · navrh_promo_prulet_kamery valid (GameDesigner 2026-11-26, dodatečně), category cutscene, entity Cinematics_Lapikus u návrhu i stavu; otázka kdo postaví uzavřena (ScreenWriter) · chat:P24_schvaleni_promo
 
 <!-- hestia:generated:end -->
 

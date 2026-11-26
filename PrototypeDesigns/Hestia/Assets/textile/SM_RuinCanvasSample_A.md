@@ -45,7 +45,7 @@ Osy: plachta v rovině XY se sklonem; pivot ve středu bounding boxu. Společná
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasSample_A.SM_RuinCanvasSample_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:232`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:233`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

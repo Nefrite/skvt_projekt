@@ -45,7 +45,7 @@ Osy: nejdelší rozměr podél Y (podle rozměru meshe); pivot ve středu boundi
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinNailHammer_A.SM_RuinNailHammer_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:257`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:258`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

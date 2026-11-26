@@ -256,3 +256,4 @@ updated: 2026-11-26
 | 2026-11-26 | ScreenWriter | Cinematics_Lapikus | build_sequence.py: binding_id() pro Camera Cut (UE 5.8); stav_promo_prulet: vysledek tretiho behu | chat:promo_prulet_oprava_api3 |
 | 2026-11-26 | ScreenWriter | Lapikus | know-how pasti sequencer a postup spusteni a renderu | chat:promo_prulet_knowhow_postup |
 | 2026-11-26 | ScreenWriter | Cinematics_Lapikus | KnowHow/Pasti_sequencer_python, Steps/cinematics (Spousteni, Vstupy a vystupy), stav_promo_prulet: postup a vysledek 4. behu | chat:promo_prulet_knowhow_postup |
+| 2026-11-26 | Steward | Cinematics_Lapikus | navrh_promo_prulet_kamery valid (GameDesigner 2026-11-26, dodatečně), category cutscene, entity Cinematics_Lapikus u návrhu i stavu; otázka kdo postaví uzavřena (ScreenWriter) | chat:P24_schvaleni_promo |

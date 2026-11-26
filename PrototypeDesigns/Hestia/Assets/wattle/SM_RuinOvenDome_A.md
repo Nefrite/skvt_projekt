@@ -43,7 +43,7 @@ Osy: X šířka (rozpětí), Y hloubka, Z výška; pivot ve středu bounding box
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinOvenDome_A.SM_RuinOvenDome_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:229`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:230`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

@@ -45,7 +45,7 @@ Osy: nejdelší rozměr podél X (podle rozměru meshe); pivot ve středu boundi
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinWorkbench_A.SM_RuinWorkbench_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:243`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:244`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

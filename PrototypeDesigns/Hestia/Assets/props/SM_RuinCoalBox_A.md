@@ -45,7 +45,7 @@ Osy: nejdelší rozměr podél Y (podle rozměru meshe); pivot ve středu boundi
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCoalBox_A.SM_RuinCoalBox_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:248`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:249`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

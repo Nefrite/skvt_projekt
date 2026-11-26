@@ -45,7 +45,7 @@ Osy: osa tyče X; pivot ve středu bounding boxu. Společná pravidla: [[Konvenc
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinLashing_A.SM_RuinLashing_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:231`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:232`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

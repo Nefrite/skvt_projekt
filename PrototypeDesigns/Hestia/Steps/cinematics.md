@@ -22,6 +22,9 @@ Promo průlet (`LS_Promo_Prulet`), jen v editoru UE 5.8:
 Ruční ladění v UE se přepisuje do `promo_prulet.json` a do stavu (*Ruční ladění*); skript je jinak při dalším běhu přepíše.
 ## Skripty
 <!-- hestia:generated:start -->
+
+_Žádné skripty._
+
 <!-- hestia:generated:end -->
 ## Vstupy a výstupy
 Vstup: `Lapikus/cinematics/promo_prulet.json` (jediný zdroj hodnot záběrů), postavený level se stavem etapy 2. Výstup: `/Content/Skvt/Cinematics/LS_Promo_Prulet`, actory `Promo_Cam_*`, `Promo_Rail_*`, `Promo_Crane_*`, `Promo_Pivot_Vez`, `Promo_Fokus_*` (tag `Promo_Prulet`); render do `Saved/MovieRenders/` (mimo git).

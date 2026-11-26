@@ -59,8 +59,6 @@ Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3)
 
 **narrative**
 - [[Lore_Lapikus_pudorys]] – concept, depth 2, valid
-- [[navrh_promo_prulet_kamery]] – design, depth 3, draft
-- [[stav_promo_prulet]] – state, depth 4, valid
 
 **Aktivní předání**
 - [[predani_lapikus_koren_actoru_stavitel]]
@@ -75,7 +73,6 @@ Zralost podstromu (jednotky s vlastním cílem včetně této entity, 04 kap. 3)
 | [[03_ruin]] | `Zricenina_Brana_S_nahled.png`, `Zricenina_bloky_nahled.png`, `Zricenina_kameny_detail.png`, `Zricenina_kameny_koruny.png`, `Zricenina_koruna_nahled.png`, `Zricenina_lic_pred_po.png`, `Zricenina_strilna_preklad_pred_po.png`, `Zricenina_strilny_osteni_nahled.png`, `build_ruin_blocks.py`, `Obvod.py`, `detach_stones.py`, `gen_stones.py`, `manual_edits.json`, `ruin_layout.json`, `terrain_from_level.json`, `Zricenina_blockout_nahled.png`, `build_ruin.py`, `ruin_layout.json`, `navrh_vez_okna_podesta.png`, `navrh_vez_patra_strilny.png`, `navrh_vez_schody.png`, `navrh_vez_vyklenky_kvadry.png`, `ruin_layout_draft.json`, `build_ruin.py`, `check3d.py`, `check_blocks.py`, `decay.py`, `elev.py`, `export_level_layout.py`, `gen_layout.py`, `layout_from_level.json`, `massing.py`, `tower_spec.py` | [[README_ruin]], [[Zricenina_03_ruin_stav]] |
 | [[05_constructions]] | `Knihovna_meshe_nahled.png`, `Knihovna_textury_nahled.png`, `Kulatina_meshe_nahled.png`, `Kulatina_textury_nahled.png`, `Ohniste_nahled.png`, `Props_kovarna_nahled.png`, `Props_textury_nahled.png`, `Stan_luzko_nahled.png`, `Stan_luzko_slozena_nahled.png`, `Stan_plachta_nahled.png`, `Stan_truhlicka_nahled.png`, `Stan_vak_nahled.png`, `Stavby_brana_prikop_nahled.png`, `Stavby_brana_straz_nahled.png`, `Stavby_brana_straz_nahled_etapa1.png`, `Stavby_drevo_nahled.png`, `Stavby_nadvori_stan_nahled.png`, `Stavby_ostroh_dostavba_nahled.png`, `Stavby_ostroh_nahled.png`, `Stavby_ostroh_podlaha_nahled.png`, `Stavby_ostroh_tramovi_nahled.png`, `Stavby_palac_kovarna_nahled.png`, `Stavby_palac_obydli_nahled.png`, `Stavby_palac_obydli_nahled_etapa1.png`, `Stavby_vez_nahled.png`, `Stavby_vez_pristresek_nahled.png`, `build_constructions.py`, `constructions.json`, `constructions_edits.json`, `Etapa.py`, `Sut.py` | [[navrh_lapikus_koren_actoru]] |
 | [[06_furnishing]] | `build_furnishing.py`, `capture_furnishing.py`, `furn_data.py`, `furnishing.json` | – |
-| [[cinematics]] | – | [[stav_promo_prulet]] |
 
 <!-- hestia:generated:end -->
 
@@ -206,11 +203,6 @@ Souhrn: requested 0, in_progress 2, generated 0, imported 3, verified 0 · grayb
 - [[Rozhodnuti_zricenina]]: přiřazení kůra / loupané u jednotlivých staveb — z KNOWHOW_hrad, 2026-11-17
 - [[Rozhodnuti_zricenina]]: výstup na podestu brány — z KNOWHOW_hrad, 2026-11-17
 - [[Rozhodnuti_zricenina]]: poloha cisterny — z KNOWHOW_hrad, 2026-11-17
-- [[navrh_promo_prulet_kamery]]: Výška terénu v údolí pod útesem a v příkopu před branou: záběry 1, 2 a 4 mají Z odhadnuté; upravit podle levelu. — Architect, 2026-11-25
-- [[navrh_promo_prulet_kamery]]: Výška koruny věže v datech (předpoklad 19 m) pro záběr 3. — Architect, 2026-11-25
-- [[navrh_promo_prulet_kamery]]: Jsou v levelu kouř z komína a světlo výhně, nebo je dodá Furnisher / Crafter? — Architect, 2026-11-25
-- [[navrh_promo_prulet_kamery]]: Délka a hudba: drží 80 s, nebo kratší verze (30 s: záběry 1, 3, 4, 7)? — Architect, 2026-11-25
-- [[navrh_promo_prulet_kamery]]: Kdo sekvenci postaví v Sequenceru (předání s `for_role`). — Architect, 2026-11-25
 - Fronta F-0001 (G5, [[README_ruin]]): validity: outdated
 - Fronta F-0008 (G2, [[Lapikus]]): očekávaná doména gameplay (kind location) bez target_gameplay ani u potomků; očekávaná doména narrative (kind location) bez target_narrative ani u potomků; očekávaná doména npc (kind location) bez target_npc ani u potomků; očekávaná doména paths (kind location) bez target_paths ani u potomků; očekávaná doména structures (kind location) bez target_structures ani u potomků
 - Fronta T-0001 (–, [[README_ruin]]): porovnat se stavem [[Zricenina_03_ruin_stav]], pak rozhodnout o platnosti (M18, GameDesigner 2026-11-19)

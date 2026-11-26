@@ -45,7 +45,7 @@ Osy: délka X, šířka Y, prohnutí nahoru (+Z); pivot ve středu bounding boxu
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinBarkStrip_A.SM_RuinBarkStrip_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:225`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:226`
 - Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

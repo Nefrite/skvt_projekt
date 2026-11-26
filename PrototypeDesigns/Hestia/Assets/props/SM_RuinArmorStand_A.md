@@ -46,7 +46,7 @@ Body pro brnění `mesh_props.ARMOR_STAND_POINTS` v cm od podlahy, osa sloupku x
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinArmorStand_A.SM_RuinArmorStand_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:275`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:277`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

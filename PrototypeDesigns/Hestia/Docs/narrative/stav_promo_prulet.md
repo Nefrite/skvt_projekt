@@ -7,7 +7,7 @@ aliases: []
 # hra
 domain: narrative
 category: [cutscene]
-entity: "[[Lapikus]]"
+entity: "[[Cinematics_Lapikus]]"
 depth: 4
 build_step: cinematics
 assets: []

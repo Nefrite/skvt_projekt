@@ -45,7 +45,7 @@ Osy: dveře v rovině XZ, tloušťka Y; pivot ve středu bounding boxu. Společn
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinDoor_A.SM_RuinDoor_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:266`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:267`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

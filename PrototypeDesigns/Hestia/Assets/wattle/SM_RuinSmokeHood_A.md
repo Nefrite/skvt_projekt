@@ -45,7 +45,7 @@ Osy: osa koše Z (nahoru); pivot ve středu bounding boxu. Společná pravidla: 
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinSmokeHood_A.SM_RuinSmokeHood_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:227`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:228`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

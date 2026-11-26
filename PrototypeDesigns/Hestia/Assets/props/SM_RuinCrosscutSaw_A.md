@@ -45,7 +45,7 @@ Osy: nejdelší rozměr podél X (podle rozměru meshe); pivot ve středu boundi
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinCrosscutSaw_A.SM_RuinCrosscutSaw_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:260`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:261`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

@@ -45,7 +45,7 @@ Osy: nejdelší rozměr podél Y (podle rozměru meshe); pivot ve středu boundi
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBroadaxe_A.SM_RuinBroadaxe_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:258`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:259`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

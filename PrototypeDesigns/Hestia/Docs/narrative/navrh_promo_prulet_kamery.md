@@ -1,15 +1,15 @@
 ---
 # orchestrace
 type: design
-validity: draft
+validity: valid
 derived_from:
 alternative_to: []
-updated: 2026-11-25
+updated: 2026-11-26
 aliases: []
 # hra
 domain: narrative
-category: []
-entity: "[[Lapikus]]"
+category: [cutscene]
+entity: "[[Cinematics_Lapikus]]"
 depth: 3
 build_step:
 assets: []
@@ -101,4 +101,4 @@ Polohy jsou ze zdí v `03_ruin/blocks/ruin_layout.json` (souřadnice UE v cm, v�
 - [ ] Výška koruny věže v datech (předpoklad 19 m) pro záběr 3. — Architect, 2026-11-25
 - [ ] Jsou v levelu kouř z komína a světlo výhně, nebo je dodá Furnisher / Crafter? — Architect, 2026-11-25
 - [ ] Délka a hudba: drží 80 s, nebo kratší verze (30 s: záběry 1, 3, 4, 7)? — Architect, 2026-11-25
-- [ ] Kdo sekvenci postaví v Sequenceru (předání s `for_role`). — Architect, 2026-11-25
+- [x] Kdo sekvenci postaví v Sequenceru (předání s `for_role`). — Architect, 2026-11-25 → ScreenWriter; návrh schválen dodatečně po první realizaci (GameDesigner 2026-11-26), dál se upřesní podle ověření v UE ([[stav_promo_prulet]]).

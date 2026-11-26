@@ -45,7 +45,7 @@ Osy: X podél postele, **hlava −X** (čelo 95 cm), nohy +X; pivot ve středu b
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBedLarge_A.SM_RuinBedLarge_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:274`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:275`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

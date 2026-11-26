@@ -45,7 +45,7 @@ Osy: osa komína Z (nahoru); pivot ve středu bounding boxu. Společná pravidla
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinChimney_A.SM_RuinChimney_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:228`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:229`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->

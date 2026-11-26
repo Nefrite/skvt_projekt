@@ -45,7 +45,7 @@ Osy: **dno −X, hrdlo +X** (stažené dvěma závity lana, roztřepený okraj),
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Props/SM_RuinBundle_A.SM_RuinBundle_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:272`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:273`
 - Data: `PrototypeDesigns/Lapikus/06_furnishing/furnishing.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

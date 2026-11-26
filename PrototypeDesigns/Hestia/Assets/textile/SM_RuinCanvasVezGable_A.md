@@ -44,7 +44,7 @@ Tvar na míru: `meshes/textile/SM_RuinCanvasVezGable_A.json` (střed a rozměr v
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Textile/SM_RuinCanvasVezGable_A.SM_RuinCanvasVezGable_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:235`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:236`
 - Data: `PrototypeDesigns/Lapikus/05_constructions/constructions.json` ([[Lapikus]])
 
 <!-- hestia:generated:end -->

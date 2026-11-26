@@ -45,7 +45,7 @@ Osy: dílec v rovině XZ (X šířka, Z výška), tloušťka Y; pivot ve středu
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wattle/SM_RuinWattlePanel_A.SM_RuinWattlePanel_A`
 - `.uasset` na disku: ano
-- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:226`
+- Zdroj: `PrototypeDesigns/Lapikus/zrlib/config.py:227`
 - Data: bez výskytu
 
 <!-- hestia:generated:end -->
