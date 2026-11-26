@@ -4,8 +4,9 @@
 `Roles/_compiled/` (a `_to_delete/`). Pole: `path`, `title`, `aliases`, `type`, `validity`, `status`, `updated`,
 `entity`, `domain`, `domains`, `depth`, `build_step`, `master`, `headings` (`##` a `###`), `links_out` (existující
 poznámky, na které dokument odkazuje), `chars` (znaky těla) a `sections` (`{heading, level, line, end_line, chars}`
-pro `##` a `###`, řádky souboru od 1, `end_line` včetně; zadání 0.21, příkaz `section`), `for_role` a `text_hash`
-(otisk textu souboru; zadání 0.28, CR-033). Index obnovují i `hubs` a `audit`; zapisuje se jen při změně obsahu
+pro `##` a `###`, řádky souboru od 1, `end_line` včetně; zadání 0.21, příkaz `section`), `for_role`, `text_hash`
+(otisk textu souboru; zadání 0.28, CR-033) a `body_hash` (otisk těla bez frontmatteru a generovaných bloků; změna
+těla nahrazeného dokumentu, zadání 0.29.1, CR-042). Index obnovují i `hubs` a `audit`; zapisuje se jen při změně obsahu
 (čas `generated` změnu nedělá).
 
 Mezipaměť textu `Maintenance/doc_index_text.json` (generovaná, zadání 0.28, CR-033): celý text souboru u dokumentů
@@ -50,6 +51,60 @@ def text_hash(text: str) -> str:
     return hashlib.sha1(text.replace("\r\n", "\n").encode("utf-8")).hexdigest()[:16]
 
 
+def body_hash(note) -> str:
+    """Otisk těla poznámky bez frontmatteru a bez generovaných bloků (změna jen ve frontmatteru nebo v bloku
+    skriptu není změna těla; zadání 0.29.1, CR-042)."""
+    from .blocks import strip_generated
+    return text_hash(strip_generated(note.body.replace("\r\n", "\n")))
+
+
+REPLACED = ("superseded", "archived")
+
+
+def replaced_body_changes(vault: Vault, notes, records: list[dict] | None = None) -> list:
+    """G5 (upozornění): změněné tělo dokumentu s `validity: superseded`/`archived` proti `doc_index` (zadání 0.29.1,
+    CR-042; 04 G5). Porovná `text_hash` a `body_hash` záznamu, bez gitu; dokument, který v indexu nebyl nahrazený,
+    nebo záznam bez `body_hash` (starší index) se nehlásí."""
+    from .findings import Finding
+    records = load(vault) if records is None else records
+    if not records:
+        return []
+    prev = {r.get("path"): r for r in records if isinstance(r, dict)}
+    out = []
+    for n in notes:
+        fm = n.fm or {}
+        validity = fm.get("validity")
+        r = prev.get(n.rel)
+        if validity not in REPLACED or r is None or r.get("validity") not in REPLACED:
+            continue
+        if r.get("text_hash") == text_hash(n.text) or not r.get("body_hash") or r["body_hash"] == body_hash(n):
+            continue
+        succ = ", ".join(str(x) for x in as_list(fm.get("superseded_by")) if x)
+        msg = (f"tělo dokumentu s validity: {validity} se změnilo (proti doc_index); do nahrazeného dokumentu "
+               "nepiš, " + (f"zapiš do nástupce superseded_by: {succ}" if succ
+                             else "superseded_by chybí: zapiš do platného dokumentu"))
+        out.append(Finding("G5", "warning", n.name, vault.project_rel(n.path), msg))
+    return out
+
+
+def replaced_in_vault(vault: Vault) -> list:
+    """G5 nahrazených dokumentů v celém vaultu (bez `_core/`, kompilátů, odeslaných …) proti indexu na disku.
+    Příkazy, které index obnovují (`doc_index`, `hubs`, `audit`, `weekly`, `task_close`), ho volají **před**
+    přepsáním indexu, aby nález zůstal ve výpisu nebo v reportu (zadání 0.29.2, 13 kap. 10.22)."""
+    from .vault import LINT_EXCLUDE_PREFIXES
+    return replaced_body_changes(vault, [n for n in vault.notes.values()
+                                         if not n.rel.startswith(LINT_EXCLUDE_PREFIXES)])
+
+
+def replaced_lines(findings: list) -> list[str]:
+    """Řádky výpisu pro nálezy G5 nahrazeného dokumentu (Finding nebo slovník z `as_dict`)."""
+    out = []
+    for f in findings or []:
+        d = f if isinstance(f, dict) else f.as_dict()
+        out.append(f"Upozornění G5: {d.get('file')}: {d.get('message')}")
+    return out
+
+
 def split_limit(vault: Vault) -> int:
     return int(vault.config.get("doc_split_chars") or 20000)
 
@@ -72,6 +127,7 @@ def record(vault: Vault, m: LinkResolver, note) -> dict:
         "links_out": sorted(dict.fromkeys(links)),
         "chars": body_chars(note), "sections": outline(note),
         "for_role": [str(r) for r in as_list(fm.get("for_role")) if r], "text_hash": text_hash(note.text),
+        "body_hash": body_hash(note),
     }
     if fm.get("type") == "asset":           # karta assetu: entity z used_by, stav (13 kap. 10.16, zadání 0.23)
         rec["entity"] = m.link_names(fm.get("used_by"))
@@ -221,12 +277,17 @@ def text_of(vault: Vault, fr: Fresh, rel: str) -> str:
 
 
 def run(args, vault: Vault) -> tuple[int, dict, str]:
-    records = build(vault)
+    from . import profiling                                     # průběžný výstup kroků (zadání 0.29, CR-033)
+    with profiling.step("záznamy"):
+        replaced = replaced_in_vault(vault)                     # G5 před přepsáním indexu (zadání 0.29.2)
+        records = build(vault)
     cs = ChangeSet(vault.project_root)
-    changed = plan(vault, cs, records=records)
-    if args.apply and changed:
-        cs.apply()
+    with profiling.step("zápis"):
+        changed = plan(vault, cs, records=records)
+        if args.apply and changed:
+            cs.apply()
     state = ("zapsáno" if args.apply else "zapsalo by se (dry-run, zapiš s --apply)") if changed else "beze změny"
     payload = {"command": "doc_index", "applied": bool(args.apply and changed), "changed": changed,
-               "notes": len(records)}
-    return EXIT_OK, payload, f"doc_index: {len(records)} poznámek; {JSON_REL} {state}"
+               "notes": len(records), "replaced": [f.as_dict() for f in replaced]}
+    text = "\n".join([f"doc_index: {len(records)} poznámek; {JSON_REL} {state}", *replaced_lines(replaced)])
+    return EXIT_OK, payload, text

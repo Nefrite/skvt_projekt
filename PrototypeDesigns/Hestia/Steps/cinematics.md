@@ -23,7 +23,11 @@ Ruční ladění v UE se přepisuje do `promo_prulet.json` a do stavu (*Ruční 
 ## Skripty
 <!-- hestia:generated:start -->
 
-_Žádné skripty._
+| Skript | Role | Entity | Dokumenty |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/cinematics/.gitkeep` | data | [[Cinematics_Lapikus]] | – |
+| `/PrototypeDesigns/Lapikus/cinematics/build_sequence.py` | entry | [[Cinematics_Lapikus]] | [[navrh_promo_prulet_kamery]], [[stav_promo_prulet]] |
+| `/PrototypeDesigns/Lapikus/cinematics/promo_prulet.json` | data | [[Cinematics_Lapikus]] | – |
 
 <!-- hestia:generated:end -->
 ## Vstupy a výstupy

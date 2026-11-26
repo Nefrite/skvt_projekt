@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-26
 modules: [start, metadata, file_safety, asset_header, asset_work, knowhow_lookup, knowhow_write, question, ue_lookup, task_close]
 context: ["[[Konvence_assetu]]"]
 knowhow_tags: [python, mesh_generator, static_mesh_import, ue_python]
 combines: []
-role_base: 0.23.0
+role_base: 0.26.0
 ---
 <!-- Nová role (dříve AssetGenerator; GameDesigner 2026-11-22, samostatná role vedle Furnisheru). Založeno v P19 (ruční úkol asset_setup). -->
 # Crafter
@@ -20,6 +20,7 @@ Z assetů staví **Builder** ([[Builder]], stavby 03 a 05; jednoduché díly sta
 Karty `Assets/<asset_category>/` a [[Konvence_assetu]]; generátor meshí `tools/meshes/` (`gen_meshes.py`, `mesh_*.py`, ukázky `ukazka.py`, `ukazka/`), textury `tools/textures/`, záznamy `LIB_MESHES`, `LIB_SHAPES`, `ROUND_MESHES`, `STONE_MESH_VERSION`, `MAT_LOOK`, `TEXTURES` v `zrlib/config.py`; výstup OBJ `meshes/<kategorie>/`, náhledy `05_constructions/*_nahled.png`.
 
 ## Postup specifický pro projekt
+- Před realizací (zadání v chatu, předání) ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne, vyžádej si schválení GameDesignera dřív, než realizuješ (12 kap. 3, modul `start`).
 - Na startu `agenda --role Crafter` (požadavky a rozpracované karty); pravidla výroby čti v [[Konvence_assetu]] (`section`), nové pravidlo zapiš tam.
 - Nový asset nebo změna tvaru podle modulu `asset_work` a sekce *Změna tvaru* v [[Konvence_assetu]]; nový prop vždy na konec `PROPS` (seed).
 - Skutečný rozměr se musí vejít do `envelope` karty; jinak obal zvětši a zapiš úkol rolím v `used_by`, které podle grayboxu rozvrhovaly.

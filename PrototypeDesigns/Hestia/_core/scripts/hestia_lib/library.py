@@ -6,7 +6,7 @@ a odkazy v datech staveb. Hodnoty se čtou **jen jako literály ze zdrojového t
 manifestu (`lint`, G6 na manifest). Chybí-li manifest, etapa B se přeskočí s informací.
 
 Výstupy:
-- `entries()` → sekce `library` v `asset_index.json` (jméno `{key}_{variant}`, verze podle nejdelšího prefixu,
+- `entries()` → sekce `library` v `asset_index.json` (jméno `{key}_{variant}`, verze podle přesné shody, pak nejdelšího prefixu,
   odvozená `ue_path`, `.uasset` na disku, zdroj `soubor:řádek`, karta, výskyty v datech),
 - `code_block()` → generovaný blok *Z kódu* v kartě meshe (`hubs`),
 - `g15()` → nálezy G15 pro `audit` (stav karty nemění).
@@ -208,6 +208,19 @@ def _name(pattern: str, key: str, variant: str) -> str:
     return name.rstrip("_") if not variant else name
 
 
+def _is_num(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def version_key(base: str, table: dict) -> str | None:
+    """Klíč tabulky verzí pro jméno bez varianty (13 kap. 10.18, 10.22): přesná shoda má přednost, pak nejdelší
+    prefix; klíč zakončený `_` (`SM_RuinTimber_`) platí i pro jméno bez varianty (`SM_RuinTimber`)."""
+    if base in table:
+        return base
+    hits = [p for p in table if base.startswith(p) or (p.endswith("_") and base == p[:-1])]
+    return max(hits, key=len, default=None)
+
+
 def _size(value) -> list | None:
     if isinstance(value, (list, tuple)) and len(value) == 3 and all(isinstance(v, (int, float)) for v in value):
         return [v for v in value]
@@ -281,6 +294,8 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
             lines = man.values[(m.get("file"), m.get("variable"))].lines
         for key, row in table.items():
             row = row if isinstance(row, (list, tuple)) else (row,)
+            if fields[:1] == ["size"] and row and _is_num(row[0]):    # hodnota přímo (x, y, z) (zadání 0.29)
+                row = (row,)
             rec = {f: (row[i] if i < len(row) else None) for i, f in enumerate(fields)}
             if "category" not in rec and isinstance(m.get("category"), str):     # pevně pro tabulku (CR-037)
                 rec["category"] = m["category"]
@@ -299,8 +314,8 @@ def build(vault, man: Manifest, files: list[dict] | None = None, cards: list | N
                      "source": (src_of[key] if src_of is not None else
                                 f"{m.get('file')}:{lines.get(key, man.values[(m.get('file'), m.get('variable'))].line)}"),
                      "card": None, "data": []}
-                for table_v, tag, var in versions:                    # nejdelší shodný prefix jména bez varianty
-                    hit = max((p for p in table_v if base.startswith(p)), key=len, default=None)
+                for table_v, tag, var in versions:                    # přesná shoda, pak nejdelší prefix
+                    hit = version_key(base, table_v)
                     if hit is not None:
                         e.update(version=table_v[hit], version_prefix=hit, version_tag=tag or var)
                         break
@@ -428,7 +443,10 @@ def code_block(card, card_fm: dict, library: list[dict], globals_: dict, tol: fl
     env = envelope_of(card_fm)
     lines = [CODE_MARK]
     size = f"- Rozměr (skutečný): {_fmt_size(e['size'])}"
-    if env:
+    if not e.get("size"):                      # zdroj files nebo hodnota bez trojice (zadání 0.29, CR-037)
+        size = "- Rozměr: rozměr neznámý" + (f"; `envelope` {_fmt_size(env)} se proti rozměru nekontroluje"
+                                             if env else "; `envelope` chybí")
+    elif env:
         over = overflow(e["size"], env, tol)
         size += f"; `envelope` {_fmt_size(env)}: " + ("**nevejde se** (" + ", ".join(over) + ")" if over
                                                       else "vejde se")

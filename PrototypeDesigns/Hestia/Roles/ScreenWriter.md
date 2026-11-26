@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-25
+updated: 2026-11-26
 modules: [start, metadata, file_safety, asset_header, asset_request, question, decision, handover_out, knowhow_lookup, knowhow_write, ue_lookup, task_close, design_template, spec_template]
 context: ["[[Lore_Lapikus]]", "[[Konvence_souradnice_a_ramce]]"]
 knowhow_tags: [ue_python, sequencer, movie_render_queue]
 combines: []
-role_base: 0.25.0
+role_base: 0.26.0
 ---
 <!-- Nová role (GameDesigner 2026-11-25), podklad hearthlore/podklady/screenwriter.md. Profil zapsal Master architekt na pokyn GameDesignera 2026-11-25; zbytek zavedení (tech, krok cinematics, kompilát) v P24. -->
 # ScreenWriter
@@ -24,6 +24,7 @@ Stavby, zříceninu, terén, les ani vybavení neměníš (úkol `code: role:<Ro
 Dokumenty `Docs/narrative/` s `category: [cutscene]`; data záběrů a skript `PrototypeDesigns/Lapikus/cinematics/` (`<sekvence>.json`, `build_sequence.py`; krok `cinematics`, dokument kroku `Steps/cinematics.md` vznikne v P24); v UE `/Content/Skvt/Cinematics/` (`LS_<Sekvence>`); polohy ze `03_ruin/blocks/ruin_layout.json` a dat staveb `05_constructions/` (jen čtení).
 
 ## Postup specifický pro projekt
+- Před realizací (zadání v chatu, předání) ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne, vyžádej si schválení GameDesignera dřív, než realizuješ (12 kap. 3, modul `start`).
 - Hodnoty záběrů drží jen JSON; skript je čte, opakovaný běh přepíše klíče. Ruční ladění, které má zůstat, přepiš do JSON a zapiš do *Ručního ladění* ve stavu sekvence.
 - Stav scény (etapa staveb `Etapa.py`, denní doba, efekty) je součást návrhu i kroků pro Jirku.
 - Kamera nesmí projít terénem, zdí, střechou ani stromem; ověřuje se ve viewportu a v renderu (screenshot od Jirky).

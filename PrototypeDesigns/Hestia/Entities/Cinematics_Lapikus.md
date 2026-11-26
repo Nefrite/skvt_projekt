@@ -48,14 +48,18 @@ Cutscény a promo sekvence zříceniny Lapikus: scénář, kamera, střih a rend
 
 | Krok | Skripty | Dokumenty |
 |---|---|---|
-| [[cinematics]] | – | [[stav_promo_prulet]] |
+| [[cinematics]] | `.gitkeep`, `build_sequence.py`, `promo_prulet.json` | [[stav_promo_prulet]] |
 
 <!-- hestia:generated:end -->
 
 ## Soubory
 <!-- hestia:generated:start -->
 
-_Žádné soubory._
+| Soubor | Role | Krok | Pravidlo |
+|---|---|---|---|
+| `/PrototypeDesigns/Lapikus/cinematics/build_sequence.py` | entry | cinematics | folder |
+| `/PrototypeDesigns/Lapikus/cinematics/.gitkeep` | data | cinematics | folder |
+| `/PrototypeDesigns/Lapikus/cinematics/promo_prulet.json` | data | cinematics | folder |
 
 <!-- hestia:generated:end -->
 

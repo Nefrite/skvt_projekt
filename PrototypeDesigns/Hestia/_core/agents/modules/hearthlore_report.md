@@ -5,7 +5,7 @@ trigger: dávka podnětů, před aktualizací, po ověření CR z nové verze
 requires: []
 modes: [vault]
 validity: valid
-updated: 2026-11-24
+updated: 2026-11-26
 compile: listed
 ---
 # Podněty a hlášení pro HearthLore (Steward)
@@ -17,7 +17,7 @@ Po každé dávce `feedback_log`, před každou aktualizací core a po ověřen�
 1. Podněty z fronty: `feedback_log` (dry-run, pak `--apply`); podnět „k ruční opravě“ oprav podle důvodu ve výpisu.
 2. `export_cr` (dry-run, pak `--apply`): záznamy `structure_log.md` bez `cr`, jeden záznam = jeden CR v `outbox/`; doplň *Dopad* a *Alternativy*. Co CR nebude, označ s člověkem `cr: none`.
 3. Forma podle obsahu: žádost o změnu Hestie a sdílené know-how = CR; informace o stavu instance (ověřené CR, verze, slabá místa) = hlášení.
-4. Hlášení `outbox/report_RRRR-MM-DD.md` podle `tpl_report_hearthlore`: *Přehled CR instance* ze `structure_log.md` (sloupec `cr`) a z `outbox/` (připravené, v `outbox/sent/` odeslané); stav v HearthLore neuvádíš.
+4. Hlášení `outbox/report_RRRR-MM-DD.md` podle `tpl_report_hearthlore`: *Přehled CR instance* ze `structure_log.md` (sloupec `cr`) a z `outbox/` (připravené, v `outbox/sent/` odeslané); stav v HearthLore neuvádíš. Oddíl *Lokální odchylky* skládej z registru `Maintenance/local_overrides.md`: tabulka `| id | modul core | důvod | CR | stav |` s aktivními záznamy a záznamy v konfliktu (hotovou ji má report `health` pod sekcí lokálních odchylek); pod ni volný text k ostatním lokálním úpravám (prostředí, ruční postupy). HearthLore z ní pozná, co instance potřebuje jinak, i když CR odmítl.
 5. Odesílá člověk; odeslané soubory přesouvá do `outbox/sent/` on.
 
 ## Výstup

@@ -1,6 +1,6 @@
 ---
 type: log
-updated: 2026-11-24
+updated: 2026-11-26
 ---
 # Verze struktury
 
@@ -19,3 +19,4 @@ Verze core (`_core/VERSION`) a lokální revize instance (`taxonomy_local`), dat
 | 2026-11-22 | core 0.21.1 | aktualizace z 0.20.1 (update_core) | CR-022_prostredi_core, CR-023_update_core_pripojena_slozka, CR-024_ue_signal_basicshapes, CR-025_ue_ism_bounds, CR-030_export_cr_prazdne_cr, CR-031_podnety_do_structure_log_skriptem |
 | 2026-11-23 | core 0.23.0 | aktualizace z 0.21.1 (update_core) | CR-026_karta_assetu, CR-029_prace_s_assety, CR-032_ukoly_pro_role_ve_fronte, CR-025_ue_ism_bounds, CR-031_podnety_do_structure_log_skriptem, CR-027_asset_index_knihovni_meshe, CR-028_ue_query_assety |
 | 2026-11-24 | core 0.25.0 | aktualizace z 0.23.0 (update_core) | CR-035_zralost_rodicu_a_matice, CR-033_vykon_pripojena_slozka, CR-034_kompilaty_hlavicka_verze, CR-036_assety_po_prevodu, CR-037_manifest_assetu_tabulky_a_data, CR-038_pravidla_roli_v_dokumentaci, CR-039_start_cesta_a_interpret, CR-040_drobne_opravy_kontrol |
+| 2026-11-26 | core 0.26.0 | aktualizace z 0.25.0 (update_core) | CR-033_vykon_pripojena_slozka, CR-037_manifest_assetu_tabulky_a_data, CR-039_start_cesta_a_interpret, CR-041_report_update_core_a_kompilat_stewarda, CR-042_zapis_do_nahrazeneho_dokumentu, CR-043_lint_taxonomy_local, CR-044_realizace_nad_neschvalenym_navrhem |

@@ -20,6 +20,6 @@ protected_files: []                # soubory, které skripty nepřepisují (file
 # queue_task_days: 14              # úkol pro roli (code: role:<Role>) otevřený déle = G5 v auditu
 # asset_default_owner: Crafter     # komu agenda ukáže karty assetů requested bez owner
 steward_active: false              # true = Steward vlastní export_cr a weekly; false = náhradník Curator (rozhodne GameDesigner)
-hestia_python:                     # cesta k interpretu Python ≥ 3.11 (naplánovaná úloha weekly, pokyny první zprávy)
+hestia_python:                     # cesta k interpretu Python ≥ 3.11 (naplánovaná úloha weekly, pokyny první zprávy); smí ~ a $PROMĚNNÉ ("~/hvenv/bin/python"), přednost má proměnná HESTIA_PYTHON
 # asset_request_days: 30           # karta requested bez převzetí déle = G15 (informace)
 # asset_envelope_tolerance_cm: 0.5 # skutečný rozměr assetu větší než envelope o víc = G15

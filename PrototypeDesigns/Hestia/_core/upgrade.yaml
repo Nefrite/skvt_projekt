@@ -137,3 +137,14 @@ versions:
       - id: outbox_sent
         text: "Založit Maintenance/outbox/sent/ a přesunout do něj už odeslané CR a hlášení (odesílá a přesouvá člověk; export_cr ani lint sent/ nekontrolují)"
     crs: [CR-033_vykon_pripojena_slozka, CR-034_kompilaty_hlavicka_verze, CR-036_assety_po_prevodu, CR-037_manifest_assetu_tabulky_a_data, CR-038_pravidla_roli_v_dokumentaci, CR-039_start_cesta_a_interpret, CR-040_drobne_opravy_kontrol]
+  - version: 0.26.0
+    after: [asset_index, hubs, doc_index, compose_role]
+    roles: "realizace nad neschváleným návrhem (12 kap. 3; zadání 0.29.1, CR-044): tpl_role má v Postupu specifickém pro projekt krok ověřit před realizací validity: valid návrhu, jinak si vyžádat schválení GameDesignera; doplň ho do profilů projektových rolí, které realizují podle návrhu, a srovnej role_base. Lokální náhrada modulu core (overrides:, registr Maintenance/local_overrides.md) mění kompiláty rolí, které modul dostávají (13 kap. 10.23)"
+    manual:
+      - id: hestia_python_home
+        text: "Přepsat hestia_python v Maintenance/config.yaml do tvaru s ~ nebo proměnnou ($HOME), např. ~/hvenv/bin/python (ve VM se domovská složka mění s relací), nebo nastavit proměnnou prostředí HESTIA_PYTHON (má přednost); hodnota s argumenty (uv run …) se nepodporuje. Ověřit doctor (zdroj interpretu) (13 kap. 10.22, CR-039)"
+      - id: cache_gitignore
+        text: "Doplnit Maintenance/cache/ do .gitignore instance (mezipaměť poznámek notes.json přijde s core 0.27.0; 13 kap. 10.22)"
+      - id: local_overrides
+        text: "Založit Maintenance/local_overrides.md ze šablony _core/templates/tpl_local_overrides.md (prázdná tabulka); v instanci s ručně upraveným chováním Hestie zapsat existující odchylky: lokální modul Roles/modules/<id>.md s overrides: <module_id core> a záznam L-NNNN v registru (vede Steward, bez Stewarda Curator), pak lint a compose_role (13 kap. 10.23, 07 kap. 22)"
+    crs: [CR-033_vykon_pripojena_slozka, CR-037_manifest_assetu_tabulky_a_data, CR-039_start_cesta_a_interpret, CR-041_report_update_core_a_kompilat_stewarda, CR-042_zapis_do_nahrazeneho_dokumentu, CR-043_lint_taxonomy_local, CR-044_realizace_nad_neschvalenym_navrhem]

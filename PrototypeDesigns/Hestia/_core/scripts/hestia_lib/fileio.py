@@ -49,6 +49,8 @@ def atomic_write(path: Path, data: str | bytes, expected_hash: str | None = None
         raise WriteConflict(f"Soubor už existuje, zápis odmítnut: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = data.encode("utf-8") if isinstance(data, str) else data
+    from . import profiling
+    profiling.count_write(len(payload))
     fd, tmp = tempfile.mkstemp(prefix=".hestia_tmp_", dir=str(path.parent))
     try:
         with os.fdopen(fd, "wb") as f:

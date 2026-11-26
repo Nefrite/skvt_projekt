@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Librarian | core: 0.25.0 | date: 2026-11-24 -->
+<!-- role: Librarian | core: 0.26.0 | date: 2026-11-26 -->
 <!-- sources: _core/agents/Librarian.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/lookup.md, _core/agents/modules/file_info.md, _core/agents/modules/completeness.md, _core/agents/modules/canon_check.md, _core/agents/modules/inbox_triage.md, _core/agents/modules/ue_lookup.md, _core/agents/modules/handover_out.md, _core/agents/modules/hestia_feedback.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md -->
 # Librarian – instrukce pro chat
 
@@ -73,6 +73,8 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 **Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka a Stewarda, `inbox_import`, assety) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi, aktualizaci core Stewardovi), nebo se zeptej GameDesignera.
 
+**Lokální náhrady modulů core** (režim `vault`): modul core, který má v registru `Maintenance/local_overrides.md` aktivní náhradu (stav `aktivní` nebo `konflikt`), čti z `Roles/modules/<lokální modul>.md` místo `_core/agents/modules/`. Kontrakt se nenahrazuje nikdy. V kompilátu je náhrada už vložená.
+
 Pak načti v tomto pořadí a nic navíc:
 1. **nejdřív ověř přístup k vaultu** (`ls <cesta k vaultu>` z pokynů první zprávy), pak čti; vault nehledej procházením projektu. Příkazy core spouštěj interpretem z pokynů nebo z `hestia_python` v `Maintenance/config.yaml`; kontrakt a profil své role, případně složené profily (`combines`);
 2. zadání tasku: chat nebo aktivní předání v `Handovers/`;
@@ -81,7 +83,7 @@ Pak načti v tomto pořadí a nic navíc:
 5. dokumentaci kroku v `Steps/` nebo sdíleného kódu v `Steps/shared/`, pokud task mění skripty;
 6. know-how podle `knowhow_tags` profilu a domény tasku (modul `knowhow_lookup`).
 
-Ověř, že předání a hub nemají `validity: superseded` (jinak pokračuj podle `superseded_by`). Stav prototypování zjišťuj v pořadí dokumentace kroku → hlavička skriptu → `asset_index` → kód, a kód čti jen tam, kde předchozí nestačí.
+Ověř, že předání a hub nemají `validity: superseded` (jinak pokračuj podle `superseded_by`). **Realizace podle návrhu** (projektová role, zadání v chatu nebo předání): ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne (`draft`), vyžádej si schválení GameDesignera dřív, než realizuješ (audit hlásí platný stav nad návrhem `draft` jako G5). Stav prototypování zjišťuj v pořadí dokumentace kroku → hlavička skriptu → `asset_index` → kód, a kód čti jen tam, kde předchozí nestačí.
 
 Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, otázka na GameDesignera. V režimu `chat` ti stejný výběr připraví orchestrační agent jako kontext tasku.
 
@@ -102,6 +104,7 @@ Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého st
 - Hlásit „beze změny“ po aktualizaci podle části souboru místo `role_diff`.
 - Brát předání nebo starou kopii v chatu jako zdroj pravdy. Platí vault, u prototypování skripty a stav v enginu.
 - Přehlédnout `superseded` u předání nebo hubu a pracovat podle neplatného zadání.
+- Realizovat podle návrhu ve stavu `draft` (neschváleného) jen proto, že zadání v chatu o něm mluví.
 
 ## Modul `idea_capture` (L1)
 

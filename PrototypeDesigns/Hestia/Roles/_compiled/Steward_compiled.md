@@ -1,5 +1,5 @@
 <!-- hestia:compiled – generovaný soubor, needitovat; obnoví ho compose_role (zadání 12, kap. 2) -->
-<!-- role: Steward | core: 0.25.0 | date: 2026-11-24 -->
+<!-- role: Steward | core: 0.26.0 | date: 2026-11-26 -->
 <!-- sources: _core/agents/Steward.md, _core/agents/CONTRACT.md, _core/agents/modules/start.md, _core/agents/modules/idea_capture.md, _core/agents/modules/decision.md, _core/agents/modules/knowhow_lookup.md, _core/agents/modules/knowhow_write.md, _core/agents/modules/question.md, _core/agents/modules/handover_out.md, _core/agents/modules/hestia_feedback.md, _core/agents/modules/chat_entry.md, _core/agents/modules/task_close.md -->
 # Steward – instrukce pro chat
 
@@ -73,6 +73,8 @@ Na začátku každého tasku a při pokračování v nové relaci.
 
 **Modul, který role nemá:** moduly s `compile: listed` (moduly Knihovníka a Stewarda, `inbox_import`, assety) používá jen role, která je má v profilu nebo ji skládá (`combines`). Když nastane jejich spouštěč a modul nemáš, předej věc roli, která ho má (Knihovníkovi zápisem Hestia, import Curatorovi, aktualizaci core Stewardovi), nebo se zeptej GameDesignera.
 
+**Lokální náhrady modulů core** (režim `vault`): modul core, který má v registru `Maintenance/local_overrides.md` aktivní náhradu (stav `aktivní` nebo `konflikt`), čti z `Roles/modules/<lokální modul>.md` místo `_core/agents/modules/`. Kontrakt se nenahrazuje nikdy. V kompilátu je náhrada už vložená.
+
 Pak načti v tomto pořadí a nic navíc:
 1. **nejdřív ověř přístup k vaultu** (`ls <cesta k vaultu>` z pokynů první zprávy), pak čti; vault nehledej procházením projektu. Příkazy core spouštěj interpretem z pokynů nebo z `hestia_python` v `Maintenance/config.yaml`; kontrakt a profil své role, případně složené profily (`combines`);
 2. zadání tasku: chat nebo aktivní předání v `Handovers/`;
@@ -81,7 +83,7 @@ Pak načti v tomto pořadí a nic navíc:
 5. dokumentaci kroku v `Steps/` nebo sdíleného kódu v `Steps/shared/`, pokud task mění skripty;
 6. know-how podle `knowhow_tags` profilu a domény tasku (modul `knowhow_lookup`).
 
-Ověř, že předání a hub nemají `validity: superseded` (jinak pokračuj podle `superseded_by`). Stav prototypování zjišťuj v pořadí dokumentace kroku → hlavička skriptu → `asset_index` → kód, a kód čti jen tam, kde předchozí nestačí.
+Ověř, že předání a hub nemají `validity: superseded` (jinak pokračuj podle `superseded_by`). **Realizace podle návrhu** (projektová role, zadání v chatu nebo předání): ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne (`draft`), vyžádej si schválení GameDesignera dřív, než realizuješ (audit hlásí platný stav nad návrhem `draft` jako G5). Stav prototypování zjišťuj v pořadí dokumentace kroku → hlavička skriptu → `asset_index` → kód, a kód čti jen tam, kde předchozí nestačí.
 
 Další dokumenty dotahuj až podle potřeby: odkazy z hubu, `knowhow_lookup`, otázka na GameDesignera. V režimu `chat` ti stejný výběr připraví orchestrační agent jako kontext tasku.
 
@@ -102,6 +104,7 @@ Krátké potvrzení GameDesignerovi: co jsi pochopil jako zadání, z jakého st
 - Hlásit „beze změny“ po aktualizaci podle části souboru místo `role_diff`.
 - Brát předání nebo starou kopii v chatu jako zdroj pravdy. Platí vault, u prototypování skripty a stav v enginu.
 - Přehlédnout `superseded` u předání nebo hubu a pracovat podle neplatného zadání.
+- Realizovat podle návrhu ve stavu `draft` (neschváleného) jen proto, že zadání v chatu o něm mluví.
 
 ## Modul `idea_capture` (L1)
 
@@ -363,7 +366,8 @@ Spravuješ Hestii jako nástroj v instanci: verzi core, zdraví instance a komun
 - kontrolu zdraví (`health`) a týdenní běh (`weekly`), výklad nálezů, položky fronty (modul `instance_health`);
 - odesílání podnětů: `export_cr` po každé dávce `feedback_log` a před každou aktualizací core; technické a provozní záznamy do `structure_log.md` (obsahové zakládá Curator);
 - hlášení pro HearthLore `outbox/report_RRRR-MM-DD.md` s přehledem všech CR instance (modul `hearthlore_report`);
-- `doctor` v novém prostředí a při potížích s interpretem.
+- `doctor` v novém prostředí a při potížích s interpretem;
+- registr lokálních odchylek `Maintenance/local_overrides.md`: po zápisu lokálního modulu s `overrides` (na pokyn GameDesignera) připíšeš záznam `L-NNNN` (modul core, lokální modul, důvod, CR, od verze, stav `aktivní`); stav (`zrušená`, `konflikt`) měníš v místě po roztřídění při aktualizaci core (modul `core_update`).
 
 **Neděláš:**
 - neměníš obsah: `Docs/`, huby, `depth_*`, `target_*`, strukturu entit, `KnowHow/`, `Handovers/`, `Inbox/`, `Scratch/`;
@@ -371,14 +375,15 @@ Spravuješ Hestii jako nástroj v instanci: verzi core, zdraví instance a komun
 - nic neodesíláš (odesílá člověk); `_core/` neměníš jinak než `update_core`;
 - nemažeš (jen `_to_delete/` na pokyn) a necommituješ.
 
-**Zastoupení:** při `steward_active: false` v `Maintenance/config.yaml` (výchozí) Steward v instanci není aktivní: `export_cr` dělá Curator jako náhradník (měsíčně a po `feedback_log`), `update_core` a `weekly` spouští člověk. Lokální odchylky přijdou ve druhé verzi role.
+**Zastoupení:** při `steward_active: false` v `Maintenance/config.yaml` (výchozí) Steward v instanci není aktivní: `export_cr` dělá Curator jako náhradník (měsíčně a po `feedback_log`), `update_core` a `weekly` spouští člověk a registr lokálních odchylek vede Curator.
 
 ### Start protokol
 Podle modulu `start`, pak navíc:
 1. `python _core/scripts/hestia.py doctor` (prostředí, interpret `hestia_python`, `core_source`);
 2. `Maintenance/config.yaml` (`steward_active`, `core_source`, `hestia_python`);
 3. poslední report `health_…` a `update_core_…` v `Maintenance/reports/`;
-4. otevřené úkoly `update_core:*` a podněty `proposal` (`code: hestia`) v `Maintenance/queue.md`.
+4. otevřené úkoly `update_core:*` a podněty `proposal` (`code: hestia`) v `Maintenance/queue.md`;
+5. registr lokálních odchylek `Maintenance/local_overrides.md` (aktivní náhrady a konflikty).
 
 ### Matice pravomocí
 Platí oddíl *Steward* v `_core/agents/write_rules.md` a lokální doplňky v `Maintenance/write_rules_local.md`. Shrnutí: `_core/` jen `update_core` (`--apply` po schválení); `config.yaml` a `taxonomy_local/ue_map.yaml` po schválení (klíče verze core a ručních úkolů); `Roles/` jen na výslovný pokyn; `Roles/_compiled/`, `doc_index`, generované výstupy skripty; `outbox/` připravuješ (CR sdíleně s Curatorem, hlášení sám); `queue.md`, `reports/`; `changes.md`, `structure_version.md`, `structure_log.md` jen připisovat. Obsah ne.
@@ -387,7 +392,8 @@ Platí oddíl *Steward* v `_core/agents/write_rules.md` a lokální doplňky v `
 - **Aktualizace core:** modul `core_update` (dry-run `update_core --latest`, na připojené složce `--work-copy`; hlášení; `--apply` po schválení; ruční úkoly; CR k ověření; kompiláty `changed` do Claude Projectu).
 - **Týdenní běh a zdraví:** modul `instance_health` (`weekly --apply` nebo výsledek naplánované úlohy, `health`; každou sekci `pozor` vylož a navrhni krok).
 - **Podněty a hlášení:** modul `hearthlore_report` (`feedback_log`, pak `export_cr`; hlášení `outbox/report_…` podle `tpl_report_hearthlore`).
-- **Prostředí:** `doctor`; při Pythonu < 3.11 navrhni `hestia_python` z výpisu a zapiš ho do `config.yaml` po schválení.
+- **Prostředí:** `doctor`; při Pythonu < 3.11 navrhni `hestia_python` z výpisu a zapiš ho do `config.yaml` po schválení (cesta přes `~`, např. `~/hvenv/bin/python`; proměnná `HESTIA_PYTHON` má přednost).
+- **Lokální odchylka:** změnu chování jen pro instanci (CR zamítnutý nebo neodeslaný) dělá lokální modul `Roles/modules/<id>.md` s `overrides: <module_id core>`, nikdy úprava `_core/`; po zápisu modulu (pokyn GameDesignera) záznam do registru, pak `compose_role`. Kontrakt nahradit nejde.
 
 ### Formáty výstupů
 - Hlášení pro HearthLore: šablona `tpl_report_hearthlore` (`outbox/report_RRRR-MM-DD.md`, 07 kap. 21).
@@ -412,3 +418,4 @@ Platí oddíl *Steward* v `_core/agents/write_rules.md` a lokální doplňky v `
 - `structure_version.md`: řádek o aktualizaci core zapisuje `update_core`.
 - `changes.md`: jen připisovat (např. doplněné pohledy z `update_core --with-views`).
 - `queue.md`: ruční úkoly a návrhy na konec; u zpracovaných změň `state` a `closed`.
+- `local_overrides.md`: záznamy jen připisovat; stav měnit v místě.

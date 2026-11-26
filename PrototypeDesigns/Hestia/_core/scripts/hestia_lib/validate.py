@@ -471,4 +471,10 @@ def run_checks(vault: Vault, notes: list[Note] | None = None, log_format: bool =
         if n.rel == QUEUE_REL:
             check_queue_roles(ch, n)
     ch.check_vault(notes, full)
+    # G6 lokálních náhrad modulů core (zadání 0.29; 04 G6, 13 kap. 10.23): lint nad Roles/modules/ a registrem
+    from . import overrides
+    if full or any(n.rel.startswith(overrides.LOCAL_MODULES + "/") or n.rel == overrides.REGISTRY_REL for n in notes):
+        from . import CORE_ROOT
+        for target, rel, msg in overrides.problems(vault.root, CORE_ROOT):
+            ch.out.append(Finding("G6", vault.taxonomy.severity("G6"), target, vault.project_rel(vault.root / rel), msg))
     return ch.out

@@ -5,7 +5,7 @@ trigger: zápis do souborů projektu
 requires: []
 modes: [vault]
 validity: valid
-updated: 2026-11-17
+updated: 2026-11-26
 ---
 # Bezpečný zápis souborů
 
@@ -19,6 +19,7 @@ Před každým zápisem, přepsáním, přesunem nebo přejmenováním souboru p
 4. Přesouvej bez přepsání cíle; když cíl existuje, zastav se a zeptej.
 5. Skripty Hestia spouštěj nejdřív bez `--apply` (dry-run) a zkontroluj výpis; zapisuj s `--apply`.
 6. Generované sekce (mezi značkami `hestia:generated`) neupravuj ručně; přepíše je skript.
+7. Do dokumentu s `validity: superseded` nebo `archived` nepiš (tělo); zapiš do nástupce (`superseded_by`), a když chybí, do platného dokumentu entity. Změnu těla nahrazeného dokumentu hlásí `lint` a `task_close` (G5).
 
 ## Výstup
 Zapsané soubory bez ztráty cizích změn; v hlášení seznam změněných souborů.
@@ -27,3 +28,4 @@ Zapsané soubory bez ztráty cizích změn; v hlášení seznam změněných sou
 - Přepsat soubor, který mezitím upravil člověk nebo jiný agent.
 - Přepsat ruční úpravy z editoru, které skript nezná. Vrací se do skriptu, dokud se to nestane, platí stav v enginu.
 - Mazat „nepotřebné“ soubory bez pokynu.
+- Doplnit novinku do nahrazeného dokumentu (katalog, starý návrh) místo do nástupce: mimo evidenci ji nikdo nenajde.

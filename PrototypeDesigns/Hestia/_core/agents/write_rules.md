@@ -1,7 +1,7 @@
 ---
 type: reference
 validity: valid
-updated: 2026-11-24
+updated: 2026-11-26
 ---
 # Pravidla zápisu (výchozí, core)
 
@@ -12,6 +12,7 @@ Kdo smí co zapisovat ve vaultu. Výchozí pravidla core podle zadání 05, kap.
 - Platný text přepisuješ jen jako důsledek rozhodnutí GameDesignera nebo výsledku tasku ve své oblasti (12 kap. 6.1, `nahradit:`).
 - Profil kontrakt zpřísňuje, neruší: výsledek své práce zapíšeš do vaultu vždy; zákazy zápisu v profilu platí pro kód, data a assety (12 kap. 2.1).
 - Zápis do `Docs/` je dokumentace domény podle šablony (sekce, `depth`), ne výstup role: neříká, kdo psal a pro koho. Před zápisem najdi existující dokumentaci entity a doplň ji; nový dokument jen když žádný není. Předání (`Handovers/`) píšeš z role (12 kap. 8).
+- Do dokumentu s `validity: superseded` nebo `archived` nepiš; zapiš do nástupce (`superseded_by`). Změnu těla nahrazeného dokumentu hlásí `lint` a `task_close` (G5).
 - Přesun a přejmenování jen se schválením; mazání jen přesunem do `_to_delete/` na pokyn (05 kap. 5).
 - Problém s Hestií jako nástrojem neřešíš CR ani zápisem do `structure_log.md`: modul `hestia_feedback` (12 kap. 4.5).
 
@@ -59,6 +60,7 @@ Steward spravuje Hestii jako nástroj (verze core, zdraví instance, komunikace 
 | `outbox/` (change requesty, hlášení) | ✔ připravuje (CR sdíleně s Curatorem, hlášení sám); odesílá člověk, odeslané přesune do `outbox/sent/` |
 | `queue.md`, `reports/` | ✔ |
 | `changes.md`, `structure_version.md`, `structure_log.md` | ✔ jen připisovat |
+| `local_overrides.md` (registr lokálních náhrad modulů core) | ✔ připisovat záznamy, stav v místě; bez Stewarda vede Curator |
 | Obsah (`Docs/`, huby, `depth_*`, `target_*`, `KnowHow/`, `Handovers/`, `Inbox/`, `Scratch/`) | ✘ |
 
 ## Knihovník (`Librarian`, 05 kap. 3.2a)

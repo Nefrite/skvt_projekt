@@ -39,8 +39,9 @@ Ručně (doplněk k bloku: zdroj bez rozměru, rozměr z OBJ k 2026-11-23):
 <!-- hestia:generated:start -->
 
 <!-- hestia:asset_code -->
-- Rozměr (skutečný): –; `envelope` 100 × 25 × 25 cm: vejde se
+- Rozměr (skutečný): 100 × 25 × 25 cm; `envelope` 100 × 25 × 25 cm: vejde se
 - Varianty: `SM_RuinTimber_A`, `SM_RuinTimber_B`, `SM_RuinTimber_C`
+- Verze: 2 (prefix `SM_RuinTimber_`, `RuinStoneVersion`)
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A`
 - `.uasset` na disku: ano

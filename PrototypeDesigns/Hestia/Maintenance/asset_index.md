@@ -2,7 +2,7 @@
 # orchestrace
 type: reference
 validity: valid
-updated: 2026-11-25
+updated: 2026-11-26
 ---
 # Asset index
 
@@ -161,6 +161,9 @@ Soubory ve `generated/`: 0 (jen počet).
 | `/PrototypeDesigns/Lapikus/README.txt` | data | – | – | – | – | header | README_PROJEKT |
 | `/PrototypeDesigns/Lapikus/build_fullscope.py` | entry | – | – | – | – | – | – |
 | `/PrototypeDesigns/Lapikus/build_normal.py` | entry | – | – | – | – | – | – |
+| `/PrototypeDesigns/Lapikus/cinematics/.gitkeep` | data | Cinematics_Lapikus | Cinematics_Lapikus | cinematics | narrative | folder | – |
+| `/PrototypeDesigns/Lapikus/cinematics/build_sequence.py` | entry | Cinematics_Lapikus | Cinematics_Lapikus | cinematics | narrative | folder | navrh_promo_prulet_kamery, stav_promo_prulet |
+| `/PrototypeDesigns/Lapikus/cinematics/promo_prulet.json` | data | Cinematics_Lapikus | Cinematics_Lapikus | cinematics | narrative | folder | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasTent_A.json` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVezGable_A.json` | output | – | – | – | structures | – | – |
 | `/PrototypeDesigns/Lapikus/meshes/textile/SM_RuinCanvasVez_A.json` | output | – | – | – | structures | – | – |
@@ -318,15 +321,15 @@ Z kódu podle `taxonomy_local/asset_sources.yaml` (literály, kód se nespoušt�
 | `SM_RuinGutter_B` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutter_B.SM_RuinGutter_B | ano | Assets/wood/SM_RuinGutter_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:202 |
 | `SM_RuinGutterBark_A` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutterBark_A.SM_RuinGutterBark_A | ano | Assets/wood/SM_RuinGutterBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:203 |
 | `SM_RuinGutterBark_B` | wood | 100 × 20 × 11 | 2 (SM_RuinGutter) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinGutterBark_B.SM_RuinGutterBark_B | ano | Assets/wood/SM_RuinGutterBark_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:203 |
-| `SM_RuinTimber_A` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinTimber_B` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinTimber_C` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinPlank_A` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinPlank_B` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinPlank_C` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinPost_A` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinPost_B` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_B.SM_RuinPost_B | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
-| `SM_RuinPost_C` | wood | – | – | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_C.SM_RuinPost_C | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinTimber_A` | wood | 100 × 25 × 25 | 2 (SM_RuinTimber_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_A.SM_RuinTimber_A | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinTimber_B` | wood | 100 × 25 × 25 | 2 (SM_RuinTimber_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_B.SM_RuinTimber_B | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinTimber_C` | wood | 100 × 25 × 25 | 2 (SM_RuinTimber_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinTimber_C.SM_RuinTimber_C | ano | Assets/wood/SM_RuinTimber_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPlank_A` | wood | 100 × 25 × 5 | 2 (SM_RuinPlank_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_A.SM_RuinPlank_A | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPlank_B` | wood | 100 × 25 × 5 | 2 (SM_RuinPlank_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_B.SM_RuinPlank_B | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPlank_C` | wood | 100 × 25 × 5 | 2 (SM_RuinPlank_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPlank_C.SM_RuinPlank_C | ano | Assets/wood/SM_RuinPlank_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPost_A` | wood | 25 × 25 × 100 | 2 (SM_RuinPost_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_A.SM_RuinPost_A | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPost_B` | wood | 25 × 25 × 100 | 2 (SM_RuinPost_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_B.SM_RuinPost_B | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
+| `SM_RuinPost_C` | wood | 25 × 25 × 100 | 2 (SM_RuinPost_) | /Game/Skvt/Lapikus/Ruin/Wood/SM_RuinPost_C.SM_RuinPost_C | ano | Assets/wood/SM_RuinPost_A.md | – | PrototypeDesigns/Lapikus/zrlib/config.py:188 |
 | `SM_RuinAshlar` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinAshlar.SM_RuinAshlar | ano | Assets/stone/SM_RuinAshlar.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinAshlar.obj |
 | `SM_RuinDressed_R12_A` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_A.SM_RuinDressed_R12_A | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R12_A.obj |
 | `SM_RuinDressed_R12_B` | stone | – | – | /Game/Skvt/Lapikus/Ruin/Stones/SM_RuinDressed_R12_B.SM_RuinDressed_R12_B | ano | Assets/stone/SM_RuinDressed_R12_A.md | – | PrototypeDesigns/Lapikus/meshes/stone/SM_RuinDressed_R12_B.obj |

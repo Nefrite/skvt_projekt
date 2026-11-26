@@ -13,6 +13,8 @@
 - Sekce *Unreal* a rozšíření G10 jen s `ue_map.yaml` (13 kap. 10.11): entita s pravidlem, `depth_d ≥ 2`
   v režimu build a v posledním reportu bez actora = G10; entita s actory v reportu a platným `state` s `updated`
   starším než `generated` reportu = G10 (zadání 0.19, jen data); v sekci entity bez pravidla, bez reportu, staré reporty.
+- G5 u platného stavu (`type: state`, `valid`), který odkazuje (`links_out` v `doc_index`) na návrh téže entity
+  s `validity: draft` (realizace nad neschváleným návrhem; zadání 0.29.1, CR-044).
 - G5 i u balíčků kontextu (`Maintenance/context/`), které by nové složení změnilo; audit obnoví `doc_index.json`.
 - G5 u profilu `Roles/<Role>.md` bez `role_base` nebo se starším než poslední verze s příznakem `roles`
   v manifestu běžícího core (zadání 0.17).
@@ -62,6 +64,7 @@ STEP_SCRIPT_RE = re.compile(r"^(step|build_.*)$", re.I)
 @dataclass
 class AuditResult:
     findings: list[Finding] = field(default_factory=list)
+    doc_records: list | None = None                 # záznamy doc_index (G5 nad návrhem draft, zápis indexu)
     maturity: list[tuple[str, list[str]]] = field(default_factory=list)
     recommendations: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
@@ -199,6 +202,23 @@ class Auditor:
                 self.add("G5", n.name, self.file_of(n),
                          f"bez změny od {stale[0].isoformat()} (déle než {self.doc_days} dní), "
                          f"entita {stale[2]} se od té doby změnila ({stale[1].isoformat()}, changes.md)")
+
+    def draft_design_checks(self, records: list[dict]) -> None:
+        """G5: platný stav nad návrhem téže entity ve `validity: draft` (zadání 0.29.1, CR-044; 04 G5)."""
+        by_name: dict[str, dict] = {}
+        for r in records:
+            by_name.setdefault(Path(r["path"]).stem, r)
+        for r in records:
+            if r.get("type") != "state" or r.get("validity") != "valid":
+                continue
+            ents = set(r.get("entity") or [])
+            for name in r.get("links_out") or []:
+                d = by_name.get(name)
+                if d and d.get("type") == "design" and d.get("validity") == "draft" and ents & set(d.get("entity") or []):
+                    self.add("G5", Path(r["path"]).stem, self.v.project_rel(self.v.root / r["path"]),
+                             f"platný stav odkazuje na neschválený návrh [[{name}]] (validity: draft) téže entity "
+                             f"({', '.join(sorted(ents & set(d.get('entity') or [])))}): návrh ke schválení "
+                             "GameDesignerovi, nebo stav vrať do draft")
 
     def role_task_checks(self) -> None:
         """G5: úkol pro roli (`code: role:<Role>`) ve stavu `open` déle než `queue_task_days` (13 kap. 10.17,
@@ -524,28 +544,39 @@ class Auditor:
 
     # ------------------------------------------------------------ běh
     def run(self, state: dict) -> AuditResult:
-        self.r.findings += run_checks(self.v, None, log_format=False)
-        idx = ai.build(self.v, self.m)
+        from . import profiling                                 # průběžný výstup kroků (zadání 0.29, CR-033)
+        with profiling.step("lint (G6, G7)"):
+            self.r.findings += run_checks(self.v, None, log_format=False)
+        with profiling.step("asset_index"):
+            idx = ai.build(self.v, self.m)
         self.r.index = idx
         self.r.findings += idx.findings
         self.r.warnings += idx.warnings
         if self.v.game_layer:
-            self.entity_checks()
-            self.code_depth_checks(idx.files)
-            self.lore_checks()
-            self.maturity_table()
-            self.ue_checks(idx.files)
-            self.asset_checks(idx)
-        self.stale_checks()
-        self.role_task_checks()
-        self.long_doc_checks()
-        self.compiled_checks()
-        self.role_base_checks()
-        self.context_checks()
-        self.orphan_checks()
-        self.duplicate_checks()
-        self.orphan_assets(idx.files)
-        self.g11(idx.files, state)
+            with profiling.step("entity, kód, lore, Unreal, assety"):
+                self.entity_checks()
+                self.code_depth_checks(idx.files)
+                self.lore_checks()
+                self.maturity_table()
+                self.ue_checks(idx.files)
+                self.asset_checks(idx)
+        with profiling.step("zastarání (G5) a doc_index"):
+            self.stale_checks()
+            # G5 nahrazeného dokumentu proti indexu před jeho obnovou: nález zůstane v reportu (zadání 0.29.2)
+            self.r.findings += doc_index.replaced_in_vault(self.v)
+            self.r.doc_records = doc_index.build(self.v, self.m)
+            self.draft_design_checks(self.r.doc_records)
+            self.role_task_checks()
+            self.long_doc_checks()
+        with profiling.step("kompiláty, profily, kontext"):
+            self.compiled_checks()
+            self.role_base_checks()
+            self.context_checks()
+        with profiling.step("osiřelé, duplicity, G11"):
+            self.orphan_checks()
+            self.duplicate_checks()
+            self.orphan_assets(idx.files)
+            self.g11(idx.files, state)
         self.recommendations()
         self.librarian_metrics(state)
         old = ai.load_json(self.v)
@@ -735,7 +766,7 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     cs.write(base.with_suffix(".json"), report_json(r.findings))
     new_state = {"last_audit": day.isoformat(), "last_audited_commit": r.commit}
     cs.write(vault.root / STATE_REL, json.dumps(new_state, ensure_ascii=False, indent=2) + "\n")
-    doc_index.plan(vault, cs)                                   # index pro Knihovníka nezastará (13 kap. 10.10)
+    doc_index.plan(vault, cs, records=r.doc_records)   # index pro Knihovníka (13 kap. 10.10)
     if args.apply and not cs.empty:
         cs.apply()
     counts = {s: sum(1 for f in r.findings if f.severity == s) for s in SEVERITY_ORDER}

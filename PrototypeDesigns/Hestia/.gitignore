@@ -11,3 +11,5 @@
 .obsidian/plugins/*/manifest.json
 .obsidian/plugins/*/styles.css
 .trash/
+# mezipaměť core (notes.json od 0.27.0; 13 kap. 10.22)
+Maintenance/cache/

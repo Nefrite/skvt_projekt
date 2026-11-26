@@ -37,7 +37,7 @@ Ručně (doplněk k bloku: zdroj bez rozměru, rozměr z OBJ k 2026-11-23):
 <!-- hestia:generated:start -->
 
 <!-- hestia:asset_code -->
-- Rozměr (skutečný): –; `envelope` 100 × 100 × 100 cm: vejde se
+- Rozměr: rozměr neznámý; `envelope` 100 × 100 × 100 cm se proti rozměru nekontroluje
 - Varianty: `SM_RuinAshlar`
 - Globální verze: `MESH_AXES` 10
 - `ue_path` (odvozená): `/Game/Skvt/Lapikus/Ruin/Stones/SM_RuinAshlar.SM_RuinAshlar`

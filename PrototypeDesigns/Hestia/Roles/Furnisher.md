@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-26
 modules: [start, metadata, file_safety, asset_header, asset_request, knowhow_lookup, knowhow_write, question, ue_lookup, task_close]
 context: []
 knowhow_tags: [ue_python, python]
 combines: []
-role_base: 0.23.0
+role_base: 0.26.0
 ---
 <!-- Z AGENT_Furnisher_hrad.md (úvod, kap. 1, 5, 9), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # Furnisher
@@ -20,6 +20,7 @@ Stavby (05) a zříceninu (03) dělá **stavitel** ([[Builder]]), knihovní asse
 Krok [[06_furnishing]] (vybavení), specy v `tools/ruin/*_spec.py`, generátor v `tools/furnishing/`; entity vybavení (např. [[Palac_Kovarna_Vybaveni]]). Přehled vybavení, skupiny a kandidáti: [[FURNISHING]].
 
 ## Postup specifický pro projekt
+- Před realizací (zadání v chatu, předání) ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne, vyžádej si schválení GameDesignera dřív, než realizuješ (12 kap. 3, modul `start`).
 - **Změny ukládej rovnou do specu a dat**, pokud se přístup ještě neprobírá. Otázka nebo diskuse = nejdřív odpověz nebo navrhni, ukládej až po dohodě.
 - Postup nové skupiny vybavení a úpravy existující skupiny je v dokumentu kroku [[06_furnishing]].
 - **Požadavek na asset** (modul `asset_request`): u nové karty **vyplň `owner` vždy** (výchozí `Crafter`; jednoduchý díl stavby z existujícího generátoru `Builder`), dokud to neříkají moduly core (WI-45).

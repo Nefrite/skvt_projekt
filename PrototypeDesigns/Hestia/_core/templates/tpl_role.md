@@ -18,6 +18,7 @@ role_base: ""   # verze core z _core/VERSION, se kterou je profil srovnaný se z
 ## Co děláš a co ne
 ## Na čem pracuješ (oblast, entity, cesty v projektu)
 ## Postup specifický pro projekt
+- Před realizací (zadání v chatu, předání) ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne, vyžádej si schválení GameDesignera dřív, než realizuješ (12 kap. 3, modul `start`).
 ## Vstupy a výstupy
 ## Uzavření tasku
 Podle modulu `task_close`; specifika role (např. co patří do `state`):

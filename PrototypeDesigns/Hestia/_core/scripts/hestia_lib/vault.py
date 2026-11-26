@@ -130,15 +130,18 @@ class Vault:
         root = Path(root).resolve()
         if not root.is_dir():
             raise UsageError(f"Vault neexistuje: {root}")
-        cfg = config_mod.load(root, core_root)
-        tx = taxonomy_mod.load(core_root / "taxonomy", root / "Maintenance" / "taxonomy_local")
+        from . import profiling
+        with profiling.step("konfigurace a taxonomie", announce=False):
+            cfg = config_mod.load(root, core_root)
+            tx = taxonomy_mod.load(core_root / "taxonomy", root / "Maintenance" / "taxonomy_local")
         origin = work_origin(root)
         if origin is not None:
             register_alias(root, origin)
         # project_root a další cesty z config.yaml jsou relativně k vaultu v projektu (u kopie k originálu)
         project_root = ((origin or root) / str(cfg.get("project_root") or "..")).resolve()
         v = cls(root=root, project_root=project_root, taxonomy=tx, config=cfg, origin=origin, lazy=lazy)
-        v._scan()
+        with profiling.step("průchod vaultu" + (" (líně)" if lazy else " a čtení poznámek"), announce=False):
+            v._scan()
         return v
 
     def _scan(self) -> None:

@@ -5,7 +5,11 @@ Kompilát `Roles/_compiled/<Role>_compiled.md` (přípona kvůli jedinečnosti j
 nesleduje odkazy a modul si při spouštěči nedotáhne.
 
 - Profil: `Roles/<Role>.md`, jinak `_core/agents/<Role>.md` (Curator, Auditor); `type: role`.
-- Bez výčtu rolí: profily v `Roles/` a role core, jejichž kompilát už ve vaultu je (obnova po aktualizaci core).
+- Bez výčtu rolí: profily v `Roles/` a role core, jejichž kompilát už ve vaultu je (obnova po aktualizaci core);
+  `Steward` i bez kompilátu, je-li `steward_active: true` (zadání 0.29, CR-041).
+- Lokální modul s `overrides: <module_id core>` nahradí modul core na jeho místě u všech rolí, které ho dostávají
+  (i přes `modules` profilu a `requires`); kontrakt, dvě náhrady téhož modulu a neznámý modul core = chyba
+  konfigurace (zadání 0.29; 13 kap. 10.23, modul `overrides`).
 - `combines`: složené profily (do hloubky, bez cyklů); při rozporu platí přísnější role (12 kap. 2.2).
 - Moduly: core `_core/agents/modules/`, lokální `Roles/modules/` (kolize `module_id` = chyba konfigurace).
   Do kompilátu jdou **všechny moduly core s režimem `chat` a `compile: all`** (pořadí podle tabulky
@@ -27,6 +31,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 from . import CORE_ROOT, core_version
+from . import overrides as overrides_mod
 from .errors import EXIT_OK, ConfigError, UsageError
 from .fileio import atomic_write, file_hash, read_text, to_posix
 from .frontmatter import FrontmatterError, parse
@@ -78,6 +83,7 @@ class Compiled:
     modules: list[str] = field(default_factory=list)
     skipped: list[str] = field(default_factory=list)
     sources: list[str] = field(default_factory=list)
+    overrides: dict[str, str] = field(default_factory=dict)     # modul core -> lokální náhrada (zadání 0.29)
 
 
 @dataclass
@@ -144,6 +150,9 @@ def default_roles(vault: Vault, core_root: Path = CORE_ROOT) -> list[str]:
         role = p.stem.removesuffix(COMPILED_SUFFIX)
         if (_agents_dir(core_root) / f"{role}.md").is_file():
             roles.add(role)
+    # Steward při steward_active: true i bez kompilátu (zadání 0.29, CR-041)
+    if vault.config.get("steward_active") is True and (_agents_dir(core_root) / "Steward.md").is_file():
+        roles.add("Steward")
     return sorted(roles)
 
 
@@ -259,17 +268,26 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
     contract = _read_part(_agents_dir(core_root) / "CONTRACT.md", "_core/agents/CONTRACT.md")
 
     core_ids = [m.id for m in modules.values() if m.rel.startswith("_core/")]
-    in_profiles = {str(mid) for _n, part in profiles for mid in (part.fm.get("modules") or [])}
+    # lokální náhrady modulů core (zadání 0.29; 13 kap. 10.23): modul core -> lokální modul
+    repl = overrides_mod.check_map(
+        [{"id": m.id, "overrides": str(m.fm["overrides"]).strip(), "rel": m.rel} for m in modules.values()
+         if m.rel.startswith(LOCAL_MODULES + "/") and m.fm.get("overrides") not in (None, "")], set(core_ids))
+    replaced_by = {v: k for k, v in repl.items()}
+
+    def sub(mid: str) -> str:
+        return repl.get(mid, mid)
+
+    in_profiles = {replaced_by.get(str(mid), str(mid)) for _n, part in profiles for mid in (part.fm.get("modules") or [])}
     not_listed = sorted((mid for mid in core_ids if modules[mid].listed and mid not in in_profiles),
                         key=_contract_order(contract.body, core_ids))
-    queue: list[str] = sorted((mid for mid in core_ids if mid not in not_listed),
-                              key=_contract_order(contract.body, core_ids))
+    queue: list[str] = [sub(mid) for mid in sorted((mid for mid in core_ids if mid not in not_listed),
+                                                   key=_contract_order(contract.body, core_ids))]
     for name, part in profiles:
         for mid in part.fm.get("modules") or []:
             mid = str(mid)
             if mid not in modules:
                 raise ConfigError(f"{part.rel}: modul {mid} neexistuje (core ani {LOCAL_MODULES}/)")
-            queue.append(mid)
+            queue.append(sub(mid))
     included: list[str] = []
     skipped: list[str] = []
     seen: set[str] = set()
@@ -290,7 +308,7 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
             for req in m.requires:
                 if req not in modules:
                     raise ConfigError(f"{m.rel}: požadovaný modul {req} neexistuje")
-                queue.append(req)
+                queue.append(sub(req))
 
     drain()
 
@@ -312,6 +330,10 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
                       "Při rozporu mají přednost pravidla přísnější role (zadání 12, kap. 2.2)."]
     if skipped:
         lines += ["", f"Vynechané moduly (jen režim `vault`): {_join(f'`{m}`' for m in skipped)}."]
+    used = {c: l for c, l in repl.items() if l in included or l in skipped}
+    if used:
+        lines += ["", "Lokální náhrady modulů core (registr `Maintenance/local_overrides.md`): "
+                      + _join(f"`{l}` místo `{c}`" for c, l in sorted(used.items())) + "."]
     # modul listed jen pro vault (inbox_import, zadání 0.16) do kompilátu nepatří žádné roli; neuvádí se jako vynechaný
     omitted = [m for m in not_listed if m not in included and "chat" in modules[m].modes]
     if omitted:
@@ -322,7 +344,8 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
 
     lines += ["", "## Kontrakt Hestia (L0)", "", *_clean_body(contract.body)]
     for mid in included:
-        lines += ["", f"## Modul `{mid}` (L1)", "", *_clean_body(modules[mid].body)]
+        label = f"L1, lokální náhrada modulu core `{replaced_by[mid]}`" if mid in replaced_by else "L1"
+        lines += ["", f"## Modul `{mid}` ({label})", "", *_clean_body(modules[mid].body)]
     for idx, (name, part) in enumerate(profiles):
         lines += ["", f"## Role {name} (L2{'' if idx == 0 else ', složená'})", ""]
         context = [str(c) for c in (part.fm.get("context") or [])]
@@ -336,7 +359,8 @@ def compose(vault: Vault, role: str, today: dt.date | None = None, core_root: Pa
         lines.pop()
     text = "\n".join(lines) + "\n"
     return Compiled(role=role, rel=f"{COMPILED_DIR}/{role}{COMPILED_SUFFIX}.md", text=text,
-                    profiles=[n for n, _ in profiles], modules=included, skipped=skipped, sources=sources)
+                    profiles=[n for n, _ in profiles], modules=included, skipped=skipped, sources=sources,
+                    overrides=used)
 
 
 def core_version_of(core_root: Path) -> str:

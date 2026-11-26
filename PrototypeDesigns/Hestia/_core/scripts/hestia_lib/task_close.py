@@ -6,19 +6,25 @@
    v souboru je (datum, role bez ohledu na velikost písmen, entita, text), se znovu nepřidá (zadání 0.18.1, 0.19.1);
    `updated` u změněných poznámek; `--archive-handover` archivuje splněné předání bez otevřených otázek (jinak jen s `--force`).
 3. [R5] `hubs` pro dotčené entity, `doc_index` (jen při změně dokumentů, zadání 0.18.1), `lint` změněných souborů,
-   G11 pro dotčené entity.
+   G11 pro dotčené entity; G5 u změněného těla nahrazeného dokumentu (`superseded`/`archived`) proti `doc_index`
+   před jeho obnovou (zadání 0.29.1, CR-042).
 4. Kontrolní seznam toho, co skript neudělá, ale nesmí se zapomenout.
 Dry-run vypíše diff a výsledky kontrol; `--apply` zapíše (změny, pak huby nad novým stavem).
 Návratový kód 1, když lint najde chybu ve změněných souborech (task není hotový, 13 kap. 3); upozornění 0.
 
-Výkon (zadání 0.28, CR-033; 13 kap. 10.21): vault se načítá líně; entity a změny se odvodí jen z dotčených
-souborů (existence entity = její hub), po zápisu se vault čte jednou pro huby, `doc_index` i kontroly. Po každém
-kroku (`writes`, `hubs`, `doc_index`, `checks`) se hlídá `task_close_seconds` (výchozí 150): po překročení
-příkaz skončí s výpisem nedokončených kroků a uloží `Maintenance/task_close_resume.json`; `task_close --resume`
-je dokončí. Každý krok se zapíše celý (sada změn), nic napůl.
+Výkon (zadání 0.28, CR-033; 13 kap. 10.21, 10.22): vault se načítá líně; entity a změny se odvodí jen z dotčených
+souborů (existence entity = její hub), po zápisu se vault čte jednou pro huby, `doc_index` i kontroly.
+`task_close_seconds` (výchozí 150) se hlídá po každém kroku (`writes`, `hubs`, `doc_index`, `checks`) a uvnitř
+kroků nad soubory po každém souboru (`writes`: `updated` dotčených poznámek; `checks`: lint souboru; zadání 0.29).
+Po překročení příkaz skončí s výpisem nedokončených kroků a uloží `Maintenance/task_close_resume.json`
+(i rozpracovaný krok: nezapsané poznámky, zkontrolované soubory a jejich nálezy); `task_close --resume`
+pokračuje prvním nezpracovaným souborem. Soubor se zapíše vždy celý; `doc_index` a `hubs` se nepřerušují.
+Každý běh udělá aspoň jednu jednotku práce, takže `--resume` postupuje i při malém limitu. Začátek a konec
+kroku se hned vypíše na stderr (modul `profiling`).
 """
 from __future__ import annotations
 
+import datetime as _dt
 import json
 import re
 import time
@@ -27,11 +33,12 @@ from pathlib import Path
 from . import asset_index as ai
 from . import doc_index
 from . import gitinfo
+from . import profiling
 from .audit import Auditor, load_state
 from .blocks import strip_generated
 from .changeset import ChangeSet
 from .errors import EXIT_FINDINGS, EXIT_OK, UsageError
-from .findings import has_errors, sort_findings, to_text
+from .findings import Finding, has_errors, sort_findings, to_text
 from .frontmatter import set_field
 from .fileio import to_posix
 from .hubs import Hubs
@@ -188,12 +195,30 @@ class TaskClose:
         return format_line([self.day.isoformat(), self.args.role, name, "předání archivováno", self.args.source])
 
     # ------------------------------------------------------------ 3. a 4. kontroly
+    @staticmethod
+    def lint_items(vault: Vault, notes, code) -> list[str]:
+        """Soubory kroku `checks` v pevném pořadí (klíč `note:<rel>` / `code:<cesta>`) pro limit po souboru
+        a `--resume` od prvního nezpracovaného (zadání 0.29, CR-033)."""
+        rels = sorted({n.rel for n in notes if n.rel in vault.notes and not n.rel.startswith(LINT_EXCLUDE_PREFIXES)})
+        return [f"note:{r}" for r in rels] + [f"code:{p}" for p in code]
+
+    @staticmethod
+    def lint_one(vault: Vault, key: str) -> list[Finding]:
+        kind, x = key.split(":", 1)
+        if kind == "note":
+            return run_checks(vault, [vault.notes[x]]) if x in vault.notes else []
+        return header_findings(vault, [Path(x)])
+
     def checks(self, vault: Vault, notes, code, entities: list[str], changes_text: str | None,
                model: Model | None = None):
+        """Lint všech dotčených souborů a G11 s kontrolním seznamem (celý krok najednou)."""
+        lint_f = sort_findings([f for k in self.lint_items(vault, notes, code) for f in self.lint_one(vault, k)])
+        return lint_f, self.after_checks(vault, notes, code, entities, changes_text, model)
+
+    def after_checks(self, vault: Vault, notes, code, entities: list[str], changes_text: str | None,
+                     model: Model | None = None):
+        """G11 dotčených entit a kontrolní seznam (po lintu všech souborů)."""
         model = model or Model(vault)
-        rels = {n.rel for n in notes}
-        fresh = [vault.notes[r] for r in rels if r in vault.notes and not r.startswith(LINT_EXCLUDE_PREFIXES)]
-        lint_f = sort_findings((run_checks(vault, fresh) if fresh else []) + header_findings(vault, code))
         aud = Auditor(vault, self.day, model)
         aud.g11((ai.load_json(vault) or {}).get("files") or [], load_state(vault), changes_text)
         ent = set(entities)
@@ -234,8 +259,7 @@ class TaskClose:
                 m = QUESTION_RE.match(line)
                 if m:
                     self.checklist.append(f"nová otevřená otázka v {n.name}: {m.group(1).strip()}")
-        return lint_f, g11
-
+        return g11
 
 def limit_seconds(vault: Vault) -> float:
     v = vault.config.get("task_close_seconds")
@@ -287,19 +311,61 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     lines = tc.plan_writes(cs, notes, entities)
     diff = cs.diff()
     changes_text = cs.current(vault.root / CHANGES_REL)
-    state = {"version": 1, "day": tc.day.isoformat(), "args": _args_state(args), "entities": entities,
+    state = {"version": 2, "day": tc.day.isoformat(), "args": _args_state(args), "entities": entities,
              "notes": [n.rel for n in notes], "code": [str(p) for p in code], "lines": lines,
              "skipped": tc.skipped, "writes": cs.summary(), "done": ["writes"], "remaining": STEPS[1:],
-             "hubs": [], "doc_index": False}
+             "hubs": [], "doc_index": False,
+             # G5 nahrazeného dokumentu proti indexu před obnovou (zadání 0.29.1, CR-042)
+             "replaced": [f.as_dict() for f in doc_index.replaced_body_changes(vault, notes)],
+             "writes_pending": [], "checks_done": [], "checks_findings": []}
     old = load_resume(vault)
     if old and old.get("remaining"):
         tc.warnings.append(f"nedokončený běh z {old.get('day')} ({', '.join(old['remaining'])}): "
                            "dokonči ho task_close --resume; tento běh ho přepíše, jen když sám nedoběhne")
     if args.apply:
-        cs.apply()
+        with profiling.step("writes"):
+            pending = apply_writes(cs, vault, notes, lambda: time.monotonic() - start > limit)
+        if pending:                                    # limit uvnitř kroku writes (zadání 0.29, CR-033)
+            state["writes_pending"] = pending
+            state["done"], state["remaining"] = [], list(STEPS)
         vault = Vault.load(vault.root, lazy=True)      # po zápisu se vault čte jednou (zadání 0.28)
         notes = [vault.notes[r] for r in state["notes"] if r in vault.notes]
-    return finish(args, vault, tc, notes, code, state, start, limit, diff, changes_text)
+    return finish(args, vault, tc, notes, code, state, start, limit, diff, changes_text, worked=True)
+
+
+def apply_writes(cs: ChangeSet, vault: Vault, notes, is_over) -> list[str]:
+    """Zápisy kroku `writes` po souborech (zadání 0.29, CR-033): přesuny, `changes.md` a archivovaná předání
+    najednou, pak `updated` dotčených poznámek po jedné; po každé se hlídá limit. Vrátí nezapsané poznámky
+    (cesty od kořene vaultu) pro `--resume`."""
+    note_paths = {Path(n.path).resolve(): n.rel for n in notes}
+    cs.apply_moves()
+    first = [p for p in sorted(cs.edits) if p not in note_paths]
+    rest = [p for p in sorted(cs.edits) if p in note_paths]
+    for p in first:
+        cs.apply_edit(p)
+    for i, p in enumerate(rest):
+        cs.apply_edit(p)
+        if i + 1 < len(rest) and is_over():
+            return [note_paths[x] for x in rest[i + 1:]]
+    return []
+
+
+def resume_writes(vault: Vault, state: dict, is_over) -> bool:
+    """Dokončí `updated` poznámek, které přerušený krok `writes` nezapsal; True = krok hotový."""
+    from .fileio import atomic_write, file_hash, read_text
+    pending = state.get("writes_pending") or []
+    while pending:
+        rel = pending[0]
+        p = vault.root / rel
+        if p.is_file():
+            text = read_text(p)
+            new = set_field(text, "updated", _dt.date.fromisoformat(state["day"]), section="orchestration")
+            if new != text:
+                atomic_write(p, new, expected_hash=file_hash(p))
+        pending.pop(0)
+        if pending and is_over():
+            return False
+    return True
 
 
 def resume(args, vault: Vault, start: float, limit: float) -> tuple[int, dict, str]:
@@ -321,38 +387,73 @@ def resume(args, vault: Vault, start: float, limit: float) -> tuple[int, dict, s
 
 
 def finish(args, vault: Vault, tc: TaskClose, notes, code, state: dict, start: float, limit: float,
-           diff: str, changes_text: str | None) -> tuple[int, dict, str]:
+           diff: str, changes_text: str | None, worked: bool = False) -> tuple[int, dict, str]:
+    """Kroky `hubs`, `doc_index`, `checks` (a dokončení přerušeného `writes`). Limit `task_close_seconds` se hlídá
+    mezi kroky a uvnitř kroků nad soubory (`writes`, `checks`) po každém souboru; běh vždy udělá aspoň jednu
+    jednotku práce, aby `--resume` postupoval i při malém limitu (zadání 0.29, CR-033)."""
     entities = state["entities"]
     lint_f, g11 = [], []
     model = None
     over = False
+    interrupted = None                                 # krok přerušený uprostřed (writes, checks)
+
+    def is_over() -> bool:
+        return time.monotonic() - start > limit
+
     for step in list(state["remaining"]):
-        if time.monotonic() - start > limit:           # krok se nezačne po překročení limitu (zadání 0.28)
+        if worked and is_over():                       # krok se nezačne po překročení limitu (zadání 0.28)
             over = True
             break
-        if step == "hubs":
-            model = Model(vault)
-            hcs = ChangeSet(vault.project_root)
-            hres = Hubs(vault, model).plan(hcs, [e for e in entities if e in model.entities])
-            state["hubs"] = hres.changed
-            if args.apply:
-                hcs.apply()
-                if not hcs.empty:
-                    vault.refresh(list(hcs.edits))
-                    model = None
-        elif step == "doc_index":
-            # doc_index nad novým stavem: zapíše se jen při novém, změněném nebo přejmenovaném dokumentu
-            # (zadání 0.18.1); dry-run: odhad ze současného stavu, `updated` se projeví až při --apply
-            model = model or Model(vault)
-            dcs = ChangeSet(vault.project_root)
-            state["doc_index"] = doc_index.plan(vault, dcs, model)
-            if args.apply:
-                dcs.apply()
-        elif step == "checks":
-            model = model or Model(vault)
-            lint_f, g11 = tc.checks(vault, notes, code, entities, None if args.apply else changes_text, model)
+        with profiling.step(step):
+            if step == "writes":                       # jen --resume přerušeného kroku writes
+                if not resume_writes(vault, state, is_over):
+                    over, interrupted = True, step
+                worked = True
+            elif step == "hubs":
+                model = Model(vault)
+                hcs = ChangeSet(vault.project_root)
+                hres = Hubs(vault, model).plan(hcs, [e for e in entities if e in model.entities])
+                state["hubs"] = hres.changed
+                if args.apply:
+                    hcs.apply()
+                    if not hcs.empty:
+                        vault.refresh(list(hcs.edits))
+                        model = None
+                worked = True
+            elif step == "doc_index":
+                # doc_index nad novým stavem: zapíše se jen při novém, změněném nebo přejmenovaném dokumentu
+                # (zadání 0.18.1); dry-run: odhad ze současného stavu, `updated` se projeví až při --apply
+                model = model or Model(vault)
+                dcs = ChangeSet(vault.project_root)
+                state["doc_index"] = doc_index.plan(vault, dcs, model)
+                if args.apply:
+                    dcs.apply()
+                worked = True
+            elif step == "checks":                     # lint po souborech, pak G11 a kontrolní seznam
+                done = state.setdefault("checks_done", [])
+                found = state.setdefault("checks_findings", [])
+                for key in tc.lint_items(vault, notes, code):
+                    if key in done:
+                        continue
+                    if worked and is_over():
+                        over, interrupted = True, step
+                        break
+                    found += [f.as_dict() for f in tc.lint_one(vault, key)]
+                    done.append(key)
+                    worked = True
+                if not over:
+                    model = model or Model(vault)
+                    g11 = tc.after_checks(vault, notes, code, entities, None if args.apply else changes_text, model)
+                    lint_f = sort_findings([Finding(**d) for d in found]
+                                           + [Finding(**d) for d in state.get("replaced") or []])
+        if over:
+            break
         state["done"].append(step)
         state["remaining"].remove(step)
+    if over and interrupted is None and state["remaining"]:     # rozpracovaný krok z dřívějšího běhu
+        first = state["remaining"][0]
+        if (first == "writes" and state.get("writes_pending")) or (first == "checks" and state.get("checks_done")):
+            interrupted = first
     if args.apply and (over or state.get("resume_saved")):
         state["resume_saved"] = True
         save_resume(vault, state)                      # i dokončený běh: remaining [] (soubor se nemaže)
@@ -362,7 +463,9 @@ def finish(args, vault: Vault, tc: TaskClose, notes, code, state: dict, start: f
                "writes": state["writes"], "hubs": state["hubs"], "doc_index": state["doc_index"],
                "lint": [f.as_dict() for f in lint_f],
                "g11": [f.as_dict() for f in g11], "checklist": tc.checklist, "warnings": tc.warnings,
-               "done": state["done"], "remaining": state["remaining"]}
+               "done": state["done"], "remaining": state["remaining"], "interrupted": interrupted,
+               "writes_pending": list(state.get("writes_pending") or []),
+               "checks_done": len(state.get("checks_done") or [])}
     out = [f"task_close: dotčené entity: {', '.join(entities) or '–'}"]
     if getattr(args, "resume", False):
         out.append(f"Dokončení přerušeného běhu ({state.get('day')}): kroky {', '.join(s for s in STEPS if s in state['done'] and s != 'writes')}")
@@ -386,7 +489,14 @@ def finish(args, vault: Vault, tc: TaskClose, notes, code, state: dict, start: f
         out += [f"  - [ ] {c}" for c in tc.checklist] or ["  – nic"]
     out += [f"Upozornění: {w}" for w in tc.warnings]
     if over:
-        out.append(f"Limit task_close_seconds ({limit:g} s) překročen; nedokončené kroky: {', '.join(state['remaining'])}. "
+        part = ""
+        if interrupted == "writes":
+            part = f" Krok writes přerušen uvnitř: nezapsáno {len(state.get('writes_pending') or [])} souborů."
+        elif interrupted == "checks":
+            part = (f" Krok checks přerušen uvnitř: zkontrolováno {len(state.get('checks_done') or [])} "
+                    f"z {len(tc.lint_items(vault, notes, code))} souborů.")
+        out.append(f"Limit task_close_seconds ({limit:g} s) překročen; nedokončené kroky: {', '.join(state['remaining'])}."
+                   + part + " "
                    + ("Dokonči: python _core/scripts/hestia.py task_close --resume" if args.apply
                       else "Spusť s --apply (zápisy jsou celé) a pak task_close --resume."))
         return EXIT_OK, payload, "\n".join(out)

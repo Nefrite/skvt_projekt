@@ -5,7 +5,7 @@ trigger: týdenní běh, pokyn ke kontrole zdraví
 requires: []
 modes: [vault]
 validity: valid
-updated: 2026-11-24
+updated: 2026-11-26
 compile: listed
 ---
 # Zdraví instance (Steward)
@@ -14,10 +14,11 @@ compile: listed
 Týdenní běh (`weekly`, naplánovaná úloha nebo pokyn), nebo GameDesigner chce vědět, v jakém stavu je instance.
 
 ## Postup
-1. `weekly --apply` (vault na připojené složce s `--work-copy`), nebo přečti výsledek naplánované úlohy `Maintenance/reports/weekly_RRRR-MM-DD.md`. Samotná kontrola: `health` (s `--apply` report `health_…`).
-2. U každé sekce `pozor` (prostředí, verze core, kompiláty, ruční úkoly, podněty, outbox, Unreal) vylož, co nález znamená, a navrhni krok z reportu.
-3. Nálezy auditu: počty proti minulému týdnu; chyby G6, G7 a upozornění předej rolím, které je vlastní (úkol ve frontě `code: role:<Role>`), obsah sám neopravuj.
-4. Hlášení GameDesignerovi: co je v pořádku, co čeká, doporučené kroky; zásah až po schválení.
+1. `weekly --apply` (vault na připojené složce s `--work-copy`; nestihne-li volání limit, po fázích `--work-phase copy`, `run`, `back` se stejným adresářem), nebo přečti výsledek naplánované úlohy `Maintenance/reports/weekly_RRRR-MM-DD.md`. Samotná kontrola: `health` (s `--apply` report `health_…`). Pomalý běh změř s `--profile` (tabulka kroků do výstupu a reportu).
+2. U každé sekce `pozor` (prostředí, verze core, kompiláty, ruční úkoly, podněty, outbox, Unreal, lokální odchylky) vylož, co nález znamená, a navrhni krok z reportu.
+3. **Lokální odchylky:** G6 náhrad (lokální modul s `overrides` bez platného záznamu `aktivní`/`konflikt` v `Maintenance/local_overrides.md`, i se záznamem `zrušená`; platný záznam bez modulu, `overrides` na modul, který core nemá) srovnej s GameDesignerem: chybějící záznam doplň, zrušenou náhradu přesuň do `_to_delete/` po schválení. Konflikty po aktualizaci core (stav `konflikt`) připomeň GameDesignerovi k rozhodnutí.
+4. Nálezy auditu: počty proti minulému týdnu; chyby G6, G7 a upozornění předej rolím, které je vlastní (úkol ve frontě `code: role:<Role>`), obsah sám neopravuj.
+5. Hlášení GameDesignerovi: co je v pořádku, co čeká, doporučené kroky; zásah až po schválení.
 
 ## Výstup
 Reporty `weekly_…` a `health_…`, hlášení GameDesignerovi, případně úkoly pro role ve frontě.

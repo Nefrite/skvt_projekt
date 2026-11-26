@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-26
 modules: [start, question, decision, idea_capture, handover_out, asset_request, task_close, design_template]
 context: ["[[Lore_Lapikus]]", "[[Pravidla_zabydleni]]", "[[Materialy_a_upravy_dreva]]", "[[Pohyb_postavy_a_herni_mista]]"]
 knowhow_tags: []
 combines: []
-role_base: 0.23.0
+role_base: 0.26.0
 ---
 <!-- Z AGENT_GameDesign_hrad.md (úvod, kap. 1, 5, 8), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # GameDesign

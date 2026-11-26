@@ -23,6 +23,9 @@
 - `--work-copy [<adresář>]` (zadání 0.22, CR-023): s `--apply` přechod v lokální pracovní kopii vaultu
   a zápis zpět bez mazání (modul `workcopy`); `--work-phase copy|run|back`, `--keep-work-copy`. I s `--after-only`
   (zadání 0.22.1): kroky po aktualizaci v kopii, kontrola originálu, zápis zpět.
+- Lokální odchylky (zadání 0.29; 13 kap. 10.23, modul `overrides`): výpis náhrad modulů core, které nová verze
+  mění (s rozdílem modulu core) nebo už nemá; `--apply` se zastaví před zápisem (kód 1), jen když nahrazovaný
+  modul v nové verzi chybí.
 - `--with-views` (13 kap. 10.9): nakopíruje do `Dashboard/views/` chybějící pohledy z `vault_template` nového
   core (`bases/*.base`, `dataview/dv_*.md`), existující nepřepíše; funguje i bez změny verze core.
 """
@@ -42,7 +45,8 @@ from io import BytesIO
 from pathlib import Path
 
 from . import gitinfo
-from .errors import EXIT_OK, UsageError
+from . import overrides as overrides_mod
+from .errors import EXIT_FINDINGS, EXIT_OK, UsageError
 from .fileio import atomic_write, file_hash, read_text, to_posix
 from .logs import append_lines, format_line
 from .taxonomy import KEYED_FILES, load_yaml
@@ -322,11 +326,17 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
 def run_after_subprocess(vault: Vault, old_v: str, quiet: bool = False) -> tuple[int, dict | None, str]:
     """Kroky po aktualizaci novým core (13 kap. 10.6): podproces _core/scripts/hestia.py --after-only.
     Průběh (stderr podprocesu) se předává hned dál (zadání 0.15.3); JSON výsledku jde přes dočasný soubor."""
-    env = dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1")
-    cmd = [sys.executable, "-I", str(vault.root / "_core" / "scripts" / "hestia.py"), "update_core",
-           "--vault", str(vault.root), "--after-only", "--since", old_v, "--apply", "--json"]
-    if quiet:
-        cmd.append("--quiet")
+    from . import profiling                       # --profile zdědí podproces, tabulka vnořeně (zadání 0.29.2)
+    with profiling.child("kroky po aktualizaci (nový core)",
+                         dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1")) as (env, extra):
+        cmd = [sys.executable, "-I", str(vault.root / "_core" / "scripts" / "hestia.py"), "update_core",
+               "--vault", str(vault.root), "--after-only", "--since", old_v, "--apply", "--json", *extra]
+        if quiet:
+            cmd.append("--quiet")
+        return _after_proc(cmd, env)
+
+
+def _after_proc(cmd: list[str], env: dict) -> tuple[int, dict | None, str]:
     err_lines: list[str] = []
     with tempfile.TemporaryFile(mode="w+", encoding="utf-8") as out:
         proc = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE, text=True, encoding="utf-8", env=env)
@@ -381,6 +391,20 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
     if dirty:
         warnings.append(f"projekt má {len(dirty)} necommitnutých změn; před --apply commitni (11 kap. 6, krok 2)")
     unchanged = not (added or removed or modified) and new_v == old_v
+
+    # lokální náhrady modulů core, které nová verze mění nebo už nemá (zadání 0.29, 13 kap. 10.23)
+    ovr = [] if unchanged else overrides_mod.core_changes(vault.root, cur_core if cur_core.is_dir() else None,
+                                                          new_core)
+    missing_ovr = [o for o in ovr if o["change"] == "missing"]
+    if args.apply and missing_ovr:
+        lines = [f"update_core: {old_v} -> {new_v} se nezapsal: lokální náhrada nahrazuje modul core, který "
+                 "v nové verzi chybí (přejmenovaný nebo odebraný); nic se nezměnilo"]
+        lines += overrides_mod.change_lines(ovr)
+        lines.append("Steward: roztřiď náhradu s GameDesignerem (nový modul core, zrušení náhrady, nebo jiný "
+                     "modul v overrides), oprav registr Maintenance/local_overrides.md a spusť update_core znovu.")
+        payload = {"command": "update_core", "applied": False, "from": old_v, "to": new_v, "source": tag or None,
+                   "local_overrides": ovr, "stopped": "local_overrides"}
+        return EXIT_FINDINGS, payload, "\n".join(lines)
 
     day = today()
     applied = False
@@ -475,7 +499,7 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
                "taxonomy_local_in_core": [{"file": f, "key": k, "value": v} for f, k, v in overlaps],
                "migrations": migr_out, "stale_compiled": stale, "warnings": warnings, "views": view_rels,
                "resumed": resumed, "snippets": [{"action": a, "file": n} for a, n in snippets],
-               "unfinished": pending}
+               "unfinished": pending, "local_overrides": ovr}
     if unchanged:
         lines = [f"update_core: core {old_v} je aktuální, beze změny"]
     else:
@@ -493,6 +517,7 @@ def _run(args, vault: Vault, new_core: Path, tag: str) -> tuple[int, dict, str]:
             lines += upgrade_mod.plan_lines(upl)
         if applied and no_after:
             lines.append("Kroky po aktualizaci přeskočeny (--no-after); doběhnou s update_core --after-only --apply.")
+    lines += overrides_mod.change_lines(ovr)
     if overlaps:
         lines.append("Hodnoty taxonomy_local, které jsou v novém core: "
                      + ", ".join(f"{f} {v}" for f, _k, v in overlaps)

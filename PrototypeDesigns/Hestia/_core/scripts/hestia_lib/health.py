@@ -12,8 +12,10 @@ Sekce, každá se stavem `ok` / `pozor` a doporučeným krokem:
 - `podnety`: otevřené podněty `proposal` s `code: hestia` ve frontě, které nepřevedl `feedback_log`;
 - `outbox`: záznamy `structure_log.md` bez vyplněné buňky `cr` (čekají na `export_cr`) a soubory
   v `Maintenance/outbox/` mimo `sent/` (čekají na odeslání), se stářím;
-- `unreal`: stáří reportů z Unrealu (`ue_<entita>.json`, `ue_assets.json`) proti `ue_report_days`.
-Lokální odchylky přijdou ve druhé verzi role (podklad `steward` kap. 5).
+- `unreal`: stáří reportů z Unrealu (`ue_<entita>.json`, `ue_assets.json`) proti `ue_report_days`;
+- `odchylky` (druhá verze role, zadání 0.29; 13 kap. 10.23): počet aktivních náhrad modulů core a konfliktů
+  z registru `Maintenance/local_overrides.md`, nesoulad registru a `Roles/modules/` (G6); report má pod sekcí
+  tabulku `| id | modul core | důvod | CR | stav |` pro oddíl *Lokální odchylky* hlášení pro HearthLore (07 kap. 21).
 """
 from __future__ import annotations
 
@@ -44,9 +46,11 @@ class Section:
     status: str = OK
     lines: list[str] = field(default_factory=list)
     step: str = ""                       # doporučený krok (u pozor)
+    table: list[str] = field(default_factory=list)      # tabulka pod sekcí v reportu (lokální odchylky)
 
     def as_dict(self) -> dict:
-        return {"id": self.id, "title": self.title, "status": self.status, "lines": self.lines, "step": self.step}
+        return {"id": self.id, "title": self.title, "status": self.status, "lines": self.lines, "step": self.step,
+                "table": self.table}
 
 
 def _vt(v: str) -> tuple[int, ...]:
@@ -210,10 +214,28 @@ def section_unreal(vault: Vault, day: _dt.date) -> Section:
     return s
 
 
+def section_overrides(vault: Vault) -> Section:
+    """Lokální náhrady modulů core (zadání 0.29; 13 kap. 10.23)."""
+    from . import CORE_ROOT, overrides
+    s = Section("odchylky", "Lokální odchylky (náhrady modulů core)")
+    c = overrides.counts(vault.root)
+    probs = overrides.problems(vault.root, CORE_ROOT)
+    s.lines = [f"aktivní {c['active']}, konflikt {c['conflict']}; lokálních modulů s overrides {c['local']}"
+               + ("" if c["registry"] else f" (registr {overrides.REGISTRY_REL} chybí)")]
+    s.lines += [f"G6 {target}: {msg}" for target, msg in ((t, m) for t, _r, m in probs)]
+    s.table = overrides.report_table(vault.root)
+    if probs:
+        s.status, s.step = ATTN, f"srovnej Roles/modules/ a {overrides.REGISTRY_REL} (G6, lint)"
+    elif c["conflict"]:
+        s.status, s.step = ATTN, "konflikt náhrady po aktualizaci core: rozhodne GameDesigner (modul core_update)"
+    return s
+
+
 def check(vault: Vault, day: _dt.date | None = None) -> list[Section]:
     day = day or today()
     return [section_env(vault), section_version(vault), section_compiled(vault), section_manual(vault, day),
-            section_proposals(vault), section_outbox(vault, day), section_unreal(vault, day)]
+            section_proposals(vault), section_outbox(vault, day), section_unreal(vault, day),
+            section_overrides(vault)]
 
 
 def report_rel(day: _dt.date) -> str:
@@ -230,6 +252,8 @@ def render(vault: Vault, sections: list[Section], day: _dt.date) -> str:
     lines += [f"| {s.title} | {s.status} | {s.step or '–'} |" for s in sections]
     for s in sections:
         lines += ["", f"## {s.title}", ""] + [f"- {x}" for x in s.lines]
+        if s.table:
+            lines += [""] + s.table
     return "\n".join(lines) + "\n"
 
 

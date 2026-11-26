@@ -24,7 +24,7 @@ ue_pivot_far_cm: 500               # kořen actoru dál od středu geometrie = s
 queue_task_days: 14                # úkol pro roli (code: role:<Role>) otevřený déle = G5 (13 kap. 10.17; zadání 0.24)
 asset_default_owner: Crafter       # komu agenda ukáže karty requested bez owner (13 kap. 10.18; zadání 0.25)
 steward_active: false              # Steward vlastní export_cr a weekly; false = náhradník Curator (13 kap. 10.20; zadání 0.28)
-hestia_python: null                # cesta k interpretu Python ≥ 3.11 pro příkazy core; prázdné = hledá doctor (13 kap. 10.15)
+hestia_python: null                # cesta k interpretu Python ≥ 3.11 pro příkazy core (~ a $PROMĚNNÉ se rozvedou, přednost má HESTIA_PYTHON); prázdné = hledá doctor (13 kap. 10.15, 10.22)
 asset_request_days: 30             # karta requested bez převzetí déle = G15, informace (13 kap. 10.18)
 asset_envelope_tolerance_cm: 0.5   # skutečný rozměr větší než envelope o víc = G15 (13 kap. 10.18)
 doc_summary_chars: 6000            # nad prahem čtení po sekcích a povinný Souhrn (G14a, 13 kap. 10.13; zadání 0.21)

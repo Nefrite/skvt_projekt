@@ -105,6 +105,12 @@ class ChangeSet:
 
     # ------------------------------------------------------------ zápis
     def apply(self) -> None:
+        self.apply_moves()
+        for p in sorted(self.edits):
+            self.apply_edit(p)
+
+    def apply_moves(self) -> None:
+        """Přesuny (před úpravami; po částech pro zápis po souborech, `task_close`, zadání 0.29)."""
         for src, dst, h in self.moves:
             if not src.is_file() or file_hash(src) != h:
                 raise WriteConflict(f"Soubor se od načtení změnil, přesun odmítnut: {to_posix(src)}")
@@ -112,5 +118,7 @@ class ChangeSet:
                 raise WriteConflict(f"Cíl přesunu už existuje, nepřepisuji: {to_posix(dst)}")
             dst.parent.mkdir(parents=True, exist_ok=True)
             os.rename(src, dst)
-        for p, e in sorted(self.edits.items()):
-            atomic_write(p, e.new, expected_hash=e.old_hash)
+
+    def apply_edit(self, path: Path) -> None:
+        e = self.edits[Path(path)]
+        atomic_write(e.path, e.new, expected_hash=e.old_hash)

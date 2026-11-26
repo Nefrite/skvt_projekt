@@ -39,7 +39,7 @@ Ručně (doplněk k bloku: zdroj bez rozměru, rozměr z OBJ k 2026-11-23):
 <!-- hestia:generated:start -->
 
 <!-- hestia:asset_code -->
-- Rozměr (skutečný): –; `envelope` 102 × 45 × 30 cm: vejde se
+- Rozměr: rozměr neznámý; `envelope` 102 × 45 × 30 cm se proti rozměru nekontroluje
 - Varianty: `SM_RuinStone_W_R12_A`, `SM_RuinStone_W_R12_B`, `SM_RuinStone_W_R12_C`, `SM_RuinStone_W_R18_A`, `SM_RuinStone_W_R18_B`, `SM_RuinStone_W_R18_C`, `SM_RuinStone_W_R26_A`, `SM_RuinStone_W_R26_B`, `SM_RuinStone_W_R26_C`, `SM_RuinStone_W_R34_A`, `SM_RuinStone_W_R34_B`, `SM_RuinStone_W_R34_C`
 - Verze: 2 (prefix `SM_RuinStone_W_`, `RuinStoneVersion`)
 - Globální verze: `MESH_AXES` 10

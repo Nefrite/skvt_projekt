@@ -22,6 +22,7 @@
 """
 from __future__ import annotations
 
+import datetime as _dt
 import json
 import os
 import re
@@ -208,14 +209,16 @@ def last_upgrade_from(vault: Vault, current: str) -> str | None:
 
 
 def _run_cli(core: Path, vault: Vault, *args: str) -> subprocess.CompletedProcess:
-    env = dict(os.environ, PYTHONIOENCODING="utf-8")
-    return subprocess.run([sys.executable, "-I", str(core / "scripts" / "hestia.py"), *args,
-                           "--vault", str(vault.root), "--json"],
-                          capture_output=True, text=True, encoding="utf-8", env=env)
+    from . import profiling                       # --profile zdědí podproces, tabulka vnořeně (zadání 0.29.2)
+    with profiling.child(args[0] if args else "hestia", dict(os.environ, PYTHONIOENCODING="utf-8")) as (env, extra):
+        return subprocess.run([sys.executable, "-I", str(core / "scripts" / "hestia.py"), *args,
+                               "--vault", str(vault.root), "--json", *extra],
+                              capture_output=True, text=True, encoding="utf-8", env=env)
 
 
 def _tail(r: subprocess.CompletedProcess) -> str:
-    lines = [l for l in (r.stderr or "").splitlines() if l.strip()] or \
+    from .profiling import without_progress
+    lines = [l for l in without_progress(r.stderr or "").splitlines() if l.strip()] or \
             [l for l in (r.stdout or "").splitlines() if l.strip()]
     return lines[-1].strip() if lines else f"návratový kód {r.returncode}"
 
@@ -391,9 +394,14 @@ def section_md(old: str | None, new: str, state: str, swap: str | None, pl: Plan
     lines.append(f"- Záznamy manifestu: {', '.join(pl.versions) or '–'}.")
     lines += ["", "### Automatické kroky"]
     done = {s["step"] for s in steps}
-    for s in steps:
-        lines.append(f"- `{s['step']}`: {'v pořádku' if s['ok'] else 'selhal: ' + s['message']}")
+    for s in steps:                    # i výsledky dřívějších běhů téhož přechodu (zadání 0.29, CR-041)
+        when = f" (běh {s['run']}, {s['time']})" if s.get("run") else ""
+        lines.append(f"- `{s['step']}`: {'v pořádku' if s['ok'] else 'selhal: ' + s['message']}{when}")
         lines += [f"  - {d}" for d in s.get("details") or []]
+    composed = [s for s in steps if s["step"] == "compose_role" and s.get("ok") and "changed" in s]
+    if composed:                       # kompiláty changed sečtené přes běhy (CR-041)
+        total = sorted({c for s in composed for c in s.get("changed") or []})
+        lines.append("- Kompiláty changed ve všech bězích (nahrát do Claude Projectu): " + (", ".join(total) or "žádný"))
     if remaining:
         lines.append(f"- Zbývá: {', '.join(remaining)} (doběhne `update_core --after-only --apply`).")
     else:
@@ -418,7 +426,32 @@ def section_md(old: str | None, new: str, state: str, swap: str | None, pl: Plan
         lines += instr
     lines += ["", "### CR k ověření", *([f"- {c} (ověřit v instanci, do *Průběhu* `in_pilot`)" for c in pl.crs]
                                         or ["_Žádné._"])]
+    runs = [s for s in steps if s.get("run")]
+    if runs:                           # stav běhů pro sloučení při opakované fázi (zadání 0.29, CR-041)
+        lines += ["", RUNS_MARK + " " + json.dumps({"run": max(s["run"] for s in runs), "steps": steps},
+                                                  ensure_ascii=False) + " -->"]
     return "\n".join(lines) + "\n"
+
+
+RUNS_MARK = "<!-- hestia:runs"
+_RUNS_RE = re.compile(r"^<!-- hestia:runs (\{.*\}) -->$", re.M)
+
+
+def previous_runs(vault: Vault, day: str, heading: str) -> dict | None:
+    """Běhy kroků po aktualizaci uložené v oddílu přechodu reportu dne (zadání 0.29, CR-041); None = žádné."""
+    p = report_path(vault, day)
+    if not p.is_file():
+        return None
+    text = read_text(p).replace("\r\n", "\n")
+    found = list(re.finditer(rf"^{re.escape(heading)}\n.*?(?=^## |\Z)", text, re.M | re.S))
+    if not found:
+        return None
+    m = _RUNS_RE.search(found[-1].group(0))
+    try:
+        data = json.loads(m.group(1)) if m else None
+    except ValueError:
+        return None
+    return data if isinstance(data, dict) and isinstance(data.get("steps"), list) else None
 
 
 def write_section(vault: Vault, day: str, text: str) -> Path:
@@ -511,12 +544,17 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
 
     swap = (find_trash(vault, since) or "") if since else None
     steps, remaining = [], []
+    # opakovaná fáze téhož přechodu: výsledky dřívějších běhů zůstanou v reportu (zadání 0.29, CR-041)
+    prev = previous_runs(vault, rep_day, section_heading(since, current))
+    prev_steps = list(prev["steps"]) if prev else []
+    run_no = int(prev.get("run") or 0) + 1 if prev else 1
+    started = _dt.datetime.now().strftime("%H:%M")
     roles = roles_info(vault, core, swap, pl)
     instr = instruction_lines(vault, vault.root / swap if swap else None, core) if swap is not None else None
 
     def save(state: str, checks: dict | None = None, tasks: tuple | None = None) -> Path:
-        return write_section(vault, rep_day, section_md(since, current, state, swap, pl, steps, remaining,
-                                                        checks, tasks, roles, instr))
+        return write_section(vault, rep_day, section_md(since, current, state, swap, pl, prev_steps + steps,
+                                                        remaining, checks, tasks, roles, instr))
 
     save("kroky probíhají")
     for s in pl.after:
@@ -532,7 +570,9 @@ def run_after(args, vault: Vault) -> tuple[int, dict, str]:
             data = None
         details = step_details(s, data) if ok else []
         steps.append({"step": s, "ok": ok, "code": r.returncode, "message": "" if ok else _tail(r),
-                      "details": details})
+                      "details": details, "run": run_no, "time": started})
+        if s == "compose_role" and ok and isinstance(data, dict):
+            steps[-1].update(changed=list(data.get("changed") or []), unchanged=list(data.get("unchanged") or []))
         progress(f"update_core: {s}: " + ("v pořádku" if ok else "selhal: " + _tail(r))
                  + "".join(f"\n  {d}" for d in details))
         if not ok:

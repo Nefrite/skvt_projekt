@@ -5,8 +5,10 @@ návod. Část Python a PyYAML běží i bez PyYAML (modul nic z core závisléh
 config.yaml se bez PyYAML čte záložně po řádcích).
 
 - Python >= 3.11 (verze, interpret), PyYAML (verze); při starším Pythonu vypíše nalezené vhodné interprety
-  (PATH, `~/venv*`, `~/py*`) a navrhne `hestia_python` (zadání 0.28, CR-039); `hestia_python` z `config.yaml`
-  ověří (spustí ho jen s `-c` a výpisem verze);
+  (PATH, `~/*venv*`, `~/py*`) a navrhne `hestia_python` (zadání 0.28, 0.29, CR-039);
+- interpret core: proměnná `HESTIA_PYTHON` má přednost před `hestia_python` z `config.yaml`, obojí s rozvedením
+  `~` a `$PROMĚNNÝCH`; prázdné = hledání. Vypíše zdroj; hodnota, která není spustitelný soubor (např. `uv run …`),
+  je chyba s návodem; jinak ji spustí jen s `-c` a výpisem verze (zadání 0.29, CR-039);
 - git (verze), vault v gitovém repozitáři, počet necommitnutých změn (upozornění);
 - vault nalezen (`--vault` nebo nejbližší `Hestia/`), `_core/VERSION`, právo zápisu do vaultu (bez zápisu souboru);
 - `core_source`: existuje, je repozitář se značkami `vX.Y.Z`, nejvyšší značka proti `_core/VERSION`;
@@ -111,6 +113,38 @@ def is_remote_fs(fstype: str) -> bool:
     return t in REMOTE_FS or t.startswith("fuse.") or t.startswith("fuse")
 
 
+VAR_RE = re.compile(r"\$(?:\{(\w+)\}|(\w+))")
+PYTHON_HELP = ("hestia_python musí být cesta ke spustitelnému interpretu (bez argumentů; `uv run …` se nepodporuje): "
+               "založ venv s Pythonem >= 3.11 a PyYAML (uv venv --python 3.12 ~/hvenv; ~/hvenv/bin/pip install "
+               "pyyaml) a zapiš cestu přes ~ (hestia_python: \"~/hvenv/bin/python\"), nebo nastav HESTIA_PYTHON")
+
+
+def expand_path(value: str, environ: dict | None = None, home: Path | None = None) -> str:
+    """Rozvede `~` (domovská složka relace) a `$PROMĚNNOU` / `${PROMĚNNOU}` (zadání 0.29, CR-039).
+    Neznámá proměnná zůstane, jak je (doctor pak hlásí, že soubor neexistuje)."""
+    env = os.environ if environ is None else environ
+    s = VAR_RE.sub(lambda m: env.get(m.group(1) or m.group(2), m.group(0)), str(value).strip())
+    if s == "~" or s.startswith("~/") or s.startswith("~\\"):
+        base = Path(home) if home is not None else Path.home()
+        s = str(base / s[2:]) if len(s) > 2 else str(base)
+    return s
+
+
+def hestia_python(cfg: dict, environ: dict | None = None, home: Path | None = None) -> tuple[str, str, str]:
+    """(zapsaná hodnota, rozvedená cesta, zdroj) interpretu core: `HESTIA_PYTHON`, pak `config.yaml`;
+    zdroj „hledání“ s prázdnou cestou, když není ani jedno (zadání 0.29, CR-039)."""
+    env = os.environ if environ is None else environ
+    for raw, src in ((env.get("HESTIA_PYTHON"), "HESTIA_PYTHON"), (cfg.get("hestia_python"), "config.yaml")):
+        if raw is not None and str(raw).strip():
+            return str(raw).strip(), expand_path(str(raw), env, home), src
+    return "", "", "hledání"
+
+
+def is_executable_file(path: str) -> bool:
+    p = Path(path)
+    return p.is_file() and (sys.platform.startswith("win") or os.access(p, os.X_OK))
+
+
 PROBE = ("import sys\ntry:\n    import yaml\n    y = 1\nexcept ImportError:\n    y = 0\n"
          "print('%d.%d.%d %d' % (sys.version_info[0], sys.version_info[1], sys.version_info[2], y))")
 INTERPRETER_NAMES = ("python3.13", "python3.12", "python3.11", "python3", "python", "py")
@@ -134,7 +168,7 @@ def candidate_interpreters(home: Path | None = None, path_env: str | None = None
         if hit:
             out.append(hit)
     home = Path(home) if home is not None else Path.home()
-    for pattern in ("venv*", "py*", ".venv*"):
+    for pattern in ("*venv*", "py*"):                 # *venv* pokrývá venv*, .venv*, hvenv (zadání 0.29)
         for d in sorted(home.glob(pattern)) if home.is_dir() else []:
             for rel in ("bin/python3", "bin/python", "Scripts/python.exe", "python.exe"):
                 p = d / rel
@@ -162,7 +196,8 @@ def suitable_interpreters(home: Path | None = None, path_env: str | None = None,
 
 
 def checks(vault_arg: str | None, version_info=None, yaml_importer=None, mounts_file: str | None = None,
-           home: Path | None = None, path_env: str | None = None, probe=None) -> list[dict]:
+           home: Path | None = None, path_env: str | None = None, probe=None,
+           environ: dict | None = None) -> list[dict]:
     out: list[dict] = []
 
     def add(name: str, status: str, message: str, help_: str = "") -> None:
@@ -212,16 +247,25 @@ def checks(vault_arg: str | None, version_info=None, yaml_importer=None, mounts_
                 "bez gitu chybí historie změn a lint bez argumentů kontroluje celý vault")
 
     cfg = read_config(vault)
-    hp = cfg.get("hestia_python")
-    if hp:                                                   # interpret instance (zadání 0.28, CR-039)
-        res = (probe or probe_interpreter)(str(hp))
+    raw, hp, src = hestia_python(cfg, environ, home)        # interpret instance (zadání 0.28, 0.29, CR-039)
+    where = {"HESTIA_PYTHON": "z proměnné HESTIA_PYTHON", "config.yaml": "z config.yaml"}.get(src, "")
+    shown = hp + (f" ({raw})" if raw != hp else "")
+    if not raw:
+        exe = sys.executable if envcheck.check_python(version_info)[0] else ""
+        add("hestia_python", OK if exe else WARN,
+            f"interpret z hledání: {exe or 'vhodný nenalezen'} (HESTIA_PYTHON ani hestia_python nenastaveny)",
+            "" if exe else "nastav hestia_python v config.yaml (viz návrh u kontroly python)")
+    elif not is_executable_file(hp):
+        add("hestia_python", ERR, f"hestia_python {shown} {where}: není spustitelný soubor", PYTHON_HELP)
+    else:
+        res = (probe or probe_interpreter)(hp)
         if res is None:
-            add("hestia_python", ERR, f"hestia_python {hp} nejde spustit", "oprav cestu v config.yaml")
+            add("hestia_python", ERR, f"hestia_python {shown} {where}: nejde spustit", PYTHON_HELP)
         elif res[0][:2] < envcheck.MIN_PYTHON or not res[1]:
-            add("hestia_python", ERR, f"hestia_python {hp}: Python {'.'.join(map(str, res[0]))}"
+            add("hestia_python", ERR, f"hestia_python {shown} {where}: Python {'.'.join(map(str, res[0]))}"
                 + ("" if res[1] else " bez PyYAML"), "zvol interpret s Pythonem >= 3.11 a PyYAML")
         else:
-            add("hestia_python", OK, f"hestia_python {hp} (Python {'.'.join(map(str, res[0]))})")
+            add("hestia_python", OK, f"hestia_python {shown} {where} (Python {'.'.join(map(str, res[0]))})")
     cs = cfg.get("core_source")
     if not cs:
         add("core_source", WARN, "core_source v config.yaml chybí",

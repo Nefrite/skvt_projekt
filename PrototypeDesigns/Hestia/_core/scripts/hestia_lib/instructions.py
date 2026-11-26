@@ -11,7 +11,8 @@
 - **`role_diff <Role> [--since <verze>]`**: oddíly *Změny instrukcí* z reportů `update_core` přechodů novějších
   než `--since` (výchozí: verze před poslední aktualizací ze `structure_version.md`), jen soubory, které role
   používá, a řádky `changes.md` k `Roles/<Role>.md` a k lokálním modulům role (`Roles/modules/`) od data toho
-  přechodu. Bez změn „beze změny od <verze>“. Jen čte.
+  přechodu. Modul core s lokální náhradou (`overrides`) role nepoužívá, používá lokální modul (zadání 0.29).
+  Bez změn „beze změny od <verze>“. Jen čte.
 """
 from __future__ import annotations
 
@@ -150,8 +151,18 @@ def files_of_role(vault: Vault, role: str, core: Path) -> tuple[set[str], set[st
             used.add(TPL_ROLE)
         if name in ("Curator", "Auditor"):
             used.add(REVIEW_PLAN)
+    # lokální náhrada modulu core (overrides): role používá lokální verzi, ne modul core (zadání 0.29, 13 kap. 10.23)
+    from . import overrides
+    try:
+        repl = overrides.check_map([{"id": m.id, "overrides": str(m.fm["overrides"]).strip(), "rel": m.rel}
+                                    for m in modules.values() if not m.rel.startswith("_core/")
+                                    and m.fm.get("overrides") not in (None, "")],
+                                   {m.id for m in modules.values() if m.rel.startswith("_core/")})
+    except ConfigError:
+        repl = {}
     queue = [m.id for m in modules.values() if m.rel.startswith("_core/") and not m.listed]
     queue += [str(mid) for _n, part in profiles for mid in (part.fm.get("modules") or [])]
+    queue = [repl.get(x, x) for x in queue]
     seen = set()
     while queue:
         mid = queue.pop()
@@ -163,7 +174,7 @@ def files_of_role(vault: Vault, role: str, core: Path) -> tuple[set[str], set[st
             used.add(m.rel.removeprefix("_core/"))
         else:
             local.add(m.rel)
-        queue += list(m.requires)
+        queue += [repl.get(x, x) for x in m.requires]
     return used, local
 
 

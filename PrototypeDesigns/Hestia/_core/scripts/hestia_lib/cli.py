@@ -1,6 +1,7 @@
 """Rozhraní příkazové řádky: python hestia.py <příkaz> [argumenty] (zadání 13, kap. 3).
 
-Společné argumenty: --vault PATH, --apply, --force, --json, --quiet; platí před příkazem i za ním a zadané
+Společné argumenty: --vault PATH, --apply, --force, --json, --quiet, --profile (měření kroků, zadání 0.29,
+modul `profiling`); platí před příkazem i za ním a zadané
 na obou místech se sčítají (zadání 0.15.3; dřív hodnota podpříkazu přepsala hlavní a `--apply` před příkazem zmizelo).
 Návratové kódy: 0 v pořádku, 1 nálezy úrovně chyba / odmítnutý zápis, 2 chybné použití
 nebo konfigurace, 3 neočekávaná chyba.
@@ -14,7 +15,7 @@ import traceback
 from pathlib import Path
 
 from . import core_version
-from .errors import EXIT_UNEXPECTED, EXIT_USAGE, HestiaError, UsageError
+from .errors import EXIT_UNEXPECTED, EXIT_USAGE, ConfigError, HestiaError, UsageError
 
 COMMANDS_LATER: dict[str, int] = {}
 # příkaz -> modul s funkcí run(args, vault)
@@ -36,7 +37,7 @@ class _Parser(argparse.ArgumentParser):
         raise SystemExit(EXIT_USAGE)
 
 
-COMMON_FLAGS = ("apply", "force", "json", "quiet")
+COMMON_FLAGS = ("apply", "force", "json", "quiet", "profile")
 GLOBAL_PREFIX = "global_"
 
 
@@ -50,6 +51,8 @@ def _common(prefix: str = "") -> argparse.ArgumentParser:
                    help="přepsat existující hodnotu, kde to příkaz umí")
     p.add_argument("--json", dest=f"{prefix}json", action="store_true", help="strojový výstup na stdout")
     p.add_argument("--quiet", dest=f"{prefix}quiet", action="store_true", help="bez textového výstupu")
+    p.add_argument("--profile", dest=f"{prefix}profile", action="store_true",
+                   help="tabulka kroků na konec výstupu: čas, stat, čtení a zápisy (výsledek se nemění)")
     return p
 
 
@@ -201,6 +204,8 @@ def build_parser() -> argparse.ArgumentParser:
                        help="týdenní běh: doc_index, asset_index, hubs, audit, health (naplánovaná úloha; 13 kap. 10.20)")
     p.add_argument("--work-copy", nargs="?", const="", default=None, metavar="ADRESÁŘ",
                    help="běh v lokální pracovní kopii, zpět jen Maintenance/ a generované bloky (připojená složka)")
+    p.add_argument("--work-phase", choices=["copy", "run", "back"],
+                   help="jen jedna fáze pracovní kopie (další běh pokračuje od nedokončené; zadání 0.29)")
     p.add_argument("--keep-work-copy", action="store_true", help="pracovní adresář po běhu nemazat")
 
     p = sub.add_parser("export_cr", parents=[common], help="change requesty ze structure_log do outbox/")
@@ -219,6 +224,30 @@ def _emit(args, payload, text: str) -> None:
         print(text)
 
 
+def _with_profile(args, payload, text: str) -> str:
+    """Tabulka `--profile`: u `--json` na stderr (JSON beze změny), jinak na konec textu; s `--apply` i na konec
+    reportu příkazu (`report` ve výsledku, cesta od kořene vaultu)."""
+    from . import profiling
+    table = profiling.text()
+    rel = payload.get("report") if isinstance(payload, dict) else None
+    if args.apply and isinstance(rel, str):
+        try:
+            from .vault import find_vault
+            root = Path(args.vault).resolve() if args.vault else find_vault()
+            p = Path(root) / rel
+            if p.is_file():
+                with open(p, "a", encoding="utf-8", newline="\n") as f:
+                    f.write("\n## Profil (--profile)\n\n" + "\n".join(profiling.table()) + "\n")
+        except Exception:                                # noqa: BLE001 – měření nesmí shodit příkaz
+            pass
+    if profiling.write_child_rows():                     # podproces: tabulka vnořeně u rodiče (zadání 0.29.2)
+        return text
+    if args.json or args.quiet:
+        print(table, file=sys.stderr, flush=True)
+        return text
+    return (text or "") + "\n" + table
+
+
 def main(argv: list[str] | None = None) -> int:
     for stream in (sys.stdout, sys.stderr):
         try:
@@ -230,6 +259,8 @@ def main(argv: list[str] | None = None) -> int:
     if not args.command:
         parser.print_help()
         return EXIT_USAGE
+    from . import profiling
+    profiling.configure(args.command, args.profile, args.quiet)
     try:
         if args.command == "init":
             from . import init
@@ -241,11 +272,21 @@ def main(argv: list[str] | None = None) -> int:
             import importlib
             from .vault import Vault, find_vault
             module = importlib.import_module(f".{VAULT_COMMANDS[args.command]}", __package__)
-            vault = Vault.load(args.vault if args.vault else find_vault(), lazy=args.command in LAZY_COMMANDS)
-            code, payload, text = module.run(args, vault)
+            root = args.vault if args.vault else find_vault()
+            try:
+                vault = Vault.load(root, lazy=args.command in LAZY_COMMANDS)
+            except ConfigError as exc:
+                if args.command != "lint":
+                    raise
+                from .vault import CORE_ROOT              # lint s vadnou taxonomy_local (zadání 0.29.1, CR-043)
+                code, payload, text = module.run_without_taxonomy(args, Path(root).resolve(), CORE_ROOT, exc)
+            else:
+                code, payload, text = module.run(args, vault)
         else:
             print(f"hestia: příkaz {args.command} přijde ve fázi {COMMANDS_LATER[args.command]}", file=sys.stderr)
             return EXIT_USAGE
+        if args.profile:                       # měření na konec výstupu (zadání 0.29, CR-033)
+            text = _with_profile(args, payload, text)
         _emit(args, payload, text)
         return code
     except HestiaError as exc:

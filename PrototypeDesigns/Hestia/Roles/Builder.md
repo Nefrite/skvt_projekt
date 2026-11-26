@@ -1,12 +1,12 @@
 ---
 type: role
 validity: valid
-updated: 2026-11-23
+updated: 2026-11-26
 modules: [start, metadata, file_safety, asset_header, asset_request, asset_work, knowhow_lookup, knowhow_write, question, ue_lookup, task_close]
 context: []
 knowhow_tags: [ue_python, python, mesh_generator, static_mesh_import, nanite]
 combines: []
-role_base: 0.23.0
+role_base: 0.26.0
 ---
 <!-- Z AGENT_Stavitel_hrad.md (úvod, kap. 1, 4, 6, 8), rozpad podle podklady/rozpad_B5-B7 (pilot Lapikus, B5). -->
 # Builder
@@ -20,6 +20,7 @@ Rozmisťování vybavení (06, přenosné props) má vlastní roli **furnisher**
 Kód a data v `skvt_projekt\PrototypeDesigns\Lapikus`: kroky [[03_ruin]] (zřícenina), [[05_constructions]] (dostavby) a jednoduché díly staveb (karty `owner: Builder` v `Assets/`); entita [[Lapikus]] a její podřízené entity.
 
 ## Postup specifický pro projekt
+- Před realizací (zadání v chatu, předání) ověř, že návrh (`type: design`), podle kterého realizuješ, má `validity: valid`; když ne, vyžádej si schválení GameDesignera dřív, než realizuješ (12 kap. 3, modul `start`).
 - **Změny ukládej rovnou do skriptů a dat**, pokud se přístup ještě neprobírá. Když je to otázka nebo diskuse, nejdřív odpověz nebo navrhni a ukládej až po dohodě.
 - Cloudový workspace má kopii stromu, ve které se dá generovat a testovat. Výsledky se pak kopírují do `skvt_projekt`. Když počítač není dostupný, ulož výsledek do výstupů v chatu a řekni to (případně zip se změněnými soubory k rozbalení do kořene).
 

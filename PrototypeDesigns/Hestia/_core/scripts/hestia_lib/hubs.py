@@ -306,28 +306,36 @@ class Hubs:
 
 
 def run(args, vault: Vault) -> tuple[int, dict, str]:
-    h = Hubs(vault)
+    from . import profiling                                     # průběžný výstup kroků (zadání 0.29, CR-033)
+    with profiling.step("model"):
+        h = Hubs(vault)
     unknown = [e for e in args.entities if e not in h.m.entities and vault.note_by_name(e) is None]
     if unknown:
         raise UsageError(f"Neznámá entita nebo krok: {', '.join(unknown)}")
     cs = ChangeSet(vault.project_root)
-    res = h.plan(cs, args.entities or None)
+    with profiling.step("generované bloky"):
+        res = h.plan(cs, args.entities or None)
     from . import doc_index                                     # index pro Knihovníka nezastará (13 kap. 10.10)
+    replaced = doc_index.replaced_in_vault(vault)               # G5 před přepsáním indexu (zadání 0.29.2)
     applied = bool(args.apply and not cs.empty)
     if args.apply:
-        if not cs.empty:
-            cs.apply()
+        with profiling.step("zápis"):
+            if not cs.empty:
+                cs.apply()
         # index až z vaultu po zápisu: generované sekce hubů nesou odkazy (links_out)
-        after = Vault.load(vault.root) if applied else vault
-        cs_idx = ChangeSet(vault.project_root)
-        if doc_index.plan(after, cs_idx):
-            cs_idx.apply()
-            res.changed.append(doc_index.JSON_REL)
-            applied = True
-    elif doc_index.plan(vault, cs, h.m):                        # dry-run: odhad ze současného stavu
-        res.changed.append(doc_index.JSON_REL)
+        with profiling.step("doc_index"):
+            after = Vault.load(vault.root) if applied else vault
+            cs_idx = ChangeSet(vault.project_root)
+            if doc_index.plan(after, cs_idx):
+                cs_idx.apply()
+                res.changed.append(doc_index.JSON_REL)
+                applied = True
+    else:
+        with profiling.step("doc_index"):
+            if doc_index.plan(vault, cs, h.m):                  # dry-run: odhad ze současného stavu
+                res.changed.append(doc_index.JSON_REL)
     payload = {"command": "hubs", "applied": applied, "changed": res.changed,
-               "warnings": res.warnings}
+               "warnings": res.warnings, "replaced": [f.as_dict() for f in replaced]}
     if not res.changed:
         lines = ["hubs: beze změny"]
     elif args.apply:
@@ -337,4 +345,5 @@ def run(args, vault: Vault) -> tuple[int, dict, str]:
     if h.index is None:
         lines.append("Upozornění: asset_index.json chybí, sekce Soubory, Postup stavby a Skripty jsou prázdné.")
     lines += [f"Upozornění: {w}" for w in res.warnings]
+    lines += doc_index.replaced_lines(replaced)
     return EXIT_OK, payload, "\n".join(lines)
